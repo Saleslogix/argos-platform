@@ -667,6 +667,7 @@ li.relatedviewitem a {
 }
 .quick-actions > .action-list {
   padding: 10px 5px 5px;
+  width: 100%;
 }
 .quick-actions > .action-list button {
   float: left;
