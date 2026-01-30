@@ -2,6 +2,53 @@
 //================================================== //
 
 .breadcrumb {
+  &.hitbox {
+    ol.breadcrumb-list li {
+      &::after {
+        padding-left: 0;
+        padding-right: 0;
+        position: relative;
+      }
+
+      .breadcrumb-text-truncated {
+        &.hyperlink,
+        &.breadcrumb-text {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          top: 6px;
+          white-space: nowrap;
+          width: 70px;
+        }
+
+        &.breadcrumb-text {
+          position: relative;
+        }
+      }
+
+      a.hyperlink,
+      span.breadcrumb-text {
+        font-size: 16px;
+        line-height: 1.5em;
+        margin: 0 8px;
+        padding: 0;
+        width: fit-content;
+
+        &::after {
+          content: '';
+          display: block;
+          height: 44px;
+          left: 0;
+          margin: 2px -8px 0;
+          padding: 0 8px;
+          position: relative;
+          top: -14px;
+          transform: translateY(-50%);
+          width: 100%;
+        }
+      }
+    }
+  }
+
   .hyperlink,
   .breadcrumb-text,
   li > span {
@@ -82,6 +129,13 @@
         font-size: $ids-size-font-sm;
         font-weight: $ids-number-font-weight-bold;
 
+        .hyperlink,
+        .breadcrumb-text {
+          &:hover {
+            color: $breadcrumb-color;
+          }
+        }
+
         span {
           font-weight: inherit;
         }
@@ -134,7 +188,7 @@
     }
 
     &:last-child::after {
-      content: '';
+      content: none;
       padding: 0;
     }
   }
@@ -176,11 +230,12 @@
 
       // Enlarges the faded edge of the `.breadcrumb-list`
       &::before {
-        background-image: linear-gradient(
-          to right,
-          rgba($body-color-primary-background, 1),
-          rgba($body-color-primary-background, 0)
-        );
+        background-image:
+          linear-gradient(
+            to right,
+            rgba($body-color-primary-background, 1),
+            rgba($body-color-primary-background, 0)
+          );
         width: 32px;
       }
 
@@ -239,11 +294,19 @@
 
     &:hover {
       color: $breadcrumb-hover-color;
+      text-decoration: underline;
     }
 
     &:focus {
       border-radius: 2px;
-      color: $breadcrumb-hover-color;
+      color: $breadcrumb-focus-color;
+      font-weight: $ids-number-font-weight-bold;
+      border-bottom: none;
+    }
+
+    &:focus:hover {
+      text-decoration: none !important;
+      border-bottom: none !important;
     }
 
     &:active {
@@ -261,10 +324,6 @@
 
   // Only hyperlinks (and not text blocks) get underline state
   .hyperlink {
-    &:hover:not([disabled]):not(.is-disabled) {
-      border-bottom: 1px solid $breadcrumb-hover-color;
-    }
-
     &:focus {
       &:hover {
         border-bottom: 1px solid $breadcrumb-hover-color;
@@ -325,6 +384,14 @@
   }
 }
 
+.breadcrumb.hitbox.truncated {
+  .breadcrumb-list li {
+    a.breadcrumb-text-truncated {
+      top: 0;
+    }
+  }
+}
+
 // Scrollable-Flex Headers can change background color of the breadcrumb list
 .scrollable-flex-header {
   .breadcrumb {
@@ -332,9 +399,31 @@
     display: block;
     padding: 1px 10px 0;
 
+    &.truncated.hitbox {
+      ol.breadcrumb-list li.breadcrumb-item {
+        padding-left: 0;
+
+        &::after {
+          margin-top: 5px;
+        }
+
+        .hyperlink,
+        .breadcrumb-text {
+          overflow: initial;
+          text-align: center;
+        }
+      }
+
+      .breadcrumb-overflow-container {
+        &::after {
+          margin-top: 7px;
+        }
+      }
+    }
+
     .hyperlink,
     .breadcrumb-text {
-      border: 0;
+      border: 1px solid transparent;
       color: $header-breadcrumb-color;
 
       &:active:not([disabled]),
@@ -343,14 +432,20 @@
         color: $header-breadcrumb-color;
       }
 
+      &:hover:not([disabled]) {
+        border-bottom: 1px solid $header-breadcrumb-color;
+        color: $header-breadcrumb-color;
+      }
+
+      &:focus:not([disabled]) {
+        border-radius: 8px;
+        border: 1px solid $header-breadcrumb-color;
+      }
+
       &:focus:not([disabled]):not(.hide-focus) {
         border-color: transparent;
         box-shadow: none;
         outline: 1px solid $header-breadcrumb-color;
-      }
-
-      &:hover:not([disabled]) {
-        border-bottom: 1px solid $header-breadcrumb-color;
       }
     }
 
@@ -360,7 +455,8 @@
       }
 
       &:focus:not(.hide-focus) {
-        box-shadow: 0 0 0 2px transparent,
+        box-shadow:
+          0 0 0 2px transparent,
           0 0 0 1px $header-breadcrumb-color,
           0 0 1px 2px rgba($header-breadcrumb-color, 0.3);
       }
@@ -403,6 +499,10 @@
           outline: 1px solid $header-breadcrumb-alt-color;
         }
 
+        &:focus:not([disabled]) {
+          border: 1px solid $header-breadcrumb-alt-color;
+        }
+
         &:hover:not([disabled]) {
           border-bottom: 1px solid $header-breadcrumb-alt-color;
         }
@@ -414,7 +514,8 @@
         }
 
         &:focus:not(.hide-focus) {
-          box-shadow: 0 0 0 2px transparent,
+          box-shadow:
+            0 0 0 2px transparent,
             0 0 0 1px $header-breadcrumb-alt-color,
             0 0 1px 2px rgba($header-breadcrumb-alt-color, 0.3);
         }
@@ -426,11 +527,12 @@
 
         // Change the faded edge to match the header background color
         &::before {
-          background-image: linear-gradient(
-            to right,
-            rgba($header-breadcrumb-alt-bg-color, 1),
-            rgba($header-breadcrumb-alt-bg-color, 0)
-          );
+          background-image:
+            linear-gradient(
+              to right,
+              rgba($header-breadcrumb-alt-bg-color, 1),
+              rgba($header-breadcrumb-alt-bg-color, 0)
+            );
         }
 
         li {
@@ -454,11 +556,12 @@
       .breadcrumb-list,
       ol {
         &::before {
-          background-image: linear-gradient(
-            to right,
-            rgba($header-bg-color, 1),
-            rgba($header-bg-color, 0)
-          );
+          background-image:
+            linear-gradient(
+              to right,
+              rgba($header-bg-color, 1),
+              rgba($header-bg-color, 0)
+            );
         }
       }
 
@@ -467,11 +570,12 @@
         .breadcrumb-list,
         ol {
           &::before {
-            background-image: linear-gradient(
-              to right,
-              rgba($header-breadcrumb-alt-bg-color, 1),
-              rgba($header-breadcrumb-alt-bg-color, 0)
-            );
+            background-image:
+              linear-gradient(
+                to right,
+                rgba($header-breadcrumb-alt-bg-color, 1),
+                rgba($header-breadcrumb-alt-bg-color, 0)
+              );
           }
         }
       }
@@ -479,8 +583,42 @@
   }
 }
 
+.header + .page-container .scrollable-flex-header .breadcrumb:not(.alternate) {
+  background-color: $subhead-bg-color;
+
+  &.truncated {
+    .breadcrumb-list,
+    ol {
+      &::before {
+        background-image:
+          linear-gradient(
+            to right,
+            rgba($subhead-bg-color, 1),
+            rgba($subhead-bg-color, 0)
+          );
+      }
+    }
+  }
+}
+
 // RTL Styles
 html[dir='rtl'] {
+  .header + .page-container .scrollable-flex-header .breadcrumb:not(.alternate) {
+    &.truncated {
+      .breadcrumb-list,
+      ol {
+        &::before {
+          background-image:
+            linear-gradient(
+              to left,
+              rgba($subhead-bg-color, 1),
+              rgba($subhead-bg-color, 0)
+            );
+        }
+      }
+    }
+  }
+
   .breadcrumb {
     // Hyperlinks already have this by default
     .breadcrumb-text {
@@ -499,6 +637,7 @@ html[dir='rtl'] {
 
     &:last-child::after {
       content: '';
+      display: inline-block;
     }
 
     &:first-child {
@@ -533,11 +672,12 @@ html[dir='rtl'] {
       .breadcrumb-list,
       ol {
         &::before {
-          background-image: linear-gradient(
-            to right,
-            rgba($body-color-primary-background, 0),
-            rgba($body-color-primary-background, 1)
-          );
+          background-image:
+            linear-gradient(
+              to right,
+              rgba($body-color-primary-background, 0),
+              rgba($body-color-primary-background, 1)
+            );
         }
 
         li {
@@ -580,11 +720,12 @@ html[dir='rtl'] {
       .breadcrumb-list,
       ol {
         &::before {
-          background-image: linear-gradient(
-            to right,
-            rgba($header-bg-color, 0),
-            rgba($header-bg-color, 1)
-          );
+          background-image:
+            linear-gradient(
+              to right,
+              rgba($header-bg-color, 0),
+              rgba($header-bg-color, 1)
+            );
         }
       }
 
@@ -592,11 +733,12 @@ html[dir='rtl'] {
         .breadcrumb-list,
         ol {
           &::before {
-            background-image: linear-gradient(
-              to right,
-              rgba($header-breadcrumb-alt-bg-color, 0),
-              rgba($header-breadcrumb-alt-bg-color, 1)
-            );
+            background-image:
+              linear-gradient(
+                to right,
+                rgba($header-breadcrumb-alt-bg-color, 0),
+                rgba($header-breadcrumb-alt-bg-color, 1)
+              );
           }
         }
       }

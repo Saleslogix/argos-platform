@@ -2,10 +2,10 @@
 // Flexible Toolbar Component
 // ==================================== //
 
-@import '../button/button';
-@import '../colorpicker/colorpicker';
-@import '../fontpicker/fontpicker';
-@import '../popupmenu/popupmenu';
+// Dependencies
+// colorpicker/colorpicker
+// fontpicker/fontpicker
+// popupmenu/popupmenu
 
 .toolbar-container {
   &.in-page {
@@ -18,17 +18,313 @@
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
+  margin-bottom: 5px;
+
+  &.datagrid-toolbar {
+    height: 50px;
+  }
 
   .toolbar-section {
     &.title {
+      -webkit-font-smoothing: antialiased;
       padding: 1px 0;
+      font-size: 1.8rem;
     }
 
     .searchfield-wrapper {
       bottom: 1px;
       display: flex;
       position: relative;
+      overflow: hidden;
+
+      .searchfield {
+        position: absolute;
+      }
+
+      &.non-collapsible.active:not(.is-open) {
+        &:not(.has-text) {
+          .searchfield {
+            border-color: transparent;
+          }
+        }
+
+        &.has-text {
+          .searchfield {
+            border-bottom: unset;
+          }
+        }
+      }
+
+      &:not(.non-collapsible) {
+        .searchfield {
+          position: absolute;
+        }
+      }
+
+      &.toolbar-searchfield-wrapper.has-close-icon-button {
+        .btn-icon.close {
+          right: 5px;
+
+          @media (max-width: $breakpoint-phone-to-tablet) {
+            right: 50px;
+          }
+        }
+
+        &.has-categories.has-go-button {
+          .btn-icon.close {
+            right: 46px;
+            top: 8px;
+
+            svg.close {
+              top: 1px;
+            }
+
+            @media (max-width: $breakpoint-phone-to-tablet) {
+              right: 85px;
+            }
+          }
+
+          .go-button {
+            @media (min-width: $breakpoint-phone) {
+              right: 85px;
+            }
+
+            @media (min-width: $breakpoint-phone-to-tablet) {
+              right: 0;
+            }
+          }
+        }
+
+        &.has-go-button {
+          .btn-icon.close {
+            right: 56px;
+          }
+        }
+
+        &:not(.has-categories) {
+          .btn-icon.close {
+            top: 50%;
+            transform: translateY(-50%);
+          }
+        }
+
+        &.has-text.active.has-close-icon-button .custom-button {
+          @media (min-width: $breakpoint-phone) {
+            left: calc(100% - 96px);
+          }
+
+          @media (min-width: $breakpoint-phone-to-tablet) {
+            left: 163px;
+          }
+
+          @media (min-width: $breakpoint-tablet-to-desktop) {
+            left: calc(100% - 56px);
+          }
+        }
+
+        .custom-button {
+          left: calc(100% - 72px);
+
+          @media (min-width: $breakpoint-phone-to-tablet) {
+            left: 193px;
+          }
+
+          .icon {
+            left: 2px;
+            position: absolute;
+            top: 0;
+            right: 7px;
+            height: 16px;
+            pointer-events: none;
+          }
+        }
+      }
     }
+  }
+
+  &.formatter-style {
+    background-color: $editor-toolbar-bg-color;
+    border-bottom: 1px solid $editor-toolbar-bottom-border-color;
+
+    [class^='btn'] {
+      min-width: 34px;
+
+      &:disabled {
+        .icon {
+          color: $editor-btn-disabled-color;
+        }
+
+        span:not(.audible) {
+          color: $editor-btn-disabled-color;
+        }
+      }
+
+      &:hover:not(:disabled):not(.close):not(.btn-filter):not(.personalize-actionable):not(.destructive) {
+        background-color: $button-editor-color-hover-background-new !important;
+        color: $button-editor-color-tertiary-hover-font-new !important;
+
+        svg.icon {
+          color: $button-editor-color-tertiary-hover-font-new !important;
+        }
+
+        &.is-active svg.icon {
+          color: $editor-btn-active-color !important;
+        }
+      }
+    }
+
+    .toolbar-section {
+      margin-inline-end: 12px;
+    }
+  }
+}
+
+.contextual-toolbar {
+  font-size: 0;
+  position: relative;
+  text-align: left;
+  -webkit-touch-callout: none;
+  padding: 0 0 0 15px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+
+  .toolbar-section {
+    @include enable-select();
+
+    height: 40px;
+    overflow: hidden;
+    position: relative;
+    text-align: left;
+    text-overflow: ellipsis;
+    top: 0;
+    white-space: nowrap;
+    width: 45%; // Overridden by sizing calculation.
+
+    &.title {
+      -webkit-font-smoothing: antialiased;
+      color: $contextual-toolbar-color;
+      font-size: $ids-size-font-base;
+      height: 42px;
+
+      &::before {
+        @include vertical-alignment-spacer;
+      }
+
+      &.selection-count {
+        top: 2px;
+      }
+    }
+
+    &.buttonset {
+      width: calc(55% - 41px);
+      height: 42px;
+      user-select: none;
+      overflow: hidden !important;
+      padding-left: 1px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+
+      > * {
+        margin: -1px 0 0 2px;
+        vertical-align: top;
+      }
+
+      [class^='btn'] {
+        color: $contextual-toolbar-button-color;
+
+        &.is-overflowed {
+          display: none;
+        }
+
+        svg {
+          color: inherit;
+        }
+
+        &:hover {
+          color: $contextual-toolbar-button-hover-color;
+          background-color: transparent;
+
+          svg {
+            color: inherit;
+          }
+        }
+
+        &:focus {
+          box-shadow: 0 0 0 2px transparent, 0 0 0 1px  $header-default-bg-color !important;
+
+          &:not(.hide-focus) {
+            color: $contextual-toolbar-color;
+          }
+        }
+
+        &[disabled] {
+          color: $contextual-toolbar-button-disabled-color;
+          background-color: transparent;
+
+          svg {
+            color: inherit;
+          }
+
+          &:hover {
+            background-color: transparent;
+            border-color: transparent;
+          }
+        }
+      }
+    }
+
+    &.more {
+      display: none;
+      width: 40px;
+
+      [class^='btn-actions'] {
+        top: 3px;
+        left: 1px;
+        color: $contextual-toolbar-button-color;
+
+        svg {
+          color: $contextual-toolbar-button-color;
+        }
+
+        &:not(:disabled):hover {
+          color: $contextual-toolbar-button-hover-color;
+          background-color: transparent;
+
+          svg {
+            color: inherit;
+          }
+        }
+
+        &:focus {
+          box-shadow: 0 0 0 2px transparent, 0 0 0 1px $contextual-toolbar-color;
+
+          &:not(.hide-focus) {
+            color: $contextual-toolbar-color;
+          }
+        }
+
+        &[disabled] {
+          color: $contextual-toolbar-button-disabled-color;
+
+          svg {
+            color: inherit;
+          }
+
+          &:hover {
+            background-color: transparent;
+            border-color: transparent;
+          }
+        }
+      }
+    }
+  }
+
+  > * {
+    display: inline-block;
+    vertical-align: middle;
   }
 }
 
@@ -46,7 +342,7 @@
 
     &:not(.favor) {
       overflow-x: hidden;
-      overflow-y: auto;
+      overflow-y: hidden;
     }
 
     &.static {
@@ -74,7 +370,12 @@
       display: block;
       overflow: hidden;
       padding: 0;
+      line-height: normal;
       text-overflow: ellipsis;
+    }
+
+    .page-title {
+      padding-top: 2px;
     }
 
     .section-title {
@@ -98,6 +399,10 @@
   &.buttonset {
     padding: 4px;
 
+    &.flex-end {
+      justify-content: flex-end;
+    }
+
     [class^='btn'] {
       margin-right: 0;
 
@@ -112,11 +417,32 @@
   }
 
   &.search {
-    padding: 0 10px;
+    padding: $input-field-padding;
+
+    @media (min-width: $breakpoint-phone-to-tablet) {
+      &.flex-grow-2 {
+        flex-grow: 2;
+
+        .toolbar-searchfield-wrapper {
+          width: 100%;
+        }
+      }
+    }
 
     + .buttonset {
       display: flex;
       flex-grow: 0;
+
+      @media (min-width: $breakpoint-phone-to-tablet) {
+        &.flex-grow-1 {
+          flex-grow: 1;
+        }
+      }
+
+      .btn {
+        flex-shrink: 0;
+        text-overflow: unset;
+      }
     }
   }
 
@@ -148,11 +474,23 @@
         display: none;
       }
     }
+
+    .btn-actions:hover:not(:disabled) {
+      background-color: $toolbar-btn-actions-hover-bg-color;
+    }
   }
 }
 
 // RTL Styles
 html[dir='rtl'] {
+  .flex-toolbar {
+    .toolbar-section.search .toolbar-searchfield-wrapper.has-custom-button.has-close-icon-button.is-open {
+      .btn-icon.close {
+        right: calc(100% - 70px);
+      }
+    }
+  }
+
   .toolbar-section {
     &.title + .toolbar-section.buttonset {
       text-align: left;
@@ -174,4 +512,95 @@ html[dir='rtl'] {
     }
   }
 
+  .toolbar-section.search {
+    .toolbar-searchfield-wrapper {
+      .btn-icon.close {
+        right: calc(100% - 65px);
+
+        @media (min-width: $breakpoint-phone-to-tablet) {
+          right: calc(100% - 30px) !important;
+        }
+      }
+    }
+  }
+}
+
+html[class*='theme-classic-'] .flex-toolbar .toolbar-section .searchfield-wrapper.toolbar-searchfield-wrapper.has-close-icon-button {
+  .custom-button {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    @media (min-width: $breakpoint-phone) {
+      left: 36px;
+    }
+
+    @media (min-width: $breakpoint-phone-to-tablet) {
+      left: 189px;
+    }
+
+    + .collapse-button,
+    + .close + .collapse-button {
+      left: -2px;
+      top: -3px
+    }
+
+    .icon {
+      left: 2px;
+      top: -6px;
+      right: 2px;
+    }
+  }
+
+  &.has-categories.has-go-button .btn-icon.close {
+    top: 6px;
+  }
+
+  &:not(.has-categories):not(.has-go-button) {
+    .btn-icon.close {
+      right: 3px;
+
+      @media (max-width: $breakpoint-phablet) {
+        right: 13%;
+      }
+    }
+
+    &.has-custom-button .btn-icon.close {
+      @media (max-width: $breakpoint-phone-to-tablet) {
+        right: calc(100% - 70px);
+      }
+    }
+  }
+
+  &.has-text.active.has-close-icon-button .custom-button {
+    @media (min-width: $breakpoint-phone) {
+      left: -55px;
+    }
+
+    @media (min-width: $breakpoint-phone-to-tablet) {
+      left: 168px;
+    }
+  }
+}
+
+// Buttons hover state
+html[class*='theme-new-'] .flex-toolbar:not(.editor-toolbar):not(.formatter-toolbar):not(.contextual-toolbar) {
+  .toolbar-section [class^='btn']:not(:disabled):not(.searchfield-category-button):not(.btn-primary) {
+    &:not(.collapse-button):hover {
+      background-color: $toolbar-btn-actions-hover-bg-color;
+    }
+
+    &.go-button {
+      position: absolute;
+      border: 1px solid $searchfield-toolbar-border-color;
+      border-left: none;
+      border-radius: 0;
+      background-color: transparent;
+      color: $searchfield-icon-color;
+    }
+  }
 }

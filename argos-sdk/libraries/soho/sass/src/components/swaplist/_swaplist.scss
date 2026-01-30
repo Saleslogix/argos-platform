@@ -37,10 +37,26 @@
 
     .card-content {
       width: 100%;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+
+      .listview {
+        li {
+          border-radius: 0;
+
+          &:last-child {
+            &.over {
+              border: 1px dashed $swaplist-border-color !important;
+              border-bottom-color: inherit;
+            }
+          }
+        }
+      }
     }
 
     .card-header {
       border-bottom: none;
+      width: 100%;
 
       .btn {
         background-color: transparent;
@@ -74,7 +90,8 @@
         }
 
         &::before { //border top and bottom
-          box-shadow: 13px 0 0 $swaplist-icon-color,
+          box-shadow:
+            13px 0 0 $swaplist-icon-color,
             0 16px 0 $swaplist-icon-color,
             13px 16px 0 $swaplist-icon-color;
           height: 2px;
@@ -89,7 +106,8 @@
           }
 
           &::after {
-            box-shadow: 0 6px 0 $swaplist-icon-color-hover,
+            box-shadow:
+              0 6px 0 $swaplist-icon-color-hover,
               0 12px 0 $swaplist-icon-color-hover,
               16px 0 0 $swaplist-icon-color-hover,
               16px 6px 0 $swaplist-icon-color-hover,
@@ -97,7 +115,8 @@
           }
 
           &::before {
-            box-shadow: 13px 0 0 $swaplist-icon-color-hover,
+            box-shadow:
+              13px 0 0 $swaplist-icon-color-hover,
               0 16px 0 $swaplist-icon-color-hover,
               13px 16px 0 $swaplist-icon-color-hover;
           }
@@ -131,7 +150,8 @@
 
         &[disabled] {
           &::before {
-            box-shadow: 13px 0 0 $swaplist-icon-color-disabled,
+            box-shadow:
+              13px 0 0 $swaplist-icon-color-disabled,
               0 16px 0 $swaplist-icon-color-disabled,
               13px 16px 0 $swaplist-icon-color-disabled;
           }
@@ -166,6 +186,8 @@
     .card-title {
       color: $swaplist-title-text-color;
       font-weight: $ids-number-font-weight-base;
+      position: relative;
+      top: 0;
     }
 
     p {
@@ -237,9 +259,10 @@
   .is-multiselect {
     background-color: $listview-bg-color;
     border-top: thin solid $swaplist-border-color-card;
+    height: 100%;
 
     ul {
-      min-height: 100%;
+      min-height: 40px;
       padding: 0 0 5px;
 
       &.is-not-droppable {
@@ -254,12 +277,11 @@
           }
 
           &:hover:not(.is-disabled):not(.is-selected),
-          &:focus:not(.is-disabled):not(.is-selected), {
+          &:focus:not(.is-disabled):not(.is-selected) {
             .handle {
               display: none;
             }
           }
-
         }
       }
     }
@@ -280,7 +302,7 @@
       }
 
       &:hover:not(.is-disabled):not(.is-selected),
-      &:focus:not(.is-disabled):not(.is-selected), {
+      &:focus:not(.is-disabled):not(.is-selected) {
         .handle {
           color: $swaplist-text-color;
           display: inline-block;
@@ -320,7 +342,8 @@
     }
 
     .over {
-      border: 1px dashed $swaplist-border-color;
+      border: 1px dashed $swaplist-border-color !important;
+      min-height: 40px;
     }
   }
 

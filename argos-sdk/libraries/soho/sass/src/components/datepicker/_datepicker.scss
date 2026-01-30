@@ -1,8 +1,11 @@
+/* stylelint-disable media-feature-name-no-unknown */
 //* Date Picker
 //================================================== *
 
 .datepicker {
   width: $datepicker-default-width;
+  padding-right: 30px;
+  text-overflow: ellipsis;
 
   &.input-xs {
     width: $field-xs;
@@ -44,6 +47,9 @@
     height: 24px;
     margin-left: -30px;
     margin-top: 5px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     min-height: 24px;
     min-width: 24px;
     position: absolute;
@@ -51,11 +57,12 @@
     z-index: 1;
 
     .icon {
-      color: inherit;
-      height: 16px;
+      color:  $datepicker-calendar-icon-color;
+      height: 18px;
       position: relative;
+      margin: 0;
+      width: 18px;
       top: -1px;
-      width: 16px;
     }
 
     &:hover {
@@ -71,7 +78,7 @@
     border-color: $input-color-focus-border;
 
     + .trigger {
-      color: $datepicker-icon-active-color;
+      color: $ids-color-palette-white;
     }
   }
 
@@ -96,6 +103,40 @@
     + .trigger {
       color: $datepicker-readonly-icon-color;
       cursor: default;
+
+      &:hover {
+        color: $datepicker-readonly-icon-color !important;
+        cursor: default;
+        background-color: transparent !important;
+
+        &.icon,
+        &.btn-icon {
+          color: $datepicker-readonly-icon-color !important;
+          background-color: transparent !important;
+        }
+      }
+
+      &.btn-icon:hover:not([disabled]) .icon {
+        color: $datepicker-readonly-icon-color !important;
+      }
+    }
+  }
+}
+
+.monthview-popup .monthview .monthview-header .calendar-toolbar {
+  padding: 0;
+  min-width: 344px;
+
+  @media screen and (max-width: $breakpoint-big-phone) {
+    min-width: 320px;
+
+    .btn-monthyear-pane {
+      margin: 0;
+      padding: 4px 0 5px;
+    }
+
+    .toolbar-section.buttonset {
+      padding-inline: 0;
     }
   }
 }
@@ -103,15 +144,21 @@
 // Popup Adjustments
 .monthview-popup.popover {
   max-width: inherit;
+  min-height: auto;
+  margin-top: 1px;
 
-  @media screen and (max-height: $breakpoint-big-phone + 50) {
+  @media screen and (max-device-width: ($breakpoint-phone - 1)) {
+    min-width: 260px;
+  }
+
+  @media screen and (max-height: ($breakpoint-big-phone + 50)) {
     overflow-y: auto;
   }
 
   // Supports landscape orientation for small iPhone (5, 5S, 5C and 5SE)
   @media only screen
-    and (min-device-width: $breakpoint-phone)
-    and (max-device-width: $breakpoint-big-phone + 88)
+    and (minwidth: $breakpoint-phone)
+    and (max-device-width: ($breakpoint-big-phone + 88))
     and (-webkit-min-device-pixel-ratio: 2)
     and (orientation: landscape) {
     height: 250px;
@@ -123,7 +170,7 @@
   }
 
   .monthview .monthview-table {
-    max-width: 330px;
+    max-width: 310px;
   }
 
   // Week picker adjustments
@@ -149,7 +196,18 @@
       width: 50%;
 
       &.btn-primary:focus {
-        box-shadow: 0 0 0 0 $body-color-primary-background, 0 0 0 1px $button-color-primary-initial-background, $focus-box-shadow;
+        box-shadow: 0 0 0 0 $body-color-primary-background, 0 0 0 0.12rem $button-color-primary-initial-background, $focus-box-shadow;
+        z-index: 3;
+      }
+
+      &.is-cancel-month-pane {
+        display: none;
+      }
+
+      &.is-select-month-pane {
+        transition: width 0.1s ease-in-out;
+        width: 100%;
+        border-left: thin solid transparent;
       }
     }
   }
@@ -164,19 +222,23 @@
 .form-layout-compact .field {
   .datepicker {
     padding-right: 24px;
+    vertical-align: top;
 
     + .trigger,
     + .tooltip-description + .trigger {
       height: 20px;
       margin-left: -24px;
-      margin-top: 3px;
+      margin-block-start: 1px;
+      display: inline-flex;
+      justify-content: center;
       min-height: 20px;
       min-width: 20px;
       width: 20px;
 
       .icon {
-        height: 14px;
+        height: 20px;
         width: 14px;
+        top: 0;
       }
     }
   }
@@ -185,9 +247,11 @@
 // RTL Styles
 html[dir='rtl'] {
   .datepicker {
+    padding: 0 12px 0 32px;
+
     + .trigger {
       margin-left: -23px;
-      margin-right: -26px;
+      margin-right: -32px;
     }
 
     + .trigger + .icon-error {
@@ -210,12 +274,12 @@ html[dir='rtl'] {
   .field-short,
   .form-layout-compact .field {
     .datepicker {
-      padding-left: 24px;
+      padding-left: 27px;
       padding-right: 2px;
 
       + .trigger {
         margin-left: inherit;
-        margin-right: -20px;
+        margin-right: -24px;
       }
     }
   }
@@ -234,9 +298,13 @@ html[dir='rtl'] {
     }
   }
 
-  .monthview-popup {
-    button.btn-primary:hover {
-      border-left: none;
+  .monthview-popup.popover .popup-footer {
+    button {
+      margin-left: 0;
+
+      &:first-child:hover {
+        border-left: none;
+      }
     }
   }
 }
@@ -248,21 +316,13 @@ html[dir='rtl'] {
   }
 }
 
-html.is-safari {
-  .datepicker {
-    + .trigger {
-      position: relative;
-    }
-  }
-}
-
 @include respond-to(tabletdown) {
   .monthview-popup.popover .monthview {
     min-width: 310px;
 
     @media only screen
-      and (min-device-width: $breakpoint-phone)
-      and (max-device-width: $breakpoint-big-phone + 88)
+      and (minwidth: $breakpoint-phone)
+      and (max-device-width: ($breakpoint-big-phone + 88))
       and (-webkit-min-device-pixel-ratio: 2)
       and (orientation: portrait) {
       min-width: 280px;

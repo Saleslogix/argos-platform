@@ -1,14 +1,17 @@
-// Uplift Icons and Icon Buttons
+// New Icons and Icon Buttons
 //================================================== //
 
 .icon {
   fill: transparent;
-  width: 18px; // Normalize against `height: 18px`;
 
   &.icon-empty-state {
     fill: $ids-color-brand-primary-base;
-    width: 65px;
+    width: 80px;
   }
+}
+
+.empty-fill {
+  fill: transparent;
 }
 
 .icon.app-header span:not(.audible) {
@@ -36,16 +39,12 @@
 
 .is-firefox {
   .icon-dirty.dirty-checkbox.is-checked {
-    top: 2px !important;
+    top: 1.5px !important;
   }
 }
 
-.ie,
-.ie11 {
-  .icon.plus-minus {
-    &::before,
-    &::after {
-      height: 2px;
-    }
-  }
+.field .icon-error {
+  height: 18px;
+  width: 18px;
+  top: -3px !important
 }

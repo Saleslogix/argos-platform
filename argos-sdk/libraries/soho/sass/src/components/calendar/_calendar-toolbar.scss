@@ -1,7 +1,10 @@
+/* stylelint-disable media-feature-name-no-vendor-prefix */
+/* stylelint-disable media-feature-name-no-unknown */
 // Calendar Toolbar
 //================================================== //
 
-@import '../datepicker/datepicker';
+// Dependencies
+// datepicker
 
 .calendar-toolbar {
   .datepicker {
@@ -10,7 +13,7 @@
     background-color: transparent;
     border: 1px solid transparent;
     border-radius: 2px;
-    box-shadow: none;
+    box-shadow: 0 0 4px 3px transparent;
     padding: 8px 36px 7px 8px;
 
     &:focus {
@@ -30,6 +33,14 @@
     margin-left: -10px;
   }
 
+  button.prev span.hitbox-area {
+    left: -5px;
+  }
+
+  button.next span.hitbox-area {
+    left: 4px;
+  }
+
   .monthview-datepicker {
     margin-left: -5px;
     position: relative;
@@ -37,7 +48,15 @@
 
     .trigger {
       margin-left: -29px;
-      margin-top: 4px;
+      margin-top: 3px;
+      min-height: 28px;
+      min-width: 28px;
+      width: 28px;
+      height: 28px;
+
+      span.hitbox-area {
+        left: -7px;
+      }
     }
   }
 
@@ -74,15 +93,15 @@
 
     .btn-cal-month-year,
     .btn-monthyear-pane {
-      border-radius: 2px;
+      border-radius: 8px;
       color: $datepicker-month-year-color;
       font-size: $ids-size-font-lg;
       font-weight: 400;
-      padding: 4px 5px;
+      padding: 5px;
 
       @media only screen
-        and (min-device-width: $breakpoint-phone)
-        and (max-device-width: $breakpoint-big-phone + 88)
+        and (minwidth: $breakpoint-phone)
+        and (max-device-width: ($breakpoint-big-phone + 88))
         and (-webkit-min-device-pixel-ratio: 2)
         and (orientation: portrait) {
         margin-left: 5px;
@@ -104,6 +123,8 @@
     .today {
       left: -6px;
       margin-left: 0;
+      padding: 6px;
+      border-radius: 2px;
       position: relative;
     }
   }
@@ -136,7 +157,7 @@
       margin-right: 0;
 
       &.active:not([disabled]) .icon {
-        color: $datepicker-selected-bg-color;
+        color: $button-color-tertiary-initial-font;
       }
     }
 
@@ -152,7 +173,7 @@
 
     .btn-cal-month-year {
       &.active:not([disabled]) .icon {
-        color: $datepicker-selected-bg-color;
+        color: $button-color-tertiary-initial-font;
       }
 
       .icon {
@@ -181,9 +202,13 @@
     border-bottom: 1px solid $popover-separator-color;
     padding: 0 5px 0 20px;
 
+    @media only screen and (max-device-width: $breakpoint-phone) {
+      min-width: 324px;
+    }
+
     @media only screen
-      and (min-device-width: $breakpoint-phone)
-      and (max-device-width: $breakpoint-big-phone + 88)
+      and (minwidth: $breakpoint-phone)
+      and (max-device-width: ($breakpoint-big-phone + 88))
       and (-webkit-min-device-pixel-ratio: 2)
       and (orientation: portrait) {
       padding: 0 5px;

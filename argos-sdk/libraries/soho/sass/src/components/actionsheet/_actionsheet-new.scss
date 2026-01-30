@@ -1,6 +1,18 @@
-
 @import '../button/button-new';
 
 .ids-actionsheet {
   color: $popupmenu-color;
+}
+
+.ids-action {
+  &.btn-secondary {
+    border-color: $button-color-secondary-actionsheet-border;
+    color: $button-color-secondary-actionsheet-font;
+
+    &:hover {
+      border-color: $button-color-secondary-actionsheet-hover-border;
+      background-color: $button-color-secondary-actionsheet-hover-background;
+      color: $button-color-secondary-actionsheet-hover-font;
+    }
+  }
 }

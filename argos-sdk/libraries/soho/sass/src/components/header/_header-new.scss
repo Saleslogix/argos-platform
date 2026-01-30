@@ -1,13 +1,316 @@
-// Uplift Site/App Header
+// New Site/App Header
 //================================================== //
 
 .header {
   h1 {
-    font-size: $ids-size-font-md;
+    font-size: $ids-size-font-px-20;
   }
 
   .page-title {
     font-size: $ids-size-font-md;
     margin-top: 0;
+  }
+
+  .toolbar {
+    .application-menu-trigger {
+      svg.icon {
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    .page-title, .section-title {
+      font-size: 20px;
+    }
+  }
+
+  .toolbar {
+    .buttonset {
+      .searchfield-wrapper.non-collapsible.toolbar-searchfield-wrapper.has-categories.has-go-button.has-close-icon-button.is-open {
+        button.searchfield-category-button {
+          border-right: transparent;
+        }
+
+        button.btn-icon.close {
+          svg.close.icon {
+            top: 10px !important;
+          }
+        }
+      }
+
+      .toolbar-searchfield-wrapper .btn-icon.close .icon.close {
+        top: 9px;
+      }
+    }
+  }
+
+  .flex-toolbar {
+    .toolbar-section.search {
+      &.search-categories {
+        .toolbar-searchfield-wrapper {
+          .searchfield-category-button {
+            &:focus {
+              border: 1px solid $header-button-focus-color;
+              box-shadow: none !important;
+
+              &::after {
+                content: none;
+              }
+            }
+          }
+        }
+
+        .btn.searchfield-category-button {
+          height: 38px;
+          padding-right: 20px;
+
+          @media (min-width: $breakpoint-phone-to-tablet) {
+            padding-right: 6px;
+          }
+        }
+      }
+
+      .toolbar-searchfield-wrapper.has-text:not(.active):not(.non-collapsible) {
+        width: 34px;
+
+        &.non-collapsible {
+          width: 100%;
+        }
+      }
+
+      .toolbar-searchfield-wrapper.non-collapsible.has-close-icon-button .btn-icon.close .icon.close {
+        top: 8px;
+      }
+    }
+
+    // new design for M3 scenario
+    .toolbar-section.search-categories {
+      .searchfield-wrapper.non-collapsible {
+        &.has-categories {
+          .searchfield {
+            background-color: $subheader-searchfield-context-bg;
+            border-left-color: $subheader-input-color-focus-border;
+            color: $header-flex-toolbar-input-searchfield-color;
+
+            @include placeholderTextColor() {
+              @include placeholder();
+            }
+
+            + .btn-icon.close {
+              svg {
+                top: 0 !important;
+                color: $header-flex-toolbar-close-icon-color !important;
+              }
+
+              &:hover svg {
+                color: $header-flex-toolbar-close-icon-color-hover;
+                background-color: rgba($searchfield-bg-color, 0);
+              }
+            }
+          }
+
+          .btn.searchfield-category-button {
+            background-color: $subheader-searchfield-context-bg !important;
+            color: $subheader-searchfield-category-button-font-color !important;
+
+            svg.icon {
+              &.icon-dropdown {
+                margin-left: 1px;
+                margin-right: 2px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .toolbar [class^='btn'].application-menu-trigger {
+    top: 3px;
+  }
+
+  .toolbar .application-menu-trigger svg.icon {
+    top: 0;
+  }
+
+  // Reset search icon hover state
+  .toolbar:not(.standalone) {
+    .searchfield-wrapper.toolbar-searchfield-wrapper:not(.has-categories):not(.is-open) {
+      height: unset;
+      margin: 3px 5px 3px 0;
+
+      &:hover {
+        border-radius: unset;
+        background-color: transparent;
+      }
+
+      .icon:not(.icon-dropdown) {
+        top: -2px;
+        right: 8px;
+        left: 8px;
+      }
+
+      .searchfield {
+        padding-bottom: 7px;
+      }
+    }
+  }
+
+  .flex-toolbar .toolbar-section.search {
+    .searchfield-wrapper.toolbar-searchfield-wrapper:not(.is-open):not(.non-collapsible) {
+      height: unset;
+      margin-top: unset;
+      margin-bottom: unset;
+
+      &:hover {
+        border-radius: unset;
+        background-color: transparent;
+      }
+
+      .searchfield {
+        padding-bottom: 7px;
+      }
+    }
+  }
+}
+
+.subheader {
+  .full-searchfield-container {
+    .searchfield-wrapper.context .searchfield-category-button {
+      background-color: $subheader-searchfield-context-bg;
+      color: $subheader-searchfield-category-button-font-color;
+    }
+
+    .searchfield-wrapper.context.non-collapsible {
+      &.has-go-button {
+        .btn-icon.close {
+          right: 100px;
+          top: 8px;
+          width: 24px;
+
+          &:hover svg {
+            color: $header-flex-toolbar-close-icon-color-hover;
+          }
+        }
+
+        &.show-category .btn-icon.close {
+          right: 54px;
+        }
+      }
+    }
+
+    .searchfield-wrapper.has-categories.show-category .searchfield {
+      border-color: $searchfield-context-border-color;
+      border-left-color: $subheader-input-color-focus-border;
+
+      &:hover {
+        border-color: $input-color-hover-border;
+      }
+    }
+
+    .searchfield-wrapper.context.has-focus {
+      .btn {
+        border-color: $subheader-input-color-focus-border;
+      }
+    }
+
+    .searchfield-wrapper.context > .searchfield {
+      background-color: $subheader-searchfield-context-bg;
+      color: $searchfield-header-color;
+    }
+
+    .searchfield-wrapper .btn {
+      &.is-open,
+      &.is-open .icon {
+        color: $subheader-input-text-color-focus;
+      }
+    }
+
+    .searchfield-wrapper.has-focus .btn {
+      &:focus,
+      &:active {
+        color: $subheader-input-text-color-focus;
+
+        .icon {
+          color: $subheader-input-text-color-focus;
+        }
+      }
+    }
+  }
+}
+
+.header,
+.subheader,
+.personalize-subheader {
+  .toolbar,
+  .flex-toolbar {
+    [class^='btn']:not(.btn-primary) {
+      &:not(.close):not(.collapse-button):not([disabled]):hover {
+        color: $button-color-tertiary-hover-text-new;
+        background-color: $button-color-tertiary-hover-background-new;
+
+        svg.icon {
+          color: $button-color-tertiary-hover-text-new;
+        }
+      }
+
+      &.application-menu-trigger:hover {
+        &:not(:focus) .icon {
+          color: $button-color-tertiary-hover-text-new;
+        }
+      }
+    }
+  }
+}
+
+html[dir='rtl'] {
+  .header {
+    .flex-toolbar .toolbar-section {
+      &.search-categories.search {
+        .toolbar-searchfield-wrapper {
+          &.has-categories {
+            &.is-open .collapse-button {
+              border-color: inherit;
+            }
+
+            .searchfield {
+              &:focus {
+                border-right: 1px solid $header-button-focus-color;
+              }
+            }
+          }
+        }
+
+        .has-close-icon-button .btn-icon {
+          right: calc(100% - 100px);
+
+          @media (min-width: $breakpoint-phone-to-tablet) {
+            right: calc(100% - 30px);
+          }
+        }
+      }
+
+      &.search {
+        .toolbar-searchfield-wrapper {
+          .collapse-button {
+            border-color: inherit;
+          }
+        }
+      }
+    }
+  }
+
+  .subheader {
+    .full-searchfield-container {
+      .searchfield-wrapper.context.non-collapsible {
+        &.has-go-button {
+          &.show-category .btn-icon.close {
+            margin: 0;
+            right: auto;
+            left: 54px;
+          }
+        }
+      }
+    }
   }
 }

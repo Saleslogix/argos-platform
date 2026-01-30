@@ -28,10 +28,10 @@
   .chart-targeted-achievement {
     .bar,
     &.bar {
-      height: ($input-size-compact-height/2) !important;
+      height: 1.4rem !important;
 
       &.completed {
-        margin-top: -($input-size-compact-height/2) !important;
+        margin-top: -1.4rem !important;
       }
     }
   }
@@ -64,9 +64,9 @@
   span:not(.audible) {
     font-size: $ids-size-font-sm;
     position: absolute;
-    right: 2px;
+    right: 0;
     text-align: right;
-    top: 34px;
+    top: 30px;
 
     &.completed-label,
     &.completed-label span {
@@ -293,6 +293,10 @@
         background-color: $ids-color-status-warning;
       }
 
+      &.warning {
+        background-color: $ids-color-status-caution;
+      }
+
       &.alert-yellow {
         background-color: $ids-color-status-caution;
       }
@@ -346,7 +350,6 @@
       }
     }
   }
-
 }
 
 .chart-completion-target-padding .total.bar.chart-completion-target {
@@ -405,6 +408,7 @@
   }
 
   .hyperlink {
+    display: inline-block;
     font-size: $ids-size-font-base;
   }
 }
@@ -423,4 +427,8 @@
       margin-top: -23px;
     }
   }
+}
+
+.is-firefox .completion-chart .name {
+  line-height: 1.6rem;
 }

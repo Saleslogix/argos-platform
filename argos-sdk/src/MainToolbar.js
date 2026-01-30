@@ -191,11 +191,27 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends module:argos/
 
     $('.title > h1', this.domNode).on('click', this.onTitleClick);
 
+    const availableColors = Soho.theme.personalizationColors();
+    const color = App && App.preferences && App.preferences.color;
+    const theme = App && App.preferences && App.preferences.theme;
+    const personalizeSettings = {
+      colors: {
+        header: availableColors.default.value,
+      },
+      theme: 'theme-classic-light',
+    };
+
+    if (color) {
+      personalizeSettings.colors = {
+        header: color,
+      };
+    }
+
+    if (theme) {
+      personalizeSettings.theme = theme;
+    }
     // init personalization
-    $('html').personalize({
-      colors: App && App.preferences && App.preferences.color,
-      theme: App && App.preferences && App.preferences.theme,
-    });
+    $('html').personalize(personalizeSettings);
   },
   updateSoho: function updateSoho() {
     // updating soho header resets the header text to zero level. update only toolbbar for now.

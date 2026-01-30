@@ -105,10 +105,18 @@ body.no-scroll {
     }
   }
 
+  &.list-detail {
+    > .sidebar {
+      &.scrollable {
+        overflow-y: hidden;
+      }
+    }
+  }
+
   > .sidebar {
     background-color: $body-color-primary-background;
     border-right: 1px solid $panel-border-color;
-    height: auto;
+    height: inherit;
     min-height: 100%;
     vertical-align: top;
     width: 25%;
@@ -308,7 +316,6 @@ body.no-scroll {
       }
     }
   }
-
 }
 
 .modal-body {
@@ -373,7 +380,7 @@ body.no-scroll {
 }
 
 // on iOS landscape mode, fix the height of the listview to actually show the pager.
-@media (max-width: $breakpoint-phone-to-tablet - 1px) and (orientation: landscape) {
+@media (max-width: ($breakpoint-phone-to-tablet - 1px)) and (orientation: landscape) {
   .ios {
     .two-column {
       > .sidebar {
@@ -389,13 +396,12 @@ body.no-scroll {
   }
 }
 
-@media (max-width: $breakpoint-phone-to-tablet - 1) {
+@media (max-width: ($breakpoint-phone-to-tablet - 1)) {
   .three-column,
-  .three-column.fixed {
+    .three-column.fixed {
     .main,
     .sidebar {
       display: block;
-      vertical-align: baseline;
       width: 100%;
 
       &.scrollable,
@@ -499,7 +505,7 @@ body.no-scroll {
 
   // Searchfield primary action (Large)
   &.has-searchfield-xl {
-    height: 200px;
+    height: 177px;
 
     .searchfield-wrapper {
       input {
@@ -507,8 +513,8 @@ body.no-scroll {
 
         border: 1px solid transparent;
         box-shadow: $focus-box-shadow-transparent;
-        height: 60px;
-        padding: 18px 40px;
+        height: 48px;
+        padding: 18px 17px 18px 51px;
 
         &::-webkit-input-placeholder {
           @include font-size(16);
@@ -533,7 +539,7 @@ body.no-scroll {
 
       .icon {
         height: 18px;
-        left: 10px !important;
+        left: 16px !important;
         top: 21px;
         width: 20px;
       }
@@ -627,7 +633,6 @@ body.no-scroll {
     height: calc(100% - 98px);
     margin-top: 98px;
   }
-
 }
 
 //Stands on its own content header - assumes header above it
@@ -697,7 +702,6 @@ body.no-scroll {
         margin-top: 179px;
       }
     }
-
   }
 
   + .page-container,
@@ -717,14 +721,12 @@ body.no-scroll {
     height: calc(100% - 74px);
     margin-top: 74px;
   }
-
 }
 
 .module-tabs {
   + .page-container,
   + .application-menu + .page-container {
     height: calc(100% - 36px);
-    margin-top: 36px;
   }
 }
 
@@ -755,13 +757,11 @@ body.no-scroll {
         padding-bottom: 10px;
         width: 68%;
       }
-
     }
 
     > p {
       margin-bottom: 25px;
     }
-
   }
 
   .tag-list .tag {
@@ -790,7 +790,7 @@ body.no-scroll {
   }
 
   .section-tracker {
-    margin-bottom: 20px;
+    margin-bottom: $input-field-bottom-margin;
 
     a {
       border-bottom: medium none;
@@ -831,7 +831,6 @@ body.no-scroll {
   display: block;
   height: auto;
   max-width: 100%;
-  vertical-align: middle;
   width: 100%;
 }
 
@@ -878,7 +877,6 @@ body.no-scroll {
         overflow-y: hidden;
       }
     }
-
   }
 }
 
@@ -1003,7 +1001,6 @@ body.no-scroll {
         display: block;
         margin-left: 0;
       }
-
     }
   }
 }

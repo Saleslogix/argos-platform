@@ -5,7 +5,7 @@
   .datepicker {
     @include font-size(20);
 
-    padding: 4px 36px 4px 8px;
+    padding: 5px 36px 5px 8px;
   }
 
   .toolbar-section > .month,
@@ -16,4 +16,20 @@
   .dropdown-wrapper {
     top: 12px;
   }
+
+  .today {
+    &.is-disabled {
+      color: rgba($datepicker-disabled-color, 0.5);
+      cursor: default;
+    }
+  }
+
+  .monthview-datepicker .trigger {
+    position: relative;
+  }
+}
+
+.calendar-toolbar .monthview-datepicker .trigger {
+  margin-left: -33px;
+  top: 3px;
 }

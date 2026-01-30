@@ -32,7 +32,6 @@ fieldset,
     margin-right: 20px;
     padding: 0;
   }
-
 }
 
 .expandable-area .row:not(:first-child) fieldset {
@@ -73,5 +72,15 @@ fieldset,
 @include respond-to(phone) {
   .row > .columns:not(:first-child) > fieldset {
     margin-top: 45px;
+  }
+}
+
+html[dir='rtl'] {
+  &.is-safari {
+    .fieldset-title {
+      &::after {
+        content: '\200E'; // fix for rlm character
+      }
+    }
   }
 }

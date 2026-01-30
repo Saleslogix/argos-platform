@@ -71,7 +71,7 @@
 }
 
 .field {
-  margin-bottom: $form-size-field-regular-margin-bottom;
+  margin-bottom: $input-field-bottom-margin;
   position: relative;
 
   &.less-margin {
@@ -107,7 +107,7 @@
   }
 
   &.field-radio {
-    margin-bottom: 20px;
+    margin-bottom: $input-field-bottom-margin;
 
     .icon-dirty {
       left: -1px;
@@ -116,7 +116,7 @@
   }
 
   &.field-checkbox {
-    margin-bottom: $form-size-field-regular-margin-bottom - 8;
+    margin-bottom: $input-field-bottom-margin-sm;
 
     .inline-checkbox .label-text {
       margin-bottom: 1px !important;
@@ -124,7 +124,7 @@
   }
 
   .field:not(.field-checkbox) + &.field-checkbox {
-    margin-bottom: $form-size-field-regular-margin-bottom;
+    margin-bottom: $input-field-bottom-margin;
   }
 
   &.l-pull-left {
@@ -159,9 +159,9 @@
 .icon.close {
   color: $trigger-icon-fill-color;
   cursor: pointer;
-  height: 14px;
+  height: 18px;
   right: 29px;
-  top: 3px;
+  top: 0;
 
   &:hover {
     color: $trigger-hover-color;
@@ -221,6 +221,10 @@ textarea {
   @include input-style();
 }
 
+input:focus {
+  border-color: $searchfield-toolbar-focus-color;
+}
+
 textarea[rows] {
   height: auto;
 }
@@ -228,7 +232,7 @@ textarea[rows] {
 // Element with input "like" style borders
 .input-style {
   background-color: $input-color-initial-background;
-  border: 1px solid $input-color-initial-border;
+  border: 1px solid $input-border-color;
   border-collapse: separate;
 
   &:hover,
@@ -259,11 +263,10 @@ textarea[rows] {
 
 // Text Area
 textarea {
-  @include rem(line-height, 2rem);
-
   min-height: $textarea-size-regular-height;
   overflow: auto;
-  padding: 10px;
+  padding: 12px;
+  line-height: 2rem;
   width: $textarea-size;
 
   &.resizable {
@@ -291,9 +294,8 @@ textarea {
 }
 
 .textarea-wordcount {
-  @include rem(line-height, 2rem);
-
   display: block;
+  line-height: 2rem;
   font-size: $ids-size-font-sm;
   min-height: auto;
   width: $textarea-size;
@@ -348,28 +350,28 @@ label,
   &.required {
     &:not(.inline):not(.checkbox-label) {
       &:not(.accessible)::after {
-        @include required-indicator($is-content: true);
+        @include required-indicator();
       }
 
       .required-asterisk {
-        @include required-indicator($is-content: false);
+        @include required-indicator();
       }
     }
 
     .label-text {
       &:not(.accessible)::after {
-        @include required-indicator($is-content: true);
+        @include required-indicator();
       }
 
       .required-asterisk {
-        @include required-indicator($is-content: false);
+        @include required-indicator();
       }
     }
   }
 }
 
 span.required::after {
-  @include required-indicator($is-content: true);
+  @include required-indicator();
 }
 
 // Placeholder - Inline help
@@ -387,6 +389,23 @@ span.required::after {
   .searchfield {
     &[disabled] {
       -webkit-text-fill-color: $input-disabled-color;
+    }
+  }
+
+  .error-message,
+  .alert-message,
+  .success-message,
+  .info-message,
+  .custom-icon-message {
+    &.truncated {
+      .message-text {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1; /* Number of lines to show */
+        line-clamp: 1;
+        max-height: 1.3em; /* Adjust the max-height to fit the desired number of lines */
+        white-space: unset;
+      }
     }
   }
 }
@@ -497,13 +516,13 @@ span.required::after {
 
 // Text Selection
 ::selection {
-  background: $ids-color-brand-primary-base;
-  color: $inverse-color;
+  background-color: $selected-text-background-color;
+  color: $selected-text-color;
 }
 
 ::-moz-selection {
-  background: $ids-color-brand-primary-base;
-  color: $inverse-color;
+  background-color: $selected-text-background-color;
+  color: $selected-text-color;
 }
 
 // Mask component Adjustment Classes
@@ -567,11 +586,19 @@ span.required::after {
   }
 }
 
+.field-large,
+.form-layout-large .field {
+  input {
+    height: $input-size-regular-height + 0.6;
+    padding: 0 16px;
+  }
+}
+
 .is-firefox {
   .field-short,
   .form-layout-compact .field {
     input:not(.spinbox) {
-      padding-top: 2px;
+      padding-block-start: 0;
     }
   }
 }
@@ -584,8 +611,8 @@ span.required::after {
 
   .icon-error,
   .icon-success {
-    margin-left: -27px;
-    margin-top: 6px;
+    margin-inline-start: -25px;
+    margin-top: 7px;
     top: auto;
   }
 
@@ -611,7 +638,6 @@ span.required::after {
     padding-right: 0;
     padding-top: 0 !important;
     text-align: initial;
-    vertical-align: initial;
     width: auto;
 
     ~ .error-message {
@@ -719,7 +745,7 @@ span.required::after {
 
   display: block;
   font-size: $ids-size-font-sm;
-  line-height: 1.2rem;
+  line-height: 2rem;
   margin-bottom: 12px;
   margin-top: 7px;
   max-width: 300px;
@@ -752,6 +778,93 @@ span.required::after {
   }
 }
 
+.error-message,
+.alert-message,
+.success-message,
+.info-message,
+.custom-icon-message,
+.field-info {
+  &.truncated {
+    .message-text {
+      max-width: 300px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  &.full-width {
+    max-width: 100%;
+    padding: 0;
+
+    .message-text {
+      max-width: calc(100% - 20px);
+    }
+
+    + .full-width {
+      margin-top: 7px;
+    }
+  }
+
+  .message-text {
+    line-height: 18px;
+  }
+}
+
+.compound-field>.field {
+  .error-message,
+  .alert-message,
+  .success-message,
+  .info-message,
+  .custom-icon-message {
+    max-width: $field-md;
+
+    .message-text {
+      max-width: calc(100% - 20px);
+    }
+  }
+
+  .input-xs~.error-message,
+  .input-xs~.alert-message,
+  .input-xs~.success-message,
+  .input-xs~.info-message,
+  .input-xs~.custom-icon-message {
+    max-width: $field-xs;
+  }
+
+  .input-sm~.error-message,
+  .input-sm~.alert-message,
+  .input-sm~.success-message,
+  .input-sm~.info-message,
+  .input-sm~.custom-icon-message {
+    max-width: $field-sm;
+  }
+
+  .input-mm~.error-message,
+  .input-mm~.alert-message,
+  .input-mm~.success-message,
+  .input-mm~.info-message,
+  .input-mm~.custom-icon-message {
+    max-width: $field-mm;
+  }
+
+  .input-md~.error-message,
+  .input-md~.alert-message,
+  .input-md~.success-message,
+  .input-md~.info-message,
+  .input-md~.custom-icon-message {
+    max-width: $field-md;
+  }
+
+  .input-lg~.error-message,
+  .input-lg~.alert-message,
+  .input-lg~.success-message,
+  .input-lg~.info-message,
+  .input-lg~.custom-icon-message {
+    max-width: $field-lg;
+  }
+}
+
 // Error Field
 .error-message {
   $this-icon-width: 14px;
@@ -776,7 +889,6 @@ span.required::after {
 
   .message-text {
     font-size: $label-size-regular-font-size;
-    line-height: 15px;
     max-width: 280px;
     padding-left: $this-icon-width + 5;
   }
@@ -1008,6 +1120,16 @@ html[dir='rtl'] {
     right: initial;
   }
 
+  label {
+    &.required {
+      &:not(.inline):not(.checkbox-label) {
+        .required-asterisk {
+          padding-inline-start: 5px;
+        }
+      }
+    }
+  }
+
   // Field stacked optionally stacks the label
   .field-short.field-stacked {
     label:not(.radio-label) {
@@ -1055,7 +1177,7 @@ html[dir='rtl'] {
     .icon-success {
       height: 14px;
       margin-left: inherit;
-      right: 0;
+      right: 22px;
       top: auto;
       width: 18px;
     }
@@ -1103,5 +1225,12 @@ html[dir='rtl'] {
   .column .field-checkbox span.label,
   .columns .field-checkbox span.label {
     margin-top: -22px;
+  }
+}
+
+//when on smaller form factors make 300px fields go down to small-medium size
+@include respond-to(phone) {
+  .input-md {
+    width: $field-mm;
   }
 }

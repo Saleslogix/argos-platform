@@ -1,5 +1,6 @@
 // Tree Component
 //================================================== //
+@use 'sass:list';
 
 // Keyframes for the  "plusminus" icon animation
 @include keyframes(rotate180forward) {
@@ -158,6 +159,7 @@
       > a {
         background-color: $tree-selected-bg-color;
         color: $tree-selected-color;
+        border-color: $tree-active-border-color;
 
         &.is-over {
           background-color: $tree-isover-bg-color;
@@ -201,7 +203,6 @@
         }
       }
     }
-
   }
 
   // Sub Nodes
@@ -254,6 +255,21 @@
           margin-left: 4px;
           margin-top: 0;
           top: 0;
+        }
+      }
+
+      &.is-partial,
+      &.is-selected {
+        > a .tree-checkbox {
+          @each $name in $color-names {
+            $i: list.index($color-names, $name);
+            $color: list.nth($color-vars, $i);
+
+            &.#{$name}::before {
+              background-color: $color;
+              border-color: $color;
+            }
+          }
         }
       }
 
@@ -329,7 +345,6 @@
           }
         }
       }
-
     }
   }
 
@@ -383,7 +398,6 @@
     background-color: $tree-isover-bg-color;
     border: 1px dashed $tree-isover-border-color;
   }
-
 }
 
 .tree-drag-target-arrow {
@@ -441,6 +455,8 @@
   padding: 20px;
 }
 
+
+
 //IE
 .ie {
   &:not(.ie-edge) {
@@ -475,7 +491,6 @@ html[dir='rtl'] {
           margin-top: 5px;
         }
       }
-
     }
 
     svg {

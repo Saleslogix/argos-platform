@@ -1,6 +1,5 @@
 // Process Indicators
 //================================================== //
-//
 // Also see: /sass/controls/_timeline.scss
 
 $indicator-darkest: $ids-color-palette-azure-80;
@@ -16,7 +15,7 @@ $indicator-current-size: ($indicator-size * 1.6);
 // Container
 .process-indicator {
   font-size: $ids-size-font-base;
-  margin-bottom: 20px;
+  margin-bottom: $input-field-bottom-margin;
 
   &.has-labels {
     margin-top: 8px;
@@ -45,43 +44,54 @@ $indicator-current-size: ($indicator-size * 1.6);
     display: none !important;
   }
 
-  // Main blocks:  .display, .header, .details
+  // Main blocks: .display, .header, .details
   .display {
     align-items: center;
     display: flex;
-    margin-bottom: 20px;
+    margin-bottom: $input-field-bottom-margin;
 
     > * {
       white-space: nowrap;
     }
 
+    // Addition of background-color to .separator
+    // fixes a Windows10 Chrome double line bug
+    // https://github.com/infor-design/enterprise/issues/5997
     .separator {
+      background-color: $indicator-blank;
       border: 1px solid $indicator-blank;
       display: inline-block;
       height: 0;
       width: $indicator-size;
 
       &.darkest {
+        background-color: $indicator-darkest;
         border-color: $indicator-darkest;
       }
 
       &.darker {
+        background-color: $indicator-darker;
         border-color: $indicator-darker;
       }
 
       &.lighter {
+        background-color: $indicator-lighter;
         border-color: $indicator-lighter;
       }
 
       &.lightest {
+        background-color: $indicator-lightest;
         border-color: $indicator-lightest;
       }
 
       // smaller size for sitting in-between 'minor' indicators
       &.minor {
-        width: ($indicator-size / 2);
+        width: calc($indicator-size / 2);
       }
+    }
 
+    .step:last-child .lines .separator {
+      display: none;
     }
   }
 
@@ -128,10 +138,10 @@ $indicator-current-size: ($indicator-size * 1.6);
 
       .indicator {
         border-radius: 50%;
-        height: 15px;
-        min-height: 15px;
-        min-width: 15px;
-        width: 14px;
+        height: 16px;
+        min-height: 16px;
+        min-width: 16px;
+        width: 16px;
 
         &.current {
           background-color: $ids-color-palette-white;
@@ -153,11 +163,11 @@ $indicator-current-size: ($indicator-size * 1.6);
         }
 
         &.icon + .separator {
-          margin-left: 1px !important;
+          margin-left: -1px !important;
         }
 
         &.icon.current + .separator {
-          margin-left: 0 !important;
+          margin-left: -2px !important;
         }
 
         .icon {
@@ -219,6 +229,16 @@ $indicator-current-size: ($indicator-size * 1.6);
 
   // Makes the size of the process indicator smaller
   &.compact {
+    &.has-labels {
+      .indicator.icon .icon {
+        height: 16px;
+        left: 0;
+        top: 0;
+        width: 16px;
+        z-index: 1;
+      }
+    }
+
     .label {
       margin: -30px 0 33px -13px;
       overflow: hidden;
@@ -227,7 +247,7 @@ $indicator-current-size: ($indicator-size * 1.6);
     }
 
     .separator {
-      margin-left: 0 !important;
+      margin-left: -1px !important;
     }
 
     .indicator.icon {
@@ -235,11 +255,11 @@ $indicator-current-size: ($indicator-size * 1.6);
       border: 0;
 
       .icon {
-        height: 16px;
-        left: 0;
+        height: 21px;
+        left: -2px;
         position: relative;
-        top: 0;
-        width: 16px;
+        top: -3px;
+        width: 20px;
 
         &.icon-skipped {
           color: $indicator-darker !important;
@@ -259,11 +279,13 @@ $indicator-current-size: ($indicator-size * 1.6);
 .indicator {
   background-color: $body-color-primary-background;
   border: 2px solid $indicator-blank;
-  border-radius: ($indicator-size / 2);
+  border-radius: calc($indicator-size / 2);
   display: inline-block;
   height: $indicator-size;
   position: relative;
   width: $indicator-size;
+  min-height: $indicator-size;
+  min-width: $indicator-size;
 
   // Color defs
   &.darkest {
@@ -290,18 +312,21 @@ $indicator-current-size: ($indicator-size * 1.6);
   // Processing
   &.processing {
     border: 2px solid $indicator-lightest;
-    border-radius: ($indicator-size / 2);
+    border-radius: calc($indicator-size / 2);
   }
 
   // Current is larger than the rest
   &.current {
-    border-radius: ($indicator-current-size / 2);
+    border-radius: calc($indicator-current-size / 2);
     height: $indicator-current-size;
     width: $indicator-current-size;
+    min-height: $indicator-current-size;
+    min-width: $indicator-current-size;
+    z-index: 1;
 
     // circle
     &::before {
-      border-radius: ($indicator-current-size / 2);
+      border-radius: calc($indicator-current-size / 2);
     }
   }
 
@@ -317,7 +342,7 @@ $indicator-current-size: ($indicator-size * 1.6);
       content: '';
       display: inline-block;
       height: 0.15em;
-      left: 0.16em;
+      left: 0.15em;
       position: absolute;
       top: 0.57em;
       width: ($indicator-size * 0.78);
@@ -336,11 +361,10 @@ $indicator-current-size: ($indicator-size * 1.6);
 
       &::before,
       &::after {
-        left: 0.5em;
+        left: 0.53em;
         top: 0.98em;
       }
     }
-
   }
 
   &.more-info {
@@ -374,7 +398,7 @@ $indicator-current-size: ($indicator-size * 1.6);
       border: 0.15em solid $ids-color-palette-white;
       content: '';
       height: 50%;
-      left: 0.35em;
+      left: 0.38em;
       position: absolute;
       top: 0.37em;
       width: 50%;
@@ -399,9 +423,11 @@ $indicator-current-size: ($indicator-size * 1.6);
 
   // Really small indicator for long processes
   &.minor {
-    border-radius: ($indicator-size / 4);
+    border-radius: calc($indicator-size / 4);
     height: 0.6em;
     width: 0.6em;
+    min-height: 0.6em;
+    min-width: 0.6em;
   }
 
   &.icon {
@@ -416,7 +442,6 @@ $indicator-current-size: ($indicator-size * 1.6);
       width: 20px;
     }
   }
-
 }
 
 .process-indicator {
@@ -439,7 +464,7 @@ $indicator-current-size: ($indicator-size * 1.6);
 
       &.more-info {
         &::before {
-          right: 0.02em;
+          right: 0;
         }
       }
     }
@@ -464,7 +489,6 @@ $indicator-current-size: ($indicator-size * 1.6);
     line-height: 1.5;
     margin-bottom: 10px;
   }
-
 }
 
 // Keyframes for the  "processing" animation
@@ -489,7 +513,7 @@ $indicator-current-size: ($indicator-size * 1.6);
   .indicator {
     &.more-info {
       &::before {
-        top: 0.3em;
+        top: 0.2em;
       }
     }
 

@@ -4,6 +4,7 @@
 // Standard CSS reset
 @import '../core/reset';
 @import '../core/mixins';
+@import '../core/css-utilities';
 
 // ids-identity token vars
 @import '../../node_modules/ids-identity/dist/theme-classic/tokens/web/theme-classic';
@@ -14,5 +15,41 @@
 // Local vars
 @import '../core/config';
 
+$header-default-bg-color: $ids-color-palette-white;
+$toolbar-btn-actions-hover-bg-color: transparent;
+
+// Accordion
+$accordion-selected-bg-color: $ids-color-palette-slate-50;
+$accordion-selected-text-color: $ids-color-palette-white;
+
+// Buttons
+$button-disabled-background-color: transparent;
+$button-icon-disabled-color: $ids-color-palette-slate-60;
+$button-color-secondary-initial-background: $ids-color-palette-graphite-30;
+$button-color-secondary-initial-font-new: $ids-color-palette-azure-60;
+$button-color-secondary-initial-border-new: $ids-color-palette-azure-60;
+$button-color-secondary-hover-background-new: $ids-color-palette-azure-60;
+
+// Datagrid
+$datagrid-sort-icon-sorted-color: $ids-color-palette-graphite-10;
+$datagrid-sort-icon-color: $ids-color-palette-white;
+
+//Datepicker
+$datepicker-calendar-icon-color: $ids-color-palette-slate-80;
+$datepicker-calendar-icon-color: $ids-color-palette-slate-80;
+
+// Splitter
+$splitter-expand-btn-background-color: $ids-color-palette-white;
+$splitter-expand-btn-border-color: $ids-color-palette-slate-30;
+$splitter-expand-btn-arrow-color: $ids-color-palette-slate-60;
+$splitter-expand-btn-hover-background-color: $ids-color-palette-slate-10;
+$splitter-expand-btn-hover-border-color: $ids-color-palette-slate-50;
+$splitter-expand-btn-hover-arrow-color: $ids-color-palette-slate-70;
+$splitter-expand-btn-accent-color: $ids-color-palette-azure-60;
+
+//================================================== //
 // Core Components
+
+/* stylelint-disable-next-line no-invalid-position-at-import-rule */
 @import '../core/controls';
+

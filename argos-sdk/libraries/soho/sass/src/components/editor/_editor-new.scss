@@ -1,7 +1,8 @@
 // New Theme Editor
 //================================================== //
 
-@import '../toolbar/toolbar-new';
+// Dependencies
+// toolbar/toolbar-new
 
 .toolbar.formatter-toolbar,
 .flex-toolbar.formatter-toolbar {
@@ -19,9 +20,12 @@
     }
 
     &.btn-editor .icon:not(.icon-dropdown) {
-      height: 13px;
-      margin: -4px 2px 0;
-      width: 13px;
+      height: 18px;
+      margin-block-start: -4px;
+      margin-block-end: 0;
+      margin-inline-start: 1px;
+      margin-inline-end: 1px;
+      width: 18px;
     }
 
     &.btn-editor[data-element='h3'],
@@ -41,35 +45,60 @@
       margin-top: auto;
     }
 
+    &.btn-editor.colorpicker-editor-button {
+      right: 7px;
+
+      &.is-open > span.swatch {
+        background-color: $editor-btn-active-color;
+      }
+
+      > span.swatch {
+        background-color: $editor-btn-color;
+        display: flex;
+        height: 2.5px;
+        position: relative;
+        top: 16px;
+        inset-inline-start: 8px;
+        width: 15px;
+        border-radius: 0;
+        z-index: 3;
+      }
+    }
+
     &.btn-editor[data-element='b'] .icon {
-      height: 14px;
-      margin: -4px 0 0 1px;
-      width: 14px;
+      height: 18px;
+      margin: -4px 0 0 2px;
+      width: 18px;
     }
 
     &.btn-editor[data-element='i'] .icon {
-      height: 14px;
+      height: 18px;
       margin: -4px 0 0 1px;
-      width: 14px;
+      width: 18px;
     }
 
     &.btn-editor[data-element='u'] .icon {
-      height: 14px;
-      margin: -2px 0 0 1px;
-      width: 14px;
+      height: 18px;
+      margin: -5px 0 0 1px;
+      width: 18px;
     }
 
     &.btn-editor[data-element='strike'] .icon {
-      height: 14px;
+      height: 18px;
       margin: -4px 0 0 1px;
-      width: 14px;
+      width: 18px;
     }
 
     &.btn-editor[data-element='foreColor'] {
       .icon {
-        height: 14px;
-        margin: -2px 0 0 1px;
-        width: 14px;
+        height: 18px;
+        margin-block-start: -7px;
+        margin-block-end: 0;
+        margin-inline-start: 3px;
+        margin-inline-end: 0;
+        width: 18px;
+        position: relative;
+        inset-inline-start: 3px;
       }
 
       .trigger .icon {
@@ -81,18 +110,18 @@
       margin-right: 10px;
 
       .icon {
-        height: 15px;
+        height: 18px;
         left: 0 !important;
-        margin: -2px 0 0;
-        width: 14px;
+        margin: -3px 0 1px;
+        width: 18px;
       }
     }
 
     &.btn-editor[data-element='a'] {
       .icon {
-        height: 16px;
+        height: 18px;
         margin: -4px 1px 0;
-        width: 16px;
+        width: 18px;
       }
     }
 
@@ -103,16 +132,40 @@
       }
     }
 
+    &.btn-editor[data-action='source'] {
+      position: relative;
+      inset-inline-start: -6px;
+    }
+
+    &.btn-editor[data-action='visual'] {
+      position: relative;
+      inset-inline-start: -7px;
+    }
+
     &.btn-editor .icon.html-icon {
-      height: 30px;
-      margin: -4px 2px 0;
-      width: 40px;
+      height: 19px;
+      margin-block-start: -4px;
+      margin-block-end: 0;
+      margin-inline: -10px;
+      width: 70px;
+      position: relative;
+      inset-inline-start: -9px;
     }
 
     &.btn-editor .icon.visual-icon {
-      height: 30px;
-      margin: -3px 2px 0;
-      width: 52px;
+      height: 19px;
+      margin: -4px -7px 0;
+      width: 70px;
+      position: relative;
+      inset-inline-start: -13px;
+    }
+  }
+
+  .more {
+    [class^='btn'].btn-editor .icon:not(.icon-dropdown) {
+      height: 18px;
+      margin: -6px -1px 0;
+      width: 19px;
     }
   }
 }
@@ -123,7 +176,7 @@
 
 .editor {
   p {
-    line-height: 2.6rem;
+    line-height: 2.4rem;
   }
 }
 
@@ -135,13 +188,24 @@
   }
 }
 
-// IE/Edge have different icon alignments
-.ie-edge {
-  .toolbar.formatter-toolbar,
+html[dir='rtl'] {
+  .flex-toolbar.formatter-toolbar .btn-generative svg {
+    inset-inline-start: -2px;
+    inset-block-start: 1px;
+  }
+
+  .flex-toolbar.formatter-toolbar [class^='btn'].btn-editor .icon.html-icon {
+    inset-inline-start: 9px;
+  }
+
   .flex-toolbar.formatter-toolbar {
     [class^='btn'] {
       &[data-action='visual'] {
-        width: 85px;
+        margin-right: unset;
+      }
+
+      &.btn-editor .icon.visual-icon {
+        inset-inline-start: 13px;
       }
     }
   }

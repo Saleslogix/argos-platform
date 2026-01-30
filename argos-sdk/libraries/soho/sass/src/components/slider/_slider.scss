@@ -11,14 +11,21 @@ input[type='range'] {
   width: 92%;
 
   &.vertical {
-    -webkit-appearance: slider-vertical;
     writing-mode: bt-lr;
   }
+}
+
+.slider-box {
+  display: inline-block;
+  width: 60px;
+  margin-left: 24px;
+  vertical-align: middle;
 }
 
 .slider-wrapper {
   background-color: $slider-bg-color;
   position: relative;
+  touch-action: none;
 
   @include css3(touch-callout, none);
   @include css3(user-select, none);
@@ -27,6 +34,12 @@ input[type='range'] {
     height: 4px;
     margin: 25px 4% 50px;
     width: 92%;
+
+    &.has-slider-box {
+      display: inline-block;
+      margin: unset;
+      width: 400px;
+    }
 
     .slider-hit-area {
       bottom: -10px;
@@ -70,6 +83,7 @@ input[type='range'] {
     margin: calc(25px + 4%) 50px calc(50px + 4%);
     min-height: 150px;
     width: 4px;
+    margin-left: 72px;
 
     .slider-hit-area {
       bottom: 0;
@@ -88,7 +102,7 @@ input[type='range'] {
       > .label {
         right: 24px;
         text-align: right;
-        top: 0;
+        top: -7px;
       }
     }
 
@@ -128,6 +142,7 @@ input[type='range'] {
     -webkit-touch-callout: none;
     -ms-user-select: none;
     -webkit-user-select: none;
+    user-select: none;
     width: 8px;
 
     &.complete::after {
@@ -153,7 +168,6 @@ input[type='range'] {
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-
   }
 
   &.is-disabled {

@@ -1,9 +1,10 @@
 // Color Classes
 //================================================== //
+@use 'sass:list';
 
 @each $name in $color-names {
-  $i: index($color-names, $name);
-  $color: nth($color-vars, $i);
+  $i: list.index($color-names, $name);
+  $color: list.nth($color-vars, $i);
 
   .#{$name} {
     background: $color;
@@ -13,15 +14,51 @@
     color: $color !important;
   }
 
+  .#{$name}-border-color {
+    border-color: $color !important;
+  }
+
   //Classes for Tags
   .#{$name}.tag {
-    background: nth($color-vars, $i);
+    background: list.nth($color-vars, $i);
   }
 }
 
 // Css variables for Primary Colors
 .primary-bg-color {
   background: $ids-color-brand-primary-base;
+}
+
+html.theme-new-light .primary-bg-color {
+  background: $ids-color-palette-white;
+}
+
+html.theme-new-contrast .primary-bg-color {
+  background: $ids-color-palette-white;
+}
+
+html.theme-new-dark .primary-bg-color {
+  background: $ids-color-palette-slate-90;
+}
+
+html.theme-classic-light .primary-bg-color {
+  background: #368ac0;
+}
+
+html.theme-classic-contrast .primary-bg-color {
+  background: #134d71;
+}
+
+html.theme-classic-dark .primary-bg-color {
+  background: #50535a;
+}
+
+.alabaster {
+  background-color: #fff;
+
+  &.swatch {
+    border: 1px solid $input-color-initial-border;
+  }
 }
 
 .primary-color {
@@ -92,6 +129,31 @@
   }
 }
 
+.palette-border {
+  border: none;
+  border-width: 5px;
+  border-style: dashed;
+  height: 55px;
+  width: auto;
+  margin: 10px;
+  margin-bottom: 40px;
+  font-size: 1.6rem;
+}
+
+.palette-svg {
+  font-size: 1.6rem;
+
+  .palette-hex-svg {
+    text-align: center;
+    margin-top: 10px;
+  }
+}
+
+.demo-center {
+  display: block;
+  margin: auto;
+}
+
 .theme-new-light,
 .theme-new-dark,
 .theme-new-contrast {
@@ -103,6 +165,70 @@
 // Personalization Colors
 .personalization-bg-color {
   background-color: $ids-color-palette-white;
+}
+
+// Status Colors
+//   Status Background Colors
+.status-01 {
+  background-color: $status-01-color;
+}
+
+.status-02 {
+  background-color: $status-02-color;
+}
+
+.status-03 {
+  background-color: $status-03-color;
+}
+
+.status-04 {
+  background-color: $status-04-color;
+}
+
+.status-05 {
+  background-color: $status-05-color;
+}
+
+//   Status Border Colors
+.status-01-border {
+  border-color: $status-01-color;
+}
+
+.status-02-border {
+  border-color: $status-02-color;
+}
+
+.status-03-border {
+  border-color: $status-03-color;
+}
+
+.status-04-border {
+  border-color: $status-04-color;
+}
+
+.status-05-border {
+  border-color: $status-05-color;
+}
+
+//   Status Colors
+.status-01-color {
+  color: $status-01-color;
+}
+
+.status-02-color {
+  color: $status-02-color;
+}
+
+.status-03-color {
+  color: $status-03-color;
+}
+
+.status-04-color {
+  color: $status-04-color;
+}
+
+.status-05-color {
+  color: $status-05-color;
 }
 
 // RTL Styles

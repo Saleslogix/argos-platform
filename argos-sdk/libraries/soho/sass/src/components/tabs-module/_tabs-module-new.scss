@@ -1,47 +1,283 @@
-// Uplift Module Tabs
+// New Module Tabs
 //================================================== //
 
 .tab-container.module-tabs {
-  .tab {
-    > a {
-      padding: 7px 6px;
+  min-height: 40px;
+  max-height: 40px;
+  border-top: 1px solid $module-tabs-x-border-color;
+  border-bottom: 1px solid $module-tabs-x-border-color;
+  background-color: $module-tabs-list-container-bg-color;
+
+  &.has-toolbar {
+    .tab-list-container {
+      + .toolbar {
+        border-inline-start: 1px solid $module-tabs-y-border-color;
+        width: 314px;
+
+        .more {
+          .btn-actions {
+            svg.icon {
+              color: $module-tabs-icon-normal-color;
+            }
+
+            &:hover {
+              background-color: $module-tabs-more-button-hover-color;
+
+              svg.icon {
+                color: $module-tabs-more-text-hover-color;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &:not(.has-auxiliary) {
+    .toolbar {
+      width: 314px;
+    }
+  }
+
+  .toolbar {
+    background-color: $module-tabs-normal-bg-color;
+    margin-top: -3px;
+    height: 40px;
+
+    @media (max-width: $breakpoint-phone-to-tablet) {
+      display: none;
     }
 
-    &.dismissible {
-      a {
-        padding: 7px 35px 7px 6px;
-      }
+    .buttonset {
+      height: 40px;
 
-      .icon {
-        height: 11px;
-        margin-top: 1px;
+      > * {
+        margin: 0 5px 0 0;
+        left: -2px;
+      }
+    }
+  }
+
+  > .toolbar-searchfield-wrapper.active {
+    min-height: 38px;
+  }
+
+  .toolbar-searchfield-wrapper.has-categories {
+    .searchfield-category-button {
+      height: 38px;
+    }
+
+    .searchfield {
+      height: 38px;
+
+      + .close {
+        top: -5px;
+      }
+    }
+  }
+
+  .tab-list-container {
+    min-height: 40px;
+    max-height: 40px;
+    background-color: $module-tabs-list-container-bg-color;
+
+    .tab-list .tab {
+      &.is-focused::before {
+        height: calc(100% - 4px);
+      }
+    }
+  }
+
+  .tab {
+    a {
+      > span:not(.icon) {
+        margin-top: -8px;
       }
     }
 
     &.application-menu-trigger {
       a {
-        padding: 5px 12px 7px;
-        width: 100%;
+        padding: 10px 10px 7px;
+      }
+    }
+  }
+
+  .tab-list {
+    min-height: inherit;
+    max-height: inherit;
+
+    .tab {
+      background-color: $module-tabs-normal-bg-color;
+      color: $module-tabs-normal-text-color;
+      min-height: calc(100% - 2px);
+      max-height: inherit;
+
+      &:not(:first-child) {
+        border-inline-start: 1px solid $module-tabs-y-border-color;
+      }
+
+      > a {
+        height: 40px;
+        padding: 7px 16px;
+        line-height: 1.45;
+        font-weight: 400;
+      }
+
+      &:hover:not(.is-selected):not(.is-disabled) {
+        background-color: $module-tabs-hover-bg-color;
+      }
+
+      &.dismissible {
+        a {
+          padding: 7px 24px;
+        }
+
+        .icon {
+          height: 18px;
+          color: $module-tabs-icon-normal-color;
+        }
+
+        svg.icon.close {
+          display: block;
+        }
+
+        &:hover:not(.is-selected):not(.is-disabled) {
+          background-color: $module-tabs-hover-bg-color;
+        }
+
+        &:hover {
+          svg.icon.close {
+            color: $module-tabs-close-hover-color;
+            display: block;
+          }
+        }
+      }
+
+      &.is-selected {
+        background-color: $module-tabs-active-bg-color;
+        color: $module-tabs-active-text-color;
+
+        > a {
+          font-weight: 700;
+        }
+      }
+
+      &.application-menu-trigger {
+        a {
+          padding: 6px 12px;
+          height: 37px;
+          width: 100%;
+        }
+
+        &:hover {
+          background-color: $module-tabs-hover-bg-color;
+        }
       }
     }
   }
 
   &.has-more-button {
+    .tab-list {
+      .tab {
+        &.dismissible {
+          a {
+            padding: 7px 20px 7px 16px;
+          }
+        }
+      }
+    }
+
     .tab-more {
-      padding: 5px 6px 7px;
+      padding: 6px 6px 7px;
+      background-color: $module-tabs-normal-bg-color;
+      border-inline-start: 1px solid $module-tabs-y-border-color;
+      width: 40px;
 
       .more-text {
+        color: $module-tabs-normal-text-color;
         left: -2px;
         position: relative;
         top: -2px;
+        font-weight: 400;
+        line-height: 1.8;
+      }
+
+      svg {
+        color: $module-tabs-normal-text-color;
+      }
+
+      &:hover {
+        background-color: $module-tabs-hover-bg-color;
+
+        svg.icon {
+          color: $module-tabs-normal-text-color;
+        }
+      }
+
+      &.is-open {
+        svg.icon {
+          color: $module-tabs-normal-text-color;
+        }
+      }
+    }
+  }
+
+  // Change the display proposition from block to flex to fix positioning
+  &.has-auxiliary {
+    .tab-list-container + .buttonset {
+      .btn {
+        top: -3px;
+        height: 40px;
+
+        svg.icon {
+          color: $module-tabs-icon-normal-color;
+        }
+
+        &:hover:not([disabled]):not(.btn-primary):not(.btn-secondary):not(.trigger):not(.application-menu-trigger) {
+          background-color: $module-tabs-hover-bg-color;
+  
+          .icon {
+            color: $module-tabs-icon-hover-color;
+          }
+        }
       }
     }
   }
 
   &.has-add-button {
-    .add-tab-button span:first-child {
-      font-size: $ids-size-font-lg;
-      top: -10px;
+    &.has-more-button:not(.has-auxiliary) {
+      .tab-list-container {
+        .tab-list {
+          width: calc(100% - 85px);
+        }
+      }
+    }
+
+    .add-tab-button {
+      height: 38px;
+      background-color: $module-tabs-normal-bg-color;
+      border-inline-start: 1px solid $module-tabs-y-border-color;
+      width: 40px;
+
+      span:first-child {
+        font-size: $ids-size-font-lg;
+      }
+
+      .icon {
+        color: $module-tabs-icon-normal-color;
+      }
+
+      .icon-add.icon {
+        top: 0;
+      }
+
+      &:hover {
+        background-color: $module-tabs-hover-bg-color;
+
+        .icon {
+          color: $module-tabs-icon-hover-color;
+        }
+      }
     }
   }
 
@@ -51,6 +287,99 @@
 
     span:not(.audible) {
       width: 18px;
+    }
+  }
+
+  &.has-app-menu {
+    .tab-list-container {
+      width: calc(100% - 85px);
+    }
+
+    .tab-trigger.application-menu-trigger {
+      color: $module-tabs-normal-text-color;
+    }
+
+    &.has-more-button {
+      &.scrolled-right:not(.no-text) {
+        &::before {
+          left: 84px;
+          width: 40px;
+
+          @media (max-width: ($breakpoint-phone-to-tablet - 1)) {
+            left: 42px;
+          }
+        }
+      }
+
+      .tab-list-container {
+        .tab-list {
+          width: calc(100% - 37px);
+
+          @media (min-width: ($breakpoint-slim - 25px)) {
+            width: calc(100% - 37px);
+          } 
+        }
+      }
+
+      &.has-add-button {
+        .tab-list-container {
+          .tab-list {
+            width: calc(100% - 77px);
+  
+            @media (min-width: ($breakpoint-slim - 25px)) {
+              width: calc(100% - 77px);
+            } 
+          }
+        }
+      }
+    }
+  }
+}
+
+.tab-panel-container {
+  .tab-panel {
+    .header .toolbar .title [class^='btn'] + h1 {
+      margin-top: 4px;
+    }
+  }
+}
+
+.multitabs-section {
+  .tab-panel-container {
+    padding-top: unset;
+  }
+}
+
+.tab-container.module-tabs .tab-focus-indicator.is-visible {
+  box-shadow: none;
+
+  &:not(.is-selected) {
+    border-color: $module-tabs-focus-border-color;
+  }
+}
+
+.tab-container.module-tabs + .tab-panel-container {
+  .tab-panel {
+    padding-inline-start: unset;
+    margin-top: 0;
+  }
+}
+
+.tab-container.module-tabs .tab-more svg {
+  top: 1px;
+  inset-inline: -1px;
+}
+
+.tab-container.module-tabs .tab-focus-indicator {
+  border: 1px solid $module-tabs-focus-border-color;
+}
+
+.is-firefox {
+  .tab-container.module-tabs {
+    .add-tab-button {
+      span:first-child {
+        top: -7px;
+      }
     }
   }
 }

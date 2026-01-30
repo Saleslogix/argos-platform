@@ -1,9 +1,10 @@
-// Color Picker (Uplift)
+// Color Picker (New)
 //================================================== //
 
-@import '../icons/icons-new';
-@import '../input/input-new';
-@import '../popupmenu/popupmenu-new';
+// Dependencies
+// icons-new
+// input-new
+// popupmenu-new
 
 .colorpicker-container {
   .colorpicker {
@@ -11,16 +12,16 @@
   }
 
   &.color-only .trigger {
-    margin-left: -4px;
+    margin-inline-start: -4px;
   }
 }
 
 .colorpicker-container .trigger {
-  margin-left: -9px;
+  margin-inline-start: 5px;
   margin-top: -2px;
 
   .icon {
-    left: 8px;
+    inset-inline-start: 8px; 
   }
 
   .colorpicker {
@@ -36,14 +37,26 @@
 }
 
 html[dir='rtl'] {
+  .popupmenu.colorpicker {
+    padding: 10px 10px 10px 0;
+  }
+
   .colorpicker-container {
+    .swatch {
+      position: relative;
+      inset-inline-end: 83px;
+    }
+
     .colorpicker {
-      padding: 11px 10px 8px 0;
+      padding: 11px 10px 8px; // Adjusted padding
+      position: relative;
+      inset-inline-end: 0; // Remove negative positioning
+      text-align: right; // Changed from left for RTL
     }
 
     .trigger .icon {
-      left: -3px;
-      top: 10px;
+      inset-inline-end: 7px; // Position from right in RTL
+      top: 7px;
     }
   }
 }

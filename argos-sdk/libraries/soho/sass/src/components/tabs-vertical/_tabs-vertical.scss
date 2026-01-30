@@ -13,6 +13,9 @@
       @include css3(user-select, none);
       @include css3(touch-callout, none);
 
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
       color: $vertical-tab-text-color;
       display: block;
       font-size: $ids-size-font-base;
@@ -22,12 +25,8 @@
       }
     }
 
-    &:hover {
+    &:not(.is-disabled):hover {
       background-color: $vertical-tab-bg-hover-color;
-
-      a {
-        text-decoration: $vertical-tab-text-hover-decoration;
-      }
     }
 
     &.is-selected {
@@ -75,12 +74,16 @@
 
     .tab-container.vertical {
       z-index: 3;
+
+      .tab-list-container > .tab-focus-indicator.is-visible {
+        border-color: transparent;
+        box-shadow: none;
+      }
     }
 
     .tab-panel-container {
       scrollbar-width: none;
       -ms-overflow-style: none;
-      overflow-y: scroll;
 
       &::-webkit-scrollbar {
         width: 0;
@@ -114,11 +117,11 @@
         min-height: 700px;
         position: relative;
       }
-  
+
       @media only screen and (max-height: 820px) {
         min-height: 600px;
       }
-  
+
       @media only screen and (max-height: 720px) {
         min-height: 550px;
       }
@@ -128,11 +131,11 @@
           height: 100%;
           position: absolute;
         }
-  
-        @media screen and (min-width: $breakpoint-phone-to-tablet) and (max-width: $breakpoint-tablet-reduced){
+
+        @media screen and (min-width: $breakpoint-phone-to-tablet) and (max-width: $breakpoint-tablet-reduced) {
           height: 90vh;
         }
-  
+
         .tab-list-container {
           min-height: 600px;
         }
@@ -144,11 +147,11 @@
           min-width: 400px;
           padding-left: 260px;
           width: 100%;
-  
+
           @media only screen and (max-height: 820px) {
             max-height: 600px;
           }
-      
+
           @media only screen and (max-height: 720px) {
             max-height: 550px;
           }
@@ -160,10 +163,8 @@
 
 .header {
   + .page-container {
-    @media (max-width: $breakpoint-phone-to-tablet - 1) {
-      height: calc(100% - 50px);
-      margin-top: 0;
-      position: relative;
+    @media (max-width: ($breakpoint-phone-to-tablet - 1)) {
+      height: calc(100% - 60px);
     }
 
     &.tab-panel-container {
@@ -187,7 +188,7 @@
   }
 }
 
-.tab-panel-container {
+.tab-container.vertical .tab-panel-container {
   height: inherit;
 
   &.no-scroll {
@@ -198,13 +199,13 @@
   }
 
   .tab-panel {
-    @media (max-width: $breakpoint-phone-to-tablet - 1) {
+    @media (max-width: ($breakpoint-phone-to-tablet - 1)) {
       padding-left: 15px;
       padding-right: 15px;
     }
 
     p:last-child {
-      @media (max-width: $breakpoint-phone-to-tablet - 1) {
+      @media (max-width: ($breakpoint-phone-to-tablet - 1)) {
         padding-bottom: 10px;
       }
     }
@@ -218,6 +219,7 @@
   min-height: 200px;
   min-width: 250px;
   position: relative;
+  height: inherit;
 
   > .tab-list,
   > .tab-list-container {
@@ -227,6 +229,7 @@
     padding-top: 20px;
     vertical-align: top;
     width: 250px;
+    height: inherit;
   }
 
   // Use '.tab-list-container' to wrap the tab list when you have other elements inside of the sidebar
@@ -243,11 +246,16 @@
         .icon-error,
         .icon-info,
         .icon-alert {
-          height: 14px;
+          height: 18px;
           left: 6px;
           position: absolute;
-          top: calc(50% - 7px);
+          top: calc(50% - 9px);
           width: 18px;
+        }
+
+        svg.icon.close {
+          top: -28px;
+          left: 220px;
         }
       }
     }
@@ -256,7 +264,11 @@
     &.scrollable,
     &.scrollable-x,
     &.scrollable-y {
-      height: 100%;
+      height: inherit;
+    }
+
+    &.no-scroll {
+      overflow: hidden;
     }
   }
 
@@ -273,13 +285,17 @@
     &.scrollable-y {
       height: 100%;
     }
+
+    &.no-scroll {
+      overflow: hidden;
+    }
   }
 
   // Normal configuration of the tabset can just have '.tab-list' directly inside the vertical tabs container.
   > .tab-list {
-    @include vertical-tab-style;
-
     height: 100%;
+
+    @include vertical-tab-style;
 
     > .tab {
       a {
@@ -302,7 +318,7 @@
     }
 
     h3 {
-      margin-bottom: 20px;
+      margin-bottom: $input-field-bottom-margin;
     }
   }
 
@@ -330,19 +346,25 @@
   > .tab-focus-indicator,
   > .tab-list-container > .tab-focus-indicator {
     border-radius: 0;
-
-    &.is-selected.is-visible {
-      border-color: transparent;
-      box-shadow: inset 0 0 0 1px $ids-color-palette-white;
-    }
   }
 
+  .tab-list {
+    .tab.is-focused::before {
+      height: inherit;
+      inset-inline: 1px;
+    }
+  }
+}
+
+.tab-panel-container {
+  height: calc(100% - 42px);
+  margin-bottom: 0 !important;
 }
 
 // Set padding/height etc. when using Vertical Tabs directly inside a page container
 // Also works for placing a set of vertical tabs directly inside of a higher-level '.tab-panel' element
 .page-container,
-.tab-panel {
+.tab-container.vertical .tab-panel {
   > .tab-container.vertical {
     height: 100%;
     overflow: auto;
@@ -361,5 +383,24 @@
       margin-top: 30px;
       padding: 0 15px;
     }
+  }
+}
+
+html.is-mac .tab-container.vertical .tab-panel.can-show {
+  margin: 30px;
+}
+
+html[dir='rtl'] {
+  .tab-container.vertical {
+    .tab.is-error {
+      .icon-error {
+        left: 224px;
+      }
+    }
+  }
+
+  .tab-container.vertical > .tab-list-container {
+    border-right: 0;
+    border-left: 1px solid $vertical-tab-sidebar-border-color;
   }
 }

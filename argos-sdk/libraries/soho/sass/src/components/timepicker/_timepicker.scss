@@ -11,7 +11,7 @@
     color: $trigger-icon-fill-color;
     cursor: pointer;
     height: 24px;
-    margin-left: -32px;
+    margin-left: -30px;
     margin-top: 6px;
     min-height: 24px;
     min-width: 24px;
@@ -71,6 +71,15 @@
     + .trigger {
       color: $timepicker-readonly-icon-color;
       cursor: default;
+
+      &.btn-icon:hover:not([disabled]) {
+        background-color: transparent !important;
+        color: $timepicker-readonly-icon-color;
+
+        .icon {
+          color: $timepicker-readonly-icon-color;
+        }
+      }
     }
   }
 }
@@ -95,7 +104,7 @@
     padding: 15px;
 
     .colons {
-      @include rem(font-size, 1.4rem);
+      @include font-size(14);
 
       font-weight: $ids-number-font-weight-bold;
       min-width: 15px;
@@ -104,8 +113,8 @@
         min-width: 10px;
 
         @media only screen
-          and (min-device-width: $breakpoint-phone)
-          and (max-device-width: $breakpoint-big-phone + 88)
+          and (minwidth: $breakpoint-phone)
+          and (max-device-width: ($breakpoint-big-phone + 88))
           and (-webkit-min-device-pixel-ratio: 2)
           and (orientation: portrait) {
           min-width: 5px;
@@ -122,8 +131,8 @@
       width: 72px;
 
       @media only screen
-        and (min-device-width: $breakpoint-phone)
-        and (max-device-width: $breakpoint-big-phone + 88)
+        and (minwidth: $breakpoint-phone)
+        and (max-device-width: ($breakpoint-big-phone + 88))
         and (-webkit-min-device-pixel-ratio: 2)
         and (orientation: portrait) {
         width: 65px;
@@ -139,8 +148,8 @@
     width: 70px;
 
     @media only screen
-      and (min-device-width: $breakpoint-phone)
-      and (max-device-width: $breakpoint-big-phone + 88)
+      and (minwidth: $breakpoint-phone)
+      and (max-device-width: ($breakpoint-big-phone + 88))
       and (-webkit-min-device-pixel-ratio: 2)
       and (orientation: portrait) {
       width: 60px !important;
@@ -151,8 +160,8 @@
         width: 70px;
 
         @media only screen
-          and (min-device-width: $breakpoint-phone)
-          and (max-device-width: $breakpoint-big-phone + 88)
+          and (minwidth: $breakpoint-phone)
+          and (max-device-width: ($breakpoint-big-phone + 88))
           and (-webkit-min-device-pixel-ratio: 2)
           and (orientation: portrait) {
           width: 65px !important;
@@ -202,7 +211,6 @@
     ~ .icon-error {
       margin-left: -40px;
     }
-
   }
 }
 
@@ -217,10 +225,7 @@ html.is-safari {
     .timepicker {
       + .trigger {
         top: 2px;
-
-        .icon {
-          margin-top: unset;
-        }
+        margin-top: 2px;
       }
     }
   }

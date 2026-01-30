@@ -1,10 +1,10 @@
-// Uplift Timepicker
+// New Timepicker
 //================================================== //
 
 .timepicker {
   + .trigger,
   + .tooltip-description + .trigger {
-    margin-left: -32px;
+    margin-left: -30px;
     margin-top: 7px;
   }
 }
@@ -18,7 +18,7 @@
       margin-top: 4px;
 
       .icon {
-        top: -3px;
+        top: -1px;
       }
     }
   }
@@ -106,7 +106,7 @@ html {
     #timepicker-popup {
       .dropdown {
         padding: 6px 30px 8px 10px;
-  
+
         + .icon {
           top: 4px;
         }
@@ -137,4 +137,3 @@ html.is-firefox {
     }
   }
 }
-

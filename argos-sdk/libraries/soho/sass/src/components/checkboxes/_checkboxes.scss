@@ -1,5 +1,6 @@
 // Checkboxes
 //================================================== //
+@use 'sass:list';
 
 @mixin checkbox-animation {
   @include animation(check 0.15s);
@@ -55,8 +56,8 @@
 }
 
 @mixin checkbox-focus-state {
-  border: solid 1px $input-color-focus-border;
-  box-shadow: $focus-box-shadow;
+  box-shadow: 0 0 0 3px $input-color-focus-border;
+  outline: solid 2px $checkbox-focus-border-color;
 }
 
 @mixin checkbox-hover-state {
@@ -95,7 +96,7 @@ span.checkbox > input {
       + label {
         &::before {
           border-color: $error-color !important;
-          box-shadow: $error-focus-box-shadow !important;
+          box-shadow: 0 0 0 3px $error-color !important;
         }
       }
     }
@@ -197,6 +198,49 @@ input.checkbox:not(:checked):not(.error):not(:disabled):hover + label::before,
 input.checkbox:not(:checked):not(.error):not(:disabled):hover + input[type='hidden'] + label::before,
 span.checkbox > input:not(:checked):not(.error):not(:disabled):hover + label::before {
   @include checkbox-hover-state;
+}
+
+// Checkboxes with hitboxes
+.field-checkbox.field-hitbox {
+  span.dirty-checkbox.is-checked {
+    left: 13px;
+    top: 14px !important;
+    position: absolute;
+  }
+}
+
+input.checkbox ~ label.checkbox-label {
+  &.hitbox {
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    vertical-align: middle;
+    min-width: 44px;
+    height: 44px;
+
+    &.hitbox-padding {
+      padding-right: 14px;
+    }
+
+    &::before {
+      margin-left: -12px;
+      margin-right: 12px;
+      position: relative;
+    }
+
+    &::after {
+      left: 15px;
+      top: 50%;
+    }
+  }
+}
+
+input.checkbox.partial:checked + label.checkbox-label {
+  &.hitbox {
+    &::after {
+      top: 10px;
+    }
+  }
 }
 
 // Labels
@@ -342,14 +386,14 @@ html[dir='rtl'] {
   }
 
   .dirty-checkbox {
-    right: 8px;
+    inset-inline-end: 0;
   }
 
   .field-short,
   .form-layout-compact .field,
   .form-layout-compact .field-checkbox {
     .dirty-checkbox {
-      right: 12px;
+      right: 6px;
     }
 
     label.inline .checkbox ~ .label-text,
@@ -378,15 +422,20 @@ html[dir='rtl'] {
   span.checkbox > input {
     left: auto;
     right: -99999px;
-  }
 
+    + .checkbox-label {
+      span.required {
+        margin-right: 5px;
+      }
+    }
+
+  }
 }
 
 // Short Fields
 .field-short,
 .form-layout-compact .field,
 .form-layout-compact .field-checkbox {
-
   // Reduce Checkbox Size
   .checkbox-label,
   .checkbox > label {
@@ -431,8 +480,8 @@ html[dir='rtl'] {
 
 // Colored Checkboxes
 @each $name in $color-names {
-  $i: index($color-names, $name);
-  $color: nth($color-vars, $i);
+  $i: list.index($color-names, $name);
+  $color: list.nth($color-vars, $i);
 
   input.checkbox.#{$name} + label::before {
     background-color: $color;

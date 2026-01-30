@@ -1,16 +1,37 @@
 // Toolbars
 //================================================== */
 
-@import '../button/button';
 @import '../colorpicker/colorpicker';
 @import '../fontpicker/fontpicker';
 @import '../popupmenu/popupmenu';
 
-$toolbar-buttonset-height: 40px;
+$toolbar-buttonset-height: 48px;
 
 .toolbar {
   .more {
     display: none;
+  }
+}
+
+.toolbar.do-resize {
+  .toolbar-searchfield-wrapper {
+    margin-top: 1px;
+
+    @media (max-width: $breakpoint-phone-to-tablet) {
+      overflow: hidden;
+    }
+
+    &.has-close-icon-button {
+      @media (max-width: $breakpoint-phone-to-tablet) {
+        overflow: hidden;
+      }
+    }
+
+    .searchfield-category-button {
+      .icon {
+        transform: translateY(0);
+      }
+    }
   }
 }
 
@@ -66,6 +87,10 @@ $toolbar-buttonset-height: 40px;
 
     > [class^='btn'] {
       min-width: 34px;
+
+      &:not(.has-text) {
+        padding: unset;
+      }
     }
 
     > .separator {
@@ -120,14 +145,29 @@ $toolbar-buttonset-height: 40px;
     > * {
       margin-right: 1px;
     }
+
+    .btn-actions.is-open .icon {
+      color: $button-color-tertiary-initial-font;
+    }
   }
 
   &.do-resize {
     .buttonset {
       width: auto;
+
+      @media only screen and (max-width: $breakpoint-phone-to-tablet) {
+        width: auto !important;
+      }
+
+      &:has(.searchfield-wrapper) {
+        @media screen and (max-width: $breakpoint-phone-to-tablet) {
+          display: inline-flex;
+        }
+      }
     }
 
-    .title {
+    .title,
+    .title-detail {
       left: 1px;
       position: absolute;
       top: 2px;
@@ -137,6 +177,10 @@ $toolbar-buttonset-height: 40px;
     &.has-more-button {
       .buttonset {
         width: calc(100% - 38px);
+
+        @media (max-width: ($breakpoint-phone-to-tablet + 1)) {
+          width: calc(100% - 38px) !important;
+        }
       }
 
       .title {
@@ -216,7 +260,8 @@ $toolbar-buttonset-height: 40px;
   font-size: 0;
   margin-bottom: 5px;
 
-  .title {
+  .title,
+  .title-detail {
     @include antialiased();
     @include font-size(16);
 
@@ -224,6 +269,18 @@ $toolbar-buttonset-height: 40px;
 
     + .buttonset {
       text-align: right;
+    }
+  }
+}
+
+// For Standalone popup menu label
+.btn-menu,
+.btn-actions {
+  &.is-open {
+    color: $toolbar-standalone-popup-label-color;
+
+    .icon {
+      color: $toolbar-standalone-popup-label-color;
     }
   }
 }
@@ -282,9 +339,11 @@ $toolbar-buttonset-height: 40px;
     // EPC: NOTE: Do NOT add different margins and heights to buttons inside of contextual toolbars.
     // Toolbar Overflow Calculation needs buttons to be "shorter" than the buttonset.
     [class^='btn'] {
+      border-radius: 8px;
       color: $contextual-toolbar-button-color;
       min-width: 0;
       padding: 0 10px;
+      margin-top: 4px;
 
       &.btn-icon {
         padding: 0 8px;
@@ -307,10 +366,11 @@ $toolbar-buttonset-height: 40px;
       }
 
       &:hover {
-        color: $contextual-toolbar-button-hover-color;
+        color: $contextual-toolbar-button-hover-color !important;
+        background-color: rgba(0, 0, 0, .3) !important;
 
         .icon {
-          color: $contextual-toolbar-button-hover-color;
+          color: $contextual-toolbar-button-hover-color !important;
         }
       }
 
@@ -336,16 +396,25 @@ $toolbar-buttonset-height: 40px;
 
       &[disabled] {
         color: $contextual-toolbar-button-disabled-color;
+        color: $ids-color-palette-white !important;
+        opacity: 1;
+        cursor: default;
 
         .icon {
           color: $contextual-toolbar-button-disabled-color;
         }
 
         &:hover {
-          background-color: transparent;
+          background-color: (255, 255, 255, 0.5) !important;
           border-color: transparent;
+          opacity: 1;
         }
       }
+    }
+
+    .btn-actions .icon {
+      position: relative;
+      left: -3px;
     }
   }
 
@@ -359,22 +428,24 @@ $toolbar-buttonset-height: 40px;
   .toolbar {
     .btn,
     .btn-tertiary {
-      padding: 0 5px;
+      padding: 0 6px;
     }
   }
 }
 
-@media (max-width: $breakpoint-phone-to-tablet - 1) {
+@media (max-width: ($breakpoint-phone-to-tablet - 1)) {
   .toolbar {
     // Show text with icon buttons by using this class.
     // Text will still become invisible on small breakpoint (but still visible to screen readers).
     // See respond-to(tabletdown) below.
-    [class^='btn'] {
+    [class^='btn']:not(.has-notification-badge) {
+      min-width: 34px;
       width: auto;
+      cursor: pointer;
 
       > .icon + span {
-        display: inline-block;
-        visibility: hidden;
+        display: none;
+        padding: 0 !important;
         width: 0;
 
         &:not(.audible) {
@@ -395,6 +466,12 @@ $toolbar-buttonset-height: 40px;
   }
 }
 
+html[class*='theme-classic-'] {
+  .toolbar.standalone .buttonset {
+      height: 40px;
+  }
+}
+
 // RTL Styles
 html[dir='rtl'] {
   .toolbar,
@@ -409,7 +486,8 @@ html[dir='rtl'] {
       text-align: left;
     }
 
-    .title {
+    .title,
+    .title-detail {
       text-align: right;
 
       + .buttonset {
@@ -425,7 +503,8 @@ html[dir='rtl'] {
     }
 
     &.do-resize {
-      .title {
+      .title,
+      .title-detail {
         left: auto;
         right: 0;
       }
@@ -438,8 +517,22 @@ html[dir='rtl'] {
       }
     }
 
-  }
+    &:not(.standalone) .searchfield-wrapper.toolbar-searchfield-wrapper:not(.has-categories):not(.is-open) {
+      input {
+        padding-left: 31px;
+      }
 
+      .icon:not(.icon-dropdown) {
+        inset-inline-end: 9px;
+      }
+
+      &.has-text {
+        input {
+          padding-left: 19px;
+        }
+      }
+    }
+  }
 }
 
 @media print {

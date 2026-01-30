@@ -1,10 +1,10 @@
 // Modal Dialog and Messages
 //================================================== //
 
-@import '../button/button';
-@import '../icons/icons';
+// Dependencies
+// icons/icons
 
-// NOTE:  this element gets a margin dynamically set in the "resize" method of modal.js
+// NOTE: this element gets a margin dynamically set in the "resize" method of modal.js
 .modal-wrapper {
   align-items: center;
   display: flex;
@@ -50,18 +50,28 @@
 .modal {
   @include css3(transform, scale(0.9, 0.9));
   @include css3(transition, opacity 0.2s, transform 0.2s);
+
   //Added after size calc
   bottom: 0;
   height: auto;
   max-height: 90%;
-  max-width: 90%;
+  max-width: 100%;
   min-width: 200px;
   opacity: 0;
   pointer-events: none;
   position: relative;
   vertical-align: middle;
-  width: auto;
   z-index: 1001;
+  width: 100%;
+
+  @media screen and (min-width: ($breakpoint-big-phone + 1)) {
+    max-width: 90%;
+    width: auto;
+  }
+
+  &.has-close-btn {
+    min-width: 400px;
+  }
 
   &.is-visible.is-active {
     @include css3(transform, scale(1, 1));
@@ -82,9 +92,48 @@
   }
 
   .field {
-    [data-error-type='tooltip'] ~ .icon-error,
-    [data-error-type='tooltip'] ~ .icon-success {
-      top: -7px;
+    .icon + .icon-error,
+    .icon + .icon-success {
+      top: 12px !important;
+    }
+
+    input[data-error-type='tooltip'] + .icon-error,
+    input[data-error-type='tooltip'] + .icon-success {
+      position: absolute;
+      display: inline-block;
+      top: 33px !important;
+      right: 11px;
+      height: 14px;
+      width: 14px;
+
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+
+      @media (max-width: $breakpoint-big-phone) {
+        inset-inline-end: 16px;
+        inset-inline-start: auto;
+      }
+
+      @media (max-width: 366px) {
+        inset-inline-end: 16px;
+        inset-inline-start: auto;
+      }
+    }
+
+    [data-error-type='tooltip']:not(input) ~ .icon-error,
+    [data-error-type='tooltip']:not(input) ~ .icon-success {
+      position: absolute;
+      display: inline-block;
+      right: 27px;
+      height: 14px;
+      width: 14px;
+
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
     }
 
     .dropdown-wrapper {
@@ -103,10 +152,6 @@
 
     textarea {
       max-width: 300px;
-
-      @media (max-width: $breakpoint-slim) {
-        max-width: 100%;
-      }
 
       &[data-error-type='tooltip'] ~ .icon-error,
       &[data-error-type='tooltip'] ~ .icon-success {
@@ -127,7 +172,7 @@
       }
     }
 
-    &:first-child .audible ~ input:not(.spinbox):not(.colorpicker),
+    &:first-child .audible ~ input:not(.spinbox):not(.colorpicker):not(.field-filter),
     &:first-child .audible ~ .searchfield-wrapper {
       margin-top: 4px;
     }
@@ -171,6 +216,16 @@
         margin-top: 0;
       }
     }
+
+    @media (max-width: 380px) {
+      margin: 0;
+    }
+  }
+
+  &.is-draggable {
+    .modal-header {
+      cursor: move;
+    }
   }
 
   &.divider-top {
@@ -184,7 +239,34 @@
         padding: 0;
       }
     }
+  }
 
+  .card {
+    .listview-search {
+      width: 370px;
+
+      @media only screen and (max-width: 520px) {
+        width: 100%;
+      }
+    }
+
+    .listview {
+      width: 370px;
+
+      @media only screen and (max-width: 520px) {
+        width: 100%;
+      }
+    }
+
+    .listview-search
+    + .listview {
+      max-height: none;
+    }
+
+    .listview-search .searchfield-wrapper {
+      min-width: unset;
+      top: -1px;
+    }
   }
 
   .listview-search {
@@ -196,6 +278,7 @@
     .searchfield-wrapper {
       min-width: 300px;
       width: 100%;
+      margin: 0;
 
       input {
         border-color: $fieldset-border-top-color;
@@ -229,9 +312,9 @@
   }
 
   .accordion {
-    @media (min-width: $breakpoint-phone + 1px) {
+    @media (min-width: ($breakpoint-phone + 1px)) {
       max-width: 100%;
-      width: 300px;
+      width: inherit;
     }
   }
 
@@ -262,8 +345,27 @@
 
     .modal-body-wrapper {
       flex-grow: 1;
+
+      .splitter-container,
+      .splitter-container .is-right-side,
+      .splitter-container .is-right-side, .page-container {
+        position: initial;
+      }
     }
   }
+
+  .modal-content {
+    .modal-header.splitter-header {
+      padding: 16px;
+    }
+
+    .modal-body-wrapper.splitter-wrapper {
+      position: relative;
+      border-top: 1px solid $modal-splitter-top-border-color;
+    }
+
+  }
+
 
   &:not(.display-fullsize):not(.about) {
     .modal-content {
@@ -292,6 +394,12 @@
     + .error-message {
       margin-top: 7px;
     }
+
+    > .icon {
+      &:not(.close):not(.icon-error) {
+        left: 9px;
+      }
+    }
   }
 
   .editor {
@@ -308,10 +416,9 @@
 .overlay {
   @include css3(transition, all 0.2s);
 
-  background: $ids-color-palette-black;
+  background: rgba(0, 0, 0, 0.7);
   height: 100%;
   left: 0;
-  opacity: 0;
   position: fixed;
   top: 0;
   visibility: hidden;
@@ -322,13 +429,12 @@
 // Body tag is notified when a modal is present in the page.
 body.modal-engaged {
   .overlay {
-    opacity: 0.7;
     visibility: visible;
   }
 }
 
 .modal-header {
-  padding: 20px;
+  padding: 16px 16px 0;
 }
 
 .modal-content {
@@ -336,9 +442,11 @@ body.modal-engaged {
   border: 1px solid $modal-border-color;
   border-radius: 2px;
   box-shadow: $modal-box-shadow;
-  color: $modal-secondary-color;
-  margin: 10px;
-  position: relative;
+  margin: 16px;
+
+  @media screen and (min-width: ($breakpoint-big-phone + 1)) {
+    margin: 10px;
+  }
 
   // Messages/Content
   h1 {
@@ -352,7 +460,8 @@ body.modal-engaged {
     text-align: left;
 
     > * {
-      vertical-align: middle;
+      vertical-align: text-top;
+      margin: -1px 8px 0 0;
     }
 
     &:focus {
@@ -362,9 +471,9 @@ body.modal-engaged {
     &.has-status {
       .icon {
         left: -6px;
-        margin-left: 5px;
+        margin-left: 6px;
         margin-right: 4px;
-        top: -2px;
+        top: 9px;
       }
     }
 
@@ -416,7 +525,7 @@ body.modal-engaged {
 
   .modal-body-wrapper {
     overflow: auto;
-    padding: 5px 20px;
+    padding: 32px 16px;
 
     .field:not(.label-left).last-child {
       margin-bottom: 0;
@@ -445,7 +554,7 @@ body.modal-engaged {
   > .btn-close {
     position: absolute;
     right: 10px;
-    top: 14px;
+    top: 10px;
   }
 
   // Message specific styles
@@ -487,6 +596,10 @@ body.modal-engaged {
 }
 
 .modal-body {
+  &.overflow {
+    overflow: auto;
+  }
+
   > *:not(.pager-toolbar):last-child {
     margin-bottom: 0;
   }
@@ -498,13 +611,22 @@ body.modal-engaged {
   p:last-child {
     padding-bottom: 0;
   }
+
+  &.propagate-style {
+    max-height: inherit;
+    max-width: inherit;
+    overflow: inherit;
+  }
+
+  &.compact {
+    padding: 0;
+  }
 }
 
 //Toolbar Buttons
 .modal-buttonset {
   border-top: 1px solid $modal-btn-border-color;
   height: 50px;
-  margin-top: 20px;
 
   button {
     @include css3(transition, color 0.3s ease 0s);
@@ -558,6 +680,13 @@ body.modal-engaged {
 
     .ripple-effect {
       background-color: $button-color-primary-initial-background;
+    }
+
+    span {
+      @include ellipsis();
+
+      display: block;
+      margin: 0;
     }
   }
 
@@ -629,6 +758,13 @@ html.ie {
       overflow: hidden;
     }
 
+    .monthview-popup.is-open .day-text {
+      &[aria-hidden='true'],
+      &[aria-hidden='true'] * {
+        overflow: unset;
+      }
+    }
+
     .page-container.scrollable,
     .page-container.scrollable-x,
     .page-container.scrollable-y {
@@ -650,8 +786,47 @@ html.ie {
   }
 }
 
+.is-mac {
+  .modal-content {
+    h1.is-success {
+      .icon {
+        margin-top: 0;
+      }
+    }
+  }
+}
+
 // RTL Styles
 html[dir='rtl'] {
+  .modal .field {
+    .icon + .icon-error,
+    .icon + .icon-success {
+      top: 11px !important;
+    }
+
+    input[data-error-type='tooltip'] + .icon-error,
+    input[data-error-type='tooltip'] + .icon-success {
+      top: 33px;
+      margin-left: unset;
+      margin-right: unset;
+      right: unset;
+      left: 10px;
+
+      @media (max-width: $breakpoint-big-phone) {
+        left: unset;
+        margin-inline-start: -25px;
+      }
+    }
+
+    [data-error-type='tooltip']:not(input) ~ .icon-error,
+    [data-error-type='tooltip']:not(input) ~ .icon-success {
+      margin-left: unset;
+      margin-right: unset;
+      left: 25px;
+      right: unset;
+    }
+  }
+
   .modal-buttonset {
     button {
       float: right;
@@ -703,6 +878,43 @@ html[dir='rtl'] {
     .btn-close {
       left: 10px;
       right: auto;
+    }
+  }
+}
+
+@media all and (orientation: landscape) {
+  .modal-content .modal-body-wrapper {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
+
+html[class*='theme-classic-'] {
+  .modal-content h1 > * {
+    vertical-align: super;
+    margin: 0 8px 0 0;
+  }
+}
+
+@media (min-width: $breakpoint-phone) and (max-width: ($breakpoint-slim + 20px)) {
+  .modal {
+    .field {
+      input[data-error-type='tooltip'][data-validate*="email"] + .icon-error {
+        position: absolute;
+        inset-inline-end: 16px;
+      }
+    }
+  }
+}
+
+@media (min-width: ($breakpoint-slim + 20px)) and (max-width: $breakpoint-phone-to-tablet) {
+  .modal {
+    .field {
+      input[data-error-type='tooltip'][data-validate*="email"] + .icon-error {
+        position: relative;
+        inset-inline-end: 16px;
+        top: -1px !important;
+      }
     }
   }
 }

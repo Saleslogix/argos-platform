@@ -9,7 +9,12 @@ $week-view-cell-height: 25px;
   display: flex;
   flex-direction: column;
   height: 100%;
+  width: 100%;
   overflow: auto;
+
+  &.is-borderless {
+    border: none;
+  }
 
   .week-view-header {
     background-color: $calendar-bg-color;
@@ -24,87 +29,98 @@ $week-view-cell-height: 25px;
     }
   }
 
-  .week-view-table-header {
-    th {
-      background-clip: padding-box;
-      border-top: 0;
-      font-size: $ids-size-font-md;
-      height: 2.4rem;
-      line-height: 2.4rem;
-      text-align: left;
-      z-index: 3;
+  th.week-view-header-cell {
+    background-clip: padding-box;
+    border-top: 0;
+    font-size: $ids-size-font-md;
+    height: 2.4rem;
+    line-height: 2.4rem;
+    text-align: left;
+    z-index: 3;
+  }
 
-      // Style todays date
-      .week-view-header-wrapper.is-today {
-        box-shadow: 0 4px 0 0 $ids-color-brand-primary-base;
-        color: $ids-color-brand-primary-base;
-        font-weight: $ids-number-font-weight-bold;
+  // Style todays date
+  .week-view-header-wrapper.is-today {
+    color: $ids-color-brand-primary-base;
+    font-weight: $ids-number-font-weight-bold;
+  }
+
+  // Times on the right
+  .week-view-header-wrapper {
+    padding: 4px 5px 0 4px;
+    border-bottom: 4px solid transparent;
+
+    .week-view-header-day-of-week {
+      display: block;
+      line-height: 2.5rem;
+      text-align: center;
+
+      &.is-emphasis {
+        font-size: 2rem;
       }
     }
+  }
 
-    // Times on the right
-    .week-view-header-wrapper {
-      padding: 0 5px;
+  // All day section
+  .week-view-all-day-wrapper {
+    border-top: 1px solid $calendar-line-color;
+    height: 44px;
+    position: relative;
 
-      .week-view-header-day-of-week {
-        display: block;
-        line-height: 2.5rem;
-        text-align: center;
-
-        &.is-emphasis {
-          font-size: 2rem;
-        }
-      }
+    &.is-disabled {
+      background-color: $calendar-disabled-bg-color;
+      opacity: 0.5;
     }
 
-    // All day section
-    .week-view-all-day-wrapper {
-      border-top: 1px solid $calendar-line-color;
-      height: 44px;
-      position: relative;
+    .calendar-event {
+      height: 20px;
+      top: 1px;
 
-      .calendar-event {
-        height: 20px;
-        top: 1px;
+      .calendar-event-content {
+        line-height: normal;
+        white-space: nowrap;
+      }
 
-        .calendar-event-content {
-          line-height: normal;
-          white-space: nowrap;
+      &.calendar-event-start {
+        border-radius: 3px 0 0 3px;
+      }
+
+      &.calendar-event-continue {
+        border-left: 0;
+        border-radius: 0;
+        left: -1px;
+        width: calc(100% + 1px);
+
+        .calendar-event-icon {
+          display: none;
         }
 
-        &.calendar-event-start {
-          border-radius: 3px 0 0 3px;
-        }
-
-        &.calendar-event-continue {
-          border-left: 0;
-          border-radius: 0;
-          left: -1px;
-          width: calc(100% + 1px);
-
-          .calendar-event-title {
-            color: transparent;
-          }
-        }
-
-        &.calendar-event-ends {
-          border-left: 0;
-          border-radius: 0 3px 3px 0;
+        .calendar-event-title {
           color: transparent;
-          left: -1px;
-          width: calc(100% + 1px);
+        }
+      }
 
-          .calendar-event-title {
-            color: transparent;
-          }
+      &.calendar-event-ends {
+        border-left: 0;
+        border-radius: 0 3px 3px 0;
+        color: transparent;
+        left: -1px;
+        width: calc(100% + 1px);
+
+        .calendar-event-icon {
+          display: none;
+        }
+
+        .calendar-event-title {
+          color: transparent;
         }
       }
     }
+  }
 
-    th:nth-child(1) .week-view-all-day-wrapper {
-      border-top-color: transparent;
-      padding: 5px;
-    }
+  th:nth-child(1) .week-view-all-day-wrapper {
+    border-top-color: transparent;
+    padding: 5px;
   }
 
   .week-view-table {
@@ -129,6 +145,40 @@ $week-view-cell-height: 25px;
       height: $week-view-cell-height;
     }
 
+    th.week-view-header-cell {
+      .week-view-header-wrapper.is-today {
+        height: calc(100% - 49px);
+        min-height: 58px;
+
+        span.week-view-header-day-of-week.is-emphasis {
+          background-color: $calendar-current-day-bg-color;
+          width: 30px;
+          height: 30px;
+          border-radius: 15px;
+          line-height: 1.5;
+          color: $ids-color-palette-white;
+          margin: 0 auto;
+        }
+      }
+    }
+
+    td {
+      &.is-selected {
+        background-color: $calendar-selected-bg-color;
+      }
+
+      &:focus {
+        -webkit-box-shadow: inset 0 0 0 1px $calendar-selected-border-color;
+        -moz-box-shadow: inset 0 0 0 1px $calendar-selected-border-color;
+        box-shadow: inset 0 0 0 1px $calendar-selected-border-color;
+        outline: 0;
+      }
+
+      &:hover {
+        background-color: $calendar-hover-bg-color;
+      }
+    }
+
     // Legend Row with times
     th:nth-child(1) {
       font-size: $ids-size-font-xs;
@@ -145,7 +195,7 @@ $week-view-cell-height: 25px;
     }
 
     // Alternate row style
-    tr:nth-child(odd) td {
+    tr:nth-child(odd) td:not(.is-focused) {
       border-bottom: 1px solid $calendar-line-color-light;
     }
   }
@@ -167,11 +217,26 @@ $week-view-cell-height: 25px;
     }
   }
 
+  &.toolbar-hidden {
+    .week-view-container .week-view-header-cell {
+      top: 0;
+    }
+
+    &.is-borderless .week-view-container .week-view-header-cell {
+      border-top: 1px solid $calendar-line-color;
+    }
+  }
+
   .week-view-cell-wrapper {
     height: $week-view-cell-height;
     min-width: 50px;
     padding: 0;
     position: relative;
+
+    &.is-disabled {
+      background-color: $calendar-disabled-bg-color;
+      opacity: 0.5;
+    }
   }
 
   // Moving time marker
@@ -219,13 +284,100 @@ $week-view-cell-height: 25px;
 
   // Adjust the day Version
   &.is-day-view {
-    .week-view-header-wrapper {
-      .week-view-header-day-of-week {
-        &.is-emphasis {
-          font-size: 3rem;
-          line-height: 4rem;
+    th.week-view-header-cell {
+      .week-view-header-wrapper.is-today {
+        span.week-view-header-day-of-week.is-emphasis {
+          width: 25px;
+          height: 25px;
+          border-radius: 15px;
+          line-height: 1.5;
+          color: $ids-color-palette-white;
+          margin: 0 auto;
+          margin-bottom: 2px;
+          font-size: 1.6rem;
+          text-indent: 1px;
+        }
+
+        span.week-view-header-day-of-week {
+          color: $calendar-current-day-bg-color;
         }
       }
+    }
+  }
+}
+
+.week-view.stacked-view {
+  overflow: hidden;
+
+  .week-view-container {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 1;
+    overflow: auto;
+    height: 100%;
+  }
+
+  .week-view-stacked-header,
+  .week-view-stacked-body,
+  .week-view-stacked-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    background-color: $calendar-bg-color;
+  }
+
+  .week-view-header-cell,
+  .week-view-body-cell {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    &:not(:last-child) {
+      border-inline-end: 1px solid $calendar-line-color;
+    }
+  }
+
+  .week-view-stacked-header {
+    position: sticky;
+    align-self: flex-start;
+    top: 0;
+    width: 100%;
+    border-bottom: 1px solid $calendar-line-color;
+    z-index: 2;
+  }
+
+  .week-view-stacked-body {
+    flex-grow: 1;
+
+    .week-view-body-cell {
+      padding: 0 2px;
+    }
+
+    // Stacked Calendar Events
+    .calendar-event {
+      display: block;
+      position: relative;
+      margin-block: 4px;
+      min-height: 52px;
+      height: unset;
+    }
+  }
+
+  .week-view-stacked-footer {
+    position: sticky;
+    bottom: 0;
+    min-height: 24px;
+    border-top: 1px solid $calendar-line-color;
+    z-index: 2;
+
+    .week-view-footer-cell {
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 }
@@ -239,5 +391,9 @@ html[dir='rtl'] {
     .calendar-event .calendar-event-content {
       text-align: right;
     }
+  }
+
+  .week-view .week-view-all-day-wrapper .calendar-event.calendar-event-start {
+    border-radius: 3px;
   }
 }

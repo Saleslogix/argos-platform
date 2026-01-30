@@ -2,7 +2,9 @@
 //========================================================
 
 @import 'accordion-mixins';
-@import '../button/button-chevron';
+
+// Dependencies
+// '../button/button-chevron';
 
 /* stylelint-disable max-nesting-depth,selector-max-compound-selectors */
 
@@ -61,7 +63,6 @@
 
   // Reset the padding for various things when we have icons present
   &.has-icons {
-
     // Level 1
     > .accordion-header {
       > a {
@@ -149,18 +150,16 @@
 
       // Selected state only exists on Paneled accordions.
       &.is-selected,
-      &.is-selected:hover,
-      &.is-focused.is-selected {
+      &.is-selected:hover {
         background-color: $accordion-selected-bg-color;
-        border-bottom-color: $accordion-selected-bg-color;
-        color: $accordion-selected-text-color;
+        color: $accordion-panel-selected-text-color;
 
         > a {
-          color: $accordion-selected-text-color;
+          color: inherit;
         }
 
         > .icon {
-          color: $accordion-selected-text-color;
+          color: inherit;
 
           .chevron {
             top: -1px;
@@ -169,7 +168,7 @@
 
         > [class^='btn'] {
           .icon {
-            color: $accordion-selected-text-color;
+            color: inherit;
 
             &.plus-minus {
               &::before,
@@ -180,7 +179,7 @@
           }
 
           .audible {
-            color: $ids-color-palette-white;
+            color: inherit;
           }
         }
 
@@ -195,6 +194,10 @@
         .accordion-header {
           border-bottom-color: $accordion-selected-bg-color;
         }
+      }
+
+      &.is-selected.is-focused:not(.hide-focus) {
+        border-bottom-color: $accordion-selected-bg-color;
       }
 
       &.filtered.has-filtered-children {
@@ -253,7 +256,10 @@
         + .accordion-content {
           border-top-color: $accordion-alternate-border-color;
 
-          &.is-focused,
+          &.is-focused:not(.hide-focus) {
+            border-top-color: $accordion-selected-bg-color;
+          }
+
           &.is-selected {
             border-top-color: transparent;
           }
@@ -274,6 +280,12 @@
     // Lighter-colored, "alternate" color scheme
     &.alternate {
       background-color: $accordion-alternate-bg-color;
+
+      &.is-disabled {
+        .accordion-header {
+          border-bottom-color: $accordion-panel-border-color;
+        }
+      }
 
       .accordion-header {
         border-bottom-color: $accordion-alternate-border-color;
@@ -328,7 +340,7 @@
         color: $accordion-inverse-text-color;
 
         .icon {
-          color: $accordion-inverse-text-color;
+          color: $accordion-inverse-text-color !important;
 
           &.plus-minus {
             &::before,
@@ -364,10 +376,11 @@
         &.is-selected,
         &.is-selected:hover,
         &.is-focused.is-selected {
+          border-color: $ids-color-palette-white;
           color: $accordion-selected-text-color;
 
           .icon {
-            color: $accordion-selected-text-color;
+            color: $accordion-panel-selected-text-color;
 
             &.plus-minus {
               &::before,
@@ -420,8 +433,6 @@
         }
 
         .accordion-header {
-          border-bottom-color: $accordion-inverse-pane-bg-color;
-
           &:last-child {
             border-bottom-color: transparent;
           }
@@ -449,7 +460,6 @@
           p {
             color: inherit;
           }
-
         }
       }
     }
@@ -484,6 +494,7 @@
   position: relative;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
+  user-select: none;
 
   > * {
     vertical-align: middle;
@@ -513,6 +524,7 @@
     width: calc(100% - 1px);
 
     > span {
+      margin-top: -1px;
       display: inline-block; // to allow offsetWidth
       overflow: hidden;
       text-overflow: ellipsis;
@@ -522,6 +534,11 @@
   }
 
   > [class^='btn'] {
+    border-radius: 8px;
+    width: 38px;
+    height: 38px;
+    margin: unset;
+
     @include btn-chevron-style;
   }
 
@@ -538,9 +555,71 @@
     width: 18px;
   }
 
+  a + .notification-badge-container {
+    margin: 0 16px;
+
+    .notification-dot {
+      &.notification-dot-upper-left {
+        left: -4px;
+      }
+
+      &.notification-dot-upper-right {
+        right: 10px;
+      }
+
+      &.notification-dot-lower-right {
+        left: 2px;
+      }
+
+      &.notification-dot-lower-left {
+        left: -4px;
+      }
+    }
+  }
+
+  .notification-badge-container {
+    margin: 0 18px;
+    width: 18px;
+
+    + a {
+      width: calc(100% - 56px);
+      padding: 9px 0 7px !important;
+    }
+
+    .notification-dot {
+      &.notification-dot-upper-right {
+        right: 3px;
+        top: -26px;
+        transform: scale(1) translate(50%, -50%);
+        transform-origin: 100% 0%;
+      }
+
+      &.notification-dot-upper-left {
+        top: -26px;
+        left: 3px;
+        transform: scale(1) translate(-50%, -50%);
+        transform-origin: 0% 0%;
+      }
+
+      &.notification-dot-lower-right {
+        top: -20px;
+        left: 9px;
+        transform: scale(1) translate(50%, 50%);
+        transform-origin: 100% 100%;
+      }
+
+      &.notification-dot-lower-left {
+        top: -20px;
+        left: 3px;
+        transform: scale(1) translate(-50%, 50%);
+        transform-origin: 0% 100%;
+      }
+    }
+  }
+
   // NOT the same as the above rule.
   > .icon {
-    margin: 0 18px;
+    margin: 0 16px;
 
     + a {
       width: calc(100% - 56px);
@@ -584,7 +663,7 @@
 
     > .icon {
       + a {
-        width: calc(100% - 109px);
+        width: calc(100% - 104px);
       }
     }
   }
@@ -673,8 +752,8 @@
     + .accordion-content {
       border-top-color: $accordion-border-color;
 
-      &.is-focused {
-        border-top-color: transparent;
+      &.is-focused:not(.hide-focus) {
+        border-top-color: $accordion-focused-border-color;
       }
     }
   }
@@ -768,17 +847,18 @@
     }
 
     &.is-selected,
-    &.is-selected:hover,
-    &.is-focused.is-selected {
+    &.is-selected:hover {
+      color: $accordion-selected-text-color;
+
       &.list-item {
         &::before {
-          color: $accordion-selected-text-color !important;
+          color: inherit;
         }
       }
     }
 
     &.is-disabled {
-      background-color: $accordion-disabled-pane-bg-color !important;
+      background-color: $accordion-disabled-pane-bg-color;
     }
 
     // Subheaders can now have chevrons as of v4.23.x
@@ -871,6 +951,7 @@ html[dir='rtl'] {
     // Level 1
     .accordion-header {
       -webkit-font-feature-settings: 'ccmp' 0;
+      font-feature-settings: 'ccmp' 0;
 
       > a {
         padding-left: 0;

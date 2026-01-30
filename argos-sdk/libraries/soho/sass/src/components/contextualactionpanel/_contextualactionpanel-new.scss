@@ -2,12 +2,62 @@
 //================================================== //
 
 .modal.contextual-action-panel .toolbar .title,
+.modal.contextual-action-panel .toolbar .title-detail,
 .modal.contextual-action-panel .flex-toolbar .title,
 .modal.contextual-action-panel .flex-toolbar .title {
   font-size: 2.2rem;
-  margin-top: 2px;
 
   h2 {
     font-size: 2.2rem;
+  }
+}
+
+.modal.contextual-action-panel.is-visible {
+  .modal-body-wrapper {
+    .flex-toolbar {
+      padding: 0 5px 5px;
+
+      .title h2 {
+        font-size: 1.8rem;
+      }
+    }
+  }
+}
+
+.modal.contextual-action-panel {
+  .modal-header {
+    .go-back-button {
+      .go-back {
+        svg {
+          height: 18px;
+          width: 18px;
+        }
+      }
+
+      + .toolbar {
+        width: calc(100% - 41px);
+
+        .title-detail {
+          line-height: 2;
+        }
+      }
+    }
+  }
+}
+
+html[dir='rtl'] {
+  .modal.contextual-action-panel {
+    .modal-header {
+      .go-back-button {
+        margin-top: 3px;
+
+        + .toolbar {
+          .title,
+          .title-detail {
+            line-height: 2.2;
+          }
+        }
+      }
+    }
   }
 }

@@ -1,9 +1,11 @@
-// Uplift Application Menu
+// New Application Menu
 //================================================== //
 
 @import '../accordion/accordion-mixins';
 
 .application-menu {
+  @include antialiased();
+
   background-color: $new-appmenu-main-bg-color;
 
   .searchfield-wrapper {
@@ -52,8 +54,9 @@
       height: 24px;
       right: 9px;
       top: 8px;
+
       & > svg.close.icon {
-        top: 0px;
+        top: 0;
       }
     }
   }
@@ -68,6 +71,12 @@
       }
 
       &:hover {
+        background-color: $new-appmenu-hover-bg-color !important;
+      }
+    }
+
+    .flex-toolbar:not(.editor-toolbar):not(.formatter-toolbar):not(.contextual-toolbar) .toolbar-section {
+      [class^='btn']:not(:disabled):not(.searchfield-category-button):not(.collapse-button):hover {
         background-color: $new-appmenu-hover-bg-color;
       }
     }
@@ -87,6 +96,14 @@
 
   .application-menu-header {
     .icon.avatar {
+      background: none;
+      border: none;
+      height: 40px;
+      width: 40px;
+      min-width: 40px;
+      max-width: 40px;
+      min-height: 40px;
+      max-height: 40px;
       left: 29px;
       top: 0;
     }
@@ -167,6 +184,10 @@
         color: inherit;
         top: auto;
 
+        &:hover {
+          background-color: unset !important;
+        }
+
         &:focus:not(.hide-focus) {
           border-color: $new-appmenu-selected-border-color;
           box-shadow: none;
@@ -174,8 +195,8 @@
       }
 
       .icon {
-        color: inherit;
-        top: auto;
+        color: $app-menu-accordion-text-color !important;
+        top: -1px;
 
         &.plus-minus {
           &::before,
@@ -191,7 +212,7 @@
       }
 
       &.is-focused:not(.hide-focus) {
-        border-color: $new-appmenu-selected-border-color;
+        border-color: $app-menu-accordion-header-focused-border-color;
         box-shadow: none;
       }
 
@@ -211,20 +232,12 @@
     // Top level rules
     > .accordion-header {
       > a {
-        padding-bottom: 7px;
+        padding-bottom: 6px;
         padding-top: 9px;
       }
 
       &.is-selected {
-        border-bottom-color: transparent;
-
-        &:hover {
-          border-bottom-color: transparent;
-        }
-
-        &.is-focused {
-          border-bottom-color: $new-appmenu-selected-border-color;
-        }
+        border-bottom-color: $app-menu-accordion-header-border-color;
 
         > a > span {
           font-weight: $ids-number-font-weight-bold;
@@ -233,10 +246,8 @@
 
       &.is-expanded {
         background-color: $new-acc-expanded-bg-color;
-        border-radius: 0;
-        margin: 10px -10px 0;
-        padding: 10px;
         position: relative;
+        border-radius: 6px;
 
         &:not(.is-focused),
         &:not(.is-selected) {
@@ -247,6 +258,8 @@
         &:hover,
         &.is-focused,
         &.is-selected {
+          z-index: 0;
+
           > a {
             // allows the text inside the pseudo to be placed in front.
             position: relative;
@@ -257,12 +270,11 @@
             border-radius: $new-acc-border-radius;
             content: ' ';
             display: block;
-            height: calc(100% - 22px);
+            height: 36px;
             position: absolute;
-            width: calc(100% - 20px);
+            width: 284px;
+            margin-inline-start: -3px;
           }
-
-          z-index: 0;
         }
 
         &.is-focused {
@@ -270,7 +282,10 @@
           border-color: transparent;
 
           &::before {
-            border-color: $new-appmenu-selected-border-color;
+            border-color: $application-menu-new-border-color;
+            height: 36px;
+            margin: 0;
+            width: calc(100% - 3px);
           }
         }
 
@@ -342,13 +357,13 @@
       background-color: transparent;
 
       .accordion-header {
-        border-bottom-color: transparent;
         color: $new-acc-subheader-text-color;
+        margin-top: 1px;
 
         a {
           font-size: 14px;
-          padding-bottom: 7px;
-          padding-top: 11px;
+          padding-bottom: 6px;
+          padding-top: 9px;
         }
 
         .btn,
@@ -450,8 +465,11 @@
   }
 }
 
-html.is-firefox {
+.accordion.panel.inverse .accordion-pane.is-expanded + .accordion-header.is-selected {
+  border-color: $application-menu-new-border-color;
+}
 
+html.is-firefox {
   // Reset the Searchfield Wrapper height on Firefox
   .application-menu {
     .searchfield-wrapper {
@@ -516,7 +534,7 @@ html[dir='rtl'] {
 
           &.list-item {
             &::before {
-              font-size: 1.2rem;
+              font-size: 0.4rem;
               padding-left: 8px;
               padding-right: 28px;
             }
@@ -547,7 +565,6 @@ html[dir='rtl'] {
 //================================================== //
 
 .application-menu {
-
   // Level 1 Pane
   .accordion-pane {
     @include left-align-cascade-styles-pane(21px, 46px, 21px);
@@ -684,14 +701,13 @@ html[dir='rtl'] {
 
 html[dir='rtl'] {
   .application-menu {
-
     // Level 1 Pane
     .accordion-pane {
       @include right-align-cascade-styles-pane(21px, 46px, 21px);
 
       // Level 2 Header
       .accordion-header {
-        @include right-align-cascade-styles-header(20px, 18px, 49px, 26px);
+        @include right-align-cascade-styles-header(0, 18px, 49px, 26px);
       }
 
       // Level 2 Pane
@@ -700,7 +716,7 @@ html[dir='rtl'] {
 
         // Level 3 Header
         .accordion-header {
-          @include right-align-cascade-styles-header(40px, 44px, 72px, 52px);
+          @include right-align-cascade-styles-header(0, 44px, 72px, 52px);
         }
 
         // Level 3 Pane
@@ -709,7 +725,7 @@ html[dir='rtl'] {
 
           // Level 4 Header
           .accordion-header {
-            @include right-align-cascade-styles-header(59px, 69px, 97px, 77px);
+            @include right-align-cascade-styles-header(0, 69px, 97px, 77px);
           }
 
           // Level 4 Pane
@@ -718,7 +734,7 @@ html[dir='rtl'] {
 
             // Level 5 Header
             .accordion-header {
-              @include right-align-cascade-styles-header(78px, 94px, 122px, 102px);
+              @include right-align-cascade-styles-header(0, 94px, 122px, 102px);
             }
 
             // Level 5 Pane
@@ -727,7 +743,7 @@ html[dir='rtl'] {
 
               // Level 6 Header
               .accordion-header {
-                @include right-align-cascade-styles-header(122px, 122px, 152px, 130px);
+                @include right-align-cascade-styles-header(0, 122px, 152px, 130px);
 
                 &.no-icon {
                   > a {
@@ -749,7 +765,8 @@ html[dir='rtl'] {
     .accordion.has-icons {
       .accordion-header {
         > a {
-          padding-right: 54px;
+          padding-left: 0;
+          padding-right: 50px;
         }
 
         > .icon + a {
@@ -759,57 +776,57 @@ html[dir='rtl'] {
 
       // Level 1 Pane
       .accordion-pane {
-        @include right-align-cascade-styles-pane(55px, 78px, 56px);
+        @include right-align-cascade-styles-pane(55px, 55px, 56px,30px);
 
         .accordion-header {
-          @include right-align-cascade-styles-header(54px, 50px, 78px, 58px);
+          @include right-align-cascade-styles-header(50px, 25px, 53px, 58px);
         }
 
         // Level 2 Pane
         .accordion-pane {
-          @include right-align-cascade-styles-pane(55px, 102px, 78px);
+          @include right-align-cascade-styles-pane(55px, 75px, 78px,30px);
 
           // Level 3 Header
           .accordion-header {
-            @include right-align-cascade-styles-header(59px, 74px, 102px, 82px);
+            @include right-align-cascade-styles-header(13px, 45px, 95px, 55px);
           }
 
           // Level 3 Pane
           .accordion-pane {
-            @include right-align-cascade-styles-pane(79px, 127px, 102px);
+            @include right-align-cascade-styles-pane(79px, 95px, 102px,10px);
 
             // Level 4 Header
             .accordion-header {
-              @include right-align-cascade-styles-header(59px, 99px, 127px, 107px);
+              @include right-align-cascade-styles-header(20px, 65px, 93px, 75px);
             }
 
             // Level 4 Pane
             .accordion-pane {
-              @include right-align-cascade-styles-pane(104px, 152px, 128px);
+              @include right-align-cascade-styles-pane(104px, 115px, 128px, 5px);
 
               // Level 5 Header
               .accordion-header {
-                @include right-align-cascade-styles-header(78px, 124px, 152px, 132px);
+                @include right-align-cascade-styles-header(10px, 85px, 130px, 95px);
               }
 
               // Level 5 Pane
               .accordion-pane {
-                @include right-align-cascade-styles-pane(130px, 150px, 153px);
+                @include right-align-cascade-styles-pane(130px, 135px, 115px);
 
                 // Level 6 Header
                 .accordion-header {
-                  @include right-align-cascade-styles-header(122px, 152px, 180px, 160px);
+                  @include right-align-cascade-styles-header(0, 106px, 135px, 120px);
 
                   &.no-icon {
                     > a {
-                      padding-right: 182px;
+                      padding-right: 115px;
                     }
                   }
                 }
 
                 // Level 6 Pane
                 .accordion-pane {
-                  @include right-align-cascade-styles-pane(158px, 182px, 122px);
+                  @include right-align-cascade-styles-pane(115px, 115px, 122px);
                 }
               }
             }
@@ -820,14 +837,12 @@ html[dir='rtl'] {
   }
 }
 
-.is-safari {
-  .application-menu {
-    .accordion-static-panel {
-      .btn-menu {
-        svg {
-          margin-top: -2px;
-        }
-      }
-    }
-  }
+html[dir='rtl'] .application-menu .searchfield-wrapper.has-close-icon-button.has-text .btn-icon.close {
+  right: calc(300px - 34px);
+  top: 6px !important;
+}
+
+html[dir='rtl'] .application-menu .searchfield-wrapper.has-close-icon-button.has-text .btn-icon.close {
+  right: calc(300px - 52px);
+  top: 10px !important;
 }

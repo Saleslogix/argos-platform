@@ -1,4 +1,4 @@
-// Uplift Timeline
+// New Timeline
 //================================================== */
 
 .timeline {
@@ -15,15 +15,7 @@
 
 // Brings the indicator icon into alignment with the dotted line
 .indicator {
-  top: -2px;
-}
-
-@media (min-width: 767px) {
-  .timeline {
-    &::before {
-      left: 12.7em;
-    }
-  }
+  top: -0.12em;
 }
 
 html[dir='rtl'] {

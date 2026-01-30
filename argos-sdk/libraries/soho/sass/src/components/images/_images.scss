@@ -1,5 +1,6 @@
 // Images
 //================================================== //
+@use 'sass:list';
 
 $placeholder-icon-height: 22px;
 
@@ -20,7 +21,7 @@ $images-size: (
   width: $this-width;
 
   .icon {
-    margin-top: ($this-height - $this-icon-height) / 2;
+    margin-top: calc(($this-height - $this-icon-height) / 2);
   }
 }
 
@@ -34,8 +35,8 @@ $images-size: (
 
     img {
       border: 1px solid transparent; // to prevent jump on focus
-      max-height: nth($value, 2);
-      max-width: nth($value, 1);
+      max-height: list.nth($value, 2);
+      max-width: list.nth($value, 1);
 
       &:focus {
         @include focus-state();
@@ -43,7 +44,11 @@ $images-size: (
     }
 
     &.placeholder {
-      @include image-placeholder(nth($value, 1), nth($value, 2), $placeholder-icon-height);
+      @include image-placeholder(list.nth($value, 1), list.nth($value, 2), $placeholder-icon-height);
+
+      &:focus {
+        @include focus-state();
+      }
     }
   }
 }
@@ -67,8 +72,12 @@ $images-size: (
   border: 1px solid transparent; // to prevent jump on focus
   border-radius: 50%;
   display: inline-block;
-  height: 50px;
-  width: 50px;
+  height: 48px;
+  width: 48px;
+
+  &.round {
+    border-radius: 50%;
+  }
 
   &:focus {
     @include focus-state();
@@ -80,6 +89,8 @@ $images-size: (
   display: inline-block;
 
   .icon {
+    background-color: $body-color-primary-background;
+    border-radius: 50%;
     margin-left: -17px;
     margin-top: 35px;
     position: absolute;
@@ -87,21 +98,70 @@ $images-size: (
 }
 
 // Initials for when photo is absent
-.image-initials {
-  background: $ids-color-palette-amethyst-50;
+.image-initials,
+.avatar {
+  background: $ids-color-palette-emerald-50;
   border: 1px solid transparent; // to prevent jump on focus
-  border-radius: 50%;
   color: $ids-color-palette-white;
+  border-radius: 50%;
   display: inline-block;
-  font-size: $ids-size-font-lg;
-  height: 4.8rem;
-  line-height: 4.8rem;
+  font-size: 14px;
+  font-weight: 600;
+  min-height: 32px;
+  height: 32px;
+  max-height: 32px;
+  line-height: 30px;
   text-align: center;
+  text-transform: uppercase;
   vertical-align: middle;
-  width: 4.8rem;
+  min-width: 32px;
+  width: 32px;
+  max-width: 32px;
+  user-select: none;
+
+  &.three-char {
+    text-transform: capitalize;
+  }
+
+  &.large {
+    min-height: 48px;
+    height: 48px;
+    max-height: 48px;
+    font-size: 20px;
+    line-height: 48px;
+    min-width: 48px;
+    width: 48px;
+    max-width: 48px;
+  }
+
+  &.round {
+    border-radius: 50%;
+  }
+
+  &.square {
+    border-radius: 8px;
+  }
 
   &:focus {
     @include focus-state();
+  }
+}
+
+@each $name in $color-names {
+  $i: list.index($color-names, $name);
+  $color: list.nth($color-vars, $i);
+
+  //Classes for Tags
+  .avatar.#{$name} {
+    background: list.nth($color-vars, $i);
+  }
+}
+
+.actionable {
+  cursor: pointer;
+
+  &.datagrid-img {
+    margin: auto;
   }
 }
 

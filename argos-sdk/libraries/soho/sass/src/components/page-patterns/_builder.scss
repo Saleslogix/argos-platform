@@ -1,6 +1,6 @@
 // Builder Pattern
 //==================================================//
-// NOTE:  Duplicates some CSS from the List/Detail pattern in 'controls/_layouts.scss', could be more DRY
+// NOTE: Duplicates some CSS from the List/Detail pattern in 'controls/_layouts.scss', could be more DRY
 
 // has similar properties to a "scrollable" .page-container
 .builder {
@@ -78,7 +78,7 @@
   h2,
   h3,
   h4 {
-    color: $ids-color-palette-white;
+    color: $header-text-color;
     display: inline-block;
     margin-bottom: 0;
     max-width: 100%;
@@ -87,6 +87,14 @@
     text-overflow: ellipsis;
     top: 10px;
     vertical-align: top;
+  }
+
+  h2 {
+    top: -1px;
+
+    .panel-subhead {
+      height: 20px;
+    }
   }
 
   .panel-subhead {
@@ -98,7 +106,6 @@
   .panel-title {
     line-height: 3rem;
   }
-
 }
 
 .builder-content {
@@ -121,7 +128,6 @@
 
 .builder-actions {
   background-color: $builder-actions-bg-color;
-  // min-width: 1010px;
   width: calc(100% - 323px);
 
   > .listview {
@@ -265,7 +271,6 @@
         @include css3(transform, translateX(-100%));
       }
     }
-
   }
 }
 

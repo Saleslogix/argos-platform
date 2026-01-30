@@ -1,4 +1,4 @@
-// Uplift Input
+// New Input
 //================================================== //
 
 .field {
@@ -25,10 +25,6 @@ span.required::after {
 }
 
 .field-info {
-  .icon {
-    margin-top: -3px;
-  }
-
   + .error-message {
     margin-top: 0;
   }
@@ -36,12 +32,24 @@ span.required::after {
 
 .error-message {
   .icon {
-    height: 15px;
-    width: 15px;
+    height: 18px;
+    margin-top: 0;
+    margin-inline-end: 1px;
+    width: 18px;
   }
 
   .message-text {
     padding-left: 21px;
+  }
+}
+
+div[class*='-message'].truncated {
+  .icon {
+    top: 1px !important;
+  }
+
+  .message-text {
+    line-height: normal;
   }
 }
 
@@ -59,9 +67,21 @@ button.close {
   width: 14px;
 
   .icon {
-    height: 14px;
+    height: 16px;
     right: initial;
     top: -2px;
-    width: 14px;
+    width: 16px;
+  }
+}
+
+.alert-message,
+.success-message,
+.info-message,
+.custom-icon-message {
+  .icon {
+    height: 18px;
+    left: -1px;
+    top: -2px;
+    width: 18px;
   }
 }

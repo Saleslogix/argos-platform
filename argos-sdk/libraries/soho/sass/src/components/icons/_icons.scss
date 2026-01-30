@@ -5,9 +5,31 @@
 .icon {
   color: $icon-color-fill;
   display: inline-block;
-  height: 18px; //Older ones at 32 but now based on 40
+  height: 18px;
+  width: 18px;
   position: relative;
-  width: 22px;
+
+  &.icon-round {
+    border-radius: 50%;
+    border: 2px solid;
+    width: 26px;
+    height: 26px;
+  }
+}
+
+.icon-status {
+  display: inline-flex;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  justify-content: center;
+  align-items: center;
+
+  .icon {
+    top: 0;
+    height: 18px;
+    width: 18px;
+  }
 }
 
 //Glyphs on the Header
@@ -20,6 +42,8 @@
 .icon-success,
 .icon-alert,
 .icon-info,
+.icon-warning,
+.icon-caution,
 .icon-info-field,
 .icon-in-progress,
 svg.icon-dirty,
@@ -32,6 +56,11 @@ svg.icon-dirty,
   position: relative;
   top: 10px;
   vertical-align: top;
+
+  &.icon-round,
+  &.icon-status {
+    top: 0;
+  }
 }
 
 .icon-info-field {
@@ -44,19 +73,10 @@ svg.icon-dirty,
   .icon-alert,
   .icon-info,
   .icon-pending {
-    margin-left: -28px;
-    margin-top: 9px;
+    margin-top: -1px;
     position: absolute;
     top: inherit;
-  }
-
-  .icon-error,
-  .icon-success {
-    height: 14px;
-    position: relative;
-    right: 0;
-    top: -8px;
-    width: 18px;
+    margin-inline-start: -14px;
   }
 
   .icon-error.lower-opacity {
@@ -65,7 +85,7 @@ svg.icon-dirty,
   }
 
   .icon-success {
-    height: 15px;
+    height: 18px;
     margin-top: -2px;
     position: relative;
     right: auto;
@@ -75,8 +95,17 @@ svg.icon-dirty,
   [data-error-type='tooltip'] ~ .icon-error,
   [data-error-type='tooltip'] ~ .icon-success {
     position: relative;
-    right: auto;
-    top: -5px;
+    inset-inline-end: 12px;
+    top: -1px !important;
+  }
+  
+  @media (max-width: 346px) {
+    [data-error-type='tooltip'] ~ .icon-error,
+    [data-error-type='tooltip'] ~ .icon-success {
+      inset-inline-end: 12px;
+      position: absolute;
+      top: 40px !important;
+    }
   }
 
   .dropdown-wrapper {
@@ -84,7 +113,7 @@ svg.icon-dirty,
     [data-error-type='tooltip'] ~ .icon-success {
       position: absolute;
       right: 25px;
-      top: 1px;
+      top: 10px !important;
     }
   }
 
@@ -108,8 +137,9 @@ svg.icon-dirty,
   .lookup-wrapper {
     .icon-error,
     .icon-success {
-      right: 31px;
-      top: 1px;
+      inset-inline-end: 32px;
+      top: 11px !important;
+      position: absolute;
     }
   }
 
@@ -117,7 +147,7 @@ svg.icon-dirty,
     .icon-info {
       height: 14px;
       position: relative;
-      top: -6px;
+      top: -2px;
       width: 14px;
     }
   }
@@ -135,19 +165,31 @@ svg.icon-dirty,
   color: $ids-color-status-danger !important;
 }
 
+.icon-info,
+.icon-info-alert,
+.icon-status {
+  color: $badge-info-bg-color;
+}
+
 .icon-success,
+.icon-good,
 .icon-success-alert {
   color: $success-icon-fill !important;
 }
 
 .icon-empty-circle,
 .icon-half-empty-circle {
-  color: $icon-color;
+  color: $icon-neutral-color;
 }
 
 .icon-alert,
-.icon-alert-alert {
+.icon-alert-alert,
+.icon-warning {
   color: $ids-color-status-warning !important;
+}
+
+.icon-caution {
+  color: $ids-color-status-status-03 !important;
 }
 
 .icon-pending {
@@ -156,11 +198,6 @@ svg.icon-dirty,
 
 .icon-pending-alert {
   color: $ids-color-status-warning !important;
-}
-
-.icon-info,
-.icon-info-alert {
-  color: $info-icon-fill !important;
 }
 
 svg.icon-close {
@@ -188,7 +225,24 @@ svg use {
 
 svg.icon-logo {
   height: 34px;
-  width: 34px;
+  width: 35px;
+}
+
+// Missing fill hack
+#icon-logo-dark {
+  fill: #000;
+}
+
+#icon-logo-dark:first-child {
+  fill: #fff;
+}
+
+#icon-logo-white {
+  fill: #000;
+}
+
+#icon-logo-dark:first-child {
+  fill: #fff;
 }
 
 .icon-dirty {
@@ -217,7 +271,6 @@ svg.icon-logo {
       z-index: 2;
     }
   }
-
 }
 
 .inline {
@@ -258,7 +311,6 @@ svg.icon-logo {
     position: relative;
     width: 45px;
   }
-
 }
 
 .drilldown.btn-icon {
@@ -287,7 +339,7 @@ svg.icon-dirty {
 }
 
 .icon-in-progress {
-  color: $ids-color-palette-amethyst-70;
+  color: $ids-color-palette-amethyst-60;
 }
 
 .icon-new {
@@ -330,7 +382,6 @@ svg.icon-dirty {
       @include css3(transform, rotate(180deg));
     }
   }
-
 }
 
 // Hamburger by default,
@@ -641,7 +692,6 @@ html[dir='rtl'] {
     left: auto;
     margin: 1px 1px 0 0;
   }
-
 }
 
 .is-firefox {
@@ -649,4 +699,27 @@ html[dir='rtl'] {
     left: 0;
     top: 0;
   }
+}
+
+html[class*='-dark'] .icon-status {
+  background-color: transparent !important;
+}
+
+html[class*='-dark'] .icon-status {
+  border-color: transparent !important;
+}
+
+html[class*='-dark'] .icon-status.slate07-color {
+  color: $ids-color-palette-slate-30 !important;
+}
+
+// Style Gen Ai Sparkle
+symbol [fill="#7928E1"] {
+  color: transparent;
+  fill: inherit;
+}
+
+.lookup-wrapper .icon-error {
+  width: 14px;
+  height: 14px;
 }

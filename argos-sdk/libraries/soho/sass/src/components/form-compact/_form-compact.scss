@@ -1,4 +1,4 @@
-// Depends on:
+// Depenencies:
 // - 12 Column Grid
 // - Summary Form
 // Overrides some things in:
@@ -97,7 +97,7 @@
       border-radius: 0;
       border-right: 1px solid $formcompact-field-border-color;
       border-top: 0;
-      padding: 4px 8px 8px;
+      padding: 8px;
       text-overflow: ellipsis;
       width: 100%;
 
@@ -471,7 +471,7 @@ html[dir='rtl'] {
   }
 }
 
-@media (max-width: $breakpoint-phone-to-tablet + 1) {
+@media (max-width: ($breakpoint-phone-to-tablet + 1)) {
   // Responsive View of Summary Area
   .form-compact-container {
     .banner {

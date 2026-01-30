@@ -16,15 +16,9 @@
 
   .flex-grow-shrink {
     @include flex(1 1 auto);
-
-    &.is-right-side {
-      margin-left: 20px;
-    }
   }
 
   .is-right-side {
-    border-right: 0;
-
     .panel-header {
       border-bottom: 0;
       height: 41px;
@@ -37,86 +31,259 @@
   }
 }
 
-.splitter {
-  @include transition(background-color 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94));
+.splitter-container {
+  &.two-column > .main {
+    border-right: 0;
+  }
 
-  background-color: inherit;
+  &.two-column.fixed > .sidebar {
+    border-right: 0;
+  }
+
+  &.header-detail .detail {
+    border-top: 0;
+  }
+}
+
+.splitter {
+  border-inline-end: 1px solid $splitter-border-color;
   cursor: ew-resize;
   height: 100%;
+  outline: none;
   position: absolute;
-  width: 20px;
+  width: 0;
   z-index: 100;
 
-  &:hover,
-  &:active,
-  &:focus,
-  &.is-dragging {
-    background-color: $splitter-active-bg-color;
-    outline: none;
+  // Hit Box
+  &::after {
+    content: '';
+    position: absolute;
+    width: 7px;
+    height: 100%;
+    margin-inline-start: -6px;
+  }
 
-    &::after,
+  .splitter-drag-handle {
+    background-color: $splitter-handle-background-color;
+    border-radius: 4px;
+    display: block;
+    height: 32px;
+    opacity: 0;
+    position: absolute;
+    margin-inline-start: -2px;
+    width: 6px;
+    z-index: 1;
+  }
+
+  &:hover {
+    border-inline-end: 1px solid $splitter-border-color;
+
     .splitter-drag-handle {
-      color: $splitter-active-grip-bg-color;
+      opacity: 1;
     }
 
-    .splitter-btn .icon {
-      color: $splitter-active-grip-bg-color;
+    .splitter-expand-btn {
+      opacity: 1 !important;
+      visibility: visible !important;
     }
   }
 
+  // Override hover behavior for collapsed sidebars
+  .sidebar[style*="width: 0px"] &:not(:hover) .splitter-expand-btn,
+  .sidebar[style*="width:0px"] &:not(:hover) .splitter-expand-btn,
+  .sidebar[style*="width: 30px"] &:not(:hover) .splitter-expand-btn,
+  .sidebar[style*="width:30px"] &:not(:hover) .splitter-expand-btn {
+    opacity: 1 !important;
+    visibility: visible !important;
+    right: -12px;
+  }
+
+  &:active,
+  &.is-dragging {
+    border-color: $splitter-focus-border-color;
+
+    .splitter-drag-handle {
+      opacity: 1;
+    }
+  }
+
+  &:focus:not(:hover) {
+    border-color: $splitter-border-color;
+
+    .splitter-drag-handle {
+      opacity: 1;
+      top: 50% !important;
+      transform: translateY(-50%);
+    }
+  }
+
+.splitter-expand-btn {
+  position: absolute;
+  top: 16px;
+  width: 24px;
+  height: 24px;
+  background: $splitter-expand-btn-background-color;
+  border: 1px solid $splitter-expand-btn-border-color;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 102;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transition: opacity 0.2s ease, transform 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+  right: -12px;
+
+  &::before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 4px solid $splitter-expand-btn-arrow-color;
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  &:hover {
+    background: $splitter-expand-btn-hover-background-color;
+    border-color: $splitter-expand-btn-hover-border-color;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+
+    &::before {
+      border-left-color: $splitter-expand-btn-hover-arrow-color;
+    }
+  }
+
+  &.is-collapsed {
+    opacity: 1 !important;
+    visibility: visible !important;
+    right: -12px;
+    border: 1px solid $splitter-expand-btn-border-color;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    z-index: 1000;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: -2px;
+      top: 0;
+      width: 2px;
+      height: 100%;
+    }
+  }
+}
+
+// Always show expand button when sidebar is collapsed (width: 0px or 30px)
+.sidebar[style*="width: 0px"] .splitter .splitter-expand-btn,
+.sidebar[style*="width:0px"] .splitter .splitter-expand-btn,
+.sidebar[style*="width: 30px"] .splitter .splitter-expand-btn,
+.sidebar[style*="width:30px"] .splitter .splitter-expand-btn {
+  opacity: 1 !important;
+  visibility: visible !important;
+  right: -12px !important;
+  z-index: 1000;
+}
+
+// RTL collapsed sidebar expand button positioning
+html[dir='rtl'] {
+  .sidebar[style*="width: 0px"] .splitter .splitter-expand-btn,
+  .sidebar[style*="width:0px"] .splitter .splitter-expand-btn,
+  .sidebar[style*="width: 30px"] .splitter .splitter-expand-btn,
+  .sidebar[style*="width:30px"] .splitter .splitter-expand-btn {
+    right: auto !important;
+    left: -12px !important;
+  }
+}
+
+// RTL positioning for expand button
+html[dir='rtl'] .splitter-expand-btn {
+  right: auto;
+  left: -24px;
+  
+  &::before {
+    border-left: none;
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+  }
+  
+  &:hover::before {
+    border-right-color: $splitter-expand-btn-hover-arrow-color;
+  }
+  
+  &.is-collapsed {
+    left: -12px;
+    background-color: $splitter-expand-btn-background-color;
+    border: 1px solid $splitter-expand-btn-border-color;
+    border-right: 2px solid $splitter-expand-btn-accent-color;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+
+    &::after {
+      content: '';
+      position: absolute;
+      right: -2px;
+      top: 0;
+      width: 2px;
+      height: 100%;
+      background-color: $splitter-expand-btn-accent-color;
+    }
+  }
+}
+
+// Icon rotation based on collapsed state and direction
+// Arrow points in the direction the panel will move when clicked
+.splitter-expand-btn {
+  &[data-collapsed='false']::before {
+    transform: rotate(180deg); // Point left to collapse
+  }
+  
+  &[data-collapsed='true']::before {
+    transform: rotate(0deg); // Point right to expand
+  }
+}
+
+html[dir='rtl'] .splitter-expand-btn {
+  &[data-collapsed='false']::before {
+    transform: rotate(180deg); // Point left to collapse in RTL
+  }
+  
+  &[data-collapsed='true']::before {
+    transform: rotate(0deg); // Point right to expand in RTL
+  }
+}
+
   .splitter-btn {
     height: 30px;
-    left: 2px;
+    left: -20px;
     margin-top: -2px;
     min-width: 16px;
     position: absolute;
-    transform: rotate(180deg);
+    transform: rotate(180deg); 
     width: 16px;
     z-index: 101;
 
     .icon {
-      color: $splitter-grip-bg-color;
+      color: $splitter-border-color;
       height: 16px;
       width: 16px;
     }
 
     &.rotate {
       transform: rotate(0deg);
-      left: 4px
+      left: 4px;
     }
-  }
-
-  &.is-dragging {
-    box-shadow: -2px 0 3px 0 $splitter-box-shadow-color;
   }
 
   .panel-header {
     height: 41px;
   }
 
-  .splitter-drag-handle {
-    color: $splitter-grip-bg-color;
-    display: block;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-
-    .icon {
-      color: currentColor;
-      width: 19px;
-    }
-  }
-
   //Other Layouts
   &.splitter-right {
-    border-right: 1px solid $panel-border-color;
     left: 229px;
-    position: absolute;
+    margin-inline-start: 0;
     top: 0;
-
-    &.is-dragging {
-      box-shadow: 2px 0 3px 0 $splitter-box-shadow-color;
-    }
 
     .splitter-btn {
       transform: none;
@@ -132,25 +299,76 @@
 
   //Other Layouts
   &.splitter-horizontal {
+    border-inline-end: none;
+    border-block-end: 1px solid $splitter-border-color;
     cursor: ns-resize;
-    height: 20px;
-    position: absolute;
+    height: 0;
     width: 100%;
 
-    .splitter-drag-handle {
-      @include transform(rotate(90deg));
+    &:hover {
+      border-block-end: 1px solid $splitter-border-color;
 
-      color: $splitter-grip-bg-color;
-      display: block;
+      .splitter-drag-handle {
+        margin-block-start: -2px;
+      }
+
+      .splitter-expand-btn {
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+    }
+
+    &:active,
+    &.is-dragging {
+      border-color: $splitter-focus-border-color;
+    }
+
+    &:focus .splitter-drag-handle {
+      margin-block-start: 0.5px;
+    }
+
+    .splitter-drag-handle {
+      height: 6px;
+      margin-inline-start: unset;
+      margin-block-start: -2.5px;
+      width: 32px;
+    }
+
+    .splitter-expand-btn {
+      top: -16px;
+      right: auto;
       left: 50%;
-      margin-left: -10px;
+      transform: translateX(-50%);
+
+      &::before {
+        border-left: 3px solid transparent;
+        border-right: 3px solid transparent;
+        border-top: 4px solid $splitter-expand-btn-arrow-color;
+        border-bottom: none;
+      }
+
+      &.is-collapsed::before {
+        transform: rotate(180deg);
+      }
+
+      &:hover::before {
+        border-top-color: $splitter-expand-btn-hover-arrow-color;
+      }
+    }
+
+    // Hit Box
+    &::after {
+      content: '';
       position: absolute;
-      top: 1px;
+      height: 11px;
+      width: 100%;
+      z-index: 0;
+      margin-top: -5px;
     }
   }
 
-  + .tab-container.horizontal {
-    margin: 0 20px;
+  &.is-dragging {
+    border-color: $splitter-focus-border-color;
   }
 }
 
@@ -164,11 +382,19 @@
   }
 }
 
-.ie {
-  .splitter-container {
-    .toolbar .buttonset > [class^='btn'] {
-      line-height: normal;
-    }
+.collapsed-edge-hover-area {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 6px;
+  height: 100%;
+  z-index: 999;
+  cursor: ew-resize;
+
+  &:hover .splitter-expand-btn {
+    opacity: 1 !important;
+    visibility: visible !important;
+    right: -22px;
   }
 }
 
@@ -182,38 +408,9 @@
 
 // RTL Styles
 html[dir='rtl'] {
-  .splitter-container {
-    .flex-grow-shrink {
-      &.is-right-side {
-        margin-left: initial;
-        margin-right: 20px;
-      }
-    }
-
-    .sidebar {
-      border-left: none;
-    }
-  }
-
   .splitter {
-    border-left: none;
-    border-right: 1px solid $panel-border-color;
-
-    &.is-dragging {
-      box-shadow: 2px 0 3px 0 $splitter-box-shadow-color;
-    }
-
-    &.splitter-right {
-      border-left: 1px solid $panel-border-color;
-      border-right: none;
-
-      &.is-dragging {
-        box-shadow: -2px 0 3px 0 $splitter-box-shadow-color;
-      }
-    }
-
     .splitter-btn {
-      left: -6px;
+      left: -20px;
 
       .icon {
         -ms-filter: fliph;
@@ -224,3 +421,4 @@ html[dir='rtl'] {
     }
   }
 }
+

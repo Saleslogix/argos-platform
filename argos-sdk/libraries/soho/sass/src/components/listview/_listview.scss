@@ -1,9 +1,8 @@
 // Dependencies
-@import '../button/button';
-@import '../emptymessage/emptymessage';
-@import '../pager/pager';
-@import '../popupmenu/popupmenu';
-@import '../searchfield/searchfield';
+// emptymessage/emptymessage';
+// pager/pager';
+// popupmenu/popupmenu';
+// searchfield/searchfield';
 
 //================================================== //
 // Listview Component
@@ -54,7 +53,6 @@
     display: block;
     font-size: $ids-size-font-lg;
     margin: 8px 0 5px;
-    vertical-align: top;
 
     .icon-favorite {
       display: inline;
@@ -128,7 +126,7 @@
     border: 1px solid transparent;
     border-bottom-color: $listview-border-color;
     color: $listview-color;
-    padding: 16px 20px 15px;
+    padding: 16px 16px 15px;
     position: relative;
 
     &:hover {
@@ -237,6 +235,7 @@
 
       &:last-of-type {
         margin-bottom: 0;
+        margin-inline-end: 30px; 
       }
     }
 
@@ -246,11 +245,14 @@
       color: $listview-color;
       font-size: $ids-size-font-base;
       font-weight: $ids-number-font-weight-base;
-      text-decoration: none;
 
       &.hyperlink {
         color: $hyperlink-color;
       }
+    }
+
+    &.child {
+      padding-left: 35px;
     }
   }
 
@@ -327,7 +329,6 @@
   .listview-thumbnail {
     border-radius: 50%;
     display: inline-block;
-    float: left;
     height: 50px;
     margin-right: 20px;
     margin-top: -7px;
@@ -383,7 +384,8 @@
     @include unselectable;
   }
 
-  .is-disabled {
+  .is-disabled,
+  .is-disabled p {
     @include unselectable;
 
     color: $listview-disabled-color;
@@ -454,7 +456,6 @@
         opacity: 0.5;
       }
     }
-
   }
 
   &.tableview {
@@ -469,7 +470,6 @@
       background-color: transparent;
       border: 0 none;
       padding: 0 !important;
-
     }
 
     td {
@@ -505,6 +505,168 @@
     margin-top: -20px;
   }
 
+  &.card-list {
+    padding: 2px 0;
+
+    li {
+      background-color: transparent;
+      border: none;
+      padding: 0 16px;
+
+      &.is-selected,
+      &:hover,
+      &.is-selected:not(.hide-selected-color):hover {
+        background-color: transparent;
+      }
+
+      &:focus {
+        box-shadow: none;
+        border: none;
+      }
+
+      &.is-selected {
+        .card,
+        .widget {
+          .card-content {
+            border: none;
+          }
+        }
+      }
+
+      .tag-list {
+        margin: 0;
+        min-width: 11%;
+      }
+
+      .card,
+      .widget {
+        height: auto;
+        width: 100%;
+        position: relative;
+        border: none;
+        box-shadow: 0 0 4px $cardlist-box-shadow-color;
+        transition: box-shadow 0.3s cubic-bezier(.17, .04, .03, .94);
+        padding-right: 10px;
+
+        .card-header {
+          &.has-subheader {
+            display: block;
+            height: fit-content;
+          }
+        }
+
+        .card-content {
+          height: auto;
+          min-height: auto;
+        }
+
+        .card-buttonset {
+          padding: 5px;
+
+          .card-content-action .btn-actions {
+            margin-right: 0;
+          }
+        }
+
+        button {
+          border-radius: 8px;
+        }
+
+        &:hover {
+          outline: 1px solid $card-border-color-hover;
+          box-shadow: 0 2px 4px 1px $cardlist-box-shadow-color-hover;
+          border-color: transparent;
+        }
+
+        &.is-selected {
+          outline: 2px solid $card-selected-border-color;
+          border-color: $card-selected-border-color
+        }
+
+        &:focus {
+          &:not(.hide-focus) {
+            box-shadow: 0 0 0 2px $body-color-primary-background, 0 0 0 3px $button-color-primary-initial-background, $focus-box-shadow;
+            outline: 0;
+          }
+        }
+      }
+    }
+  }
+
+  &.link-list {
+    padding-top: 5px;
+
+    li {
+      cursor: default;
+      background-color: transparent;
+      border: none;
+      padding: 0 15px;
+
+      .link-item {
+        padding: 0;
+        height: 28px;
+
+        .hyperlink {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          max-width: 327px;
+          display: inline-block;
+        }
+
+        .hyperlink,
+        .hyperlink span {
+          color: $linklist-color-text-font;
+          text-decoration: none;
+          font-size: 16px;
+          font-weight: 600;
+          height: 28px;
+
+          &.show-visited:visited,
+          &.force-visited {
+            color: $linklist-color-visited-text-font;
+
+            svg,
+            span {
+              color: $linklist-color-visited-text-font;
+            }
+          }
+
+          > svg {
+            color: $linklist-color-text-font;
+            left: 0;
+            margin-right: 5px;
+          }
+
+          &[disabled] {
+            color: $linklist-color-disabled-text-font;
+            text-decoration: none;
+
+            svg,
+            span {
+              color: $linklist-color-disabled-text-font;
+            }
+          }
+        }
+
+        .hyperlink:not(.has-icon),
+        .hyperlink span {
+          &:hover:not([disabled]) {
+            text-decoration: underline;
+          }
+        }
+      }
+
+      &.is-selected:not(.hide-selected-color) {
+        background-color: transparent;
+      }
+
+      &:focus {
+        border-color: transparent;
+        box-shadow: none;
+      }
+    }
+  }
 }
 
 .listview-table {
@@ -553,7 +715,6 @@
       text-align: left;
     }
   }
-
 }
 
 // White Header for top of flat lists
@@ -568,7 +729,6 @@
 
   .btn-expand {
     display: inline-block;
-    float: left;
     left: -7px;
 
     .icon.plus-minus::before,
@@ -617,6 +777,7 @@
   &.is-hidden {
     + .listview {
       height: 100%;
+      overflow-y: auto;
     }
   }
 
@@ -625,33 +786,86 @@
 
     &.is-toolbar-open {
       height: calc(100% - 40px);
+      overflow-y: auto;
     }
   }
 }
 
 // Search Toolbar on Listview
-.listview-search {
+.listview-search,
+.card-search,
+.widget-search {
   .searchfield-wrapper {
     background-color: $body-color-primary-background;
     height: 100%;
     margin-bottom: 0;
     width: 100%;
 
+    .searchfield {
+      height: 38px;
+
+      &::placeholder {
+        color: $listview-search-placeholder-color;
+        opacity: 1;
+      }
+    }
+
+    &.non-collapsible.is-open > .icon:not(.close):not(.icon-error) {
+      left: 18px !important;
+    }
+
+    .btn-icon {
+      top: 7px;
+    }
+
+    &.has-listview-filters {
+      height: 38px;
+      z-index: 1;
+
+      .searchfield {
+        height: 38px;
+      }
+
+      .btn-icon {
+        top: 7px;
+      }
+
+      svg.icon {
+        top: 12px;
+        left: 16px !important;
+      }
+
+      .btn-icon.close {
+        svg.close {
+          position: static;
+        }
+      }
+    }
+
     &.has-focus {
       input {
-        border: 1px solid $ids-color-brand-primary-base;
+        border: 1px solid $listview-search-border-color;
+      }
+    }
+
+    &.is-hovered:not(.has-focus) {
+      input:not([disabled='true']) {
+        border: 1px solid $listview-search-border-color;
       }
     }
   }
 
-  .icon:not(.close) {
+  .searchfield-filter-wrapper {
+    left: 0;
+  }
+
+  .icon:not(.close):not(.filter-icon) {
     left: 10px;
     top: 10px;
   }
 
   .icon.close {
-    right: 0;
-    top: -2px;
+    top: 0;
   }
 
   .searchfield {
@@ -659,7 +873,7 @@
     border: 1px solid transparent;
     border-bottom-color: $listview-border-color;
     line-height: 16px;
-    padding: 9px 10px 9px 40px;
+    padding: 9px 10px 9px 45px;
     width: 100%;
 
     &[disabled] {
@@ -691,9 +905,46 @@
   }
 
   + .listview {
-    height: calc(100% - 36px);
+    height: calc(100% - 38px);
+  }
+}
+
+.listview-filter-wrapper {
+  display: inline-block;
+  border-bottom: 1px solid $listview-border-color;
+  border-left: 1px solid $listview-border-color;
+  background-color: $listview-full-width-bg-color;
+  height: 38px;
+  position: relative;
+  left: 1px;
+  top: -2px;
+  margin-left: 0;
+
+  .listview-filters {
+    height: 24px;
+    width: 24px;
+    top: 1px;
   }
 
+  .listview-filters:first-child {
+    margin-left: 0;
+  }
+
+  .listview-filters:last-child {
+    margin-right: 6px;
+    margin-left: -4px;
+  }
+}
+
+html[dir='rtl'] .listview-filter-wrapper {
+  .listview-filters:first-child {
+    margin-left: -1px;
+  }
+
+  .listview-filters:last-child {
+    margin-right: -4px;
+    margin-left: 2px;
+  }
 }
 
 // Tasks
@@ -726,8 +977,86 @@
   }
 }
 
+.sidebar.scrollable {
+  .listview-search .searchfield-wrapper {
+    display: inline-block;
+    margin: 0;
+    width: 100%
+  }
+}
+
+// Listview in Form Compact Mode
+.form-layout-compact,
+.field-short {
+  .listview {
+    &.is-multiselect {
+      li {
+        padding-left: 37px;
+      }
+    }
+
+    label.inline {
+      .checkbox {
+        ~ .label-text::before,
+        input.checkbox + label::before,
+        input.checkbox + input[type='hidden'] + label::before,
+        span.checkbox > label::before {
+          top: 2px;
+        }
+    
+        &:checked ~ .label-text::after,
+        input.checkbox:checked + label::after,
+        input.checkbox:checked + input[type='hidden'] + label::after,
+        span.checkbox > input:checked + label::after {
+          top: 11px;
+        }
+      }
+    }    
+
+    li {
+      padding: 8px 8px 7px;
+
+      p {
+        margin-bottom: 3px;
+      }
+    }
+
+    .days,
+    .hours,
+    .day-sign,
+    .hour-sign {
+      @include font-size(16);
+    }
+
+    p,
+    .listview-heading,
+    .listview-subheading {
+      @include font-size(14);
+    }
+
+    .listview-micro {
+      @include font-size(12);
+    }
+
+    .l-pull-right .icon {
+      height: 16px;
+      width: 16px;
+    }
+  }
+}
+
 // RTL Styles
 html[dir='rtl'] {
+  &.is-safari {
+    .listview ul li {
+      .alert-text {
+        &::after {
+          content: '\200E'; // fix for rlm character
+        }
+      }
+    }
+  }
+
   .listview {
     &[aria-label^='Icons'] li {
       padding: 16px 12px 15px;
@@ -743,21 +1072,16 @@ html[dir='rtl'] {
       float: right;
       margin-left: 15px;
       margin-right: inherit;
+      left: 0;
+      right: unset;
 
       &.pending::before {
         left: auto;
         right: 0.35em !important;
-
       }
     }
 
     li {
-      &.error {
-        border-left: 3px solid $error-color !important;
-        border-right: 0 solid $error-color !important;
-        padding: 15px 17px 15px 20px;
-      }
-
       > .icon {
         float: right;
         margin: 1px 0 10px 15px;
@@ -816,7 +1140,7 @@ html[dir='rtl'] {
     }
 
     &.is-multiselect li {
-      padding-left: inherit;
+      padding-left: 16px;
       padding-right: 43px;
 
       .listview-selection-checkbox {
@@ -853,6 +1177,86 @@ html[dir='rtl'] {
       left: 12px !important;
       right: unset !important;
     }
+  }
+}
 
+html[class*='-dark'] {
+  .card-image {
+    .amber01-border-color {
+      border-color: transparent !important;
+    }
+
+    .amber01 {
+      background-color: transparent !important;
+    }
+
+    .ruby01-border-color {
+      border-color: transparent !important;
+    }
+
+    .ruby01 {
+      background-color: transparent !important;
+    }
+
+    .emerald01-border-color {
+      border-color: transparent !important;
+    }
+
+    .emerald01 {
+      background-color: transparent !important;
+    }
+
+    .azure01-border-color {
+      border-color: transparent !important;
+    }
+
+    .azure01 {
+      background-color: transparent !important;
+    }
+
+    .turquoise01-border-color {
+      border-color: transparent !important;
+    }
+
+    .turquoise01 {
+      background-color: transparent !important;
+    }
+
+    .amethyst01-border-color {
+      border-color: transparent !important;
+    }
+
+    .slate01-border-color {
+      background-color: transparent !important;
+    }
+
+    .slate01 {
+      background-color: transparent !important;
+    }
+  }
+}
+
+html[dir='rtl'] {
+  &.is-firefox {
+    .listview .alert-text {
+      &::before {
+        margin-top: 5px;
+      }
+    }
+  }
+}
+
+html[class*='theme-classic-'] {
+  .card-content {
+    .listview-search {
+      display: flex;
+
+      .listview-filter-wrapper {
+        display: flex;
+        top: 0;
+        left: 0;
+        margin-left: 0;
+      }
+    }
   }
 }

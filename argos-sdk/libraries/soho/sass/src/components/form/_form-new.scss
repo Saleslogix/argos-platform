@@ -25,3 +25,26 @@
 .input-hideshow-text {
   transform: translate(calc(-100% + -8px), 8px);
 }
+
+.form-responsive {
+  .icon-dirty.dirty-checkbox.is-checked {
+    top: 0;
+  }
+}
+
+.form-responsive .fileupload-wrapper .container .file-row .status-icon .icon {
+  top: -3px;
+}
+
+// Firefox fixes
+.is-firefox {
+  .form-responsive {
+    .icon-dirty.dirty-checkbox.is-checked {
+      top: 0 !important;
+
+      @media (max-width: $breakpoint-phone-to-tablet) {
+        top: -1px !important;
+      }
+    }
+  }
+}

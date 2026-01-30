@@ -16,8 +16,8 @@
 .btn.fontpicker {
   .icon-dropdown {
     position: absolute;
-    right: 0;
-    top: 1px;
+    inset-inline-end: 1px;
+    inset-block-start: 3px;
   }
 }
 

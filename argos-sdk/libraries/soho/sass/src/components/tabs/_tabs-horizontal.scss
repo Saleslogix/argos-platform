@@ -3,13 +3,14 @@
 
 $horizontal-tabs-height: 40px;
 
-.has-more-button.tab-container.horizontal {
+.has-more-button.tab-container.horizontal:not(.header-tabs) {
   &::after {
-    background-image: linear-gradient(
-      to right,
-      rgba($body-color-primary-background, 0),
-      rgba($body-color-primary-background, 1)
-    );
+    background-image:
+      linear-gradient(
+        to right,
+        rgba($body-color-primary-background, 0),
+        rgba($body-color-primary-background, 1)
+      );
     height: ($horizontal-tabs-height - 1px);
   }
 }
@@ -18,11 +19,12 @@ $horizontal-tabs-height: 40px;
   border-bottom: 1px solid $tab-border-color;
 
   &::before {
-    background-image: linear-gradient(
-      to right,
-      rgba($body-color-primary-background, 1),
-      rgba($body-color-primary-background, 0)
-    );
+    background-image:
+      linear-gradient(
+        to right,
+        rgba($body-color-primary-background, 1),
+        rgba($body-color-primary-background, 0)
+      );
     height: ($horizontal-tabs-height - 1px);
   }
 
@@ -31,19 +33,21 @@ $horizontal-tabs-height: 40px;
     border-bottom-color: $tab-alt-border-color;
 
     &::before {
-      background-image: linear-gradient(
-        to right,
-        rgba($tab-alt-bg-color, 1),
-        rgba($tab-alt-bg-color, 0)
-      );
+      background-image:
+        linear-gradient(
+          to right,
+          rgba($tab-alt-bg-color, 1),
+          rgba($tab-alt-bg-color, 0)
+        );
     }
 
     &::after {
-      background-image: linear-gradient(
-        to right,
-        rgba($tab-alt-bg-color, 0),
-        rgba($tab-alt-bg-color, 1)
-      );
+      background-image:
+        linear-gradient(
+          to right,
+          rgba($tab-alt-bg-color, 0),
+          rgba($tab-alt-bg-color, 1)
+        );
     }
   }
 
@@ -57,25 +61,25 @@ $horizontal-tabs-height: 40px;
     }
 
     .tab {
-      color: $tab-text-color;
+      color: $tab-text-color-horizontal;
 
       a {
-        padding: 11px 11px 8px 11px;
+        padding: 11px 11px 8px;
       }
 
-      &:hover {
+      svg.icon {
+        color: $tab-text-color-horizontal;
+      }
+
+      &:not(.is-disabled):hover {
         color: $tab-hover-color;
 
         .icon:not(.is-error):not(.icon-error) {
           color: $tab-hover-color;
         }
-
-        &.is-disabled {
-          color: $disabled-color;
-        }
       }
 
-      &.is-selected {
+      &:not(.is-disabled).is-selected {
         color: $tab-selected-color;
 
         .icon:not(.is-error):not(.icon-error) {
@@ -93,7 +97,7 @@ $horizontal-tabs-height: 40px;
     line-height: 12px;
 
     .icon {
-      color: $tab-text-color;
+      color: $tab-text-color-horizontal;
     }
 
     &:hover {
@@ -116,6 +120,11 @@ $horizontal-tabs-height: 40px;
         color: $tab-selected-color;
       }
     }
+  }
+
+  .add-tab-button {
+    color: $tab-add-tab-color;
+    top: 9px;
   }
 
   .tab-more {
@@ -149,7 +158,6 @@ $horizontal-tabs-height: 40px;
           position: static;
         }
       }
-
     }
 
     .animated-bar {
@@ -170,7 +178,7 @@ $horizontal-tabs-height: 40px;
   }
 
   + .tab-panel-container {
-    margin-bottom: 20px;
+    margin-bottom: $input-field-bottom-margin;
   }
 }
 
@@ -188,38 +196,62 @@ $horizontal-tabs-height: 40px;
 
 // RTL Styles
 html[dir='rtl'] {
+  .has-more-button.tab-container.horizontal:not(.header-tabs) {
+    &::after {
+      background-image:
+        linear-gradient(
+          to left,
+          rgba($body-color-primary-background, 0),
+          rgba($body-color-primary-background, 1)
+        );
+      height: ($horizontal-tabs-height - 1px);
+    }
+  }
+
   .tab-container.horizontal {
     &::before {
-      background-image: linear-gradient(
-        to left,
-        rgba($body-color-primary-background, 1),
-        rgba($body-color-primary-background, 0)
-      );
+      background-image:
+        linear-gradient(
+          to left,
+          rgba($body-color-primary-background, 1),
+          rgba($body-color-primary-background, 0)
+        );
     }
 
     &::after {
-      background-image: linear-gradient(
-        to left,
-        rgba($body-color-primary-background, 0),
-        rgba($body-color-primary-background, 1)
-      );
+      background-image:
+        linear-gradient(
+          to left,
+          rgba($body-color-primary-background, 0),
+          rgba($body-color-primary-background, 1)
+        ) !important;
     }
 
     &.alternate {
       &::before {
-        background-image: linear-gradient(
-          to left,
-          rgba($tab-alt-bg-color, 1),
-          rgba($tab-alt-bg-color, 0)
-        );
+        background-image:
+          linear-gradient(
+            to left,
+            rgba($tab-alt-bg-color, 1),
+            rgba($tab-alt-bg-color, 0)
+          );
       }
 
       &::after {
-        background-image: linear-gradient(
-          to left,
-          rgba($tab-alt-bg-color, 0),
-          rgba($tab-alt-bg-color, 1)
-        );
+        background-image:
+          linear-gradient(
+            to left,
+            rgba($tab-alt-bg-color, 0),
+            rgba($tab-alt-bg-color, 1)
+          );
+      }
+    }
+
+    .add-tab-button {
+      top: 7px;
+
+      svg.icon {
+        top: 1px;
       }
     }
   }

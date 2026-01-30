@@ -1,20 +1,9 @@
 // Lookup
 //================================================== //
 
-// This rule will serve to target (using .lookup-modal as parent selector)
-// the searchfield specifically inside of lookup modal
-// to avoid issues within the searchfield itself. (Also avoid using !important)
-.lookup-modal {
-  .toolbar-searchfield-wrapper.searchfield-wrapper.non-collapsible {
-    svg.icon:not(.close) {
-      top: 12px;
-    }
-  } 
-}
-
 .lookup-wrapper {
   display: inline-block;
-  margin-bottom: 20px;
+  margin-bottom: $input-field-bottom-margin;
   max-width: 100%;
   position: relative;
 
@@ -59,7 +48,7 @@
     display: inline-block;
     height: 24px;
     margin-left: -31px;
-    margin-top: 5px;
+    margin-top: 6px;
     min-height: 24px;
     min-width: 24px;
     outline: none;
@@ -71,8 +60,8 @@
       color: $trigger-icon-fill-color;
       height: 18px;
       pointer-events: none;
-      right: 1px;
-      top: -1px;
+      position: static;
+      margin: 3px auto 0;
       width: 18px;
     }
 
@@ -92,13 +81,9 @@
       &.active {
         &.toolbar-searchfield-wrapper {
           box-shadow: none;
-        }
 
-        .searchfield {
-          border-color: transparent transparent rgba($searchfield-border-color, 1);
-
-          &:focus {
-            border-color: transparent transparent rgba($searchfield-border-color, 1);
+          &:focus-within {
+            box-shadow: $focus-box-shadow;
           }
         }
       }
@@ -109,13 +94,30 @@
       .btn-icon {
         .close.icon {
           display: inline-block;
+          transform: translateY(0);
         }
+      }
+    }
+
+    &.non-collapsible.is-hovered {
+      &:not(.has-focus) .searchfield {
+        border: 1px solid $lookup-modal-searchfield-input-hover-border-color;
       }
     }
   }
 
-  .toolbar-searchfield-wrapper.non-collapsible .searchfield {
-    padding-top: 8px !important;
+  .toolbar-searchfield-wrapper.non-collapsible {
+    .searchfield {
+      border: 1px solid $searchfield-toolbar-border-color;
+      height: 38px;
+      padding-top: 8px !important;
+    }
+
+    .btn-icon {
+      top: 50%;
+      transform: translateY(-50%);
+      right: 4px;
+    }
   }
 }
 
@@ -128,6 +130,8 @@
 
 .lookup-wrapper {
   .searchfield-wrapper {
+    width: 100%;
+
     > .icon.close {
       right: 30px;
     }
@@ -150,7 +154,8 @@
 
 .lookup-modal {
   .modal-content .modal-body-wrapper {
-    margin-bottom: 20px;
+    padding: 4px 20px;
+    margin-bottom: $input-field-bottom-margin;
     overflow: hidden;
   }
 
@@ -178,7 +183,9 @@
   }
 
   .datagrid-result-count {
-    top: -2px;
+    margin-inline-start: 4px;
+    top: 6px;
+    vertical-align: middle;
   }
 
   .toolbar {
@@ -187,10 +194,16 @@
 
     .buttonset {
       width: 100%;
+      height: 41px;
     }
 
     &.do-resize .buttonset {
       width: 100%;
+      overflow: visible;
+
+      @media only screen and (max-width: $breakpoint-phone-to-tablet) {
+        width: 100% !important;
+      }
     }
 
     &.has-more-button .buttonset {
@@ -251,17 +264,6 @@
 
   .toolbar-searchfield-wrapper.non-collapsible {
     width: 100% !important;
-
-    input {
-      background-color: $searchfield-lighter-bg-color;
-
-      &::-webkit-input-placeholder,
-      &::-moz-placeholder,
-      &:-ms-input-placeholder {
-        color: $searchfield-lighter-text-color;
-      }
-
-    }
   }
 }
 
@@ -280,9 +282,9 @@
 
     .trigger,
     + .tooltip-description + .trigger {
-      height: 20px;
+      height: 23px;
       margin-left: -26px;
-      margin-top: 3px;
+      margin-top: 1px;
       min-height: 20px;
       min-width: 20px;
       width: 20px;
@@ -312,10 +314,16 @@ html.is-safari {
     }
   }
 
+  .datagrid-header .datagrid-filter-wrapper .lookup-wrapper .trigger {
+    margin-left: -17px;
+    position: absolute;
+    top: -1px;
+  }
+
   .field-short {
     .lookup-wrapper {
       .trigger {
-        top: unset;
+        margin-top: 2px;
 
         .icon {
           margin-top: unset;
@@ -358,6 +366,7 @@ html[dir='rtl'] {
 
     + .icon {
       margin-left: -41px;
+      top: -3px;
     }
   }
 
@@ -365,7 +374,7 @@ html[dir='rtl'] {
   .form-layout-compact .field {
     .lookup-wrapper .trigger {
       margin-left: 0;
-      margin-right: -20px;
+      margin-right: -22px;
 
       .icon {
         height: 15px;
@@ -415,6 +424,7 @@ html:not([dir='rtl'])[class*='theme-classic-'] .modal-content .toolbar .buttonse
 html[dir='rtl'] .modal-content .toolbar .buttonset .searchfield-wrapper .btn-icon.close {
   left: 7px;
   right: unset;
+  top: 50%;
 }
 
 html[class*='theme-classic-'] .modal-content .toolbar .buttonset .searchfield-wrapper .btn-icon.close {
@@ -430,6 +440,16 @@ html[dir='rtl'][class*='theme-classic-'] .modal-content .toolbar .buttonset .sea
     left: 2px;
     position: absolute;
     right: unset;
-    top: 4px;
+    top: 3px;
   }
 }
+
+.lookup-modal {
+  .lookup-wrapper .icon-error {
+    position: absolute;
+    right: 31px;
+    top: -2px;
+  }
+}
+
+

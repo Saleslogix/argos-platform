@@ -1,4 +1,4 @@
-// Uplift Pager
+// New Pager
 //================================================== */
 
 .pager-pagesize {
@@ -19,18 +19,22 @@
     &.pager-last,
     &.pager-next {
       > .btn-icon {
+        border-radius: 8px;
         margin-top: -4px;
         min-width: 30px;
         width: 30px;
 
         .icon {
-          margin-top: -10px;
+          margin-top: -3px;
         }
       }
     }
 
     &.pager-no {
+      border-radius: 8px;
+
       > .btn-icon {
+        border-radius: 8px;
         margin-top: -4px;
 
         .icon {
@@ -45,6 +49,7 @@
 .widget {
   &.card .card-footer .pager-toolbar {
     height: 30px;
+    margin-top: -10px;
 
     > li {
       &.pager-prev,
@@ -53,7 +58,7 @@
       &.pager-next {
         > .btn-icon {
           height: 32px;
-          margin-top: -4px;
+          margin-top: -2px;
           padding: 5px;
         }
       }
@@ -94,27 +99,6 @@
         &.pager-no {
           > .btn-icon {
             margin-top: -4px;
-          }
-        }
-      }
-    }
-  }
-}
-
-.ie {
-  &.ie11 {
-    .pager-toolbar {
-      > li {
-        &.pager-prev,
-        &.pager-first,
-        &.pager-last,
-        &.pager-next {
-          > .btn-icon {
-            margin-top: 0;
-
-            .icon {
-              top: 0;
-            }
           }
         }
       }

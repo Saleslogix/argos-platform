@@ -1,6 +1,13 @@
 // Instance Count
 //================================================== //
 
+.card-content.has-instance-count {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  flex-flow: wrap;
+}
+
 .instance-count {
   display: inline-block;
   margin: 20px 10px;
@@ -8,9 +15,6 @@
   width: 120px;
 
   .count {
-    @include font-size(16);
-    @include colorPalettesProperty(border-color);
-
     background: transparent;
     border: 1px solid;
     border-radius: 50%;
@@ -23,17 +27,20 @@
     text-align: center;
     vertical-align: middle;
     width: 80px;
+
+    @include font-size(16);
+    @include colorPalettesProperty(border-color);
   }
 
   svg.icon {
-    @include colorPalettesProperty(color);
-
     background: $cardlist-bg-color;
     height: 19px;
     position: absolute;
     right: 23px;
     top: 0;
     width: 20px;
+
+    @include colorPalettesProperty(color);
 
     &.icon-alert {
       right: 22px;
@@ -42,7 +49,7 @@
   }
 
   // No Color Class.
-  .count[class=count] {
+  .count[class='count'] {
     background-color: transparent;
   }
 
@@ -50,19 +57,26 @@
     @include antialiased();
 
     color: $font-color;
-    display: block;
     font-size: $ids-size-font-base;
     line-height: 20px;
     text-align: center;
     width: auto;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
-
 }
 
 .count-info {
   margin: 15px 20px;
   text-align: center;
   width: auto;
+}
+
+.object-count.personalize-text {
+  color: $counts-personalize-text-color;
 }
 
 .object-count {
@@ -75,12 +89,17 @@
     margin: -1px 0 0;
     padding: 0 0 8px;
     text-decoration: none;
+    line-height: normal;
   }
 
   span,
   .xl-text {
     color: inherit;
     display: block;
+  }
+
+  .xl-text {
+    @include font-size(48);
   }
 }
 
@@ -92,18 +111,23 @@
   }
 }
 
+html.is-firefox {
+  .instance-count {
+    .title {
+      -moz-orient: vertical;
+      width: 120px;
+      height: 40px;
+    }
+  }
+}
+
 // RTL Styles
 html[dir='rtl'] {
   .instance-count {
-    .count {
-      float: right;
-    }
-
     .title {
-      float: right;
       padding-left: inherit;
-      padding-right: 11px;
-      text-align: right;
+      padding-right: 0;
+      text-align: center;
     }
   }
 }

@@ -26,6 +26,7 @@ input.spinbox {
 
 input[type='number'] {
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 input::-webkit-outer-spin-button,
@@ -67,6 +68,7 @@ input::-webkit-inner-spin-button {
   text-align: center;
   -moz-transform: translate3d(0, 0, 0);  // Makes the round ripple-effect pressed state work
   -webkit-transform: translate3d(0, 0, 0);  // Makes the round ripple-effect pressed state work
+  transform: translate3d(0, 0, 0);
   width: 33px;
 
   &.up {
@@ -100,8 +102,9 @@ input::-webkit-inner-spin-button {
 // Everything inside the spinbox wrapper is vertically-aligned middle.
 .spinbox-wrapper {
   display: inline-block;
+  width: max-content;
 
-  input:hover  {
+  input:hover {
     border: 1px solid $input-color-initial-border;
   }
 
@@ -146,7 +149,6 @@ input::-webkit-inner-spin-button {
         cursor: default;
       }
     }
-
   }
 
   &.is-disabled {
@@ -177,7 +179,7 @@ input::-webkit-inner-spin-button {
 .spinbox-md,
 .spinbox-lg {
   input {
-    width: calc(100% - 50px) !important;
+    width: calc(100% - 66px) !important;
   }
 }
 
@@ -241,13 +243,17 @@ input::-webkit-inner-spin-button {
 
   .spinbox-control {
     height: inherit;
-    padding: 4px 7px;
+    padding: 3px 0 5px;
     width: 25px;
   }
 }
 
 // RTL Styles
 html[dir='rtl'] {
+  input.spinbox {
+    text-align: center;
+  }
+
   .spinbox-control {
     &.up {
       border-bottom-left-radius: 2px;
@@ -290,7 +296,6 @@ html[dir='rtl'] {
           border-color: $input-color-disabled-border;
         }
       }
-
     }
 
     &.is-disabled {
@@ -325,6 +330,20 @@ html[dir='rtl'] {
   .form-layout-compact .field {
     .spinbox-control {
       height: 25px;
+    }
+  }
+}
+
+// iOS fix
+html[class*='theme-classic'].ios {
+  .field-short,
+  .form-layout-compact .field {
+    .spinbox-control {
+      padding: 2px 0 4px;
+    }
+
+    .spinbox {
+      height: 2.6rem;
     }
   }
 }

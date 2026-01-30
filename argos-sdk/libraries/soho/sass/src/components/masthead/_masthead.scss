@@ -4,20 +4,19 @@
 .masthead {
   background-color: $masthead-bg-color;
   border-bottom: 1px solid $masthead-border-color;
-  height: 38px;
+  height: 40px;
   width: 100%;
   z-index: 9000;
 
   .masthead-icon {
     border-radius: 0;
-    height: 32px;
-    margin: 4px 2px !important;
-    padding: 0;
-    width: 32px;
+    height: 28px;
+    width: 28px;
+    margin-top: 3px;
 
     > .icon {
-      height: 30px;
-      width: 30px;
+      height: 32px;
+      width: 32px;
     }
 
     .ripple-effect {
@@ -26,8 +25,35 @@
   }
 
   [class^='btn'] {
-    height: 32px;
+    height: 30px !important;
     min-width: 32px;
+    padding-right: 8px;
+    min-height: 32px;
+    color: $masthead-text-color !important;
+
+    svg.icon {
+      color: $masthead-button-color;
+      vertical-align: middle;
+      margin-inline-start: 1px;
+
+      &.icon-dropdown {
+        margin-top: -2px;
+      }
+    }
+
+    &:hover:not(:disabled),
+    &.is-open {
+      color: $ids-color-palette-white;
+      background-color: transparent;
+
+      svg.icon {
+        color: $ids-color-palette-white;
+      }
+    }
+
+    &:focus:not(.hide-focus) {
+      box-shadow: 0 0 0 2px transparent, 0 0 0 1px $masthead-button-focus-color, $header-focus-box-shadow;
+    }
 
     &.collapse-button {
       height: inherit;
@@ -93,7 +119,7 @@
       }
 
       .toolbar-searchfield-wrapper {
-        margin: 2px 5px 1px 0;
+        margin: 1px 0 0;
       }
     }
 
@@ -124,10 +150,6 @@
           vertical-align: top;
         }
       }
-
-      .masthead-icon > .icon {
-        margin: 1px 0;
-      }
     }
   }
 
@@ -137,10 +159,12 @@
 
     [class^='btn'] {
       background-color: transparent;
-      border-left-color: transparent;
-      border-right-color: transparent;
-      border-top-color: transparent;
+      border-color: transparent;
       color: $masthead-text-color;
+
+      &.btn-menu {
+        margin-top: 1px;
+      }
 
       .ripple-effect {
         background-color: $ids-color-palette-white;
@@ -150,8 +174,10 @@
         border-color: transparent;
       }
 
-      span {
+      span:not(.audible) {
         color: inherit;
+        position: relative;
+        top: -1px;
       }
 
       .icon {
@@ -165,19 +191,22 @@
       }
 
       &:hover:not([disabled]) {
-        color: $masthead-button-hover-color;
+        background-color: transparent !important;
+        color: $masthead-button-hover-color !important;
 
-        .icon {
-          color: $masthead-button-hover-color;
+        .icon,
+        svg.icon {
+          color: $masthead-button-hover-color !important;
         }
       }
 
       &.is-open,
       &.is-open:hover {
-        color: $masthead-button-hover-color;
+        background-color: transparent;
+        color: $masthead-button-hover-color !important;
 
         .icon {
-          color: $masthead-button-hover-color;
+          color: $masthead-button-hover-color !important;
         }
       }
 
@@ -185,16 +214,16 @@
         box-shadow: 0 0 0 2px transparent, 0 0 0 1px $masthead-button-focus-color, $header-focus-box-shadow;
 
         .icon {
-          color: $masthead-button-focus-color;
+          color: $masthead-button-color;
         }
       }
 
       &.is-selected {
         &:focus:not(.hide-focus) {
-          color: $masthead-button-focus-color;
+          color: $masthead-button-color;
 
           .icon {
-            color: $masthead-button-focus-color;
+            color: $masthead-button-color;
           }
         }
       }
@@ -206,9 +235,12 @@
   .image-round {
     font-size: 1.2rem;
     height: 29px;
+    min-height: 29px;
     line-height: 29px;
+    margin-left: -4px;
     margin-right: 0;
     width: 29px;
+    min-width: 29px;
   }
 
   .image-user-status {
@@ -265,6 +297,14 @@ html[dir='rtl'] {
           }
         }
       }
+    }
+
+    [class^='btn'] > * {
+      vertical-align: middle;
+    }
+
+    [class^='btn']:not(.btn-generative) span + .icon {
+      margin-right: 2px !important;
     }
   }
 }

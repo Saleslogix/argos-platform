@@ -30,6 +30,7 @@
 
     &.plus-minus {
       position: static;
+      width: auto;
 
       &::before,
       &::after {
@@ -49,7 +50,6 @@
       &.active {
         @include css3(transform, rotateX(180deg));
       }
-
     }
   }
 

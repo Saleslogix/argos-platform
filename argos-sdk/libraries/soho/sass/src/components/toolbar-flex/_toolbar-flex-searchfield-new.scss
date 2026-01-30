@@ -1,18 +1,86 @@
 // ==================================================
-// Uplift Flexible Toolbar - Searchfield Component
+// New Flexible Toolbar - Searchfield Component
 // ==================================================
 
 .flex-toolbar {
   .toolbar-section {
     .searchfield-wrapper {
-      bottom: 0;
+      bottom: -1px;
+      margin-right: 0;
+
+      &.toolbar-searchfield-wrapper.has-close-icon-button:not(.has-categories) {
+        &.is-hovered > svg.icon.close {
+          color: $searchfield-text-color;
+        }
+
+        > svg.icon.close {
+          top: 50%;
+        }
+
+        .btn-icon.close {
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        &.has-go-button {
+          .btn-icon.close {
+            right: 60px;
+          }
+        }
+      }
+    }
+
+    &.search {
+      padding: 4px;
+
+      .searchfield-wrapper.toolbar-searchfield-wrapper:not(.is-open):not(.non-collapsible) {
+        height: 38px;
+
+        &:hover {
+          border-radius: 8px;
+          background-color: $toolbar-btn-actions-hover-bg-color;
+        }
+
+        .searchfield {
+          padding-bottom: 11px;
+        }
+      }
+
+      .searchfield-wrapper.toolbar-searchfield-wrapper.has-close-icon-button.is-open > svg.close {
+        padding: 3px;
+        width: 24px;
+        height: 24px;
+        border-radius: 8px;
+
+        @media (min-width: $breakpoint-phone-to-tablet) {
+          right: 5px;
+        }
+
+        &:hover {
+          background-color: $toolbar-btn-actions-hover-bg-color;
+        }
+      }
+    }
+  }
+
+  .toolbar-searchfield-wrapper {
+    .btn-icon .icon.close {
+      top: -1px;
     }
   }
 }
 
 @include respond-to(phone) {
+  .flex-toolbar {
+    .searchfield-wrapper:not(.non-collapsible) {
+      > .icon.close {
+        right: 48px;
+      }
+    }
+  }
+
   .toolbar-section {
-    .searchfield-wrapper {
+    .searchfield-wrapper.non-collapsible {
       &.is-open {
         .collapse-button {
           height: 38px;
@@ -26,7 +94,7 @@
       .searchfield-wrapper {
         &.is-open {
           .collapse-button {
-            height: 36px;
+            height: 38px;
           }
         }
       }
@@ -42,7 +110,34 @@
     h4,
     h5,
     h6 {
-      @include font-size(18);
+      @include font-size(20);
     }
   }
+}
+
+html[dir='rtl'] {
+  .flex-toolbar {
+    .toolbar-section.search {
+      .toolbar-searchfield-wrapper {
+        .btn-icon.close {
+          right: calc(100% - 70px);
+          top: 50%;
+
+          @media (min-width: $breakpoint-phone-to-tablet) {
+            right: calc(100% - 30px);
+          }
+        }
+
+        &.has-close-icon-button.is-open > svg.close  {
+          right: auto;
+        }
+      }
+    }
+  }
+}
+
+.flex-toolbar .toolbar-searchfield-wrapper > svg.icon {
+  top: 10px;
+  width: 20px;
+  height: 20px;
 }

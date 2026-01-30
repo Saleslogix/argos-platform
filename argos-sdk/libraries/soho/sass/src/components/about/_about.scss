@@ -11,6 +11,18 @@
     position: relative;
   }
 
+  .modal-content .modal-body-wrapper {
+    padding: 16px 16px 0;
+  }
+
+  .modal.about .modal-body {
+    margin: 0 12px 16px;
+  }
+
+  .modal-body p:first-of-type {
+    padding-top: 10px;
+  }
+
   .close-container {
     position: absolute;
     right: 8px;
@@ -33,28 +45,28 @@
   .modal-body {
     border: 1px solid $about-text-border-color;
     border-radius: 2px;
-    margin: 0 10px 30px;
-    max-height: 199px;
+    margin: 0 12px 30px;
+    height: 199px;
     outline: medium none;
     overflow-y: scroll;
 
-    @media only screen and (max-height: $breakpoint-slim + 25) {
-      max-height: 175px; 
+    @media only screen and (max-height: ($breakpoint-slim + 25)) {
+      max-height: 175px;
     }
 
     @media only screen and (max-height: $breakpoint-slim) {
-      max-height: 145px; 
+      max-height: 145px;
     }
 
-    @media only screen and (max-height: $breakpoint-slim - 50) {
+    @media only screen and (max-height: ($breakpoint-slim - 50)) {
       max-height: 115px;
     }
 
-    @media only screen and (max-height: $breakpoint-phone - 20) {
+    @media only screen and (max-height: ($breakpoint-phone - 20)) {
       max-height: 100px;
     }
 
-    @media only screen and (max-height: $breakpoint-phone - 55) {
+    @media only screen and (max-height: ($breakpoint-phone - 55)) {
       max-height: 53px;
     }
 
@@ -69,7 +81,7 @@
   }
 
   .modal-body-wrapper {
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     overflow: hidden;
   }
 
@@ -104,5 +116,19 @@ html[dir='rtl'] {
       left: 8px;
       right: auto;
     }
+  }
+}
+
+#copy-to-clipboard {
+  top: 368px;
+  right: 20px;
+  position: absolute;
+}
+
+@-moz-document url-prefix() {
+  .modal.about #copy-to-clipboard {
+    position: absolute;
+    top: 368px;
+    right: 20px;
   }
 }

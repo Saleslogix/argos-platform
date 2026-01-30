@@ -37,11 +37,11 @@
             vertical-align: middle;
             white-space: nowrap;
 
-            @media (min-width: $breakpoint-big-phone + 1) {
+            @media (min-width: ($breakpoint-big-phone + 1)) {
               width: 150px;
             }
 
-            @media (min-width: $breakpoint-phablet + 1) {
+            @media (min-width: ($breakpoint-phablet + 1)) {
               width: 250px;
             }
 
@@ -52,15 +52,98 @@
         }
 
         &.buttonset {
-          @media (max-width: $breakpoint-slim - 25) {
+          @media (max-width: ($breakpoint-slim - 25)) {
             width: 100%;
           }
         }
 
         .separator {
-          @media (max-width: $breakpoint-big-phone - 20) {
+          @media (max-width: ($breakpoint-big-phone - 20)) {
             margin: 3px 0 0;
           }
+        }
+      }
+
+      &.has-close-button {
+        .toolbar-section.search {
+          .toolbar-searchfield-wrapper {
+            @media (max-width: ($breakpoint-phone-to-tablet - 1)) {
+              overflow: hidden;
+            }
+          }
+        }
+      }
+    }
+
+    .go-back-button {
+      display: inline-block;
+      width: 34px;
+      height: 34px;
+      margin-inline-start: 5px;
+      vertical-align: middle;
+
+      .go-back {
+        svg {
+          height: 14px;
+          width: 14px;
+        }
+      }
+
+      + .toolbar {
+        display: inline-block;
+        width: calc(100% - 42px);
+
+        .title {
+          display: none;
+        }
+
+        .title-detail {
+          display: inline-block;
+          margin-inline-start: 5px;
+          line-height: 2.7;
+        }
+      }
+    }
+
+    .toolbar {
+      .toolbar-searchfield-wrapper:not(.is-open):not(.non-collapsible) {
+        border-radius: 0;
+
+        .searchfield {
+          height: 34px;
+        }
+      }
+
+      .title-detail {
+        display: none;
+      }
+
+      &.searchfield-active {
+        .title + .buttonset {
+          .toolbar-searchfield-wrapper {
+            @media (max-width: ($breakpoint-big-phone + 39)) {
+              width: calc(100% - 45px) !important;
+            }
+          }
+        }
+      }
+
+      &:not(.has-more-button) .title {
+        @media (max-width: ($breakpoint-phone-to-tablet - 1)) {
+          width: auto !important;
+        }
+
+        + .buttonset {
+          @media (max-width: ($breakpoint-phone-to-tablet - 1)) {
+            width: calc(100% - 5px) !important;
+            height: 41px;
+          }
+        }
+      }
+
+      &:not(.searchfield-active) .toolbar-searchfield-wrapper {
+        .searchfield {
+          padding-right: 0;
         }
       }
     }
@@ -76,16 +159,21 @@
     height: 50px;
     margin-bottom: 0;
 
-    .title {
+    .title,
+    .title-detail {
       font-size: $ids-size-font-lg;
       height: inherit;
-      margin-left: 15px;
-      margin-top: 1px;
+      margin-inline-start: 15px;
+      top: 0;
+    }
+
+    .is-open + .separator {
+      margin: 5px 7px 0 19px;
     }
 
     .separator {
       background-color: $contextual-panel-separator-bg-color;
-      margin: 5px 1px 0;
+      margin: 5px 7px 0;
       pointer-events: none; //fixes wierd IE10 over effect
       top: 5px;
     }
@@ -96,19 +184,14 @@
     }
 
     .buttonset {
-      button[class^='btn'] {
-        color: $contextual-panel-button-color;
-
-        &:hover {
-          color: $contextual-panel-hover-icon-color;
-
-          .icon {
-            color: $contextual-panel-hover-icon-color;
-          }
+      .toolbar-searchfield-wrapper {
+        + .separator {
+          margin-left: 12px;
+          margin-right: 12px;
         }
 
-        .icon {
-          color: $contextual-panel-icon-color;
+        &.is-open + .separator {
+          margin-left: 20px;
         }
       }
     }
@@ -137,7 +220,7 @@
   .close-button {
     display: inline-block;
 
-    @media (max-width: $breakpoint-big-phone - 20) {
+    @media (max-width: ($breakpoint-big-phone - 20)) {
       min-width: 50px;
     }
 
@@ -147,7 +230,7 @@
     }
 
     span {
-      @media (max-width: $breakpoint-big-phone - 20) {
+      @media (max-width: ($breakpoint-big-phone - 20)) {
         display: none;
       }
     }
@@ -155,12 +238,29 @@
 
   .buttonset {
     [class^='btn']:last-child {
-      margin-right: 1px;
+      margin-inline-end: 10px;
+    }
+  }
+
+  .btn,
+  .btn-tertiary {
+    &:hover {
+      background-color: $contextual-panel-button-hover-bg-color !important;
     }
   }
 
   .modal-body {
     padding: 3rem 0;
+
+    &.propagate-style {
+      max-height: inherit; 
+      max-width: inherit; 
+      overflow: inherit;
+    }
+  
+    &.compact {
+      padding: 0;
+    }
 
     .field:last-child input,
     .field:last-child textarea {
@@ -177,6 +277,17 @@
       }
     }
 
+    &.has-back-button {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+  }
+
+  .content-detail,
+  .content-main {
+    @include transform-transition-list(300ms cubic-bezier(0.17, 0.04, 0.03, 0.94));
+
+    display: flex;
   }
 }
 
@@ -225,7 +336,8 @@ html[dir='rtl'] {
       height: 50px;
       margin-bottom: 0;
 
-      .title {
+      .title,
+      .title-detail {
         margin-right: 15px;
       }
     }

@@ -14,7 +14,7 @@ $wizard-current-state-size: ($wizard-tick-size * 1.3);
 
   background-color: inherit;
   opacity: 0.1;
-  padding: (($wizard-height / 2) - $wizard-tick-border-width) ($wizard-height / 4);
+  padding: (calc($wizard-height / 2) - $wizard-tick-border-width) calc($wizard-height / 4);
   position: relative;
 
   .bar {
@@ -36,12 +36,12 @@ $wizard-current-state-size: ($wizard-tick-size * 1.3);
 
   .tick {
     background-color: $wizard-default-bg;
-    border-radius: ($wizard-tick-size / 2);
+    border-radius: calc($wizard-tick-size / 2);
     color: $wizard-bar-bg;
     display: inline-block;
     height: $wizard-tick-size;
     margin-left: -3px;
-    margin-top: -($wizard-tick-size / 2) + ($wizard-tick-border-width / 2);
+    margin-top: -(calc($wizard-tick-size / 2) + calc($wizard-tick-border-width / 2));
     position: absolute;
     -webkit-touch-callout: none;
     width: $wizard-tick-size;
@@ -49,7 +49,7 @@ $wizard-current-state-size: ($wizard-tick-size * 1.3);
     // Border for incomplete or non-current ticks
     &::after {
       border: $wizard-tick-border-width solid $wizard-bar-bg;
-      border-radius: ($wizard-tick-size / 2);
+      border-radius: calc($wizard-tick-size / 2);
       content: '';
       height: $wizard-tick-size - $wizard-tick-border-width * 2;
       left: 0;
@@ -64,9 +64,9 @@ $wizard-current-state-size: ($wizard-tick-size * 1.3);
       border-radius: 0;
       content: '';
       height: 0;
-      left: $wizard-tick-size / 2;
+      left: calc($wizard-tick-size / 2);
       position: absolute;
-      top: $wizard-tick-size / 2;
+      top: calc($wizard-tick-size / 2);
       width: 0;
     }
 
@@ -95,8 +95,8 @@ $wizard-current-state-size: ($wizard-tick-size * 1.3);
 
       &::after {
         border: 0;
-        left: $wizard-tick-border-width;
-        top: $wizard-tick-border-width;
+        left: 0;
+        top: 0;
       }
 
       .label {
@@ -114,10 +114,10 @@ $wizard-current-state-size: ($wizard-tick-size * 1.3);
       &::before {
         border: 1px solid rgba($wizard-active-color, 1);
         border-radius: 50%;
-        height: $wizard-current-state-size;
+        height: 18.1px;
         left: -3px;
         top: -3px;
-        width: $wizard-current-state-size;
+        width: 18.1px;
       }
 
       .label {
@@ -137,7 +137,7 @@ $wizard-current-state-size: ($wizard-tick-size * 1.3);
       width: $wizard-tick-size - 2;
 
       &::after {
-        border-width: $wizard-tick-border-width / 2;
+        border-width: calc($wizard-tick-border-width / 2);
       }
 
       .label {
@@ -150,8 +150,8 @@ $wizard-current-state-size: ($wizard-tick-size * 1.3);
         background-color: $wizard-default-bg;
 
         &::after {
-          border: $wizard-tick-border-width / 2 solid $wizard-bar-bg;
-          border-radius: ($wizard-tick-size / 2);
+          border: calc($wizard-tick-size / 2) solid $wizard-bar-bg;
+          border-radius: calc($wizard-tick-size / 2);
           content: '';
           height: $wizard-tick-size - $wizard-tick-border-width * 2;
           left: 0;
@@ -161,7 +161,6 @@ $wizard-current-state-size: ($wizard-tick-size * 1.3);
         }
       }
     }
-
   }
 
   a.tick {
@@ -170,7 +169,6 @@ $wizard-current-state-size: ($wizard-tick-size * 1.3);
     }
 
     &:hover:not(.current):not(.is-disabled):not([disabled]) .label::after {
-      border-bottom: 1px solid;
       bottom: 1px;
       content: '';
       left: 0;
@@ -193,7 +191,7 @@ $wizard-current-state-size: ($wizard-tick-size * 1.3);
 
   .wizard-header {
     background-color: transparent;
-    padding: (($wizard-height / 8) - $wizard-tick-border-width) ($wizard-height / 4) (($wizard-height / 4) - $wizard-tick-border-width);
+    padding: (calc($wizard-height / 8) - $wizard-tick-border-width) calc($wizard-height / 4) (calc($wizard-height / 4) - $wizard-tick-border-width);
 
     .bar {
       background-color: $wizard-header-secondary-color;
@@ -207,7 +205,13 @@ $wizard-current-state-size: ($wizard-tick-size * 1.3);
       background-color: $header-bg-color;
 
       &::after {
-        border-color: $wizard-header-secondary-color;
+        background-color: $header-bg-color;
+        border: $wizard-tick-border-width solid $wizard-header-secondary-color;
+      }
+
+      &:focus .label {
+        border: 1px solid $wizard-header-color;
+        border-radius: 8px;
       }
 
       .label {
@@ -218,13 +222,18 @@ $wizard-current-state-size: ($wizard-tick-size * 1.3);
       &.complete {
         background-color: $wizard-header-color;
 
+        &::after {
+          background-color: $wizard-header-color;
+          border-color: transparent;
+        }
+
         .label {
           color: $wizard-header-color;
         }
       }
 
       &.current {
-        @include css3(box-shadow, 0 0 0 2px $header-bg-color);
+        border-color: $wizard-header-color;
 
         &::before {
           border-color: $wizard-header-color;
@@ -242,8 +251,8 @@ $wizard-current-state-size: ($wizard-tick-size * 1.3);
           background-color: $header-bg-color;
 
           &::after {
-            border: $wizard-tick-border-width / 2 solid $wizard-header-disabled-color;
-            border-radius: ($wizard-tick-size / 2);
+            border: calc($wizard-tick-size / 2) solid $wizard-header-disabled-color;
+            border-radius: calc($wizard-tick-size / 2);
             content: '';
             height: $wizard-tick-size - $wizard-tick-border-width * 2;
             left: 0;
@@ -253,7 +262,6 @@ $wizard-current-state-size: ($wizard-tick-size * 1.3);
           }
         }
       }
-
     }
 
     a.tick {
@@ -266,7 +274,6 @@ $wizard-current-state-size: ($wizard-tick-size * 1.3);
       }
     }
   }
-
 }
 
 // Toolbar with wizard for some patterns
@@ -291,7 +298,6 @@ $wizard-current-state-size: ($wizard-tick-size * 1.3);
   }
 
   .wizard {
-    display: inline-block;
     float: right;
     padding-right: 30px;
     width: 45%;
@@ -299,7 +305,6 @@ $wizard-current-state-size: ($wizard-tick-size * 1.3);
     .tick:not(.current):not(.complete) {
       background-color: $wizard-toolbar-bg-color;
     }
-
   }
 }
 
@@ -315,6 +320,11 @@ $wizard-current-state-size: ($wizard-tick-size * 1.3);
     .tick:not(.complete):not(.current) {
       background-color: $ids-color-palette-white;
     }
+  }
+
+  &.alternate {
+    background-color: $panel-bg-color;
+    border-bottom-color: $panel-border-color;
   }
 }
 

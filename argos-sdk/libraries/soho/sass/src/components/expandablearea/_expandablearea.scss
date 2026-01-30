@@ -1,11 +1,11 @@
 // Expandable Area
 //================================================== //
 
-@import '../button/button-chevron';
+// Depends on
+// button-chevron
 
 .expandable-area {
-
-  //Header Area
+  // Header Area
   .expandable-header {
     border-top: 1px solid $expandable-area-border-color;
     position: relative;
@@ -38,6 +38,7 @@
     font-size: $ids-size-font-base;
     height: 0;
     overflow: hidden;
+    width: 100%;
 
     > .content {
       padding: 25px 0 0;
@@ -68,9 +69,8 @@
     }
 
     .summary-form .field:last-child {
-      margin-bottom: 20px;
+      margin-bottom: $input-field-bottom-margin;
     }
-
   }
 
   .expandable-visible-pane {

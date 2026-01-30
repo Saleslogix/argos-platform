@@ -11,6 +11,10 @@
     color: $ids-color-status-success;
   }
 
+  .icon use[href='#icon-empty-circle-filled'] {
+    color: $ids-color-status-danger;
+  }
+
   .icon use[href='#icon-user-status-away'] {
     color: $ids-color-status-caution;
   }
@@ -21,6 +25,6 @@
   }
 
   .icon use[href='#icon-user-status-unknown'] {
-    color: $ids-color-palette-slate-30;
+    color: $ids-color-palette-slate-50;
   }
 }

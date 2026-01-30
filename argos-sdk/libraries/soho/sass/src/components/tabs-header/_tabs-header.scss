@@ -7,20 +7,22 @@
   padding: 0 0 0 20px;
 
   &::before {
-    background-image: linear-gradient(
-      to right,
-      rgba($header-bg-color, 1),
-      rgba($header-bg-color, 0)
-    );
+    background-image:
+      linear-gradient(
+        to right,
+        rgba($header-default-bg-color, 1),
+        rgba($header-default-bg-color, 0)
+      );
     left: 20px;
   }
 
   &::after {
-    background-image: linear-gradient(
-      to right,
-      rgba($header-bg-color, 0),
-      rgba($header-bg-color, 1)
-    );
+    background-image:
+      linear-gradient(
+        to right,
+        rgba($header-default-bg-color, 0),
+        rgba($header-default-bg-color, 1)
+      );
   }
 
   .tab-list-info {
@@ -30,66 +32,77 @@
   > .tab-list-container {
     border-bottom: 0;
 
-    .tab {
-      color: $header-tab-normal-color;
-      font-weight: $ids-number-font-weight-bold;
-      overflow: hidden;
-
-      &::before {
-        background-color: rgba($header-tab-normal-color, 0);
-        bottom: 0;
-      }
-
-      a {
+    .tab-list {
+      .tab {
         overflow: hidden;
-        padding: 14px 11px 9px 11px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
 
-      &:first-child {
-        padding-left: 0;
-      }
+        &.is-focused::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background-color: inherit !important;
+          border: 1px solid $ids-color-palette-azure-70;
+          pointer-events: none;
+          z-index: 1;
+          display: block !important;
+          height: calc(100% - 5px);
+          top: 3px;
+        }
 
-      &:hover:not(.is-disabled) {
-        color: $header-tab-hover-color;
+        &:not(.is-disabled) {
+          color: $header-tab-normal-color;
+          font-weight: $ids-number-font-weight-bold;
+        }
 
         &::before {
-          background-color: rgba($header-tab-hover-color, 1);
+          background-color: rgba($header-tab-normal-color, 0);
+          bottom: 0;
         }
 
-        .icon:not(.is-error):not(.icon-error) {
+        a {
+          overflow: hidden;
+          padding: 14px 11px 9px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        &:first-child {
+          padding-left: 0;
+        }
+
+        &:hover:not(.is-disabled) {
           color: $header-tab-hover-color;
-        }
-      }
 
-      &.is-selected:not(.is-disabled) {
-        color: $header-tab-hover-color;
-
-        &::before {
-          background-color: rgba($header-tab-hover-color, 1);
-        }
-
-        &:hover {
-          color: $header-tab-hover-color;
-
-          &::before {
-            background-color: rgba($header-tab-hover-color, 1);
+          .icon:not(.is-error):not(.icon-error) {
+            color: $header-tab-hover-color;
           }
         }
-      }
 
-      &.dismissible {
-        .icon {
-          color: $ids-color-palette-white;
-          opacity: 0.6;
+        &.is-selected:not(.is-disabled) {
+          color: $header-tab-hover-color;
+
+          &:hover {
+            color: $header-tab-hover-color;
+          }
         }
 
-        &:hover,
-        &.is-selected {
-          .icon:not(.is-error):not(.icon-error) {
+        &.is-disabled {
+          color: $header-tab-disabled-color-new;
+          opacity: 0.8;
+        }
+
+        &.dismissible {
+          .icon {
             color: $ids-color-palette-white;
-            opacity: 1;
+            opacity: 0.6;
+          }
+
+          &:hover,
+          &.is-selected {
+            .icon:not(.is-error):not(.icon-error) {
+              color: $ids-color-palette-white;
+              opacity: 1;
+            }
           }
         }
       }
@@ -102,7 +115,7 @@
   }
 
   .tab-focus-indicator.is-visible {
-    border-color: $header-tab-hover-color;
+    border-color: $header-tab-focus-border-color;
   }
 
   .tab-more,
@@ -115,6 +128,8 @@
 
     .icon {
       color: $header-tab-normal-color;
+      inset-inline-start: 5px;
+      top: -2px;
     }
 
     &:hover {
@@ -167,55 +182,52 @@
     }
 
     &::before {
-      background-image: linear-gradient(
-        to right,
-        rgba($header-tab-alt-bg-color, 1),
-        rgba($header-tab-alt-bg-color, 0)
-      );
+      background-image:
+        linear-gradient(
+          to right,
+          rgba($header-tab-alt-bg-color, 1),
+          rgba($header-tab-alt-bg-color, 0)
+        );
     }
 
     &::after {
-      background-image: linear-gradient(
-        to right,
-        rgba($header-tab-alt-bg-color, 0),
-        rgba($header-tab-alt-bg-color, 1)
-      );
+      background-image:
+        linear-gradient(
+          to right,
+          rgba($header-tab-alt-bg-color, 0),
+          rgba($header-tab-alt-bg-color, 1)
+        );
     }
 
     > .tab-list-container {
-      .tab {
-        color: $header-tab-alt-normal-color;
+      height: 40px;
 
-        &::before {
-          background-color: rgba($header-tab-alt-normal-color, 0);
-          bottom: 1px;
-        }
-
-        a { // has 12px line height;
-          padding: 12px 11px;
-        }
-
-        &:hover:not(.is-disabled) {
-          color: $header-tab-alt-hover-color;
+      .tab-list {
+        .tab {
+          color: $header-tab-alt-normal-color;
 
           &::before {
-            background-color: rgba($header-tab-alt-hover-color, 1);
-          }
-        }
-
-        &.is-selected:not(.is-disabled) {
-          color: $header-tab-alt-selected-color;
-
-          &::before {
-            background-color: rgba($header-tab-alt-selected-color, 1);
+            background-color: rgba($header-tab-alt-normal-color, 0);
+            bottom: 1px;
           }
 
-          .icon:not(.is-error):not(.icon-error) {
+          a { // has 12px line height;
+            padding: 12px 11px;
+          }
+
+          &:hover:not(.is-disabled) {
+            color: $header-tab-alt-hover-color;
+          }
+
+          &.is-selected:not(.is-disabled) {
             color: $header-tab-alt-selected-color;
+
+            .icon:not(.is-error):not(.icon-error) {
+              color: $header-tab-alt-selected-color;
+            }
           }
         }
       }
-
     }
 
     .animated-bar {
@@ -260,48 +272,88 @@
   }
 }
 
+.tab-container.header-tabs {
+  &:not(.alternate) {
+    > .tab-list-container {
+      .tab-focus-indicator {
+        margin-top: 2px !important;
+      }
+
+      .tab {
+        top: -2px;
+
+        &:not(.is-disabled) {
+          &:not(.is-selected):hover {
+            color: $header-tab-hover-color;
+            border-bottom: 4px solid $header-tab-indicator-hover-color;
+            background-color: $header-tab-background-hover-color;
+          }
+
+          &.is-selected {
+            color: $header-tab-selected-color;
+            border-bottom: 4px solid $header-tab-selected-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+.page-container.tab-panel-container {
+  .tab-panel > .toolbar {
+    margin-top: 5px;
+  }
+}
+
 // RTL Styles for Header Tabs
 html[dir='rtl'] {
   .tab-container.header-tabs {
     padding: 0 20px 0 0;
 
     &::before {
-      background-image: linear-gradient(
-        to left,
-        rgba($header-bg-color, 1),
-        rgba($header-bg-color, 0)
-      );
+      background-image:
+        linear-gradient(
+          to left,
+          rgba($header-bg-color, 1),
+          rgba($header-bg-color, 0)
+        );
       left: auto;
       right: 20px;
     }
 
     &::after {
-      background-image: linear-gradient(
-        to left,
-        rgba($header-bg-color, 0),
-        rgba($header-bg-color, 1)
-      );
+      background-image:
+        linear-gradient(
+          to left,
+          rgba($header-bg-color, 0),
+          rgba($header-bg-color, 1)
+        );
       left: 51px;
       right: auto;
     }
 
     &.alternate {
       &::before {
-        background-image: linear-gradient(
-          to left,
-          rgba($header-tab-alt-bg-color, 1),
-          rgba($header-tab-alt-bg-color, 0)
-        );
+        background-image:
+          linear-gradient(
+            to left,
+            rgba($header-tab-alt-bg-color, 1),
+            rgba($header-tab-alt-bg-color, 0)
+          );
       }
 
       &::after {
-        background-image: linear-gradient(
-          to left,
-          rgba($header-tab-alt-bg-color, 0),
-          rgba($header-tab-alt-bg-color, 1)
-        );
+        background-image:
+          linear-gradient(
+            to left,
+            rgba($header-tab-alt-bg-color, 0),
+            rgba($header-tab-alt-bg-color, 1)
+          );
       }
     }
   }
+}
 
+html.theme-classic-dark .tab-container.header-tabs.alternate::after {
+  background-image: linear-gradient(to right, rgba(28, 24, 25, 0), #50535a);
 }

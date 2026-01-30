@@ -16,27 +16,52 @@
     width: 35px;
 
     &.trigger-close {
+      color: $ids-color-palette-white;
       display: none;
-      margin-left: -43px;
+      margin-left: -60px;
+      border-radius: 8px;
+      height: 28px;
+      width: 28px;
+      position: relative;
+      top: -3px;
+
+      &.is-visible {
+        display: inline-block;
+      }
+    }
+
+    &.trigger {
+      height: 28px;
+      width: 28px;
+      border-radius: 8px;
+      position: relative;
+      top: 0;
     }
 
     .icon {
       color: $trigger-icon-fill-color;
-      height: 14px;
-      top: 2px;
+      height: 18px;
+      top: 5px;
       vertical-align: baseline;
-      width: 15px;
+      width: 18px;
+      border-radius: 5px;
     }
 
     &:hover {
       .icon {
-        color: $trigger-hover-color;
+        background-color: transparent;
+        color: $button-color-tertiary-hover-text-new;
       }
     }
 
     &:active .icon {
       color: $trigger-active-color;
     }
+  }
+
+  .trigger-close .icon {
+    height: 15px;
+    top: 6px;
   }
 
   label {
@@ -49,8 +74,9 @@
   input {
     &.fileupload-background-transparent {
       background-color: $input-color-initial-background;
+      border: 1px solid $input-default-border-color;
       color: $input-color;
-      padding-right: 42px;
+      padding-right: 56px;
       text-overflow: ellipsis;
 
       &.readonly {
@@ -152,7 +178,6 @@
         }
       }
     }
-
   }
 
   .container {
@@ -197,36 +222,12 @@
       .fileupload-adv-browse-lbl {
         color: $fileupload-primary-color;
 
-        span {
-          font-size: $ids-size-font-base;
-          margin-left: -2.5px;
-          margin-right: -2.5px;
-          padding: 5px;
-        }
-
         input[type='file'] {
           height: 0.1px;
           opacity: 0;
           overflow: hidden;
           width: 0.1px;
           z-index: -1;
-        }
-      }
-
-      .hyperlink {
-        border: 1px solid transparent;
-
-        &:active::after,
-        &:focus::after {
-          border-color: transparent;
-          box-shadow: none;
-        }
-      }
-
-      &.is-focus {
-        .hyperlink {
-          border-color: $fileupload-droparea-dd-hover-border-color;
-          box-shadow: $focus-box-shadow;
         }
       }
 
@@ -241,7 +242,6 @@
 
       &:hover {
         background-color: $fileupload-droparea-hover-bg-color;
-        border-color: $fileupload-droparea-hover-border-color;
         color: $fileupload-droparea-hover-color;
 
         .icon {
@@ -301,7 +301,7 @@
           width: 18px;
 
           .icon {
-            margin-top: -2px;
+            margin-top: -3px;
           }
         }
 
@@ -311,27 +311,35 @@
           left: 3px;
           top: 2px;
           width: 10px;
+
+          &.icon-error {
+            top: -3px;
+            left: 0;
+            height: 18px !important;
+            width: 18px;
+          }
         }
 
         &:hover {
           background-color: $fileupload-cancel-hover-bg-color;
-
-          .icon {
-            color: $fileupload-status-hover-color;
-          }
         }
       }
 
       .description {
         color: $fileupload-primary-color;
-        max-width: 55%;
+        max-width: calc(100% - 185px);
       }
 
       .size {
         color: $fileupload-secondary-color;
         line-height: 36px;
         margin-right: 42px;
-        max-width: 75px;
+        max-width: 115px;
+
+        .percent {
+          color: $fileupload-progress-color;
+          font-weight: 800;
+        }
       }
 
       .action {
@@ -339,18 +347,24 @@
         width: 16px;
       }
 
-      &.file-row .l-pull-right .action {
-        float: right;
-        height: 16px;
-        margin-top: 7px;
-
-        .icon {
-          color: $fileupload-secondary-color;
+      &.file-row {
+        .status-icon.file-error {
+          background-color: transparent;
         }
 
-        &:hover {
+        .l-pull-right .action {
+          float: right;
+          height: 16px;
+          margin-top: 7px;
+
           .icon {
-            color: $fileupload-hover-color;
+            color: $fileupload-secondary-color;
+          }
+
+          &:hover {
+            .icon {
+              color: $fileupload-hover-color;
+            }
           }
         }
       }
@@ -369,10 +383,6 @@
 
         &:hover {
           background-color: $fileupload-completed-color;
-
-          .icon {
-            color: $fileupload-status-color;
-          }
         }
       }
 
@@ -405,7 +415,7 @@
       div.msg {
         clear: both;
         font-size: $ids-size-font-base;
-        padding: 0 10px;
+        padding: $input-field-padding;
       }
 
       // Area for general error
@@ -413,7 +423,7 @@
         display: inline-block;
         font-size: $ids-size-font-base;
         padding: 10px 10px 10px 0;
-        width: calc(100% - 36px);
+        width: calc(100% - 77px);
       }
     }
   }
@@ -426,9 +436,30 @@
 // Overides
 //================================================== //
 .form-layout-compact {
-  .field-fileupload .trigger .icon,
-  .field-fileupload .trigger-close .icon {
-    top: 3px;
+  .field-fileupload {
+    .trigger .icon {
+      height: 14px;
+      top: 3px;
+      width: 14px;
+    }
+
+    .trigger-close {
+      height: 20px;
+      margin-left: -45px;
+      top: 0;
+      width: 20px;
+
+      .icon {
+        height: 14px;
+        top: 3px;
+      }
+    }
+
+    .trigger {
+      height: 20px;
+      margin-left: -27px;
+      width: 20px;
+    }
   }
 }
 
@@ -465,7 +496,7 @@ html[dir='rtl'] {
     }
 
     .trigger {
-      margin-right: -33px;
+      margin-right: -30px;
     }
 
     .trigger-close {
@@ -531,4 +562,14 @@ html[dir='rtl'] {
     }
   }
 
+  &.is-firefox {
+    .form-layout-compact {
+      .field-fileupload {
+        .trigger,
+        .trigger-close {
+          top: -1px;
+        }
+      }
+    }
+  }
 }

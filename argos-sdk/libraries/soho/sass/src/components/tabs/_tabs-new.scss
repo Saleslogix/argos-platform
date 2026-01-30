@@ -5,20 +5,42 @@
   height: 7px;
 }
 
-.tab-container.header-tabs {
-  &:not(.alternate) {
-    > .tab-list-container {
-      .tab {
-        top: unset !important;
-      }
-    }
-  }
-}
-
 .tab-container.has-counts {
   > .tab-list-container {
     .tab-list {
       padding: unset;
+    }
+  }
+}
+
+.tab-container.horizontal:not(.has-counts) {
+  > .tab-list-container {
+    margin-top: 6px;
+    height: 36px;
+
+    .tab {
+      a {
+        padding: 7px 11px 5px;
+      }
+
+      &:not(.is-selected):not(.is-disabled):hover {
+        border-bottom: 4px solid $tab-hover-color;
+      }
+
+      &:not(.is-disabled).is-selected {
+        border-bottom: 4px solid $tab-selected-color;
+      }
+
+    }
+  }
+}
+
+.tab-container.header-tabs {
+  > .tab-list-container {
+    .tab {
+      a {
+        padding: 12px 11px 5px;
+      }
     }
   }
 }
@@ -40,9 +62,11 @@
   }
 
   > .tab-list-container {
-    margin-bottom: -1px;
+    margin-bottom: -41px;
 
     .tab {
+      top: 0;
+
       &.has-popupmenu {
         .icon {
           height: 16px;
@@ -55,23 +79,13 @@
       &.dismissible {
         .icon {
           &.close {
-            margin-top: 6px;
+            margin-top: 3px;
           }
         }
       }
 
-      top: 0px;
-
-      a {
-        padding: 12px 11px 5px 11px;
-      }
-
-      &.is-disabled {
-        color: $ids-color-brand-secondary-lighter !important;
-      }
-
       // Adds "semi-bold" style to selected/active tabs
-      &.is-selected {
+      &:not(.is-disabled).is-selected {
         a {
           font-weight: 700;
           letter-spacing: -0.2px;
@@ -111,7 +125,11 @@
     &.icon-error,
     &.icon-info,
     &.icon-alert {
-      top: 10px;
+      top: 9px;
+    }
+
+    &.icon-error {
+      margin-top: 0;
     }
   }
 }
@@ -121,20 +139,53 @@
   .icon-info,
   .icon-success,
   .icon-alert {
-    right: 3px;
-    top: 16px;
-    width: 15px;
+    right: 1px;
+    top: 14px;
+    width: 18px;
+    height: 18px;
   }
 }
 
 .tab-container.horizontal .add-tab-button {
-  margin-top: 7px;
+  top: 8px;
   padding: 0;
   width: 35px;
+  height: 30px;
+  color: $tab-add-tab-color;
 
   span[aria-hidden] {
     font-size: 25px;
-    top: -1px;
+    top: 2px;
+  }
+
+  svg.icon-add {
+    top: 7px;
+    height: 18px;
+    width: 18px;
+  }
+}
+
+.tab-focus-indicator.is-visible {
+  border-color: $tab-selected-color;
+  box-shadow: $focus-box-shadow-new;
+}
+
+.tab-container.horizontal .tab-list-container {
+  .tab.is-error {
+    &:not(.last-child) {
+      &.is-error,
+        &.is-info,
+        &.is-success,
+        &.is-alert {
+          a[role='tab'] {
+            padding: 7px 22px 5px 5px;
+
+            + .icon-error.icon {
+              margin-top: -3px;
+            }
+          }
+        }
+    }
   }
 }
 
@@ -148,6 +199,25 @@ html[dir='rtl'] {
       }
     }
   }
+
+  .tab-container.horizontal:not(.has-counts)>.tab-list-container .tab:not(.is-disabled).is-selected {
+    border-bottom: 6px solid $tab-selected-color;
+  }
+}
+
+html[dir='rtl'] .tab-container.horizontal .tab:not(.last-child).is-error a[role='tab'],
+html[dir='rtl'] .tab-container.header-tabs .tab:not(.last-child).is-error a[role='tab'] {
+  padding: 12px 13px 6px 21px;
+}
+
+html[dir='rtl'] .tab-container.horizontal .tab .icon-error,
+html[dir='rtl'] .tab-container.header-tabs .tab .icon-error {
+  left: 0;
+  right: auto;
+  top: 13px;
 }
 
 @import '../tabs-module/tabs-module-new';
+@import '../tabs-multi/multi-tabs-new';
+@import './tabs-horizontal-new';
+@import '../tabs-vertical/tabs-vertical-new';

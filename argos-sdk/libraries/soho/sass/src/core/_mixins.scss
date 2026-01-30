@@ -1,10 +1,13 @@
+/* stylelint-disable scss/at-else-empty-line-before */
+/* stylelint-disable scss/at-if-closing-brace-space-after */
 // Sass Mix In's
 //==================================================//
+@use 'sass:list';
 
 // rem font sizin
 @mixin font-size($size-value) {
   font-size: ($size-value) + px;
-  font-size: ($size-value / 10) + rem;
+  font-size: calc($size-value / 10) + rem;
 }
 
 // Prefixes that we use throughout
@@ -12,11 +15,11 @@ $prefixes: -webkit-, -moz-, -o-, -ms-, '';
 
 // Builds a list of vendor-prefixed animation definitions
 @mixin animation($animate...) {
-  $max: length($animate);
+  $max: list.length($animate);
   $animations: '';
 
   @for $i from 1 through $max {
-    $animations: #{$animations + nth($animate, $i)};
+    $animations: #{$animations + list.nth($animate, $i)};
 
     @if $i < $max {
       $animations: #{$animations + ', '};
@@ -30,8 +33,8 @@ $prefixes: -webkit-, -moz-, -o-, -ms-, '';
 
 @mixin colorPalettesProperty($prop) {
   @each $name in $color-names {
-    $i: index($color-names, $name);
-    $color: nth($color-vars, $i);
+    $i: list.index($color-names, $name);
+    $color: list.nth($color-vars, $i);
 
     &.#{$name} {
       #{$prop}: $color !important;
@@ -126,11 +129,6 @@ $prefixes: -webkit-, -moz-, -o-, -ms-, '';
   opacity: $opacity;
 }
 
-// Util For Rem Mixin
-@function strip-unit($num) {
-  @return $num / ($num * 0 + 1);
-}
-
 // Util To Disable Select
 @mixin no-select {
   @include css3(user-select, none);
@@ -145,50 +143,22 @@ $prefixes: -webkit-, -moz-, -o-, -ms-, '';
   -webkit-touch-callout: default;
 }
 
-// Handle Rems with pixel fallback
-@mixin rem($property, $values...) {
-  $max: length($values);
-  $px-values: '';
-  $rem-values: '';
-
-  @for $i from 1 through $max {
-    $value: strip-unit(nth($values, $i));
-    $px-values: #{$px-values + $value*16}px;
-
-    @if $i < $max {
-      $px-values: #{$px-values + ' '};
-    }
-  }
-
-  @for $i from 1 through $max {
-    $value: strip-unit(nth($values, $i));
-    $rem-values: #{$rem-values + $value}rem;
-
-    @if $i < $max {
-      $rem-values: #{$rem-values + ' '};
-    }
-  }
-
-  #{$property}: $px-values;
-  #{$property}: $rem-values;
-}
-
 // Respond-To different device sizes (Responsive Breakpoints)
 @mixin respond-to($media) {
   @if $media == phone {
-    @media (max-width: $breakpoint-phone-to-tablet - 1) { @content; }
+    @media (max-width: ($breakpoint-phone-to-tablet - 1)) { @content; }
   }
 
   @else if $media == phonedown {
-    @media (min-width: 0) and (max-width: $breakpoint-big-phone - 1) { @content; }
+    @media (min-width: 0) and (max-width: ($breakpoint-big-phone - 1)) { @content; }
   }
 
   @else if $media == tabletdown {
-    @media (max-width: $breakpoint-tablet-to-desktop - 1) { @content; }
+    @media (max-width: ($breakpoint-tablet-to-desktop - 1)) { @content; }
   }
 
   @else if $media == tablet {
-    @media (min-width: $breakpoint-phone-to-tablet) and (max-width: $breakpoint-tablet-to-desktop - 1) { @content; }
+    @media (min-width: $breakpoint-phone-to-tablet) and (max-width: ($breakpoint-tablet-to-desktop - 1)) { @content; }
   }
 
   @else if $media == phablet {
@@ -196,11 +166,11 @@ $prefixes: -webkit-, -moz-, -o-, -ms-, '';
   }
 
   @else if $media == phabletdown {
-    @media (min-width: 0) and (max-width: $breakpoint-wide-tablet - 1) { @content; }
+    @media (min-width: 0) and (max-width: ($breakpoint-wide-tablet - 1)) { @content; }
   }
 
   @else if $media == phabletup {
-    @media (min-width: $breakpoint-wide-tablet - 1) { @content; }
+    @media (min-width: ($breakpoint-wide-tablet - 1)) { @content; }
   }
 
   @else if $media == tabletup {
@@ -208,11 +178,11 @@ $prefixes: -webkit-, -moz-, -o-, -ms-, '';
   }
 
   @else if $media == smphabletdown {
-    @media (min-width: 0) and (max-width: $breakpoint-phablet - 1) { @content; }
+    @media (min-width: 0) and (max-width: ($breakpoint-phablet - 1)) { @content; }
   }
 
   @else if $media == desktop {
-    @media (min-width: $breakpoint-tablet-to-desktop) and (max-width: $breakpoint-desktop-to-extralarge - 1) { @content; }
+    @media (min-width: $breakpoint-tablet-to-desktop) and (max-width: ($breakpoint-desktop-to-extralarge - 1)) { @content; }
   }
 
   @else if $media == extralarge {
@@ -361,7 +331,10 @@ $prefixes: -webkit-, -moz-, -o-, -ms-, '';
   flex-direction: $value;
   -ms-flexbox-direction: $value;
 }
-// END: Flexbox
+
+@mixin dropdown-box-shadow() {
+  box-shadow: $dropdown-box-shadow-top, $focus-box-shadow;
+}
 
 // Re-usable box shadow statement for drawer-style stuff
 $box-shadow-on-color: rgba(0, 0, 0, 0.75);
@@ -369,8 +342,4 @@ $box-shadow-off-color: rgba(0, 0, 0, 0);
 
 @mixin drawer-box-shadow() {
   @include css3(box-shadow, 0 0 20px 1px $box-shadow-on-color);
-}
-
-@function strip-units($number) {
-  @return $number / ($number * 0 + 1);
 }

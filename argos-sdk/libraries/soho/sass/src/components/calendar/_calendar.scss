@@ -22,12 +22,20 @@
     vertical-align: top;
     width: 220px;
 
+    .accordion {
+      border-inline: 0;
+    }
+
     .accordion-header a {
       @include font-size(16);
     }
 
+    .accordion-header > a {
+      padding-bottom: 14px;
+    }
+
     .accordion-header > button {
-      margin: 0 0 2px 10px;
+      margin: 5px 0 10px 10px;
 
       svg {
         top: 0;
@@ -36,6 +44,8 @@
 
     .accordion-header {
       &.is-focused {
+        border-inline: 0;
+
         &:not(.hide-focus) {
           border-top-color: $accordion-focused-border-color;
         }
@@ -55,7 +65,7 @@
     &.monthview {
       &.hidden {
         ~ .calendar-event-details {
-          @media (max-width: $breakpoint-wide-tablet - 1) {
+          @media (max-width: ($breakpoint-wide-tablet - 1)) {
             display: none;
           }
         }
@@ -67,7 +77,12 @@
     }
 
     .monthview-header {
-      height: 46px;
+      height: 50px;
+      background-color: $calendar-bg-color;
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0;
+      z-index: 3;
     }
 
     .monthview-legend {
@@ -77,6 +92,12 @@
 
   // Mobile Legend
   @include respond-to(phabletdown) {
+    .calendar-monthview {
+      .monthview-legend {
+        padding: 10px 5px;
+      }
+    }
+
     .calendar-event-legend {
       display: block;
       padding: 20px 20px 0;
@@ -140,12 +161,52 @@
     flex: 1 1 auto;
   }
 
-  .calendar-event-types {
+  .calendar-event-types,
+  .calendar-event-filters {
     margin-bottom: -3px;
     margin-right: 5px;
 
+    &.event-tree {
+      padding-left: 10px;
+
+      .tree ul {
+        a {
+          display: inline-block;
+          width: calc(90%);
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          padding-left: 0;
+          margin-left: 0;
+
+          &.is-disabled {
+            color: $tree-disabled-color;
+          }
+        }
+
+        li {
+          margin-left: 4px;
+
+          &.is-selected > a .tree-checkbox {
+            &::before {
+              background-color: transparent;
+              border-color: $checkbox-color-unchecked-initial-border;
+            }
+
+            &::after {
+              border-color: $ids-color-palette-slate-60;
+            }
+          }
+        }
+      }
+    }
+
     .checkbox-label {
       margin: $label-size-regular-margin;
+    }
+
+    .tree li.is-selected > a {
+      background-color: transparent;
     }
   }
 
@@ -288,7 +349,7 @@
 // Calendar Event Details section
 .calendar-event-details {
   background-color: $body-color-primary-background;
-  border-left: 1px solid $calendar-line-color;
+  border-inline-start: 1px solid $calendar-line-color;
   flex: 0 0 auto;
   height: 100%;
   margin-top: -1px;
@@ -442,15 +503,33 @@
 }
 
 @include respond-to(phabletdown) {
+  .monthview-table {
+    border-bottom: 1px solid #E0E0E1;
+  }
+
+  .monthview-popup {
+    .tooltip-content {
+      .monthview {
+        .monthview-table {
+          border-bottom: unset;
+        }
+      }
+    }
+  }
+
   .calendar-popup.calendar-popup-mobile {
-    height: 100% !important;
-    left: 0 !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%);
     max-width: 100%;
-    top: 0 !important;
     width: 100% !important;
 
+    .arrow {
+      display: none;
+    }
+
     .tooltip-content {
-      height: calc(100% - 96px);
+      height: calc(100% - 45px);
     }
 
     .modal-buttonset {
@@ -507,7 +586,6 @@
 
       .listview-micro {
         display: inline-block;
-        float: right;
         margin-top: 2px;
         text-align: right;
         width: 20%;
@@ -561,7 +639,7 @@
 
     .calendar-event-details-mobile {
       height: auto;
-      margin-bottom: 20px;
+      margin-bottom: $input-field-bottom-margin;
 
       &.listview {
         cursor: pointer;
@@ -684,7 +762,7 @@ html[dir='rtl'] {
     }
 
     .monthview.is-fullsize.monthview td:last-child {
-      border-left: 0;
+      border-inline-start: 0;
     }
   }
 
@@ -693,9 +771,6 @@ html[dir='rtl'] {
   }
 
   .calendar-event {
-    border-left: 0;
-    border-right: 5px solid $ids-color-brand-primary-alt;
-
     &.event-day-end {
       border-radius: 3px 0 0 3px;
       border-right: 0 !important;
@@ -710,34 +785,11 @@ html[dir='rtl'] {
       border-radius: 0 3px 3px 0;
       padding-left: 4px;
       padding-right: 0;
+      border-right: 5px solid $ids-color-brand-primary-alt;
     }
 
-    &.ruby {
-      border-right: 5px solid $ids-color-palette-ruby-70;
-    }
-
-    &.amber {
-      border-right: 5px solid $ids-color-palette-amber-70;
-    }
-
-    &.emerald {
-      border-right: 5px solid $ids-color-palette-emerald-70;
-    }
-
-    &.turquoise {
-      border-right: 5px solid $ids-color-palette-turquoise-70;
-    }
-
-    &.amethyst {
-      border-right: 5px solid $ids-color-palette-amethyst-70;
-    }
-
-    &.slate {
-      border-right: 5px solid $ids-color-palette-slate-70;
-    }
-
-    &.graphite {
-      border-right: 5px solid $ids-color-palette-graphite-70;
+    &.calendar-event-start {
+      border-right: 5px solid $ids-color-brand-primary-alt;
     }
 
     .calendar-event-content {
@@ -750,11 +802,31 @@ html[dir='rtl'] {
     border: 0;
   }
 
-  .calendar-event-types .checkbox-label {
-    padding-right: 25px;
+  .calendar-event-types {
+    .checkbox-label {
+      padding-right: 25px;
 
-    &::after {
-      right: 6px !important;
+      &::after {
+        right: 6px !important;
+      }
+    }
+
+    &.event-tree {
+      .tree li {
+        margin-right: 0;
+
+        &.is-partial > a .tree-checkbox::after {
+          right: 3px;
+        }
+
+        .tree-checkbox  {
+          left: 24px;
+
+          &::after {
+            right: 5px;
+          }
+        }
+      }
     }
   }
 
@@ -781,8 +853,19 @@ html[dir='rtl'] {
       right: 0;
     }
   }
+
+  &.is-safari {
+    .calendar-event-types {
+      &.event-tree {
+        .tree.is-multiselect li .tree-checkbox::before {
+          right: 0;
+        }
+      }
+    }
+  }
 }
 
+.monthview-header .calendar-toolbar,
 .week-view-header .calendar-toolbar {
   border-bottom: 1px solid  $calendar-line-color;
   height: 50px;
@@ -795,7 +878,7 @@ html[dir='rtl'] {
 
   background-color: $ids-color-palette-azure-20;
   border: 1px solid transparent;
-  border-left: 5px solid $ids-color-brand-primary-alt;
+  border-inline-start: 5px solid $ids-color-brand-primary-alt;
   border-radius: 3px;
   color: $font-color-extrahighcontrast;
   cursor: pointer;
@@ -812,7 +895,7 @@ html[dir='rtl'] {
   }
 
   &.event-day-span {
-    border-left: 0 !important;
+    border-inline-start: 0 !important;
     border-radius: 0;
     margin: 0;
     width: 100%;
@@ -828,7 +911,7 @@ html[dir='rtl'] {
   }
 
   &.event-day-end {
-    border-left: 0 !important;
+    border-inline-start: 0 !important;
     border-radius: 0 3px 3px 0;
     margin-left: 0;
     width: calc(100% - 2px);
@@ -867,37 +950,42 @@ html[dir='rtl'] {
 
   &.ruby {
     background-color: $ids-color-palette-ruby-20;
-    border-left: 5px solid $ids-color-palette-ruby-70;
+    border-inline-start: 5px solid $ids-color-palette-ruby-70;
+  }
+
+  &.azure {
+    background-color: $ids-color-palette-azure-30;
+    border-inline-start: 5px solid $ids-color-palette-azure-70;
   }
 
   &.amber {
     background-color: $ids-color-palette-amber-30;
-    border-left: 5px solid $ids-color-palette-amber-70;
+    border-inline-start: 5px solid $ids-color-palette-amber-70;
   }
 
   &.emerald {
     background-color: $ids-color-palette-emerald-30;
-    border-left: 5px solid $ids-color-palette-emerald-70;
+    border-inline-start: 5px solid $ids-color-palette-emerald-70;
   }
 
   &.turquoise {
     background-color: $ids-color-palette-turquoise-30;
-    border-left: 5px solid $ids-color-palette-turquoise-70;
+    border-inline-start: 5px solid $ids-color-palette-turquoise-70;
   }
 
   &.amethyst {
     background-color: $ids-color-palette-amethyst-30;
-    border-left: 5px solid $ids-color-palette-amethyst-70;
+    border-inline-start: 5px solid $ids-color-palette-amethyst-70;
   }
 
   &.slate {
     background-color: $ids-color-palette-slate-30;
-    border-left: 5px solid $ids-color-palette-slate-70;
+    border-inline-start: 5px solid $ids-color-palette-slate-70;
   }
 
   &.graphite {
     background-color: $ids-color-palette-graphite-30;
-    border-left: 5px solid $ids-color-palette-graphite-70;
+    border-inline-start: 5px solid $ids-color-palette-graphite-70;
   }
 
   &:focus {
@@ -911,4 +999,43 @@ html[dir='rtl'] {
 .calendar-event-spacer {
   display: block;
   height: 18px;
+}
+
+.popover.calendar-popup {
+  max-width: 320px;
+
+  .datepicker + .btn-icon {
+    margin-top: 6px;
+  }
+
+  .timepicker {
+    padding: 0 15px;
+
+    + .btn-icon {
+      margin-top: 5px;
+      margin-left: -32px;
+    }
+  }
+
+  .modal-buttonset {
+    position: relative;
+    top: 0;
+    width: 317px;
+    right: 1px;
+  }
+}
+
+#calendar-popup {
+  .page-container .form-responsive .field-checkbox,
+  .container .form-responsive .field-checkbox {
+    margin-top: 0;
+  }
+
+  .btn-icon:hover:not([disabled]):not(.btn-primary):not(.trigger):not(:disabled) {
+    background-color: rgba(0, 0, 0, 0.25) !important;
+
+    svg {
+      color: #fff !important;
+    }
+  }
 }

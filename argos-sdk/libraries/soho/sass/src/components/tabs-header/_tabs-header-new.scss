@@ -1,14 +1,361 @@
 // Styles for Header Tabs Uplift
 //================================================== //
 
-.tab-container {
-  &.header-tabs {
+.tab-container.header-tabs {
+  &:not(.alternate) {
+    background-color: $header-default-bg-color;
+    border-bottom: 1px solid $header-tabcontainer-border-color;
+
+    &::before {
+      background-image:
+        linear-gradient(
+          to right,
+          rgba($header-default-bg-color, 1),
+          rgba($header-default-bg-color, 0)
+        );
+      left: 20px;
+    }
+
+    &::after {
+      background-image:
+        linear-gradient(
+          to right,
+          rgba($header-default-bg-color, 0),
+          rgba($header-default-bg-color, 1)
+        );
+    }
+
+    .tab-list-info {
+      display: none;
+    }
+
+    > .tab-list-container {
+      margin-top: 5px;
+      border-bottom: 0;
+
+      .tab {
+        font-weight: $ids-number-font-weight-bold;
+        overflow: hidden;
+        height: 38px;
+        text-align: center;
+        margin-top: -1px;
+
+        &:not(.is-disabled) {
+          color: $header-tab-normal-color-new;
+        }
+
+        a {
+          margin-top: -5px;
+          max-width: inherit;
+          width: inherit;
+        }
+
+        &::before {
+          background-color: rgba($header-tab-normal-color-new, 0);
+          bottom: 0;
+        }
+
+        &:first-child {
+          padding-left: 0;
+        }
+
+        &:hover:not(.is-selected):not(.is-disabled) {
+          color: $header-tab-hover-color-new;
+          border-bottom: 4px solid $header-tab-indicator-hover-color-new;
+          background-color: $header-tab-background-hover-color-new;
+        }
+
+        &.is-focused {
+          color: $header-tab-selected-color-new;
+        }
+
+        &.is-selected:not(.is-disabled) {
+          color: $header-tab-selected-color-new;
+          border-bottom: 4px solid $header-tab-selected-color-new;
+
+          &:hover {
+            color: $header-tab-selected-color-new;
+            background-color: inherit !important;
+          }
+        }
+
+        &.dismissible {
+          .icon {
+            color: $ids-color-palette-black;
+            opacity: 0.6;
+            margin-top: unset;
+          }
+
+          &:hover,
+          &.is-selected {
+            .icon:not(.is-error):not(.icon-error) {
+              color: $ids-color-palette-slate-60;
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+
+    .animated-bar {
+      background-color: $header-tab-selected-color-new;
+      margin-top: 8px;
+    }
+
+    .tab-focus-indicator.is-visible {
+      border-color: transparent;
+      box-shadow: $focus-box-shadow-new;
+
+      &.is-selected {
+        border-color: $header-tab-focus-border-color;
+      }
+
+      &:not(.is-selected) {
+        border-color: $header-tab-focus-border-color;
+        border-radius: 2px;
+      }
+    }
+
+    .tab-more,
     .add-tab-button {
-      padding: 4px 4px 1px 6px;
+      color: $header-tab-normal-color-new;
+
+      span {
+        color: inherit;
+      }
+
+      .icon {
+        color: $header-tab-normal-color-new;
+        inset-inline-start: 5px;
+        top: 0;
+      }
+
+      &:hover {
+        color: $header-tab-hover-color-new;
+
+        .icon:not(.is-error):not(.icon-error) {
+          color: $header-tab-hover-color-new;
+        }
+      }
+
+      &.is-open,
+      &.is-selected {
+        color: $header-tab-selected-color-new;
+
+        .icon:not(.is-error):not(.icon-error) {
+          color: $header-tab-selected-color-new;
+        }
+      }
     }
 
     .tab-more {
       padding: 9px 4px 11px 14px;
+      left: 3px;
+
+      &::before {
+        content: '';
+        display: inline-block;
+        height: 30px;
+        left: 7px;
+        position: absolute;
+        top: 4px;
+        width: 1px;
+      }
+    }
+
+    .add-tab-button {
+      inset-inline-start: 5px;
+      padding: 0;
+      position: relative;
+      top: 9px;
     }
   }
+
+  // Alternate Header-Tab Backgrounds (Page Context)
+  //=================================================
+
+  &.alternate {
+    background-color: $header-tab-alt-bg-color;
+
+    &::before {
+      background-image:
+        linear-gradient(
+          to right,
+          rgba($header-tab-alt-bg-color, 1),
+          rgba($header-tab-alt-bg-color, 0)
+        );
+      left: 20px;
+    }
+
+    &::after {
+      background-image:
+        linear-gradient(
+          to right,
+          rgba($header-tab-alt-bg-color, 0),
+          rgba($header-tab-alt-bg-color, 1)
+        );
+    }
+
+    > .tab-list-container {
+      margin-top: -1px;
+
+      .tab-focus-indicator.is-selected {
+        border: 1px solid $header-tab-alt-selected-color;
+      }
+
+      .tab {
+        color: $header-tab-alt-normal-color;
+
+        &.is-focused {
+          color: $header-tab-alt-selected-color;
+        }
+
+        &:hover {
+          &:not(.is-disabled) {
+            color: $header-tab-alt-hover-color;
+            border-bottom: 6px solid $header-tab-alt-hover-color;
+            background-color: transparent;
+          }
+        }
+
+        &.is-selected {
+          &:not(.is-disabled) {
+            color: $header-tab-alt-selected-color;
+            border-bottom: 6px solid $header-tab-alt-selected-color;
+          }
+        }
+
+        a {
+          height: 37px;
+          padding: 10px 11px 5px;
+        }
+
+        &.is-disabled {
+          color: $header-tab-alt-disabled-color;
+        }
+      }
+    }
+
+    .tab-focus-indicator {
+      &.is-visible {
+        border-color: transparent;
+        box-shadow: unset;
+
+        &:not(.is-selected) {
+          border-color: $header-tab-alt-selected-color;
+          border-radius: 7px;
+        }
+      }
+    }
+
+    .tab-more,
+    .tab-more.is-open {
+      &:hover {
+        .icon:not(.is-error):not(.icon-error) {
+          color: $header-tab-alt-separator;
+        }
+      }
+
+      .icon {
+        color: $header-tab-alt-separator;
+      }
+    }
+
+    .tab-more.is-open {
+      .icon:not(.is-error):not(.icon-error) {
+        color: $header-tab-alt-separator;
+      }
+    }
+  }
+}
+
+.tab-container.header-tabs > .tab-list-container .tab.is-disabled {
+  color: $header-tab-disabled-color-new;
+}
+
+.tab-container {
+  .tab-more {
+    svg {
+      top: 2px;
+    }
+  }
+}
+
+.tab-panel-container {
+  .tab-panel {
+    overflow-y: auto;
+  }
+}
+
+.page-container.tab-panel-container {
+  padding-top: 0;
+  position: relative;
+  height: calc(100% - 43px);
+  margin-bottom: 0 !important;
+
+  .datagrid-container.has-toolbar.paginated {
+    height: calc(100% - 68px) !important;
+  }
+}
+
+.tab-container.vertical + .tab-panel-container {
+  .tab-panel {
+    overflow-y: hidden;
+  }
+}
+
+html.is-mac .tab-panel-container {
+  .tab-panel {
+    overflow-y: auto;
+    margin-top: -6px;
+  }
+}
+
+// RTL Styles for Header Tabs
+html[dir='rtl'] {
+  .tab-container.header-tabs {
+    padding: 0 20px 0 0;
+
+    &::before {
+      background-image:
+        linear-gradient(
+          to left,
+          rgba($header-default-bg-color, 1),
+          rgba($header-default-bg-color, 0)
+        );
+      left: auto;
+      right: 20px;
+    }
+
+    &::after {
+      background-image:
+        linear-gradient(
+          to left,
+          rgba($header-default-bg-color, 0),
+          rgba($header-default-bg-color, 1)
+        );
+      left: 51px;
+      right: auto;
+    }
+  }
+
+  .tab-panel-container .tab-panel {
+    padding-inline-end: 4px;
+    padding-inline-start: 0;
+  }
+
+  .tab-container.header-tabs>.tab-list-container .tab.dismissible .icon.close {
+    top: 0;
+  }
+}
+
+.tab-container.header-tabs>.tab-list-container .tab.dismissible .icon.close {
+  height: 14px;
+  margin-left: -3px;
+  right: -2px;
+  top: 1px;
+}
+
+.tab-container.header-tabs>.tab-list-container {
+  margin-bottom: -42px;
 }

@@ -10,23 +10,27 @@ $gutter-neg-size: -20px;
 //$breakpoint-tablet-to-desktop: 1160px;
 //$breakpoint-desktop-to-extralarge: 1440px;
 .row {
-  &.flex-align-bottom {
-    &.has-messages {
-      // align-items: center;
-      input:not(.error) {
-        margin-bottom: 22px;
-      }
-    }
-  }
-
   clear: both;
   font-size: $ids-size-font-sm;
   margin: 0 auto;
   max-width: $breakpoint-tablet-to-desktop;
   width: 100%;
 
+    &.flex-align-bottom {
+      &.has-messages {
+        // align-items: center;
+        input:not(.error) {
+          margin-bottom: 22px;
+        }
+      }
+    }
+
   &.full-width {
     margin-top: 20px;
+    max-width: 100%;
+  }
+
+  &.full-width-only {
     max-width: 100%;
   }
 
@@ -80,7 +84,37 @@ $gutter-neg-size: -20px;
     margin: 0 auto;
   }
 
+  &.full-height-only {
+    height: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
   // No Indent Rows grid/example-nesting-no-margins.html
+  // Create a mixin for the column width calculations
+  @mixin column-widths {
+    .one.column,
+    .one.columns { width: calc(8.33333333333% - 18.33333333333px); }
+
+    .one-one-half.column,
+    .one-one-half.columns { width: calc(12.499999999965% - 12.499999999965px); }
+
+    .two.columns { width: calc(16.6666666666% - 16.6666666666px); }
+    .three.columns { width: calc(25% - 15px); }
+    .four.columns { width: calc(33.3333333333% - 14.33333333333px); }
+    .five.columns { width: calc(41.6666666666% - 10px); }
+    .six.columns { width: calc(50% - 10px); }
+    .seven.columns { width: calc(58.3333333333% - 10px); }
+    .eight.columns { width: calc(66.6666666666% - 6px); }
+    .nine.columns { width: calc(75% - 5px); }
+    .ten.columns { width: calc(83.3333333333% - 4px); }
+    .eleven.columns { width: calc(91.6666666666% - 2px); }
+
+    .twelve.columns,
+    .full.column { width: calc(100% - 10px); }
+  }
+
+  // Apply to no-indent
   &.no-indent {
     padding-right: 0;
 
@@ -93,61 +127,38 @@ $gutter-neg-size: -20px;
       }
     }
 
-    .one.column,
-    .one.columns {
-      width: calc(8.33333333333% - 18.33333333333px);
-    }
+    @include column-widths;
+  }
 
-    .one-one-half.column,
-    .one-one-half.columns {
-      width: calc(12.499999999965% - 12.499999999965px);
-    }
+  // Apply to no-indent-self
+  &.no-indent-self {
+    padding-right: 0;
 
-    .two.columns {
-      width: calc(16.6666666666% - 16.6666666666px);
-    }
+    & > {
+      .column,
+      .columns {
+        padding: 0;
 
-    .three.columns {
-      width: calc(25% - 15px);
-    }
+        &:first-child {
+          margin-left: 0;
+        }
+      }
 
-    .four.columns {
-      width: calc(33.3333333333% - 14.33333333333px);
-    }
-
-    .five.columns {
-      width: calc(41.6666666666% - 10px);
-    }
-
-    .six.columns {
-      width: calc(50% - 10px);
-    }
-
-    .seven.columns {
-      width: calc(58.3333333333% - 10px);
-    }
-
-    .eight.columns {
-      width: calc(66.6666666666% - 6px);
-    }
-
-    .nine.columns {
-      width: calc(75% - 5px);
-    }
-
-    .ten.columns {
-      width: calc(83.3333333333% - 4px);
-    }
-
-    .eleven.columns {
-      width: calc(91.6666666666% - 2px);
-    }
-
-    .twelve.columns,
-    .full.column {
-      width: calc(100% - 10px);
+      @include column-widths;
     }
   }
+}
+
+.row.no-indent .column:first-child,
+.row.no-indent .columns:first-child {
+  margin-left: 0;
+}
+
+.column.full-height .twelve.columns:first-child,
+.column.full-height .full.column:first-child,
+.columns.full-height .twelve.columns:first-child,
+.columns.full-height .full.column:first-child {
+  margin-left: 0;
 }
 
 .row::after {
@@ -172,6 +183,8 @@ $gutter-neg-size: -20px;
   width: 100%;
 
   &.l-center {
+    text-align: center;
+
     .field,
     .image-round {
       text-align: center;
@@ -186,7 +199,6 @@ $gutter-neg-size: -20px;
     align-self: center;
 
     .field .checkbox-label {
-      margin-top: ($input-size-compact-height / 2) + 0.4 !important;
       overflow: visible;
     }
   }
@@ -276,9 +288,7 @@ $gutter-neg-size: -20px;
         text-align: center;
       }
     }
-
   }
-
 }
 
 @include respond-to(phabletdown) {
@@ -289,12 +299,19 @@ $gutter-neg-size: -20px;
     + .one-half-mobile {
       padding-left: 20px;
     }
-
   }
 
   .row.no-indent {
     .column,
     .columns {
+      margin-left: 0;
+      width: 100% !important;
+    }
+  }
+
+  .column,
+  .columns {
+    .full-mobile {
       margin-left: 0;
       width: 100% !important;
     }
@@ -462,11 +479,12 @@ html[dir='rtl'] {
     .twelve.columns,
     .full.column,
     .one-third.column,
+    .one-fourth.column,
+    .one-fifth.column,
     .two-thirds.column,
     .one-half.column {
       margin-left: inherit;
       margin-right: $gutter-size;
     }
   }
-
 }

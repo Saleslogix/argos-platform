@@ -151,11 +151,27 @@ define('argos/MainToolbar', ['module', 'exports', 'dojo/_base/declare', './Toolb
 
       $('.title > h1', this.domNode).on('click', this.onTitleClick);
 
+      var availableColors = Soho.theme.personalizationColors();
+      var color = App && App.preferences && App.preferences.color;
+      var theme = App && App.preferences && App.preferences.theme;
+      var personalizeSettings = {
+        colors: {
+          header: availableColors.default.value
+        },
+        theme: 'theme-classic-light'
+      };
+
+      if (color) {
+        personalizeSettings.colors = {
+          header: color
+        };
+      }
+
+      if (theme) {
+        personalizeSettings.theme = theme;
+      }
       // init personalization
-      $('html').personalize({
-        colors: App && App.preferences && App.preferences.color,
-        theme: App && App.preferences && App.preferences.theme
-      });
+      $('html').personalize(personalizeSettings);
     },
     updateSoho: function updateSoho() {
       // updating soho header resets the header text to zero level. update only toolbbar for now.

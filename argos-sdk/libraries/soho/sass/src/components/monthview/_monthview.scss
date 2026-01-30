@@ -10,7 +10,8 @@
   transform: scaleY(1);
   transition: all 0.01s ease-out; // force a repaint
   vertical-align: middle;
-  width: 100%;
+  width: inherit;
+  height: fit-content;
 
   // Hide Days Option
   &.is-monthyear {
@@ -21,7 +22,7 @@
     }
 
     &.is-monthonly {
-      min-width: 225px;
+      min-width: 235px;
 
       .picklist-section {
         float: none !important;
@@ -30,14 +31,24 @@
         &.is-year {
           display: none;
         }
+
+        &.is-month {
+          width: 100%
+        }
       }
     }
 
     &.is-yearonly {
-      min-width: 225px;
+      min-width: 235px;
 
       .picklist-section.is-month {
         display: none;
+      }
+
+      .picklist-section {
+        &.is-year {
+          width: 100%
+        }
       }
     }
 
@@ -109,13 +120,16 @@
   // Collapsible Month/Year Pane
   .monthview-monthyear-pane {
     background-color: $popover-bg-color;
-    margin: 0 -1px;
     max-height: calc(100% - 50px);
     overflow: hidden;
     position: absolute;
     top: 47px;
     width: 100%;
     z-index: 3011;
+
+    @media only screen and (max-device-width: $breakpoint-phone) {
+      min-width: 324px;
+    }
 
     .content {
       height: 312px;
@@ -138,7 +152,7 @@
         border-left: 1px solid $popover-separator-color;
         content: ' ';
         height: calc(100% - 20px);
-        left: 166px;
+        left: calc(50% + 1px);
         position: absolute;
         top: 15px;
       }
@@ -150,28 +164,43 @@
       flex-direction: column;
       height: inherit;
       justify-content: space-around;
-      padding: 5px 0 0;
+      padding: 5px 0;
 
       &.is-year {
-        padding: 2px 0 0;
+        padding-left: 3px;
       }
 
       .picklist-item {
+        width: 100%;
+
         a {
-          border: 1px solid transparent;
-          border-radius: 14px;
           box-shadow: none;
           color: $datepicker-day-color;
           font-size: $ids-size-font-base;
-          padding: 1px 8px;
           text-decoration: none;
           user-select: none;
+          border: 1px solid transparent;
+          border-radius: 0;
+          display: block;
+          padding: 5px;
 
           &:focus {
             border-color: $datepicker-focus-border-color;
             box-shadow: $focus-box-shadow;
             outline: none;
+            outline-style: none;
             -moz-outline-style: none;
+          }
+        }
+
+        &.is-selected a {
+          color: $ids-color-palette-white;
+          font-weight: $ids-number-font-weight-bold;
+          background-color: $datepicker-selected-bg-color;
+          width: 100%;
+
+          .icon {
+            color: $ids-color-palette-white;
           }
         }
 
@@ -189,20 +218,21 @@
           }
         }
 
-        &.is-selected a {
-          background-color: $datepicker-selected-bg-color;
-          color: $ids-color-palette-white;
-          font-weight: $ids-number-font-weight-bold;
-
-          .icon {
-            color: $ids-color-palette-white;
-          }
-        }
-
         &.up .icon {
           top: 3px;
         }
+
+        &.up,
+        &.down {
+          cursor: pointer;
+        }
       }
+    }
+  }
+
+  &.has-monthview-week-table {
+    .monthview-monthyear-pane .picklist-section.is-month::after {
+      left: 189px;
     }
   }
 
@@ -213,7 +243,7 @@
   // Header
   thead {
     th {
-      @include rem(font-size, 1.4rem);
+      @include font-size(14);
 
       color: $datepicker-day-color;
       margin: 20px;
@@ -226,12 +256,12 @@
   td {
     border: 1px solid transparent;
     border-radius: 50%;
-    height: 42px;
-    width: 42px;
+    height: 41px;
+    width: 41px;
 
     // Adjust cell size for IOS
     @media only screen
-      and (max-width: $breakpoint-phone-to-tablet - 1)
+      and (max-width: ($breakpoint-phone-to-tablet - 1))
       and (-webkit-min-device-pixel-ratio: 2)
       and (orientation: landscape) {
       height: 36px;
@@ -239,7 +269,7 @@
     }
 
     @media only screen
-      and (max-width: $breakpoint-phone-to-tablet - 1)
+      and (max-width: ($breakpoint-phone-to-tablet - 1))
       and (-webkit-min-device-pixel-ratio: 2)
       and (orientation: portrait) {
       height: 36px;
@@ -247,8 +277,8 @@
     }
 
     .day-text {
-      @include rem(font-size, 1.4rem);
       @include no-select();
+      @include font-size(14);
 
       border-radius: 50%;
       color: $datepicker-day-color;
@@ -262,7 +292,7 @@
 
       @media only screen
         and (min-device-width: $breakpoint-phone)
-        and (max-device-width: $breakpoint-big-phone + 88)
+        and (max-device-width: ($breakpoint-big-phone + 88))
         and (-webkit-min-device-pixel-ratio: 2)
         and (orientation: portrait) {
         height: 36px;
@@ -397,10 +427,14 @@
           height: 36px;
           left: 100%;
           position: absolute;
-          width: 43px;
+          width: 37px;
           z-index: -1;
           margin-left: -1px;
         }
+      }
+
+      &.end-date .day-text::before {
+        width: 0;
       }
 
       &:hover {
@@ -433,7 +467,7 @@
           width: 35px;
 
           @media only screen
-            and (max-width: $breakpoint-phone-to-tablet - 1)
+            and (max-width: ($breakpoint-phone-to-tablet - 1))
             and (-webkit-min-device-pixel-ratio: 2)
             and (orientation: landscape) {
             height: 34px;
@@ -441,7 +475,7 @@
           }
 
           @media only screen
-            and (max-width: $breakpoint-phone-to-tablet - 1)
+            and (max-width: ($breakpoint-phone-to-tablet - 1))
             and (-webkit-min-device-pixel-ratio: 2)
             and (orientation: portrait) {
             height: 34px;
@@ -529,6 +563,7 @@
       border-color: $datepicker-focus-border-color;
       box-shadow: $focus-box-shadow;
       outline: none;
+      outline-style: none;
       -moz-outline-style: none;
     }
 
@@ -536,7 +571,6 @@
       background-color: $datepicker-selected-bg-color;
       color: $datepicker-selected-color;
     }
-
   }
 
   &.is-timepicker {
@@ -559,12 +593,11 @@
 
   .monthview-table {
     margin: 20px auto 0;
-    padding: 0 10px;
-    width: 100%;
+    padding: 0 12px;
 
     @media only screen
       and (min-device-width: $breakpoint-phone)
-      and (max-device-width: $breakpoint-big-phone + 88)
+      and (max-device-width: ($breakpoint-big-phone + 88))
       and (-webkit-min-device-pixel-ratio: 2)
       and (orientation: portrait) {
       padding: 0;
@@ -582,6 +615,13 @@
       border: 1px solid  $calendar-line-color;
       overflow-x: hidden;
       overflow-y: auto;
+      margin-bottom: $input-field-bottom-margin;
+
+      tr {
+        td {
+          border-bottom: 0;
+        }
+      }
 
       td {
         border: 1px solid  $calendar-line-color;
@@ -592,6 +632,10 @@
 
         &:first-child {
           border-left: 0;
+        }
+
+        &:last-child {
+          border-right: 0;
         }
 
         .day-container {
@@ -607,6 +651,20 @@
           position: relative;
           top: 0;
           width: 10px;
+          margin-top: 7px;
+
+          &.current-day {
+            left: calc(100% - 35px);
+            background-color: $calendar-current-day-bg-color;
+            color: $ids-color-palette-white;
+            width: 30px;
+            height: 30px;
+            line-height: 2.1;
+            border-radius: 15px;
+            margin-top: 8px;
+            margin-bottom: 1px;
+          }
+
           &.month-label {
             font-weight: 600;
             left: auto;
@@ -626,11 +684,11 @@
           }
         }
 
-        &:hover {
+        &:hover:not(.is-disabled):not(.is-selected) {
           background-color: $calendar-hover-bg-color;
           color: $datepicker-day-color;
 
-          .day-text {
+          .day-text:not(.current-day) {
             background-color: transparent;
             color: $datepicker-day-color;
           }
@@ -640,7 +698,7 @@
           background-color: $calendar-hover-bg-color;
           color: $datepicker-day-color;
 
-          .day-text {
+          .day-text:not(.current-day) {
             background-color: transparent;
             color: $datepicker-day-color;
           }
@@ -648,18 +706,50 @@
 
         &.is-selected {
           background-color: $calendar-selected-bg-color;
-          // border-top: 4px solid $calendar-selected-border-color;
-          box-shadow: inset 0 5px 0 0 $calendar-selected-border-color;
 
-          .day-text {
+          .day-text:not(.current-day) {
             background-color: inherit;
             color: $datepicker-day-color;
           }
+        }
 
-          &:focus {
-            border-color: transparent;
-            box-shadow: 0 0 2px 2px $focus-box-shadow-color, inset 0 5px 0 0 $calendar-selected-border-color;
-          }
+        &:focus {
+          -webkit-box-shadow: inset 0 0 0 1px $calendar-selected-border-color;
+          -moz-box-shadow: inset 0 0 0 1px $calendar-selected-border-color;
+          box-shadow: inset 0 0 0 1px $calendar-selected-border-color;
+        }
+
+        &.slide-select-start {
+          background-color: $calendar-selected-bg-color;
+          box-shadow: inset 1px 0 0 0 $calendar-selected-border-color,
+            inset -1px 0 0 0 transparent,
+            inset 0 1px 0 0 $calendar-selected-border-color,
+            inset 0 -1px 0 0 $calendar-selected-border-color;
+        }
+
+        &.slide-select {
+          background-color: $calendar-selected-bg-color;
+          box-shadow: inset 1px 0 0 0 transparent,
+            inset -1px 0 0 0 transparent,
+            inset 0 1px 0 0 #0072ED,
+            inset 0 -1px 0 0 #0072ED;
+        }
+
+        &.slide-select-end {
+          background-color: $calendar-selected-bg-color;
+          box-shadow: inset 1px 0 0 0 transparent,
+            inset -1px 0 0 0 $calendar-selected-border-color,
+            inset 0 1px 0 0 $calendar-selected-border-color,
+            inset 0 -1px 0 0 $calendar-selected-border-color;
+        }
+
+        &.slide-select-start.slide-select-end {
+          background-color: $calendar-selected-bg-color;
+          box-shadow: inset 1px 0 0 0 $calendar-selected-border-color,
+            inset -1px 0 0 0 $calendar-selected-border-color,
+            inset 0 1px 0 0 $calendar-selected-border-color,
+            inset 0 -1px 0 0 $calendar-selected-border-color;
+
         }
       }
 
@@ -672,6 +762,7 @@
     .monthview-table {
       border-collapse: collapse;
       margin: 7px auto 0;
+      width: 100%;
     }
   }
 
@@ -684,7 +775,8 @@
   }
 
   &.is-inpage {
-    margin-bottom: 20px;
+    margin-bottom: $input-field-bottom-margin;
+    width: 100%;
     min-height: 0;
 
     &.not-toggleable {
@@ -713,12 +805,6 @@
 
         .picklist-item {
           width: 100%;
-
-          a {
-            border-radius: 0;
-            display: block;
-            padding: 9px;
-          }
 
           &.up,
           &.down {
@@ -879,6 +965,41 @@
         transition: calc(var(--t, 0) * 600ms) linear;
       }
     }
+
+    .monthview-table {
+      width: 100%;
+    }
+  }
+
+  .monthview-week-container {
+    display: flex;
+
+    .monthview-week-table {
+      min-width: 45px;
+      margin-top: 20px;
+      border-right: 1px solid $datepicker-monthview-week-table-border;
+
+      thead tr {
+        height: 20px;
+
+        th {
+          width: 42px;
+
+          span {
+            position: relative;
+            top: -1px;
+            color: $ids-color-palette-slate-40;
+          }
+        }
+      }
+
+      tbody tr td span {
+        font-size: 14px;
+        position: relative;
+        top: -1px;
+        color: $ids-color-palette-slate-40;
+      }
+    }
   }
 }
 
@@ -905,11 +1026,20 @@
     display: inline-block;
     height: 12px;
     width: 12px;
+
+    &.default {
+      background-color: $calendar-disabled-bg-color;
+    }
   }
 }
 
 // RTL Styles
 html[dir='rtl'] {
+  .monthview .monthview-week-container .monthview-week-table {
+    border-right: unset;
+    border-left: 1px solid $datepicker-monthview-week-table-border;
+  }
+
   .monthview {
     td {
       &.range-prev.include-disabled,
@@ -1026,9 +1156,43 @@ html[dir='rtl'] {
     }
 
     &.is-fullsize {
-      td .day-text {
-        left: unset;
-        right: calc(100% - 25px);
+      td {
+        .day-text {
+          left: unset;
+          right: calc(100% - 25px);
+        }
+
+        &.slide-select-start {
+          background-color: $calendar-selected-bg-color;
+          box-shadow: inset 1px 0 0 0 transparent,
+            inset -1px 0 0 0 $calendar-selected-border-color,
+            inset 0 1px 0 0 $calendar-selected-border-color,
+            inset 0 -1px 0 0 $calendar-selected-border-color;
+        }
+
+        &.slide-select {
+          background-color: $calendar-selected-bg-color;
+          box-shadow: inset 1px 0 0 0 transparent,
+            inset -1px 0 0 0 transparent,
+            inset 0 1px 0 0 #0072ED,
+            inset 0 -1px 0 0 #0072ED;
+        }
+
+        &.slide-select-end {
+          background-color: $calendar-selected-bg-color;
+          box-shadow: inset 1px 0 0 0 $calendar-selected-border-color,
+            inset -1px 0 0 0 transparent,
+            inset 0 1px 0 0 $calendar-selected-border-color,
+            inset 0 -1px 0 0 $calendar-selected-border-color;
+        }
+
+        &.slide-select-start.slide-select-end {
+          background-color: $calendar-selected-bg-color;
+          box-shadow: inset 1px 0 0 0 $calendar-selected-border-color,
+            inset -1px 0 0 0 $calendar-selected-border-color,
+            inset 0 1px 0 0 $calendar-selected-border-color,
+            inset 0 -1px 0 0 $calendar-selected-border-color;
+        }
       }
     }
 
@@ -1052,6 +1216,17 @@ html[dir='rtl'] {
       &:nth-child(1) {
         border-left: 1px solid $popover-separator-color;
         border-right: 1px solid transparent;
+      }
+    }
+  }
+}
+
+.ie11,
+.ie {
+  .monthview {
+    &.is-fullsize {
+      &.monthview {
+        overflow-y: hidden;
       }
     }
   }

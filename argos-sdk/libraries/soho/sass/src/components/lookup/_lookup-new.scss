@@ -1,14 +1,38 @@
-// Uplift Lookup
+// New Lookup
 //================================================== //
 .lookup-modal {
-  .toolbar-searchfield-wrapper.non-collapsible .searchfield {
-    height: 34px;
+  .toolbar-searchfield-wrapper {
+    &.non-collapsible .searchfield {
+      height: 38px;
+    }
+
+    &.non-collapsible .btn-icon {
+      .icon.close {
+        top: 0;
+      }
+    }
+
+    &.has-close-icon-button {
+      .btn-icon.close:not(.is-empty) {
+        @media only screen and (max-width: $breakpoint-phone-to-tablet) {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  .searchfield-wrapper.non-collapsible.is-open > .icon:not(.close):not(.icon-error) {
+    left: 9px;
+  }
+
+  .datagrid-result-count {
+    top: -2px;
   }
 }
 
 .lookup-wrapper {
   .trigger {
-    margin-top: 7px;
+    margin-top: 6px;
 
     .icon {
       right: 0;
@@ -34,26 +58,17 @@
 .form-layout-compact .field {
   .lookup-wrapper {
     .trigger {
-      margin-top: 4px;
+      margin-top: 1px;
 
       .icon {
         right: 0;
-        top: -2px;
+        top: -1px;
       }
     }
   }
 }
 
 html.is-firefox {
-  .lookup-wrapper {
-    .trigger {
-      .icon {
-        top: 0;
-        margin-top: -10px !important;
-      }
-    }
-  }
-
   .field-short,
   .form-layout-compact .field {
     .lookup-wrapper {
@@ -62,7 +77,6 @@ html.is-firefox {
       }
     }
   }
-
 }
 
 html.is-safari {
@@ -145,9 +159,10 @@ html[dir='rtl'] {
 }
 
 html[dir='rtl'] .modal-content .toolbar .buttonset .searchfield-wrapper .btn-icon.close {
-  top: 4px;
+  top: 50%;
 
   svg.icon.close {
-    left: -4px;
+    position: relative;
+    top: 1px;
   }
 }

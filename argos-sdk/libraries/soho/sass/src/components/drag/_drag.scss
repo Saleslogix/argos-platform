@@ -10,10 +10,18 @@
   -ms-touch-action: none;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
+  user-select: none;
+  touch-action: none;
   z-index: 7000;
 
   &.animated {
     transition: all 0.2s ease;
+  }
+}
+
+.modal-engaged {
+  .draggable {
+    z-index: 500;
   }
 }
 

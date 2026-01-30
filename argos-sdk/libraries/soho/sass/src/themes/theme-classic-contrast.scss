@@ -1,9 +1,11 @@
+/* stylelint-disable no-invalid-position-at-import-rule */
 // IDS Enterprise - High Contrast Theme , WCAGAAA
 //================================================== //
 
 // Standard CSS reset
 @import '../core/reset';
 @import '../core/mixins';
+@import '../core/css-utilities';
 
 // ids-identity token vars
 @import '../../node_modules/ids-identity/dist/theme-classic/tokens/web/theme-classic-contrast';
@@ -17,17 +19,27 @@
 // Override Config
 //================================================== //
 // Form Background Color
-$header-bg-color: $ids-color-palette-azure-90;
-$subhead-bg-color: $ids-color-palette-azure-80;
+$header-bg-color: $ids-color-palette-azure-60;
+$header-bottom-border-color: $ids-color-palette-azure-80;
+$subhead-bg-color: $ids-color-palette-azure-70;
 $header-border-color: $ids-color-palette-slate-100;
-$header-button-color: rgba($ids-color-palette-white, 1);
-$header-button-focus-color: rgba($ids-color-palette-white, 1);
-$header-button-hover-color: rgba($ids-color-palette-white, 0.85);
+$header-text-color: $ids-color-palette-slate-100;
+$header-button-color: $ids-color-palette-slate-100;
+$header-button-focus-color: $ids-color-palette-slate-100;
 $header-button-disabled-color: rgba($ids-color-palette-white, 0.3);
 $header-primary-btn-background-color: $ids-color-brand-primary-base;
 $header-primary-btn-background-hover-color: $ids-color-palette-azure-50;
 $header-disabled-color: $ids-color-palette-graphite-50;
-$header-focus-box-shadow:  0 0 4px 3px rgba(255, 255, 255, 0.3);
+$header-focus-box-shadow: 0 0 4px 3px rgba(255, 255, 255, 0.3);
+$header-default-bg-color: $ids-color-palette-white;
+$module-default-bg-color: $ids-color-palette-white;
+$header-toolbar-searchfield-icon-color: $ids-color-palette-slate-100;
+
+// Homepages
+$header-hero-text-color: $ids-color-palette-white;
+$header-label-text-color: $ids-color-palette-white;
+$homepage-button-color: $ids-color-palette-white;
+$header-hero-widget-bg-color: $ids-color-palette-white;
 
 $dropdown-search-bg-color: $ids-color-palette-white;
 $panel-bg-color: $ids-color-palette-white;
@@ -50,14 +62,21 @@ $focus-box-shadow-spinbox-up: 3px 0 3px 0 $focus-box-shadow-color,
 // Base Colors
 $inverse-color: $ids-color-palette-white;
 
+// Buttons
+$button-disabled-background-color: transparent;
+$button-color-tertiary-hover-background: $ids-color-palette-slate-20;
+$button-color-secondary-initial-background: $ids-color-palette-graphite-70;
+
 // Text Color
 $font-color-extrahighcontrast: $ids-color-palette-graphite-100;
 $font-color-highcontrast: $ids-color-palette-graphite-100;
 $font-color: $ids-color-palette-graphite-90;
 $font-color-lowcontrast: $ids-color-palette-graphite-70;
 $label-disabled-color: $ids-color-palette-graphite-50;
+$label-text-color: $ids-color-palette-graphite-80;
 $disabled-color: $ids-color-palette-graphite-50;
 $signin-title-color: $ids-color-palette-slate-100;
+$count-font-color: $ids-color-palette-slate-10;
 
 // New Text Colors
 $font-color-default: $ids-color-palette-black;
@@ -112,7 +131,7 @@ $tooltip-border-color: $ids-color-palette-graphite-80;
 $tooltip-box-shadow: 0 2px 5px $drop-shadow-depth;
 $tooltip-color: $ids-color-palette-white;
 $tooltip-error-bg-color: $ids-color-status-danger;
-$tooltip-error-border-color:  $ids-color-status-danger;
+$tooltip-error-border-color: $ids-color-status-danger;
 $tooltip-error-color: $ids-color-palette-white;
 
 // Badges
@@ -134,7 +153,7 @@ $badge-alert-icon-color: $ids-color-palette-white;
 $badge-alert-hover-icon-color: $ids-color-palette-graphite-40;
 $badge-good-color: $ids-color-palette-white;
 $badge-good-icon-color: $ids-color-palette-white;
-$badge-good-hover-icon-color: $ids-color-palette-graphite-40;
+$badge-good-hover-icon-color: $ids-color-palette-white;
 $badge-good-hover-bg-color: $ids-color-palette-emerald-30;
 $badge-info-color: $ids-color-palette-white;
 $badge-info-icon-color: $ids-color-palette-white;
@@ -166,9 +185,9 @@ $popupmenu-checked-color-inverse: $ids-color-brand-primary-base;
 $tertiary-btn-ripple-color: $ids-color-brand-primary-alt;
 
 // Secondary with Border
-$secondary-border-btn-color:  $ids-color-palette-graphite-90;
+$secondary-border-btn-color: $ids-color-palette-graphite-90;
 $secondary-border-btn-border-color: $ids-color-palette-graphite-90;
-$secondary-border-btn-hover-color:  $ids-color-palette-graphite-100;
+$secondary-border-btn-hover-color: $ids-color-palette-graphite-100;
 $secondary-border-btn-hover-border-color: $ids-color-palette-graphite-100;
 $secondary-border-btn-ripple-color: $ids-color-brand-primary-alt;
 
@@ -179,12 +198,13 @@ $input-placeholder-color: $input-color-initial-placeholder;
 $input-readonly-color: $input-color-readonly-font;
 
 //States
-$error-color: $ids-color-status-danger;
-$error-icon-fill: $ids-color-status-danger;
+$error-color: #b94e4a;
+$error-icon-fill: #b94e4a;
+$error-border-color: #b94e4a;
 $alert-color: $ids-color-palette-amber-100;
 $success-color: $ids-color-status-success;
-$info-color: $ids-color-brand-primary-base;
-$error-focus-box-shadow:  0 0 4px 2px rgba(222, 129, 129, 0.3);
+$info-color: $status-05-color;
+$error-focus-box-shadow: 0 0 4px 2px rgba(222, 129, 129, 0.3);
 $dirty-icon-fill: $ids-color-palette-amber-50;
 $success-icon-fill: $ids-color-status-success;
 $info-icon-fill: $ids-color-palette-azure-80;
@@ -205,7 +225,7 @@ $trigger-focus-color: $ids-color-brand-primary-base;
 $listview-bg-color: $inverse-color;
 $listview-bg-color-alternate: $ids-color-palette-graphite-20;
 $listview-hover-bg-color: $ids-color-palette-graphite-30;
-$listview-border-color: $ids-color-palette-graphite-60;
+$listview-border-color: $ids-color-palette-graphite-50;
 $listview-color: $ids-color-palette-black;
 $listview-secondary-color: $ids-color-palette-graphite-90;
 $listview-tertiary-color: $ids-color-palette-graphite-70;
@@ -214,6 +234,8 @@ $listview-selected-text-color: $font-color-extrahighcontrast;
 $listview-header-bg-color: $ids-color-brand-secondary-alt;
 $listview-header-color: $font-color-extrahighcontrast;
 $listview-subhead-color: $ids-color-palette-graphite-60;
+
+$listview-search-border-color: $ids-color-palette-black;
 
 $listview-toolbar-button-text-color: $button-color-tertiary-initial-font;
 $listview-toolbar-button-icon-color: $button-color-tertiary-initial-font;
@@ -226,6 +248,14 @@ $listview-search-disabled-color: $ids-color-palette-black;
 $listview-search-disabled-opacity: 0.8;
 $listview-search-disabled-border-color: $ids-color-palette-graphite-60;
 $listview-search-disabled-icon-color: $ids-color-palette-graphite-60;
+
+// Link
+$link-background-color: $ids-color-palette-white;
+
+// Link List
+$linklist-color-text-font: $ids-color-palette-slate-100;
+$linklist-color-visited-text-font: $ids-color-palette-amethyst-90;
+$linklist-color-disabled-text-font: $ids-color-palette-slate-50;
 
 // Listbuilder
 $listbuilder-bg-color: $input-color-initial-background;
@@ -242,6 +272,7 @@ $toolbar-standalone-bg-color: $ids-color-palette-graphite-10;
 $toolbar-standalone-border-color: $ids-color-palette-graphite-60;
 $toolbar-standalone-disabled-color: $ids-color-palette-graphite-40;
 $toolbar-separator-color: $ids-color-palette-graphite-60;
+$toolbar-btn-actions-hover-bg-color: transparent;
 
 // Field Filter
 $fieldfilter-border-side-color: $input-color-initial-border;
@@ -253,7 +284,7 @@ $formatter-toolbar-separator-color: $ids-color-palette-graphite-60;
 $contextual-toolbar-bg-color: $ids-color-brand-primary-base;
 $contextual-toolbar-color: $inverse-color;
 $contextual-toolbar-button-color: rgba($inverse-color, 1);
-$contextual-toolbar-button-hover-color: rgba($inverse-color, 0.7);
+$contextual-toolbar-button-hover-color: rgba($inverse-color, 1);
 $contextual-toolbar-button-disabled-color: rgba($inverse-color, 0.3);
 $contextual-panel-separator-bg-color: $ids-color-palette-graphite-60;
 
@@ -263,6 +294,7 @@ $dropdown-selected-bg-color: $ids-color-brand-primary-base;
 $dropdown-menu-separator-color: $ids-color-palette-slate-70;
 $dropdown-menu-separator-border-color: $ids-color-palette-slate-60;
 $dropdown-readonly-icon-color: $ids-color-palette-graphite-80;
+$dropdown-placeholder-text-color: $ids-color-palette-slate-70;
 
 // Date Picker
 $datepicker-month-year-color: $ids-color-palette-black;
@@ -278,6 +310,7 @@ $datepicker-disabled-border-color: $ids-color-brand-secondary-alt;
 $datepicker-disabled-bg-color: $ids-color-palette-graphite-20;
 $datepicker-disabled-color: $ids-color-brand-secondary-alt;
 $datepicker-readonly-icon-color: $ids-color-palette-graphite-80;
+$datepicker-calendar-icon-color: $ids-color-palette-graphite-80;
 
 .calendar-table .is-today {
   text-decoration: underline;
@@ -309,7 +342,7 @@ $fileupload-completed-border-color: #225800;
 $fileupload-droparea-hover-color: $ids-color-palette-graphite-50;
 $fileupload-droparea-hover-bg-color: $ids-color-palette-azure-20;
 $fileupload-cancel-bg-color: $ids-color-palette-graphite-50;
-$fileupload-cancel-hover-bg-color: darken($ids-color-palette-graphite-50, 15%);
+$fileupload-cancel-hover-bg-color: $ids-color-palette-graphite-40;
 $fileupload-droparea-bg-color: rgba($ids-color-palette-graphite-10, 0.5);
 $fileupload-droparea-hover-bg-color: $ids-color-palette-graphite-10;
 $fileupload-droparea-dd-hover-bg-color: rgba(200, 233, 244, 0.8);
@@ -355,7 +388,6 @@ $card-selected-background-color: $selected-bg-color;
 $card-expandable-sub-heading: $ids-color-palette-graphite-90;
 
 // Cardlist
-$cardlist-bg-color: $ids-color-palette-graphite-10;
 $cardlist-border-color: $ids-color-palette-graphite-60;
 $cardlist-header-color: $ids-color-palette-black;
 $cardlist-actions-color: $ids-color-palette-graphite-90;
@@ -368,7 +400,7 @@ $switch-unchecked-bar-color: $ids-color-palette-graphite-70;
 $switch-unchecked-border-color: $ids-color-palette-graphite-60;
 $switch-unchecked-color: $ids-color-palette-slate-50;
 $switch-unchecked-pressed-bg-color: $ids-color-palette-slate-40;
-$switch-checked-disabled-bar-color:  $ids-color-palette-azure-30;
+$switch-checked-disabled-bar-color: $ids-color-palette-azure-30;
 $switch-disabled-bg-color: $input-color-readonly-background;
 $switch-disabled-border-color: $ids-color-brand-secondary-alt;
 $switch-disabled-bar-color: $ids-color-brand-secondary-alt;
@@ -436,7 +468,6 @@ $modal-btn-primary-hover-color: $ids-color-palette-azure-90;
 $modal-btn-disabled-color: $ids-color-palette-graphite-80;
 $modal-btn-disabled-opacity: 0.5;
 $modal-primary-color: $ids-color-palette-black;
-$modal-secondary-color: $ids-color-palette-graphite-90;
 
 // Accordion
 $accordion-bg-color: $ids-color-palette-graphite-10;
@@ -467,8 +498,8 @@ $accordion-inverse-focus-state-color: $ids-color-palette-white;
 $accordion-focused-text-color: $ids-color-palette-azure-50;
 $accordion-focused-border-color: $ids-color-palette-azure-50;
 
-$accordion-selected-bg-color: $ids-color-palette-azure-50;
-$accordion-selected-text-color: $ids-color-palette-white;
+$accordion-selected-bg-color: $ids-color-palette-slate-100;
+$accordion-selected-text-color: $ids-color-palette-graphite-20;
 
 $accordion-highcontrast-text-decoration: underline;
 
@@ -490,6 +521,7 @@ $application-menu-trigger-icon-fill-color: $ids-color-palette-slate-30;
 $contextual-panel-bg: $ids-color-palette-graphite-30;
 $contextual-panel-border-color: $ids-color-palette-graphite-50;
 $contextual-panel-color: $ids-color-palette-white;
+$contextual-panel-button-hover-bg-color: $ids-color-palette-graphite-40;
 
 //BreadCrumb
 $breadcrumb-color: $ids-color-palette-graphite-80;
@@ -535,9 +567,10 @@ $chart-legend-border-color: $ids-color-palette-graphite-30;
 $datagrid-border-color: $ids-color-palette-graphite-60;
 $datagrid-header-color: $ids-color-palette-white;
 $datagrid-header-bg-color: $ids-color-palette-graphite-70;
+$datagrid-header-dragging-bg-color: $ids-color-palette-graphite-60;
 $datagrid-nested-header-bg-color: $ids-color-palette-graphite-60;
 $datagrid-nested-header-border-color: $ids-color-brand-secondary-alt;
-$datagrid-header-border-color: $ids-color-palette-graphite-60;
+$datagrid-header-border-color: $ids-color-palette-graphite-40;
 $datagrid-header-hover-color: $ids-color-palette-graphite-100;
 $datagrid-header-active-color: $ids-color-palette-graphite-80;
 $datagrid-header-checkbox-border-color: $ids-color-palette-graphite-50;
@@ -562,7 +595,7 @@ $datagrid-row-icon-color: $ids-color-palette-graphite-90;
 
 $datagrid-alternate-bg-color: $ids-color-palette-graphite-30;
 $datagrid-alternate-row-hover-color: $ids-color-brand-secondary-alt;
-$datagrid-list-header-bg-color:  $ids-color-palette-graphite-30;
+$datagrid-list-header-bg-color: $ids-color-palette-graphite-20;
 $datagrid-list-group-header-bg-color: $ids-color-palette-graphite-40;
 $datagrid-list-group-header-border-color: $ids-color-palette-graphite-30;
 $datagrid-list-header-active-color: $ids-color-palette-graphite-40;
@@ -585,7 +618,8 @@ $datagrid-filter-border-color: $ids-color-palette-slate-40;
 $datagrid-filter-hover-border-color: $ids-color-palette-white;
 $datagrid-filter-color: $ids-color-palette-white;
 $datagrid-filter-hover-color: $ids-color-palette-white;
-$datagrid-filter-disabled-color: $ids-color-palette-slate-60;
+$datagrid-filter-disabled-color: $ids-color-palette-slate-40;
+$datagrid-filter-disabled-opacity: 0.5;
 $datagrid-filter-icon-color: $ids-color-palette-slate-30;
 $datagrid-filter-focus-color: $ids-color-palette-azure-40;
 $datagrid-filter-active-color: $ids-color-palette-azure-40;
@@ -679,12 +713,13 @@ $searchfield-card-border-color: $ids-color-palette-graphite-30;
 $searchfield-card-icon-color: $ids-color-palette-graphite-30;
 $searchfield-card-text-color: $font-color;
 
-$searchfield-header-bg-color: $ids-color-palette-graphite-80;
+$searchfield-header-bg-color: $ids-color-palette-white;
 $searchfield-header-border-color: $ids-color-palette-graphite-90;
 $searchfield-header-text-color: $ids-color-palette-white;
-$searchfield-header-placeholder-text-color: rgba(255, 255, 255, 0.7);
-$searchfield-header-icon-color: $header-button-color;
+$searchfield-header-placeholder-text-color: $ids-color-palette-slate-60;
+$searchfield-header-icon-color: $ids-color-palette-slate-60;
 $searchfield-readonly-icon-color: $ids-color-palette-graphite-80;
+$searchfield-header-inactive-icon-color: $ids-color-palette-white;
 
 //Image Border Color
 $image-border-color: $ids-color-palette-graphite-30;
@@ -707,17 +742,46 @@ $about-text-color: $ids-color-palette-black;
 $about-text-border-color: $ids-color-palette-graphite-60;
 $about-text-hover-border-color: $ids-color-palette-black;
 
+// Header Colors
+$header-default-bg-color: $ids-color-palette-white;
+$module-default-bg-color: $ids-color-palette-white;
+$header-default-bg-border-color: $ids-color-palette-slate-30;
+
+$header-border-color: $ids-color-palette-azure-80;
+$header-text-default-color: $ids-color-palette-slate-100;
+$header-text-actionable-color: $ids-color-palette-azure-80;
+$header-button-normal-color: $ids-color-palette-slate-100;
+$header-button-icon-color: $ids-color-palette-slate-100;
+$header-button-focus-color: $ids-color-palette-slate-100;
+$header-button-focus-border-color: $ids-color-palette-azure-80;
+
+$counts-personalize-text-color: $header-text-default-color;
+$label-personalize-text-color: $header-text-default-color;
+$hyperlinks-personalize-actionable-text-color: $header-text-actionable-color;
+$hyperlinks-personalize-text-color: $header-text-default-color;
+$header-button-color: $header-button-normal-color;
+$header-text-color: $header-text-default-color;
+$header-toolbar-searchfield-icon-color: $header-button-icon-color;
+
+// Header
+$header-searchfield-btn-font-color: $ids-color-palette-slate-100;
+$header-primary-btn-background-hover-color: $ids-color-palette-azure-100;
+$input-placeholder-color: $ids-color-palette-slate-60;
+$header-searchfield-input-border-color: $ids-color-palette-slate-80;
+
 // Header Tabs
 $header-tabcontainer-border-color: $ids-color-brand-secondary-alt;
-$header-tab-separator: rgba(255, 255, 255, 0.4);
-$header-tab-normal-color: $ids-color-palette-graphite-10;
-$header-tab-hover-color: $inverse-color;
-$header-tab-selected-color: $inverse-color;
+$header-tab-separator: $ids-color-brand-secondary-alt;
+$header-tab-selected-color: $ids-color-palette-azure-80;
+$header-tab-focus-border-color: $ids-color-palette-azure-80;
+
 $header-tab-alt-bg-color: $ids-color-palette-slate-100;
 $header-tab-alt-separator: $header-tabcontainer-border-color;
 $header-tab-alt-normal-color: $inverse-color;
 $header-tab-alt-hover-color: $inverse-color;
 $header-tab-alt-selected-color: $inverse-color;
+$header-tab-alt-disabled-color: $ids-color-palette-slate-50;
+$header-button-disabled-color: rgba(0, 0, 0, 0.3);
 
 // Header Breadcrumb
 $header-breadcrumb-color: $ids-color-palette-white;
@@ -726,28 +790,44 @@ $header-breadcrumb-alt-color: $font-color-highcontrast;
 $header-breadcrumb-border-color: $ids-color-palette-graphite-60;
 
 // Module Tabs
-$module-tabs-bg-color: $ids-color-palette-azure-90;
-$module-tabs-x-border-color: $ids-color-palette-azure-50;
-$module-tabs-y-border-color: $ids-color-palette-azure-100;
-$module-tabs-inactive-bg-color: $ids-color-palette-azure-100;
-$module-tabs-active-bg-color: $ids-color-brand-primary-alt;
-$module-tabs-hover-bg-color: $ids-color-palette-azure-60;
-$module-tabs-inactive-text-color: rgba($ids-color-palette-white, 0.85);
-$module-tabs-active-text-color: $ids-color-palette-white;
-$module-tabs-hover-text-color: $ids-color-palette-white;
+$module-default-bg-color: $ids-color-palette-graphite-20;
+$module-tabs-bg-color: $ids-color-palette-graphite-20;
+$module-tabs-x-border-color: $ids-color-palette-graphite-40;
+$module-tabs-y-border-color: $ids-color-palette-graphite-30;
+$module-tabs-inactive-bg-color: $ids-color-palette-azure-90;
+$module-tabs-active-bg-color: $ids-color-palette-white;
+$module-tabs-hover-bg-color: $ids-color-palette-graphite-20;
+$module-tabs-inactive-text-color: $ids-color-palette-graphite-80;
+$module-tabs-hover-text-color: $ids-color-palette-graphite-80;
 $module-tabs-disabled-bg-color: $ids-color-brand-primary-base;
 $module-tabs-disabled-x-border-color: $ids-color-palette-azure-40;
 $module-tabs-disabled-y-border-color: $ids-color-brand-primary-alt;
 $module-tabs-disabled-text-color: $ids-color-palette-azure-40;
+$module-tabs-list-container-bg-color: $ids-color-palette-white;
+$module-tabs-normal-bg-color: $ids-color-palette-graphite-20;
+$module-tabs-normal-text-color: $ids-color-palette-graphite-100;
+$module-tabs-active-text-color: $ids-color-palette-azure-90;
+$module-tabs-close-hover-color: $ids-color-palette-graphite-60;
+$module-tabs-icon-normal-color: $ids-color-palette-graphite-100;
+$module-tabs-icon-hover-color: $ids-color-palette-graphite-100;
+$module-tabs-more-button-hover-color: $ids-color-palette-graphite-20;
+$module-tabs-more-text-hover-color: $ids-color-palette-graphite-100;
+$module-tabs-focus-border-color: $ids-color-palette-azure-90;
 
 // Composite Tabs
 $composite-tabs-panel-bg-color: $ids-color-palette-white;
 
 // Splitter
-$splitter-grip-bg-color: $ids-color-palette-graphite-90;
-$splitter-active-bg-color: $ids-color-brand-secondary-base;
-$splitter-active-grip-bg-color: $ids-color-palette-black;
-$splitter-box-shadow-color: rgba(37, 120, 169, 0.75);
+$splitter-border-color: $ids-color-palette-slate-40;
+$splitter-focus-border-color: $ids-color-palette-azure-40;
+$splitter-handle-background-color: $ids-color-palette-azure-80;
+$splitter-expand-btn-background-color: $ids-color-palette-white;
+$splitter-expand-btn-border-color: $ids-color-palette-graphite-60;
+$splitter-expand-btn-arrow-color: $ids-color-palette-graphite-90;
+$splitter-expand-btn-hover-background-color: $ids-color-palette-graphite-20;
+$splitter-expand-btn-hover-border-color: $ids-color-palette-graphite-80;
+$splitter-expand-btn-hover-arrow-color: $ids-color-palette-graphite-100;
+$splitter-expand-btn-accent-color: $ids-color-brand-primary-base;
 
 // Step Chart
 $step-chart-bg-color: $ids-color-palette-graphite-20;
@@ -781,9 +861,9 @@ $calendar-bg-color: $ids-color-palette-graphite-10;
 $calendar-event-color: $ids-color-palette-graphite-100;
 $calendar-line-color: $ids-color-palette-graphite-90;
 $calendar-line-color-light: $ids-color-palette-graphite-30;
-$calendar-selected-border-color: $ids-color-brand-primary-base;
-$calendar-selected-bg-color: $ids-color-palette-graphite-30;
-$calendar-hover-bg-color: rgba(74, 74, 74, 0.1);
+$calendar-selected-border-color: $ids-color-palette-azure-60;
+$calendar-selected-bg-color: $ids-color-palette-azure-30;
+$calendar-hover-bg-color: $ids-color-palette-slate-20;
 $calendar-disabled-bg-color: $input-color-readonly-background;
 $calendar-disabled-color: $ids-color-palette-graphite-100;
 

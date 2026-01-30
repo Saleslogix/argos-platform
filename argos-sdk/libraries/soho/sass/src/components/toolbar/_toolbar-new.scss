@@ -1,15 +1,31 @@
 // Toolbars - New Theme overrides
 //================================================== */
 
-@import '../button/button-new';
-@import '../colorpicker/colorpicker-new';
-@import '../fontpicker/fontpicker-new';
-@import '../popupmenu/popupmenu-new';
+// Dependencies
+// button/button-new
+// colorpicker/colorpicker-new
+// fontpicker/fontpicker-new
+// popupmenu/popupmenu-new
 
 // Styles for regular toolbar only
 .toolbar {
   .title {
     @include font-size(18);
+  }
+
+  &.do-resize {
+    .toolbar-searchfield-wrapper {
+      > svg.icon.close {
+        transform: translateY(50%);
+        top: -5px;
+      }
+    }
+  }
+
+  &.has-more-button {
+    .buttonset {
+      height: 41px;
+    }
   }
 
   .datagrid-result-count,
@@ -19,5 +35,96 @@
 
   .buttonset {
     height: 41px;
+  }
+
+  &:not(.standalone) {
+    .searchfield-wrapper.toolbar-searchfield-wrapper:not(.has-categories):not(.is-open) {
+      height: 34px;
+      margin-top: 4px;
+
+      &:hover {
+        border-radius: 8px;
+        background-color: $toolbar-btn-actions-hover-bg-color;
+
+        .icon {
+          color: $button-color-tertiary-hover-text-new;
+        }
+      }
+
+      .icon:not(.icon-dropdown) {
+        top: -2px;
+        left: 7px;
+      }
+
+      .searchfield {
+        padding-bottom: 11px;
+      }
+    }
+
+    .buttonset [class^='btn']:not(.searchfield-category-button) {
+      border-radius: 8px;
+
+      &:not(:disabled):hover {
+        background-color: $toolbar-btn-actions-hover-bg-color;
+      }
+    }
+
+    .more:not(:disabled) button:hover {
+      background-color: $toolbar-btn-actions-hover-bg-color;
+      border-radius: 8px;
+    }
+
+    .searchfield-wrapper.toolbar-searchfield-wrapper.has-categories:not(.is-open):not(.alternate) {
+      .searchfield-category-button {
+        width: 34px;
+        height: 34px;
+        padding-right: 7px;
+        padding-left: 7px;
+        border-radius: 8px;
+        margin-top: 2px;
+        text-overflow: unset;
+
+        &:not(:disabled):hover {
+          background-color: $toolbar-btn-actions-hover-bg-color;
+
+          .icon:not(.icon-dropdown) {
+            color: $searchfield-icon-hover-color;
+          }
+        }
+      }
+    }
+  }
+
+  .searchfield-wrapper.toolbar-searchfield-wrapper.has-close-icon-button.is-open > svg.close {
+    padding: 3px;
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+
+    &:hover {
+      background-color: $toolbar-btn-actions-hover-bg-color;
+    }
+  }
+}
+
+// Styles for contextual toolbar
+.contextual-toolbar {
+  &.toolbar {
+    &:not(.standalone) {
+      .buttonset [class^='btn'] {
+        &:not(:disabled):hover {
+          background-color: $toolbar-contextual-button-hover-bg-color;
+          color: $toolbar-contextual-button-color;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-phablet) {
+  .toolbar {
+    .buttonset {
+      height: auto;
+    }
   }
 }

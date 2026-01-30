@@ -4,9 +4,24 @@
 .page-container,
 .container {
   .form-responsive {
-    input,
+    input:not([type="radio"]),
     textarea {
+      max-width: 100% !important;
       width: 100%;
+    }
+
+    .compound-field .field-checkbox {
+      margin-top: 0;
+    }
+
+    .field-checkbox {
+      margin-top: 30px;
+
+      .icon-dirty.dirty-checkbox.is-checked {
+        @media (max-width: $breakpoint-phone-to-tablet) {
+          top: -1px;
+        }
+      }
     }
 
     .colorpicker-container {
@@ -34,7 +49,8 @@
 
     .field .checkbox-label,
     .field .checkbox > label {
-      margin-top: 30px;
+      margin-top: 0;
+      white-space: unset;
     }
 
     .checkbox-group-label + .compound-field {
@@ -57,7 +73,7 @@
     }
 
     .label,
-    label {
+    label:not(.fileupload-adv-browse-lbl) {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -84,9 +100,48 @@
       }
     }
   }
+
+  .flex-wrap-form {
+    display: flex;
+    flex-wrap: wrap;
+
+    .field .columns {
+      &.one,
+      &.two,
+      &.three,
+      &.four,
+      &.five,
+      &.six,
+      &.seven,
+      &.eight,
+      &.nine,
+      &.ten,
+      &.eleven,
+      &.twelve {
+        @media (min-width: $breakpoint-phone-to-tablet) {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+
+  .flex-columns {
+    display: inline-block;
+
+    @media (min-width: $breakpoint-phone-to-tablet) {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .columns {
+      @media (max-width: $breakpoint-phone-to-tablet) {
+        padding: 0;
+      }
+    }
+  }
 }
 
-@media (max-width: $breakpoint-phone-to-tablet + 1) {
+@media (max-width: ($breakpoint-phone-to-tablet + 1)) {
   .page-container,
   .container {
     .form-responsive {
@@ -103,6 +158,65 @@
   }
 }
 
+.form-responsive {
+  .fileupload-wrapper.standalone {
+    padding: 25px 0;
+  }
+
+  .fileupload-wrapper {
+    min-width: unset;
+
+    .container {
+      .file-row {
+        .status-icon {
+          .icon {
+            top: 0;
+          }
+        }
+      }
+    }
+  }
+
+  @media (min-width: $breakpoint-phone-to-tablet) and (max-width: $breakpoint-wide-tablet) {
+    .column {
+      &.one-fourth,
+      &.one-fifth {
+        .fileupload-wrapper {
+          .container.drop-area {
+            padding: 20px 15px;
+          }
+
+          .container {
+            .file-row {
+              .description {
+                max-width: calc(100% - 45px);
+              }
+
+              .size {
+                margin: 0;
+                width: calc(100% - 10px);
+              }
+            }
+
+            .l-pull-right {
+              float: unset;
+              text-align: center;
+            }
+
+            &.completed {
+              .file-row {
+                .size {
+                  width: inherit;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 // Setup specific widths for modals/CAPs with a responsive form
 .modal {
   &.display-fullsize {
@@ -111,6 +225,10 @@
       textarea {
         max-width: none;
         width: 100%;
+      }
+
+      input.spinbox {
+        width: calc(100% - 67px);
       }
 
       .colorpicker-container {
@@ -133,6 +251,25 @@
   }
 }
 
+html {
+  // Field with Label Left in fr Locale
+  &[lang^='fr'] {
+    .field.label-left {
+      .label::after {
+        padding-left: 8px;
+      }
+    }
+  }
+
+  &:not([lang^='fr']) {
+    .field.label-left {
+      .label::after {
+        padding-left: 0;
+      }
+    }
+  }
+}
+
 // Hide and show password functionality
 .input-hideshow-text {
   color: $ids-color-palette-slate-50;
@@ -143,12 +280,12 @@
 }
 
 .input-hide-text {
+  -webkit-text-security: disc;
+
   &::-ms-reveal,
   &::-ms-clear {
     display: none !important;
   }
-
-  -webkit-text-security: disc;
 }
 
 html[dir='rtl'] {

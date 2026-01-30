@@ -18,8 +18,24 @@
     stroke-width: 1px;
   }
 
-  &.bar-chart-grouped .chart-legend {
-    margin-top: 5px;
+  &.bar-chart {
+    .series-group {
+      outline: none; // removing the focus style when clicking specific bar
+    }
+
+    svg .series-group g text.audible {
+      opacity: 0;
+    }
+  }
+}
+
+.bar-chart {
+  .chart-legend {
+    margin-top: 0;
+
+    .chart-legend-color {
+      margin-bottom: 0;
+    }
   }
 }
 

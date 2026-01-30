@@ -1,4 +1,4 @@
-// Uplift Searchfield
+// New Searchfield
 //================================================== //
 
 .inline.searchfield-wrapper:not(.toolbar-searchfield-wrapper) {
@@ -10,31 +10,61 @@
 .searchfield-wrapper {
   > .icon {
     &.close {
-      padding: 1px 3px;
       top: 50%;
       transform: translateY(-50%);
     }
   }
 
-  &.non-collapsible > .icon:not(.close):not(.icon-error) {
-    top: 12px;
+  .btn-icon.close {
+    top: 8px;
   }
 
   .go-button {
     height: 100%;
   }
 
+  &.context .searchfield-category-button {
+    border-right: 0;
+  }
+
   .searchfield-category-button {
     height: 38px;
 
-    svg {
-      margin-top: -5px;
+    &:hover {
+      .category {
+        color: $button-color-tertiary-hover-text-new;
+      }
     }
   }
 
   &.context {
     > .searchfield {
-      height: 34px;
+      height: 38px;
+    }
+  }
+
+  &.has-custom-button {
+    .custom-button {
+      position: absolute;
+      top: 7px;
+      left: 263px;
+      width: 24px;
+      min-width: 24px;
+      min-height: 24px;
+    }
+
+    &.has-go-button .custom-button {
+      left: 205px;
+    }
+
+    &.has-text.has-close-icon-button {
+      .custom-button {
+        left: 235px;
+      }
+
+      &.has-go-button .custom-button {
+        left: 180px;
+      }
     }
   }
 }
@@ -44,38 +74,15 @@
   // missing text height.  The padding values should equal to `1px` taller on each side
   // than the standard input field padding.  The "closed" state also shifts the visual
   // location of the text/icon to better align it with other toolbar buttons.
+  overflow: hidden;
+
   &:not(.is-open),
   &.non-collapsible {
     .searchfield {
-      height: 34px;
-      padding-bottom: 6px;
       padding-top: 6px;
 
       @media only screen and (max-width: $breakpoint-phone-to-tablet) {
         height: 38px;
-      }
-    }
-
-    > .icon,
-    > .icon:not(.close) {
-      top: 10px;
-    }
-  }
-
-  &:not(.is-open) {
-    .icon:not(.close) {
-      top: 8px;
-    }
-  }
-
-  &.has-close-icon-button {
-    .btn-icon.close:not(.is-empty) {
-      @media only screen and (max-width: $breakpoint-phone-to-tablet) {
-        margin-right: 0;
-      }
-
-      > .icon.close {
-        top: -1px;
       }
     }
   }
@@ -84,17 +91,6 @@
     align-items: center;
     justify-content: center;
     overflow: visible;
-    top: 50%;
-    transform: translateY(-50%);
-
-    @media only screen and (max-width: $breakpoint-phone-to-tablet) {
-      margin-right: 38px;
-    }
-
-    & > svg.close.icon {
-      position: relative;
-      top: -1px;
-    }
   }
 }
 
@@ -102,12 +98,11 @@
   &.searchfield-wrapper {
     &.non-collapsible {
       svg.icon:not(.close) {
-        top: 10px;
         left: 8px;
+      }
 
-        @media only screen and (max-width: $breakpoint-phone-to-tablet) {
-          top: 12px;
-        }
+      .collapse-button .icon:not(.close) {
+        transform: translateY(0);
       }
     }
   }
@@ -119,58 +114,66 @@ html.is-firefox {
     height: 38px;
 
     &.toolbar-searchfield-wrapper {
-      height: 34px;
-    }
-
-    > .icon {
-      top: 10px;
+      height: 38px;
+      overflow: hidden;
     }
 
     .searchfield-category-button {
       height: inherit;
+    }
+
+    &.context {
+      > .searchfield {
+        color: $searchfield-header-icon-color;
+        height: 38px;
+      }
+    }
+
+    &.has-close-icon-button.has-text .btn-icon.close svg.close {
+      top: -0.5px;
+    }
+  }
+
+  .header.has-searchfield-xl .searchfield-wrapper {
+    input {
+      height: 48px;
+    }
+
+    > svg.icon:nth-child(1) {
+      top: 53%;
     }
   }
 
   .toolbar-searchfield-wrapper {
     &:not(.is-open):not(.non-collapsible) {
       .searchfield {
-        height: 34px;
+        height: 38px;
         padding-bottom: 5px;
         padding-top: 7px;
       }
-
-      .icon:not(.close) {
-        top: 8px;
-      }
-
-      .icon.close {
-        top: 11px;
-      }
-    }
-
-    .collapse-button {
-      height: 35px !important;
     }
 
     > .icon {
-      top: 10px;
-
       &.close {
         top: 18px;
-
-        @media only screen and (max-width: $breakpoint-phone-to-tablet) {
-          margin-right: 5px;
-        }  
       }
     }
 
     &.is-open,
     &.non-collapsible {
       .searchfield {
-        height: 34px;
+        height: 38px;
         padding-bottom: 6px;
         padding-top: 6px;
       }
+    }
+  }
+}
+
+html.is-safari {
+  .searchfield-wrapper {
+    &.has-close-icon-button.has-text .btn-icon.close svg.close {
+      top: -0.5px;
     }
   }
 }
@@ -184,16 +187,56 @@ html[dir='rtl'] {
       }
     }
 
-    .searchfield-category-button {
-      height: 39px;
-    }
+    &.has-close-icon-button.has-text {
+      .btn-icon.close {
+        top: 7px;
 
-    &:not(.toolbar-searchfield-wrapper):not(.context) {
-      &.has-categories {
-        .searchfield {
-          padding-bottom: 8px;
+        svg.close.icon {
+          top: 1px;
         }
       }
+
+      &.has-custom-button {
+        .custom-button {
+          right: calc(300px - 45%);
+        }
+
+        .searchfield {
+          padding-left: 60px;
+        }
+      }
+    }
+
+    &.has-custom-button {
+      .custom-button {
+        top: 3px;
+        right: calc(300px - 15%);
+      }
+
+      &.has-close-icon-button {
+        .searchfield {
+          padding-left: 34px;
+          padding-right: 34px;
+        }
+      }
+
+      &.has-go-button {
+        .custom-button {
+          right: calc(300px - 38%);
+        }
+
+        .btn-icon.close {
+          right: calc(300px - 33%);
+        }
+      }
+    }
+
+    .searchfield-category-button {
+      height: 38px;
+    }
+
+    &.has-categories button.close:not(.is-empty) {
+      top: 0;
     }
   }
 
@@ -207,4 +250,3 @@ html[dir='rtl'] {
     }
   }
 }
-

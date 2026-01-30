@@ -1,10 +1,10 @@
 // Editor (Rich Text)
 //================================================== //
 
-@import '../button/button';
-@import '../colorpicker/colorpicker';
-@import '../fontpicker/fontpicker';
-@import '../popupmenu/popupmenu';
+// Dependencies:
+// colorpicker/colorpicker
+// fontpicker/fontpicker
+// popupmenu/popupmenu
 
 .editor-container {
   .label {
@@ -12,11 +12,14 @@
   }
 
   &.is-hover:not(.is-readonly):not(.is-disabled) {
-    .editor,
     .editor-source,
-    .toolbar,
-    .flex-toolbar {
+    .toolbar {
       border-color: $editor-hover-border-color;
+    }
+
+    .editor,
+    .flex-toolbar.formatter-toolbar {
+      border-color: $ids-color-palette-slate-70;
     }
   }
 
@@ -47,7 +50,7 @@
       display: none;
     }
 
-    .hyperlink {
+    a {
       cursor: pointer;
     }
   }
@@ -63,7 +66,7 @@
     color: $input-readonly-color;
     cursor: text;
 
-    .hyperlink {
+    a {
       color: $hyperlink-color !important;
     }
   }
@@ -84,6 +87,7 @@
 
     [class^='btn'] {
       border-radius: 2px;
+      background-color: $header-default-bg-color;
     }
   }
 
@@ -93,6 +97,7 @@
     .flex-toolbar {
       &.formatter-toolbar {
         border-color: $editor-focus-border-color;
+        border-bottom-color: $ids-color-palette-slate-60;
         box-shadow: $editor-top-focus-box-shadow; //-2px -2px 3px 0px rgba(54, 138, 192, 0.3);
 
         &.error {
@@ -124,7 +129,7 @@
       display: none;
     }
 
-    .hyperlink {
+    a {
       cursor: pointer;
     }
 
@@ -151,19 +156,18 @@
 }
 
 .editor {
-  @include rem(line-height, 2.2rem);
-
   background-color: $editor-bg-color;
   border: 1px solid;
-  border-color: $editor-border-color;
+  border-color: $ids-color-palette-slate-60;
   border-radius: 0 0 2px 2px;
   color: $editor-color;
   display: block;
+  line-height: 2.2rem;
   font-size: $input-size-regular-font-size;
   -webkit-font-smoothing: antialiased;
   font-weight: $ids-number-font-weight-base;
   height: 320px;
-  margin-bottom: 20px;
+  margin-bottom: $input-field-bottom-margin;
   min-height: 128px;
   outline: none;
   overflow: auto;
@@ -196,7 +200,7 @@
   h4,
   h5,
   h6 {
-    margin-bottom: 15px;
+    margin-bottom: 16px;
   }
 
   ul,
@@ -237,7 +241,7 @@
   }
 
   blockquote {
-    margin-bottom: 15px;
+    margin-bottom: 16px;
   }
 }
 
@@ -246,12 +250,11 @@
 .editor,
 .fontpicker-menu {
   p {
-    @include rem(line-height, 2.2rem);
-
     color: $editor-color;
     font-size: $input-size-regular-font-size;
+    line-height: 2.2rem;
 
-    .hyperlink {
+    a {
       color: $hyperlink-color;
       font-size: $input-size-regular-font-size !important;
       margin-left: -1px;
@@ -259,6 +262,11 @@
       padding: 0;
       white-space: pre-wrap;
       word-wrap: break-word;
+      border: 1px solid transparent;
+
+      &:hover:not([disabled]) {
+        color: $hyperlink-hover-color;
+      }
     }
   }
 
@@ -271,7 +279,7 @@
     color: $editor-color;
     line-height: normal;
 
-    .hyperlink {
+    a {
       font-size: inherit;
     }
   }
@@ -333,7 +341,7 @@
     border-left: 3px solid $editor-blockquote-color;
     line-height: 22px;
     margin-left: 7px;
-    padding-left: 15px;
+    padding-left: 16px;
   }
 
   img {
@@ -345,8 +353,8 @@
     font-weight: inherit;
   }
 
-  .hyperlink {
-    cursor: auto;
+  a {
+    cursor: pointer;
     font-size: $input-size-regular-font-size;
     position: static;
     text-decoration: none;
@@ -384,7 +392,9 @@
 }
 
 .flex-toolbar.formatter-toolbar {
-  height: 34px;
+  height: 40px;
+  border: 1px solid $ids-color-palette-slate-70;
+  background-color: $header-default-bg-color;
 
   .buttonset {
     height: auto;
@@ -392,12 +402,19 @@
   }
 }
 
+.toolbar.formatter-toolbar {
+  background-color: $editor-toolbar-bg-color;
+  border-bottom-color: $editor-toolbar-bottom-border-color !important;
+  border: 1px solid $editor-border-color;
+
+  [class^='btn'] {
+    background-color: $editor-toolbar-bg-color;
+  }
+}
+
 // Both Toolbars
 .toolbar.formatter-toolbar,
 .flex-toolbar.formatter-toolbar {
-  background-color: $editor-toolbar-bg-color;
-  border: 1px solid $editor-border-color;
-  border-bottom-color: $editor-toolbar-bottom-border-color !important;
   border-radius: 2px 2px 0 0;
   margin-bottom: -1px;
   padding: 0;
@@ -439,12 +456,12 @@
   }
 
   [class^='btn'] {
-    background-color: $editor-toolbar-bg-color;
     border: 1px solid transparent;
+    border-radius: 4px;
     color: $editor-btn-color;
     height: 20px;
     line-height: normal;
-    min-width: 18px;
+    min-width: 22px;
     padding: 0;
     text-align: left;
 
@@ -464,7 +481,7 @@
     .icon {
       color: $editor-btn-color;
       height: 18px;
-      margin: -1px 0 0;
+      margin: 0 2px;
       padding: 0;
       pointer-events: none;
       width: 18px;
@@ -480,7 +497,7 @@
       }
     }
 
-    &:focus:not(.hide-focus),
+    &:focus:not(.hide-focus):not(.btn-generative),
     &.is-active:not(.error),
     &.is-open,
     &.is-open:hover:not(:disabled) {
@@ -547,7 +564,7 @@
 
     &[data-element='h3'],
     &[data-element='h4'] {
-      margin-right: 15px;
+      margin-right: 14px;
 
       .icon {
         margin-left: -5px;
@@ -571,8 +588,8 @@
       }
 
       .trigger {
-        padding-left: 2px;
-        padding-right: 8px;
+        padding-inline-start: 2px;
+        padding-inline-end: 5px;
 
         .icon {
           height: 16px;
@@ -582,7 +599,8 @@
       }
 
       + .separator {
-        margin-left: -3px;
+        margin-left: -1px;
+        margin-right: 7px;
       }
     }
 
@@ -628,7 +646,7 @@
 
     &[data-element='blockquote'] {
       margin-left: 1px;
-      margin-right: 15px;
+      margin-right: 14px;
     }
 
     &[data-element='ol'] {
@@ -655,6 +673,43 @@
       }
     }
   }
+
+  .btn-generative {
+    background: $button-gen-ai-bg-color;
+    border: none;
+    padding-left: 1px;
+    width: 24px;
+
+    // Style the sparkle in the svg icon
+    svg {
+      color: transparent;
+      fill: $button-color-gen-ai;
+      position: relative;
+      inset-inline-start: 1px;
+    }
+
+    &:hover:not([disabled]):not(.destructive):not(:disabled):not(.close):not(.btn-filter):not(.personalize-actionable) {
+      background: $button-gen-ai-hover-bg-color;
+      background-color: $button-gen-ai-hover-bg-color !important;
+      border: none;
+
+     svg.icon {
+        color: $button-color-gen-ai !important;
+      }
+    }
+
+    &:active {
+      background: $button-gen-ai-active-bg-color;
+    }
+
+    &:disabled {
+      background: $button-primary-disabled-color-gen-ai;
+    }
+
+    svg.icon {
+      color: $button-color-gen-ai;
+    }
+  }
 }
 
 // Standard Toolbar-specific styles
@@ -670,10 +725,10 @@
 .flex-toolbar.formatter-toolbar {
   .toolbar-section.more {
     .btn-actions {
-      height: 23px;
+      height: 25px;
       margin-right: 12px;
-      min-height: 20px;
-      top: -3px;
+      min-height: 22px;
+      top: -2px;
       width: 23px;
 
       > .icon {
@@ -742,7 +797,7 @@
     background-color: $editor-bg-color;
     display: inline-block;
     min-height: 100%;
-    padding: 15px 10px 10px;
+    padding: 14px 10px 10px;
 
     > li {
       font-size: $ids-size-font-sm;
@@ -790,6 +845,10 @@ html.is-firefox {
   .flex-toolbar.formatter-toolbar .fontpicker {
     span {
       padding-top: 3px !important;
+
+      &.audible + span:not([class]) {
+        padding-top: unset !important;
+      }
     }
   }
 }
@@ -797,6 +856,23 @@ html.is-firefox {
 // Push up the dirty indicator
 .modal-body .editor-container .icon-dirty {
   top: 33px;
+}
+
+// Reset for editor (table)
+.editor {
+  table,
+  thead,
+  tbody,
+  th,
+  tr,
+  td {
+    border: inherit;
+    border-color: $datagrid-cell-border-color;
+  }
+
+  th {
+    font-weight: 700;
+  }
 }
 
 // RTL Styles

@@ -34,6 +34,11 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+
+      &::after {
+        content: '';
+        display: block;
+      }
     }
 
     .notification-link,
@@ -75,5 +80,25 @@
       $notification-color-info-initial-font,
       $notification-color-info-hover-font
     );
+  }
+}
+
+html[dir='rtl'] {
+  .notification {
+    .notification-link {
+      padding-right: 5px;
+    }
+
+    .notification-icon {
+      margin-left: 10px;
+    }
+
+    .notification-close {
+      margin-right: auto;
+    }
+
+    button.notification-close {
+      margin-left: 0;
+    }
   }
 }

@@ -1,4 +1,4 @@
-// Uplift Accordion
+// New Accordion
 //================================================== //
 
 // Fix Plus/Minus Expander-button alignment
@@ -43,7 +43,13 @@
   }
 
   .btn {
+    color: inherit;
     top: -2px;
+  }
+
+  &.is-selected .btn,
+  &.is-selected .btn:hover {
+    color: $accordion-selected-icon-color;
   }
 }
 
@@ -64,7 +70,11 @@ html {
 .accordion.panel {
   .accordion-header {
     .btn {
-      top: -1px;
+      top: -2px;
     }
   }
+}
+
+.accordion.panel .accordion-header.is-selected [class^='btn']:focus:not(.hide-focus) {
+  border: 1px solid $accordion-selected-border-color !important;
 }

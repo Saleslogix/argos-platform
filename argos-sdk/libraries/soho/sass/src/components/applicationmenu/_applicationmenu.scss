@@ -1,10 +1,33 @@
 // Application Menu
 //================================================== //
-
-@import '../accordion/accordion';
+@use 'sass:color';
 
 body.is-open-touch {
   overflow: hidden;
+}
+
+.application-menu {
+  .accordion.panel {
+    .accordion-header {
+      &.is-selected {
+        background-color: $app-menu-accordion-header-selected-bg-color !important;
+        border-color: transparent;
+
+        &.is-focused,
+        &:hover {
+          border-color: $app-menu-accordion-header-border-color-hover;
+        }
+
+        a > span {
+          color: $app-menu-accordion-header-text-selected !important;
+        }
+
+        .icon {
+          color: $app-menu-accordion-header-text-selected !important;
+        }
+      }
+    }
+  }
 }
 
 .resize-app-menu-container {
@@ -50,6 +73,11 @@ body.is-open-touch {
     }
   }
 
+  .page-container:nth-child(2) {
+    margin-top: 65px;
+    top: 0;
+  }
+
   .page-container.tab-panel-container {
     margin-top: 100px;
     top: 0;
@@ -58,6 +86,19 @@ body.is-open-touch {
   .resize-page-container {
     display: flex;
     flex-direction: column;
+
+    .page-container.scrollable {
+      @include transition(height 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94),
+      margin 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94),
+      left 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94),
+      width 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94));
+
+      right: 0;
+    }
+
+    .page-container:last-child {
+      height: calc(100% - 60px);
+    }
   }
 }
 
@@ -179,7 +220,7 @@ body.is-open-touch {
     .icon {
       @include transition(fill 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94));
 
-      color: lighten($application-menu-trigger-icon-fill-color, 20%);
+      color: color.adjust($application-menu-trigger-icon-fill-color, $lightness: 20%);
 
       &:not(.close) {
         left: 18px;
@@ -190,7 +231,6 @@ body.is-open-touch {
       align-items: center;
       justify-content: center;
       top: 5px;
-
 
       &:focus:not(.hide-focus) {
         box-shadow: 0 0 0 1px $body-color-primary-background, 0 0 0 2px transparent, 0 0 4px 3px rgba(33, 34, 36, 0.3);
@@ -253,7 +293,7 @@ body.is-open-touch {
     }
 
     .searchfield {
-      padding-left: 53px;
+      padding-left: 39px;
       padding-right: 34px;
     }
 
@@ -330,6 +370,11 @@ body.is-open-touch {
 
   .icon.avatar {
     border-radius: 20px;
+    background-color: $ids-color-palette-slate-50;
+    min-width: 40px;
+    min-height: 40px;
+    max-width: 40px;
+    max-height: 40px;
     height: 40px;
     top: 3px;
     vertical-align: top;
@@ -408,7 +453,7 @@ body.is-open-touch {
 
       &:not(:disabled):hover .icon,
       &:not(:disabled):hover span {
-        color: $accordion-inverse-text-hover-color;
+        color: $accordion-inverse-text-hover-color !important;
       }
     }
   }
@@ -460,6 +505,7 @@ body.is-open-touch {
   .application-menu-toolbar {
     margin-left: -10px;
     margin-top: -5px;
+    margin-bottom: -3px;
   }
 
   .application-menu-switcher-panel {
@@ -518,6 +564,13 @@ body.is-open-touch {
     .searchfield-wrapper + .accordion {
       min-height: auto;
     }
+  }
+}
+
+// Mobile viewport 767px below
+@include respond-to(phone) {
+  .application-menu {
+    z-index: 7001;
   }
 }
 
@@ -630,7 +683,6 @@ html[dir='rtl'] {
       left: inherit;
       right: 43px;
     }
-
   }
 
   &.ie11 {
@@ -651,6 +703,7 @@ html[dir='rtl'] {
       left: 0;
       margin: 0 0 0 auto;
       width: 100%;
+
       //Effects menu calculation
       //@include css3(transform, translateZ(0));
     }
@@ -675,5 +728,65 @@ html[dir='rtl'] {
       right: auto;
     }
   }
+}
 
+html[dir='rtl'] .application-menu .searchfield-wrapper.has-close-icon-button.has-text .btn-icon.close {
+  right: calc(300px - 34px);
+  top: 6px !important;
+}
+
+.application-menu .btn-icon:hover:not([disabled]):not(.btn-primary):not(.trigger) svg.icon {
+  color: #fff;
+}
+
+html[dir='rtl'] .application-menu .hyperlink {
+  margin-right: 10px;
+}
+
+.application-menu .application-menu-toolbar .toolbar-section {
+  display: flex;
+  justify-content: center;
+}
+
+.application-menu .accordion.panel.inverse .accordion-header .btn:hover,
+.application-menu .accordion.panel.inverse .accordion-header .btn-expander:hover {
+  background-color: transparent !important;
+  color: #fff !important;
+}
+
+.accordion.panel.inverse .accordion-header:hover .icon {
+  color: #fff !important;
+}
+
+.application-menu .btn-icon.close:hover:not([disabled]) {
+  background-color: transparent !important;
+}
+
+.application-menu .btn:hover:not([disabled]) {
+  background-color: rgba(255, 255, 255, .1) !important;
+}
+
+.application-menu .btn-icon:hover:not([disabled]) {
+  background-color: rgba(255, 255, 255, .1) !important;
+}
+
+.application-menu .btn-menu {
+  span {
+    position: relative;
+    top: 1px;
+  }
+
+  .icon-dropdown {
+    position: relative;
+    top: 1px;
+  }
+}
+
+.application-menu  .btn-menu:hover:not([disabled]) {
+  background-color: rgba(255, 255, 255, .1) !important;
+  color: #fff !important;
+
+  .icon-dropdown {
+    color: #fff !important;
+  }
 }
