@@ -31,7 +31,7 @@
     "grunt-argos-deps": "git+https://git@github.com/Saleslogix/grunt-argos-deps.git#v0.1.5",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-connect": "^3.0.0",
-    "grunt-contrib-jasmine": "^2.2.0",
+    "grunt-contrib-jasmine": "^4.0.0",
     "grunt-contrib-less": "2.1.0",
     "grunt-shell": "^3.0.1",
     "less": "^4.5.1",
