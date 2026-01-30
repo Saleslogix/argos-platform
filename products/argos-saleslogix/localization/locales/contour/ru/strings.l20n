@@ -1,0 +1,35 @@
+<proxAppModule ""
+  viewAccountsNearbyText: "Показать субъектов вблизи"
+  addressNotGeocodedErrorText: "Геокодирование адреса не выполнено. Невозможен поиск субъектов вблизи."
+  accountsNearText: "Субъекты рядом с \"${0}\""
+  helpTitleText: "Справка Contour"
+>
+
+<acctPxSearch ""
+  accountsNearMeText: "Субъекты рядом со мной"
+  addActivityActionText: "Добавить встречу"
+  addAttachmentActionText: "Добавить вложение"
+  addNoteActionText: "Добавить заметку"
+	callMainActionText: "Вызов по основному номеру"
+	currentLocationErrorText: "Не удалось получить ваше текущее размещение. Невозможно выполнить поиск."
+	editActionText: "Редактировать"
+  faxAbbreviationText: "Факс: "
+	kilometerAbbrevText: "км"
+	mileAbbrevText: "мили"
+  phoneAbbreviationText: "Телефон: "
+	titleText: "Субъекты рядом со мной"
+	viewContactsActionText: "Контакты"
+  accountTypeText: "Тип субъекта:"
+>
+
+<locPicker ""
+  accountsNearText: "Субъекты рядом с \"${0}\""
+	myHouseText: "Мой дом"
+	myOfficeText: "Мой офис"
+	titleText: "Поиск расстояния Contour"
+>
+
+<placeModel ""
+  entityDisplayName: "Место"
+  entityDisplayNamePlural : "Места"
+>

@@ -1,0 +1,35 @@
+<proxAppModule ""
+  viewAccountsNearbyText: "Firmen in der Nähe anzeigen"
+  addressNotGeocodedErrorText: "Die Adresse ist nicht geocodiert. Suchen nach Firmen in der Nähe nicht möglich."
+  accountsNearText: "Firmen in der Nähe von ${0}"
+  helpTitleText: "Contour-Hilfe"
+>
+
+<acctPxSearch ""
+  accountsNearMeText: "Firmen in meiner Nähe"
+  addActivityActionText: "Aktivität hinzufügen"
+  addAttachmentActionText: "Anlage hinzufügen"
+  addNoteActionText: "Notiz hinzufügen"
+	callMainActionText: "Hauptnr. anrufen"
+	currentLocationErrorText: "Ihr aktueller Standort kann nicht abgerufen werden. Suchen nicht möglich."
+	editActionText: "Bearbeiten"
+  faxAbbreviationText: "Fax: "
+	kilometerAbbrevText: "km"
+	mileAbbrevText: "mi"
+  phoneAbbreviationText: "Telefon: "
+	titleText: "Firmen in meiner Nähe"
+	viewContactsActionText: "Kontakte"
+  accountTypeText: "Firmentyp:"
+>
+
+<locPicker ""
+  accountsNearText: "Firmen in der Nähe von ${0}"
+	myHouseText: "Mein Zuhause"
+	myOfficeText: "Mein Büro"
+	titleText: "Contour-Suche nach Entfernung"
+>
+
+<placeModel ""
+  entityDisplayName: "Ort"
+  entityDisplayNamePlural : "Orte"
+>

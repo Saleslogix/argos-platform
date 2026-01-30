@@ -1,0 +1,32 @@
+{
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc", "closure"]
+  },
+  "source": {
+    "include": [
+      "./src/"
+      , "../../argos-sdk/src/"
+    ],
+    "includePattern": ".+\\.js(doc|x)?$",
+    "excludePattern": ""
+  },
+  "plugins": ["plugins/markdown"],
+  "templates": {
+    "default": {
+      "useLongnameInNav": true,
+      "staticFiles": {
+        "include": [
+          "./src-docs/tutorials/static/"
+        ]
+      }
+    }
+  },
+  "opts": {
+    "destination": "./docs/",
+    "recurse": true,
+    "tutorials": "./src-docs/tutorials/",
+    "readme": "./README.md",
+    "verbose": true
+  }
+}

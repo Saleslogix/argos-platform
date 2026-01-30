@@ -1,0 +1,9 @@
+{
+    "port": 8000,
+    "https": false,
+    "proxy": {
+        "host": "sdatahostname",
+        "port": 80,
+        "protocol": "http:"
+    }
+}

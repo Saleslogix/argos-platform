@@ -1,0 +1,61 @@
+# visual studio
+*.obj
+*.exe
+*.jar
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*.vssscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+*.lib
+*.sbr
+*.sdf
+ipch/
+obj/
+[Dd]ebug*/
+[Rr]elease*/
+.env
+
+# tooling
+_ReSharper*/
+*.resharper.user
+[Tt]est[Rr]esult*
+.idea/
+docs/
+docs-output/
+
+# os junk files
+Thumbs.db
+*.DS_Store
+
+# merge tool backups
+*.orig
+
+# build output
+deploy/
+dist/
+
+# module development shells
+index-dev-*.html
+
+# vim temp files
+*.swp
+
+# nodejs
+node_modules
+.grunt/
+_SpecRunner.html
+report/junit.xml
+coverage
+scripts/config.json

@@ -1,0 +1,68 @@
+{
+    "export": {
+        "transform": "../../../products/argos-saleslogix/localization/transforms/argos-saleslogix-export.xslt",
+        "path": "products/argos-saleslogix/localization/exported/slx-mobile-strings-beta1.xml",
+        "split": true
+    },
+    "import": {
+        "transform": "../../../products/argos-saleslogix/localization/transforms/argos-saleslogix-import.xslt",
+        "template": "../../../products/argos-saleslogix/localization/templates/argos-saleslogix.erb",
+        "map": {
+            "de": {
+                "in": [
+                        "products/argos-saleslogix/localization/imported/slx-mobile-strings-beta1-format_de.xml",
+                        "products/argos-saleslogix/localization/imported/slx-mobile-strings-beta1-text_de.xml"
+                    ],
+                "out": "products/argos-saleslogix/localization/saleslogix/de.js"
+            },
+            "fr": {
+                "in": [
+                        "products/argos-saleslogix/localization/imported/slx-mobile-strings-beta1-format_fr.xml",
+                        "products/argos-saleslogix/localization/imported/slx-mobile-strings-beta1-text_fr.xml"
+                    ],
+                "out": "products/argos-saleslogix/localization/saleslogix/fr.js"
+            },
+            "it": {
+                "in": [
+                        "products/argos-saleslogix/localization/imported/slx-mobile-strings-beta1-format_it.xml",
+                        "products/argos-saleslogix/localization/imported/slx-mobile-strings-beta1-text_it.xml"
+                    ],
+                "out": "products/argos-saleslogix/localization/saleslogix/it.js"
+            },
+            "ru": {
+                "in": [
+                        "products/argos-saleslogix/localization/imported/slx-mobile-strings-beta1-format_ru.xml",
+                        "products/argos-saleslogix/localization/imported/slx-mobile-strings-beta1-text_ru.xml"
+                    ],
+                "out": "products/argos-saleslogix/localization/saleslogix/ru.js"
+            },
+            "zh-CN": {
+                "in": [
+                        "products/argos-saleslogix/localization/imported/slx-mobile-strings-beta1-format_zh-CN.xml",
+                        "products/argos-saleslogix/localization/imported/slx-mobile-strings-beta1-text_zh-CN.xml"
+                    ],
+                "out": "products/argos-saleslogix/localization/saleslogix/zh-CN.js"
+            },
+            "zh-TW": {
+                "in": [
+                        "products/argos-saleslogix/localization/imported/slx-mobile-strings-beta1-format_zh-TW.xml",
+                        "products/argos-saleslogix/localization/imported/slx-mobile-strings-beta1-text_zh-TW.xml"
+                    ],
+                "out": "products/argos-saleslogix/localization/saleslogix/zh-TW.js"
+            },
+            "en-GB": {
+                "in": "products/argos-saleslogix/localization/imported/slx-mobile-strings-beta1-format_en-GB.xml",
+                "out": "products/argos-saleslogix/localization/saleslogix/en-GB.js"
+            }
+        }
+    },
+    "projects": [{
+        "name": "Argos SDK",
+        "path": "argos-sdk/src-out",
+        "alias": "argos-sdk"
+    },{
+        "name": "SalesLogix Mobile",
+        "path": "products/argos-saleslogix/src-out",
+        "alias": "argos-saleslogix"
+    }]
+}
