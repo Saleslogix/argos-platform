@@ -1,9 +1,11 @@
 #!groovy
 node('windows && nodejs') {
+  stage('Checkout') {
+    checkout scm
+  }
+
   dir('argos-sdk') {
     stage('Building argos-sdk') {
-      clonesdk(env.BRANCH_NAME)
-
       dir('deploy') {
         deleteDir()
       }
@@ -21,22 +23,15 @@ node('windows && nodejs') {
         teams_failure('Failed building argos-sdk')
         throw err
       }
+      
       dir('deploy') {
         stash includes: '**/*.*', name: 'sdk'
       }
     }
-
   }
 
   dir('products/argos-saleslogix') {
-    stage ('Building argos-saleslogix') {
-      try {
-        checkout scm
-      } catch (err) {
-        teams_failure('Failed getting argos-saleslogix')
-        throw err
-      }
-
+    stage('Building argos-saleslogix') {
       dir('deploy') {
         deleteDir()
       }
@@ -59,19 +54,21 @@ node('windows && nodejs') {
         stash includes: '**/*.*', name: 'slx'
       }
 
-      stage 'Creating bundles'
-      try {
-        bat 'grunt bundle'
-        bat 'grunt lang-pack'
+      stage('Creating bundles') {
+        try {
+          bat 'grunt bundle'
+          bat 'grunt lang-pack'
 
-        dir('deploy') {
-          stage 'Copying bundles'
-          bat """robocopy . \\\\usdavwtldata.testlogix.com\\devbuilds\\builds\\mobile\\bundles\\%BRANCH_NAME%\\%BUILD_NUMBER%\\ *.zip /r:3 /w:5
-              IF %ERRORLEVEL% LEQ 1 EXIT /B 0"""
+          dir('deploy') {
+            stage('Copying bundles') {
+              bat """robocopy . \\\\usdavwtldata.testlogix.com\\devbuilds\\builds\\mobile\\bundles\\%BRANCH_NAME%\\%BUILD_NUMBER%\\ *.zip /r:3 /w:5
+                  IF %ERRORLEVEL% LEQ 1 EXIT /B 0"""
+            }
+          }
+        } catch (err) {
+          teams_failure('Failed building bundles.')
+          throw err
         }
-      } catch (err) {
-        teams_failure('Failed building bundles.')
-        throw err
       }
     }
   }
@@ -95,19 +92,6 @@ void iiscopy(branch, build) {
     unstash 'sdk'
   }
   bat """%windir%\\System32\\WindowsPowerShell\\v1.0\\PowerShell.exe -NoProfile -NoLogo -ExecutionPolicy unrestricted -Command "C:\\inetpub\\wwwroot\\mobile-builds\\$branch\\$build\\scripts\\iis.ps1 -branch $branch -build $build" """
-}
-
-void clonesdk(branch, fallback='develop') {
-  try {
-    git branch: "$branch", url: 'https://github.com/Saleslogix/argos-sdk.git'
-  } catch(err) {
-    try {
-      git branch: "$fallback", url: 'https://github.com/Saleslogix/argos-sdk.git'
-    } catch(er) {
-      teams_failure('Failed getting argos-sdk')
-      throw er
-    }
-  }
 }
 
 void teams_success(message) {
