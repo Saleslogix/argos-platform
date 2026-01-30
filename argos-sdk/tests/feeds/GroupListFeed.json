@@ -1,0 +1,14 @@
+{
+    "$totalResults": 2,
+	"$resources" : [{
+			"name" : "AddAccountContactAction",
+			"action" : "addAccountContact",
+			"title" : "Add Account/Contact"
+		}, {
+			"action" : "navigateToView",
+			"view" : "account_list",
+			"title" : "Accounts",
+			"security" : "Entities/Account/View"
+		}
+    ]
+}

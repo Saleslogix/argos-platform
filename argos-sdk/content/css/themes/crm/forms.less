@@ -1,0 +1,146 @@
+/*
+    Styles for form related items, such as inputs, buttons, fieldsets, labels
+*/
+@import "variables.less";
+@import "mixins.less";
+
+.switch input:empty{
+  width: 5px;
+}
+
+input,
+textarea,
+div.dropdown,
+div.multiselect,
+.dropdown-wrapper {
+    width: 100%;
+}
+input.fileupload-background-transparent {
+    width: 300px;
+}
+
+.group-content > h2 > button {
+    color: @color-lighter-slate;
+    background-color: transparent;
+}
+
+.toolButton-disabled {
+    opacity: @toolbar-button-disabled-opacity;
+}
+
+/* signature capture */
+#signature_edit {
+    text-align: center;
+}
+
+#signature_edit canvas {
+    border-bottom: 1px black solid;
+}
+
+#signature_edit .buttons {
+    overflow: auto;
+    margin-bottom: 0.5em;
+}
+
+#signature_edit .buttons .button {
+    display: inline-block;
+    width: 40%;
+    margin: 0 1em;
+}
+
+.action-list > li > a > label {
+    cursor: pointer !important;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.row-disabled > div > button,
+.row-disabled > div > input,
+.row-disabled > div > div,
+.row-disabled > button,
+.row-disabled > input,
+.row-disabled > div,
+.row-readonly > div > button,
+.row-readonly > div > input,
+.row-readonly > div > div,
+.row-readonly > button,
+.row-readonly > input,
+.row-readonly > div {
+    cursor: default;
+}
+
+.file-wrap > input {
+    z-index: 2;
+    opacity: 0;
+    height: 1000px;
+    font-size: 1000px !important;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.file-text > input {
+    -moz-box-sizing: border-box !important;
+    border: 1px solid #000000 !important;
+    font-size: @font-size-h2 !important;
+    font-weight: normal !important;
+    margin: 0 0 8px !important;
+    padding: 6px !important;
+    width: 100% !important;
+}
+
+.file-label > label {
+    font-weight: bold !important;
+    text-align: left !important;
+}
+.field-control-wrapper {
+    position: relative;
+    input {
+        padding-right: 35px;
+    }
+}
+.field-control-trigger {
+    cursor: pointer;
+    display: inline-block;
+    height: 34px;
+    top: 0;
+    right: 0;
+    outline: 0;
+    position: absolute;
+    width: 34px;
+    z-index: 1;
+}
+.field-control-trigger .icon {
+    background-color: inherit;
+    fill: #5c5c5c;
+    height: 18px;
+    pointer-events: none;
+    right: 0px;
+    width: 18px;
+}
+
+.row-edit[data-field-type="duration"] > div > .autoComplete-watermark {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+.row-edit > div > input:not([type|=radio]):not([type|=checkbox]),
+.row-edit > input:not([type|=radio]):not([type|=checkbox]) {
+    -webkit-appearance: none;
+
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+}
+
+.currency-code-editlabel {
+    position: absolute;
+    top: 27px;
+    right: 10px
+}

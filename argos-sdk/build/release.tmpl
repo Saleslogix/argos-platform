@@ -1,0 +1,144 @@
+{
+  "projectName": "Argos SDK",
+  "licenseText": "",
+  "deployDir": "deploy/",
+  "pkgs": [
+    {
+      "name": "Argos SDK Global Dependencies",
+      "file": "content/javascript/argos-dependencies.js",
+      "isDebug": true,
+      "fileIncludes": [
+        {
+          "text": "jquery-3.6.0.js",
+          "path": "../libraries/soho/js/"
+        },
+        {
+          "text": "sohoxi.js",
+          "path": "../libraries/soho/js/"
+        },
+        {
+          "text": "pdf.min.js",
+          "path": "../libraries/pdfjs/"
+        },
+        {
+          "text": "FileSaver.js",
+          "path": "../libraries/FileSaver/"
+        },
+        {
+          "text": "l20n.js",
+          "path": "../libraries/l20n/"
+        },
+        {
+          "text": "Simplate.js",
+          "path": "../libraries/"
+        },
+        {
+          "text": "canvas2image.js",
+          "path": "../libraries/"
+        },
+        {
+          "text": "sdata-client-dependencies-debug.js",
+          "path": "../libraries/sdata/"
+        },
+        {
+          "text": "sdata-client-debug.js",
+          "path": "../libraries/sdata/"
+        },
+        {
+          "text": "page.js",
+          "path": "../libraries/pagejs-1.6.1/"
+        },
+        {
+          "text": "pouchdb-7.2.1.js",
+          "path": "../libraries/pouchdb/"
+        },
+        {
+          "text": "deep-diff.min.js",
+          "path": "../libraries/deep-diff/"
+        },
+        {
+          "text": "polyfill.js",
+          "path": "../libraries/babel-polyfill/"
+        },
+        {
+          "text": "moment-with-locales.js",
+          "path": "../libraries/moment/"
+        },
+        {
+          "text": "common.bundle.js",
+          "path": "../libraries/icrm/"
+        },
+        {
+          "text": "customization.bundle.js",
+          "path": "../libraries/icrm/"
+        },
+        {
+          "text": "services.bundle.js",
+          "path": "../libraries/icrm/"
+        },
+        {
+          "text": "redux.min.js",
+          "path": "../libraries/redux/"
+        },
+        {
+          "text": "Chart.min.js",
+          "path": "../libraries/chartjs/"
+        }
+      ]
+    },
+    {
+      "name": "Argos SDK AMD Dependencies",
+      "file": "content/javascript/argos-amd-dependencies.js",
+      "isDebug": true,
+      "fileIncludes": [
+      ]
+    },
+    {
+      "name": "Argos SDK",
+      "file": "content/javascript/argos-sdk.js",
+      "isDebug": true,
+      "fileIncludes": [<% files.forEach(function(file, i) { %>{
+            "text": "<%- file.fileName %>",
+            "path": "<%- file.folderName %>/"
+          }<% if (i < files.length - 1) {%>, <% } %><%});%>
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "src": "../libraries/pdfjs",
+      "dest": "content/javascript",
+      "filters": "(pdf\\.worker\\.min\\.js)"
+    },
+    {
+      "src": "../localization/locales/argos",
+      "dest": "localization/locales/argos",
+      "filters": ".*(\\.l20n)"
+    },
+    {
+      "src": "../content",
+      "dest": "content",
+      "filters": ".*(\\.css|\\.jpg|\\.png|\\.gif)"
+    },
+    {
+      "src": "../min",
+      "dest": "content",
+      "filters": ".*(\\.css)"
+    },
+    {
+      "src": "../libraries/soho/css/",
+      "dest": "content/css",
+      "filters": ".*(\\.css$)"
+    },
+    {
+      "src": "../libraries/soho/js/cultures/",
+      "dest": "content/javascript/cultures",
+      "filters": ".*\\.js"
+    },
+    {
+      "src": "../libraries/dojo/dojo",
+      "dest": "content/dojo/dojo",
+      "filters": "(dojo\\.js)"
+    }
+  ]
+}

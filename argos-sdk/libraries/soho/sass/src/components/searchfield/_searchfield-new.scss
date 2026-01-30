@@ -1,0 +1,210 @@
+// Uplift Searchfield
+//================================================== //
+
+.inline.searchfield-wrapper:not(.toolbar-searchfield-wrapper) {
+  > .icon:not(.icon-error) {
+    top: 38px;
+  }
+}
+
+.searchfield-wrapper {
+  > .icon {
+    &.close {
+      padding: 1px 3px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  &.non-collapsible > .icon:not(.close):not(.icon-error) {
+    top: 12px;
+  }
+
+  .go-button {
+    height: 100%;
+  }
+
+  .searchfield-category-button {
+    height: 38px;
+
+    svg {
+      margin-top: -5px;
+    }
+  }
+
+  &.context {
+    > .searchfield {
+      height: 34px;
+    }
+  }
+}
+
+.toolbar-searchfield-wrapper {
+  // To correctly size the toolbar searchfield when it's not open, account for
+  // missing text height.  The padding values should equal to `1px` taller on each side
+  // than the standard input field padding.  The "closed" state also shifts the visual
+  // location of the text/icon to better align it with other toolbar buttons.
+  &:not(.is-open),
+  &.non-collapsible {
+    .searchfield {
+      height: 34px;
+      padding-bottom: 6px;
+      padding-top: 6px;
+
+      @media only screen and (max-width: $breakpoint-phone-to-tablet) {
+        height: 38px;
+      }
+    }
+
+    > .icon,
+    > .icon:not(.close) {
+      top: 10px;
+    }
+  }
+
+  &:not(.is-open) {
+    .icon:not(.close) {
+      top: 8px;
+    }
+  }
+
+  &.has-close-icon-button {
+    .btn-icon.close:not(.is-empty) {
+      @media only screen and (max-width: $breakpoint-phone-to-tablet) {
+        margin-right: 0;
+      }
+
+      > .icon.close {
+        top: -1px;
+      }
+    }
+  }
+
+  .btn-icon.close {
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    top: 50%;
+    transform: translateY(-50%);
+
+    @media only screen and (max-width: $breakpoint-phone-to-tablet) {
+      margin-right: 38px;
+    }
+
+    & > svg.close.icon {
+      position: relative;
+      top: -1px;
+    }
+  }
+}
+
+.toolbar-searchfield-wrapper {
+  &.searchfield-wrapper {
+    &.non-collapsible {
+      svg.icon:not(.close) {
+        top: 10px;
+        left: 8px;
+
+        @media only screen and (max-width: $breakpoint-phone-to-tablet) {
+          top: 12px;
+        }
+      }
+    }
+  }
+}
+
+// Firefox needs some help
+html.is-firefox {
+  .searchfield-wrapper {
+    height: 38px;
+
+    &.toolbar-searchfield-wrapper {
+      height: 34px;
+    }
+
+    > .icon {
+      top: 10px;
+    }
+
+    .searchfield-category-button {
+      height: inherit;
+    }
+  }
+
+  .toolbar-searchfield-wrapper {
+    &:not(.is-open):not(.non-collapsible) {
+      .searchfield {
+        height: 34px;
+        padding-bottom: 5px;
+        padding-top: 7px;
+      }
+
+      .icon:not(.close) {
+        top: 8px;
+      }
+
+      .icon.close {
+        top: 11px;
+      }
+    }
+
+    .collapse-button {
+      height: 35px !important;
+    }
+
+    > .icon {
+      top: 10px;
+
+      &.close {
+        top: 18px;
+
+        @media only screen and (max-width: $breakpoint-phone-to-tablet) {
+          margin-right: 5px;
+        }  
+      }
+    }
+
+    &.is-open,
+    &.non-collapsible {
+      .searchfield {
+        height: 34px;
+        padding-bottom: 6px;
+        padding-top: 6px;
+      }
+    }
+  }
+}
+
+html[dir='rtl'] {
+  .searchfield-wrapper {
+    > .icon {
+      &.close {
+        left: 8px;
+        right: auto;
+      }
+    }
+
+    .searchfield-category-button {
+      height: 39px;
+    }
+
+    &:not(.toolbar-searchfield-wrapper):not(.context) {
+      &.has-categories {
+        .searchfield {
+          padding-bottom: 8px;
+        }
+      }
+    }
+  }
+
+  &.is-firefox {
+    .searchfield-wrapper {
+      > .icon {
+        &.close {
+          top: 10px;
+        }
+      }
+    }
+  }
+}
+

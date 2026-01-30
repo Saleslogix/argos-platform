@@ -1,0 +1,307 @@
+<dateField ""
+  emptyText: ""
+  invalidDateFormatErrorText: "Некорректный формат даты в поле \"${0}\"."
+  cancelText: "Отмена"
+  confirmText: "Подтвердить"
+  advancedText: "Дополнительно"
+>
+
+<durationField ""
+  minutes: "мин"
+  hours: "ч"
+  days: "дн."
+  weeks: "нед."
+  years: "гг."
+  invalidDurationErrorText: "Поле \"${0}\" не является допустимой длительностью."
+  emptyText: ""
+>
+
+<editorField ""
+  lookupLabelText: "Редактировать"
+  lookupText: "..."
+  emptyText: "Пусто"
+  completeText: "ОК"
+>
+
+<lookupField ""
+  dependentErrorText: "Необходимо выбрать значение \"${0}\"."
+  emptyText: ""
+  completeText: "Выбрать"
+  lookupLabelText: "Поиск"
+  lookupText: "..."
+>
+
+<signatureField ""
+  signatureLabelText: "Подпись"
+  signatureText: "..."
+>
+
+<dateTimeSection ""
+  displayNameText: "Выбор даты/времени"
+  todayText: "Сегодня"
+  tomorrowText: "Завтра"
+  laterThisWeekText: "Позднее на этой неделе"
+  earlierThisWeekText: "Ранее на этой неделе"
+  thisLaterMonthText: "Позднее в этом месяце"
+  thisEarlierMonthText: "Ранее в этом месяце"
+  thisYearEarlierText: "Ранее в этом году"
+  thisYearLaterText: "Позднее в этом году"
+  yesterdayText: "Вчера"
+  lastWeekText: "Прошлая неделя"
+  lastMonthText: "Прошлый месяц"
+  pastYearText: "Прошлый год"
+  nextYearText: "Следующий год"
+  nextMonthText: "В следующем месяце"
+  nextWeekText: "На следующей неделе"
+  futureText: "Будущее"
+  twoWeeksAgoText: "Две недели назад"
+  threeWeeksAgoText: "Три недели назад"
+  twoMonthsAgoText: "Два месяца назад"
+  threeMonthsAgoText: "Три месяца назад"
+  unknownText: "Неизвестно"
+>
+
+<groupByValueSection ""
+  displayNameText: "Раздел групп по значению"
+>
+
+<configureQuickActions ""
+  titleText: "Настроить быстрые действия"
+>
+
+<fileSelect ""
+  titleText: "Выбор файла"
+  addFileText: "Выберите файл для добавления"
+  uploadText: "Передать"
+  cancelText: "Отмена"
+  selectFileText: "Выбрать файл"
+  loadingText: "Передача..."
+  descriptionText: "Описание"
+  bytesText: "байт"
+  notSupportedText: "Ваше устройство не поддерживает добавление вложений."
+>
+
+<signature ""
+  titleText: "Подпись"
+  clearCanvasText: "Очистить"
+  undoText: "Отменить"
+>
+
+<configureBase ""
+  titleText: "Настроить"
+>
+
+<detailBase ""
+  informationText: "Информация: ${0}"
+  titleText: "Детали"
+  entityText: "Сущность"
+  detailsText: "Детали"
+  loadingText: "Загрузка"
+  notAvailableText: "Запрошенные данные недоступны."
+  toggleCollapseText: "Показать/скрыть"
+  editText: "Редактировать"
+  editTooltipText: "Редактировать"
+  refreshTooltipText: "Обновить"
+>
+
+<editBase ""
+  concurrencyErrorText: "Другой пользователь обновил это поле."
+  toggleCollapseText: "Показать/скрыть"
+  saveText: "Сохранить"
+  titleText: "Редактировать"
+  validationSummaryText: "Сводка проверки"
+  concurrencySummaryText: "Ошибки при совместном доступе"
+  detailsText: "Детали"
+  loadingText: "Загрузка"
+  errorGeneral: "При запросе данных возникла ошибка сервера."
+  error410:  "Ошибка при сохранении. Эта запись больше не существует."
+  saveTooltipText: "Сохранить"
+  cancelTooltipText: "Отмена"
+>
+
+<errorHandleMixin ""
+  general: "Произошла ошибка сервера."
+>
+
+<listBase ""
+  moreText: "Получить больше записей"
+  emptySelectionText: "Нет"
+  titleText: "Список"
+  configureText: "Настроить"
+  errorRenderText: "Ошибка при визуализации шаблона строки."
+  remainingText: "Осталось записей: ${0}"
+  cancelText: "Отмена"
+  insertText: "Создать"
+  noDataText: "Нет записей"
+  loadingText: "Загрузка"
+  newTooltipText: "Создать"
+  refreshTooltipText: "Обновить"
+>
+
+<pullToRefreshMixin ""
+  pullRefreshText: "Раскрыть для обновления..."
+  pullReleaseText: "Освободить для обновления..."
+>
+
+<relatedViewWidgetBase ""
+  loadingText: "Загрузка"
+>
+
+<calendar ""
+  titleText: "Календарь"
+  amText: "Д.П."
+  pmText: "П.П."
+  january: "Январь"
+  february: "Февраль"
+  march: "Март"
+  april: "Апрель"
+  may: "Май"
+  june: "Июнь"
+  july: "Июль"
+  august: "Август"
+  september: "Сентябрь"
+  october: "Октябрь"
+  november: "Ноябрь"
+  december: "Декабрь"
+  clearText: "Очистить"
+  todayText: "Сегодня"
+  sundayAbbreviated: "Вс"
+  mondayAbbreviated: "Пн"
+  tuesdayAbbreviated: "Вт"
+  wednesdayAbbreviated: "Ср"
+  thursdayAbbreviated: "Чт"
+  fridayAbbreviated: "Пт"
+  saturdayAbbreviated: "Сб"
+>
+
+<errorManager ""
+  abortedText: "Прервано"
+  scopeSaveText: "Область не сохраняется в отчете об ошибках"
+>
+
+<format ""
+  yesText: "Да"
+  noText: "Нет"
+  trueText: "T"
+  falseText: "F"
+  hoursText: "ч"
+  hourText: "ч"
+  minutesText: "мин"
+  minuteText: "Минута"
+  percentFormatText: "${0}${1}"
+  bytesText: "байт"
+>
+
+<groupedList ""
+ toggleCollapseText: "Показать/скрыть"
+>
+
+<mainToolbar ""
+  titleText: "Мобильный тел."
+  backTooltipText: "Назад"
+  themeText: "Тема"
+  personalizationText: "Персонализация"
+  lightText: "Светлый"
+  darkText: "Темный"
+  highContrastText: "Высокий контраст"
+  defaultText: "По умолчанию"
+  azureText: "Голубой"
+  amberText: "Янтарный"
+  amethystText: "Аметистовый"
+  turquoiseText: "Бирюзовый"
+  emeraldText: "Зеленый"
+  graphiteText: "Серый"
+>
+
+<relatedViewWidget ""
+  nodataText: "Записи не найдены..."
+  selectMoreDataText: "Показать еще ${0} ${1}... "
+  selectMoreDataText2: "см. еще ${0}... "
+  navToListText: "См. список"
+  loadingText: "Загрузка"
+  refreshViewText: "Обновить"
+  itemOfCountText: " ${0} из ${1}"
+  totalCountText: " (${0})"
+  titleText: "Связанное представление"
+>
+
+<searchWidget ""
+ searchText: "Поиск"
+>
+
+<selectionModel ""
+  requireSelectionText: "Должно быть что-то выбрано, нельзя отменить выбор последнего элемента."
+>
+
+<view ""
+ titleText: "Общий вид"
+>
+
+<timePicker ""
+  amText: "Д.П."
+  pmText: "П.П."
+  setTimeText: "Установленное время"
+>
+
+<relativeDateTimePicker ""
+  titleText: "Около..."
+  pickDateTimeText: "Дополнительно"
+  thisEveningText: "Сегодня вечером"
+  tomorrowMorningText: "Завтра утром"
+  tomorrowAfternoonText: "Завтра вечером"
+  nextWeekText: "На следующей неделе"
+  nextMonthText: "В следующем месяце"
+  cancelText: "Отмена"
+  confirmText: "Подтвердить"
+>
+
+<briefcaseModel ""
+  entityDisplayName: "Портфель"
+  entityDisplayNamePlural : "Портфели"
+>
+
+<recentlyViewedModel ""
+  entityDisplayName: "Недавно просмотренные"
+  entityDisplayNamePlural : "Недавно просмотренные"
+>
+
+<busyIndicator ""
+  loadingText: "Загрузка"
+  progressText: "Ход выполнения"
+>
+
+<modal ""
+  alertText: "Предупреждение"
+  completeText: "Завершить"
+  cancelText: "Отмена"
+  confirmText: "Подтвердить"
+  editText: "Редактировать"
+  okayText: "ОК"
+  submitText: "Отправить"
+  warningText: "Предупреждение"
+>
+<_listOfflineMixin ""
+  goToListViewText: "Элементы перемещены в портфель. Перейти в список портфеля?"
+  interruptedText: "Процесс был прерван и не был полностью завершен. Повторите процесс, чтобы полностью переместить элементы в портфель."
+  briefcasingText: "Перемещение в портфель, подождите."
+  errorBriefcasingText: "Ошибка при перемещении в портфель"
+  briefcaseTooltipText: "Портфель"
+>
+
+<_detailOfflineMixin ""
+  goToDetailViewText: "Элемент и связанные с ним элементы перемещены в портфель. Перейти в список портфеля?"
+  interruptedText: "Процесс был прерван и не был полностью завершен. Повторите процесс, чтобы полностью переместить элементы в портфель."
+  briefcasingText: "Перемещение в портфель, подождите."
+  errorBriefcasingText: "Ошибка при перемещении в портфель"
+  errorSavingOfflineViewText: "Ошибка при сохранении автономного вида:"
+  briefcaseTooltipText: "Портфель"
+>
+
+<sdkApplication ""
+  connectionToastTitleText: "Подключение"
+  checkingText: "Проверка подключения"
+  loadingApplicationStateText: "Состояние загрузки приложения"
+  initializingText: "Инициализация:"
+  viewSettingsText: "Просмотр настроек"
+  closeText: "Закрыть"
+>

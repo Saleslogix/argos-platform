@@ -1,0 +1,740 @@
+@import "variables.less";
+@import "mixins.less";
+
+/* Soho override, this might mess up the grid later on.
+   Give detail views padding another way if it does.
+*/
+@media (min-width: 767px) {
+  .column {
+    padding: 0 20px;
+  }
+}
+
+.card, .widget {
+  min-height: 0 !important;
+    .card-content {
+        height: auto !important;
+        min-height: 0 !important;
+        padding: 16px 20px 15px;
+        overflow-x: hidden;
+        p {
+            margin: 0;
+        }
+        .list-item-selector {
+            float: left;
+            margin-right: 10px;
+        }
+    }
+}
+
+.tall {
+    height: 100%;
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.list-more, .list-empty-opt {
+    .toolButton-left {
+        float: left;
+        margin-right: 10px;
+    }
+
+    .toolButton-right {
+        float: right;
+        margin-left: 10px;
+    }
+    display: none;
+    padding: 12px;
+    border-bottom: 1px solid #DDD;
+}
+.list-empty-opt {
+    margin-bottom: 20px;
+}
+
+.list-more .list-remaining {
+    display: none;
+}
+
+.list-loading-indicator {
+    display: none;
+}
+
+/* list view states */
+.list-hide-search .list-search {
+    display: none;
+}
+
+.list-has-more .list-more, .list-has-empty-opt .list-empty-opt {
+    display: block;
+    text-align: center;
+}
+
+.list-has-more .list-remaining {
+    display: block;
+    text-align: center;
+    padding: 0px 0 12px 0;
+}
+
+.list-loading .list-loading-indicator {
+    display: block;
+    text-align: center;
+}
+
+.list-loading .list-loading-indicator h2 {
+    padding: 0 0 0 10px;
+    display: inline-block;
+    text-align: center;
+    overflow: inherit;
+}
+
+.list-action-selected {
+    display: block !important;
+}
+
+.list-action-selected > .list-item-selector {
+    border-color: #DDD;
+    .border-radius(3px);
+    bottom: 0px;
+    height: auto !important;
+    box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.list.list-hide-search .scroller {
+    top: 0px;
+}
+
+.scroller {
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+
+    &.animate {
+        -webkit-transition: top 0.3s ease;
+        transition: top 0.3s ease;
+    }
+}
+
+.list .scroller {
+    top: 47px;
+}
+
+.list .item-static-icon {
+    width: 24px;
+    height: 24px;
+    top: 6px;
+    left: 6px;
+    float: left;
+    padding: 0px 5px 0px 0px;
+}
+
+.list .buttonset {
+    display: flex;
+}
+
+.list .searchfield-wrapper {
+    flex-grow: 1;
+}
+
+/* grouped list */
+.group-content > h2 {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    margin: 0;
+    padding: 0 0 0 6px;
+    z-index: 5;
+    position: relative;
+}
+
+.group-content > ul {
+    margin: 0;
+}
+
+.busy {
+    opacity: 0.5;
+}
+
+/* fields */
+.row-hidden {
+    display: none;
+}
+
+.list-search {
+    padding: 0px;
+    position: relative;
+}
+
+h2 > .collapsed-indicator {
+    height: 30px;
+    width: 30px;
+    float: right;
+}
+
+h4 > .collapsed-indicator {
+    height: 25px;
+    width: 25px;
+    float: right;
+}
+
+div > .collapsed-indicator {
+    height: 25px;
+    width: 25px;
+    float: right;
+}
+
+.collapsed + ul,
+.collapsed + fieldset,
+.collapsed + div {
+    display: none !important;
+}
+
+.action-list > li.disabled {
+    display: none;
+    visibility: hidden;
+}
+
+li > .disabled {
+    opacity: 0.3;
+}
+
+.action-list > ul > li > a {
+    text-overflow: ellipsis;
+}
+
+.action-list > li {
+    margin-bottom: 10px;
+    cursor: pointer !important;
+    label {
+        margin-bottom: 0;
+    }
+    > a > span {
+        display: block;
+        line-height: inherit;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-size: 11px;
+        white-space: nowrap;
+    }
+    > a > div {
+        float: left;
+        margin: 0 5px 0 0;
+        width: 39px;
+        height: 30px;
+        text-align: center;
+        padding: 5px;
+        font-size: 11px;
+        .box-sizing(border-box);
+    }
+}
+@media (min-width: 767px) {
+    .action-list > li {
+        display: inline-block;
+        margin: 0 20px 0 0;
+        label {
+            font-size: 14px;
+            display: inline-block;
+            line-height: 28px;
+        }
+        .data {
+            display: none
+        }
+    }
+    .action-list > li.disabled {
+        display: none;
+    }
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.file-wrapper {
+    line-height: 50px;
+    z-index: 1;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    margin: 8px;
+}
+
+.display-none {
+    display: none !important;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+[orient="landscape"] {
+    min-height: 268px;
+    overflow: hidden;
+}
+
+.viewContainer > .list,
+.viewContainer > .panel,
+.viewContainer > .dialog,
+.viewContainer > .view {
+    position: absolute;
+    width: 100%;
+    height: 99%;
+    display: none;
+    visibility: hidden;
+}
+
+.viewContainer > [selected="selected"] {
+    display: block;
+    visibility: visible;
+}
+
+.viewContainer > .dialog {
+    top: 0px;
+    bottom: 0px;
+    width: 100%;
+    z-index: 20;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 0;
+    text-align: right;
+}
+
+.dialog > fieldset {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    border: none;
+    border-top: 1px solid #6d84a2;
+    padding: 0px 6px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -moz-border-bottom-left-radius: 5px;
+    -moz-border-bottom-right-radius: 5px;
+}
+
+.dialog > fieldset > label {
+    position: absolute;
+    margin: 8px 0 0 6px;
+    display: inline-block;
+}
+
+.actions-enabled + .list-item-content {
+    padding-left: 40px;
+}
+
+.no-data {
+    text-align: center;
+}
+
+.no-data > h3 {
+    white-space: normal;
+}
+
+.panel > .panel-loading-indicator {
+    display: none;
+    border: none;
+}
+
+.panel > .panel-validation-summary,
+.panel > .panel-concurrency-summary {
+    display: none;
+}
+
+.panel-loading > .panel-loading-indicator {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.panel-loading > .panel-loading-indicator span {
+    padding: 0;
+}
+
+.panel-form-error > .panel-validation-summary,
+.panel-form-concurrency-error > .panel-concurrency-summary {
+    display: block;
+}
+
+.panel-validation-summary > ul > li,
+.panel-concurrency-summary > ul > li {
+    list-style-type: disc;
+    clear: both;
+}
+.panel-validation-messages {
+    padding-left: 30px;
+}
+
+.row.no-value {
+    display: none !important;
+    visibility: hidden;
+}
+
+.not-available {
+    text-align: center;
+    padding: 8px 32px 8px 36px !important;
+}
+
+.contextualContent .list-search {
+    background-color: @black-darker;
+}
+
+.related-view-widget {
+    padding: 4px 1px 10px 24px;
+    position: relative;
+
+}
+
+.related-view-widget .panel {
+    padding: 1px;
+    position: relative;
+    top: 0px;
+}
+
+.related-view-widget .tab {
+    margin: 0;
+    padding: 1px;
+}
+
+.related-view-widget .tab-items {
+    margin: 0;
+    padding: 1px;
+    text-align: left;
+}
+
+.related-view-widget .tab-item {
+    padding: 0 2px;
+}
+
+.related-view-widget .tab-item > img {
+    width: 24px;
+    height: 24px;
+}
+
+.related-view-widget .tab .title {
+    color: @gray1-dark;
+    padding: 0 0 0 14px;
+    float: left;
+}
+
+.related-view-widget .line-bar {
+    background-color: @gray1-lighter;
+    height: 2px;
+    padding: 0;
+    position: relative;
+    top: 0;
+    margin: 2px 0 0;
+}
+
+.related-view-widget .tab-icon {
+    padding: 1px;
+    text-align: center;
+    width: 24px;
+    height: 24px;
+    padding: 0 0 0 6px;
+    float: left;
+}
+
+.related-view-widget .hidden {
+    display: none;
+}
+
+.related-view-widget .action-items {
+    text-align: right;
+}
+
+.related-view-widget .action-item {
+    padding: 0 2px;
+}
+
+.related-view-widget .action-item > img {
+    width: 24px;
+    height: 24px;
+}
+
+.related-view-widget .action {
+    float: left;
+    padding: 0 10px;
+}
+
+.related-view-widget .header {
+    padding: 1px;
+    position: relative;
+}
+
+.related-view-widget .footer {
+    padding: 2px 2px 2px 4px;
+    position: relative;
+}
+
+.related-view-widget .row {
+    display: block;
+    line-height: 1em;
+    min-height: 0.1em;
+    padding: 1px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 4px;
+    position: relative;
+    background-color: #FFFFFF;
+}
+
+.related-view-widget .items {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: relative;
+}
+
+.related-view-widget .item {
+    line-height: 0.95em;
+    min-height: 0.5em;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+    text-overflow: ellipsis;
+    margin: 1px;
+}
+
+.related-view-widget .item .item-icon {
+    float: left;
+    border-width: 0;
+    height: 22px;
+    left: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    width: 28px;
+
+}
+
+.related-view-widget .item .item-header {
+    color: @black-darker;
+    left: 40px;
+    position: relative;
+    padding: 0 40px 0 0;
+
+}
+
+.related-view-widget .item .item-detail {
+    color: @gray1-dark;
+    left: 40px;
+    position: relative;
+    padding: 0 40px 0 0;
+}
+
+.related-view-widget .item .item-footer {
+    color: @black-darker;
+}
+
+.related-view-widget .item .item-icon > img {
+    border: 2px solid #FFFFFF;
+    height: 24px;
+    left: 0;
+    position: relative;
+    top: 0;
+    width: 24px;
+}
+
+.related-view-widget .nodata {
+    display: block;
+    text-align: center;
+    line-height: 1.5em;
+    padding: 1em;
+}
+
+.related-view-widget .loading {
+    display: inline-block;
+}
+.related-view-widget-base {
+    margin: 4px;
+    padding: 2px;
+    position: relative;
+
+}
+
+.pull-to-refresh {
+    width: 100%;
+    text-align: center;
+    visibility: hidden;
+    position: absolute;
+    button, p {
+        display: inline-block;
+        vertical-align: middle;
+    }
+    > span {
+        margin: 0 10px;
+        height: 18px;
+        vertical-align: middle;
+    }
+    z-index: 10;
+}
+
+.link-view {
+    .link-node {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+}
+
+.configurable-list {
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* ios */
+    -webkit-tap-highlight-color: transparent; /* android */
+
+    .list-content {
+        > li {
+            .resource {
+                display: block;
+                margin: -8px 0 -8px -10px;
+                padding: 8px 32px 8px 36px;
+            }
+
+            h4 {
+                display:inline-block;
+                > span {
+                    &:first-child {
+                        float: left;
+                    }
+                }
+
+                + .draggable {
+                  float: right;
+                  cursor: pointer;
+                  text-align: center;
+                  button .icon {
+                      fill: #aaa
+                  }
+                }
+
+                > .icon {
+                    opacity: 0.5;
+                    margin-right: .2em;
+                }
+            }
+
+            &:first-child h4 > [data-action="moveUp"],
+            &:last-child h4 > [data-action="moveDown"] {
+                visibility: hidden;
+            }
+        }
+
+        > li.list-item-selected {
+            h4 > .icon {
+                opacity: 1.0;
+            }
+        }
+
+        > li.list-item-selected.last-moved {
+            opacity: 1.0;
+        }
+
+        > li.last-moved {
+            color: #000;
+            background-color: @color-light-turquoise;
+            -webkit-transition: background-color 0.3s linear;
+            transition: background-color 0.3s linear;
+            opacity: 0.5;
+        }
+    }
+}
+.list-show-selectors  {
+    .card-content .list-item-content {
+        margin-left: 0;
+    }
+    .list-item-content {
+        margin-left: 42px;
+    }
+    li {
+        position: relative;
+    }
+}
+.listview {
+    .list-content > li h4 {
+        margin-top: 1rem;
+    }
+    .list-item-selector {
+        visibility: hidden;
+        width: 36px;
+        height: 36px;
+        position: absolute;
+        top: 16px;
+        left: 12px;
+        border: 0 none #000;
+    }
+    .list-item-selector.visible {
+        visibility: visible;
+    }
+    .list-item-selected {
+         .list-item-selector {
+            visibility: visible !important;
+        }
+    }
+}
+
+.bottom_item_indicators > span {
+  padding: 0 5px;
+}
+
+li.relatedviewitem {
+    padding-top:0;
+    padding-bottom: 0;
+    .badge {
+        float: right;
+    }
+    a {
+        padding: 15px 0;
+        margin: 0 0 0 0.25em;
+        display: block;
+        cursor: pointer;
+    }
+}
+
+.widget-header > .btn-icon {
+    line-height: normal;
+    .icon {
+        vertical-align: top;
+    }
+}
+
+.application-menu-header {
+    display: flex;
+    flex-flow: row-reverse;
+    background-color: #212224;
+
+    .icon-close {
+        order: 1;
+    }
+}
+
+.canvas-area {
+    border: 1px solid #999999;
+    border-radius: 3px;
+    margin: 10px 0 10px 0;
+}
