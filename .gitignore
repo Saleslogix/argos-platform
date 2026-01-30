@@ -1,0 +1,69 @@
+# Node.js
+node_modules
+.grunt/
+_SpecRunner.html
+report/junit.xml
+coverage
+localization-out/
+
+# Visual Studio
+*.obj
+*.exe
+*.jar
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*.vssscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+*.lib
+*.sbr
+*.sdf
+ipch/
+obj/
+[Bb]in
+[Dd]ebug*/
+[Rr]elease*/
+
+# Tooling
+_ReSharper*/
+*.resharper.user
+[Tt]est[Rr]esult*
+.idea/
+docs/
+docs-output/
+
+# OS junk files
+Thumbs.db
+*.DS_Store
+
+# Build output
+deploy/
+dist/
+deps/
+
+# Environment
+.env
+
+# Module development shells
+index-dev-*.html
+
+# Merge tool backups
+*.orig
+*.patch
+
+# Vim temp files
+*.swp
+
+# Workspace-specific configs
+scripts/config.json

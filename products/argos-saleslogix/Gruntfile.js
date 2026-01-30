@@ -1,4 +1,7 @@
 module.exports = function(grunt) {
+  const path = require('path');
+  const sdkPath = path.dirname(require.resolve('argos-sdk/package.json'));
+  
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     products: {
@@ -6,7 +9,7 @@ module.exports = function(grunt) {
         basePath: '.',
       },
       'argos-sdk': {
-        basePath: '../../argos-sdk',
+        basePath: sdkPath,
       },
     },
     'lang-pack': {

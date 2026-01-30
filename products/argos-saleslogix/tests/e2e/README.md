@@ -7,11 +7,11 @@ The e2e test framework is a replacement for the selenium based automation framew
   - Copy the .env.example file to .env and adjust the values for your environment
   - You can also set environment variables for each key/value pair in the .env file
       - The values set in your environment variables will NOT be overwritten by the .env file!
-  - Run `yarn run e2e` to execute the tests
-  - Run `yarn run e2e:debug` to show additional debug information (see the [debug](https://www.npmjs.com/package/debug) package for more information). This is a Powershell, windows only command.
+  - Run `npm run e2e` to execute the tests
+  - Run `npm run e2e:debug` to show additional debug information (see the [debug](https://www.npmjs.com/package/debug) package for more information). This is a Powershell, windows only command.
 
 ## Filtering tests
-npm/yarn allow you to pass in additional arguments to run scripts. This allows us to pass the MochaJS --grep argument to filter out what tests are executed. For example, to only execute Activity tests, run: `yarn run e2e -- --grep Activities`
+npm allows you to pass in additional arguments to run scripts. This allows us to pass the MochaJS --grep argument to filter out what tests are executed. For example, to only execute Activity tests, run: `npm run e2e -- --grep Activities`
 
 ## Common Gotchas
   Use caution when adjusting the Playwright slowMo setting (PLAYWRIGHT_SLOMO env). There are several views within the application that will dynamically adjust values as they are shown. This can result in timing issues where a test might work in slow motion, but not when set back to a default of 0. Try to capture the state of the element AFTER the view is shown and use that selector.

@@ -4,6 +4,15 @@ node('windows && nodejs') {
     checkout scm
   }
 
+  stage('Install Dependencies') {
+    try {
+      bat 'npm install'
+    } catch (err) {
+      teams_failure('Failed installing dependencies')
+      throw err
+    }
+  }
+
   dir('argos-sdk') {
     stage('Building argos-sdk') {
       dir('deploy') {
@@ -15,10 +24,9 @@ node('windows && nodejs') {
       }
 
       try {
-        bat 'yarn'
-        bat 'yarn run lint'
+        bat 'npm run lint'
         bat 'build\\release.cmd'
-        bat 'yarn run test'
+        bat 'npm run test'
       } catch (err) {
         teams_failure('Failed building argos-sdk')
         throw err
@@ -41,10 +49,9 @@ node('windows && nodejs') {
       }
 
       try {
-        bat 'yarn'
-        bat 'yarn run lint'
+        bat 'npm run lint'
         bat 'build\\release.cmd'
-        bat 'yarn run test'
+        bat 'npm run test'
       } catch (err) {
         teams_failure('Failed building argos-saleslogix')
         throw err

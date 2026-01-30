@@ -13,11 +13,11 @@ mkdir -p deploy/content/dojo/selector
 mkdir -p deploy/content/dijit
 mkdir -p deploy/content/dojox
 
-yarn
+npm install
 grunt clean:css
 grunt clean:js
 grunt less
-yarn run build
+npm run build
 
 # Requires mono
 mono tools/JsBit/jsbit.exe -p "build/release.jsb2" -d "."

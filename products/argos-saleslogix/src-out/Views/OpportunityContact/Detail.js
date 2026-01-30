@@ -38,7 +38,7 @@ define('crm/Views/OpportunityContact/Detail', ['module', 'exports', 'dojo/_base/
 
   var resource = (0, _I18n2.default)('opportunityContactDetail');
 
-  var __class = (0, _declare2.default)('crm.Views.OpportunityContact.Detail', [_Detail2.default], {
+  var __class = (0, _declare2.default)('crm.Views.OpportunityContact.Detail', [_Detail2.default /* , _LegacySDataDetailMixin */], {
     // Localization
     titleText: resource.titleText,
     accountText: resource.accountText,
