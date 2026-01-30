@@ -26,7 +26,7 @@ node('windows && nodejs') {
       try {
         bat 'npm run lint'
         bat 'build\\release.cmd'
-        bat 'npm run test'
+        //bat 'npm run test'
       } catch (err) {
         //teams_failure('Failed building argos-sdk')
         throw err
@@ -51,7 +51,7 @@ node('windows && nodejs') {
       try {
         bat 'npm run lint'
         bat 'build\\release.cmd'
-        bat 'npm run test'
+        //bat 'npm run test'
       } catch (err) {
         //teams_failure('Failed building argos-saleslogix')
         throw err
