@@ -8,7 +8,7 @@ node('windows && nodejs') {
     try {
       bat 'npm install'
     } catch (err) {
-      teams_failure('Failed installing dependencies')
+      //teams_failure('Failed installing dependencies')
       throw err
     }
   }
@@ -28,7 +28,7 @@ node('windows && nodejs') {
         bat 'build\\release.cmd'
         bat 'npm run test'
       } catch (err) {
-        teams_failure('Failed building argos-sdk')
+        //teams_failure('Failed building argos-sdk')
         throw err
       }
       
@@ -53,7 +53,7 @@ node('windows && nodejs') {
         bat 'build\\release.cmd'
         bat 'npm run test'
       } catch (err) {
-        teams_failure('Failed building argos-saleslogix')
+        //teams_failure('Failed building argos-saleslogix')
         throw err
       }
 
@@ -73,7 +73,7 @@ node('windows && nodejs') {
             }
           }
         } catch (err) {
-          teams_failure('Failed building bundles.')
+          //teams_failure('Failed building bundles.')
           throw err
         }
       }
@@ -81,46 +81,46 @@ node('windows && nodejs') {
   }
 }
 
-stage('Copying to IIS') {
-  node('slx82') {
-    iiscopy(env.BRANCH_NAME, env.BUILD_NUMBER)
-  }
-}
+// stage('Copying to IIS') {
+//   node('slx82') {
+//     iiscopy(env.BRANCH_NAME, env.BUILD_NUMBER)
+//   }
+// }
 
-stage('Sending Teams notification') {
-  node {
-    teams_success('Mobile built successfully')
-  }
-}
+// stage('Sending Teams notification') {
+//   node {
+//     teams_success('Mobile built successfully')
+//   }
+// }
 
-void iiscopy(branch, build) {
-  dir("C:\\inetpub\\wwwroot\\mobile-builds\\$branch\\$build") {
-    unstash 'slx'
-    unstash 'sdk'
-  }
-  bat """%windir%\\System32\\WindowsPowerShell\\v1.0\\PowerShell.exe -NoProfile -NoLogo -ExecutionPolicy unrestricted -Command "C:\\inetpub\\wwwroot\\mobile-builds\\$branch\\$build\\scripts\\iis.ps1 -branch $branch -build $build" """
-}
+// void iiscopy(branch, build) {
+//   dir("C:\\inetpub\\wwwroot\\mobile-builds\\$branch\\$build") {
+//     unstash 'slx'
+//     unstash 'sdk'
+//   }
+//   bat """%windir%\\System32\\WindowsPowerShell\\v1.0\\PowerShell.exe -NoProfile -NoLogo -ExecutionPolicy unrestricted -Command "C:\\inetpub\\wwwroot\\mobile-builds\\$branch\\$build\\scripts\\iis.ps1 -branch $branch -build $build" """
+// }
 
-void teams_success(message) {
-  withCredentials([string(credentialsId: 'teams-notification-url', variable: 'TEAMS_URL')]) {
-    def url = env.TEAMS_URL
-    office365ConnectorSend(
-        webhookUrl: "${url}",
-        color: '#93d374',
-        message: message,
-        status: 'SUCCESS'
-    )
-  }
-}
+// void teams_success(message) {
+//   withCredentials([string(credentialsId: 'teams-notification-url', variable: 'TEAMS_URL')]) {
+//     def url = env.TEAMS_URL
+//     office365ConnectorSend(
+//         webhookUrl: "${url}",
+//         color: '#93d374',
+//         message: message,
+//         status: 'SUCCESS'
+//     )
+//   }
+// }
 
-void teams_failure(message) {
-  withCredentials([string(credentialsId: 'teams-notification-url', variable: 'TEAMS_URL')]) {
-    def url = env.TEAMS_URL
-    office365ConnectorSend(
-        webhookUrl: "${url}",
-        color: '#e57260',
-        message: message,
-        status: 'FAILURE'
-    )
-  }
-}
+// void teams_failure(message) {
+//   withCredentials([string(credentialsId: 'teams-notification-url', variable: 'TEAMS_URL')]) {
+//     def url = env.TEAMS_URL
+//     office365ConnectorSend(
+//         webhookUrl: "${url}",
+//         color: '#e57260',
+//         message: message,
+//         status: 'FAILURE'
+//     )
+//   }
+// }
