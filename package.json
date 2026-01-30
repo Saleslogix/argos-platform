@@ -34,6 +34,8 @@
     "grunt-contrib-jasmine": "^2.2.0",
     "grunt-contrib-less": "2.1.0",
     "grunt-shell": "^3.0.1",
+    "less": "^4.5.1",
+    "less-loader": "^12.3.0",
     "mocha": "^8.4.0"
   }
 }

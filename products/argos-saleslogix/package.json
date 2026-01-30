@@ -27,8 +27,6 @@
     "grunt-contrib-copy": "^1.0.0",
     "http-proxy": "^1.18.1",
     "jsdoc": "^3.6.7",
-    "less": "3.13.1",
-    "less-loader": "7.3.0",
     "playwright": "^1.11.1",
     "serve-index": "^1.9.1"
   },
