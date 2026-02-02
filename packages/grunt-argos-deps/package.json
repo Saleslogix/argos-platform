@@ -1,0 +1,18 @@
+{
+  "name": "grunt-argos-deps",
+  "version": "0.1.4",
+  "description": "",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Saleslogix/grunt-argos-deps"
+  },
+  "peerDependencies": {
+    "grunt": ">=0.4.0"
+  },
+  "dependencies": {
+    "esprima": "^2.6.0",
+    "graphs": "*",
+    "grunt": "^1.0.4"
+  }
+}

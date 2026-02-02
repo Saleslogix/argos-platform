@@ -4,7 +4,9 @@
   "private": true,
   "workspaces": [
     "argos-sdk",
-    "products/argos-saleslogix"
+    "products/argos-saleslogix",
+    "packages/grunt-argos-deps",
+    "packages/graphs"
   ],
   "scripts": {
     "install:all": "npm install",

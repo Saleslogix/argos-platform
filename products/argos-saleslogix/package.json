@@ -24,7 +24,7 @@
     "debug": "^4.3.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "grunt-argos-deps": "git+https://git@github.com/Saleslogix/grunt-argos-deps.git#v0.1.5",
+    "grunt-argos-deps": "*",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-connect": "^3.0.0",
     "grunt-contrib-copy": "^1.0.0",
