@@ -123,7 +123,7 @@ this.defer(function(){
 _1.forEach(_3f,function(_41){
 if(!_41._destroyed&&!_41.getParent()){
 _3b.dndController.removeTreeNode(_41);
-function _42(_43){
+var _42=function _42(_43){
 var id=_3c.getIdentity(_43.item),ary=_3b._itemNodesMap[id];
 if(ary.length==1){
 delete _3b._itemNodesMap[id];

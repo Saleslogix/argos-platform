@@ -23,6 +23,9 @@ _8=_1.global;
 try{
 for(var i=0;i<_6.length;i++){
 var p=_6[i];
+if(p==="__proto__"||p==="constructor"){
+return;
+}
 if(!(p in _8)){
 if(_7){
 _8[p]={};

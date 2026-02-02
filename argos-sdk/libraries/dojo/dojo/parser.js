@@ -5,11 +5,16 @@
 */
 
 //>>built
-define("dojo/parser",["require","./_base/kernel","./_base/lang","./_base/array","./_base/config","./dom","./_base/window","./_base/url","./aspect","./promise/all","./date/stamp","./Deferred","./has","./query","./on","./ready"],function(_1,_2,_3,_4,_5,_6,_7,_8,_9,_a,_b,_c,_d,_e,_f,_10){
+define("dojo/parser",["require","./_base/kernel","./_base/lang","./_base/array","./_base/config","./dom","./_base/window","./_base/url","./aspect","./promise/all","./date/stamp","./Deferred","./has","./json5","./query","./on","./ready"],function(_1,_2,_3,_4,_5,_6,_7,_8,_9,_a,_b,_c,_d,_e,_f,don,_10){
 new Date("X");
-function _11(_12){
+var _11;
+if(_d("csp-restrictions")){
+_11=_e.parse;
+}else{
+_11=function(_12){
 return eval("("+_12+")");
 };
+}
 var _13=0;
 _9.after(_3,"extend",function(){
 _13++;
@@ -183,7 +188,12 @@ _4d.push(_50);
 break;
 default:
 var _53=_42[_50];
+try{
 _43[_50]=(_53&&"length" in _53)?(_52?_52.split(/\s*,\s*/):[]):(_53 instanceof Date)?(_52==""?new Date(""):_52=="now"?new Date():_b.fromISOString(_52)):(_53 instanceof _8)?(_2.baseUrl+_52):_11(_52);
+}
+catch(error){
+console.error(error);
+}
 }
 }else{
 _43[_50]=_52;
@@ -206,7 +216,7 @@ throw new Error(e.toString()+" in data-dojo-props='"+_4f+"'");
 }
 _3.mixin(_43,_3e);
 if(!_40){
-_40=(_3c&&(_3c._noScript||_42._noScript)?[]:_e("> script[type^='dojo/']",_3d));
+_40=(_3c&&(_3c._noScript||_42._noScript)?[]:_f("> script[type^='dojo/']",_3d));
 }
 var _55=[],_56=[],_57=[],ons=[];
 if(_40){
@@ -253,7 +263,7 @@ for(i=0;i<_57.length;i++){
 _61.watch(_57[i].prop,_57[i].func);
 }
 for(i=0;i<ons.length;i++){
-_f(_61,ons[i].event,ons[i].func);
+don(_61,ons[i].event,ons[i].func);
 }
 return _61;
 };
@@ -268,7 +278,7 @@ var _67=(_63.scope||_2._scopeName)+"Type",_68="data-"+(_63.scope||_2._scopeName)
 var _6c=_62.firstChild;
 var _6d=_63.inherited;
 if(!_6d){
-function _6e(_6f,_70){
+var _6e=function _6e(_6f,_70){
 return (_6f.getAttribute&&_6f.getAttribute(_70))||(_6f.parentNode&&_6e(_6f.parentNode,_70));
 };
 _6d={dir:_6e(_62,"dir"),lang:_6e(_62,"lang"),textDir:_6e(_62,_6a)};
@@ -403,7 +413,7 @@ return d.promise;
 var _8c=new _c(),_8d=_8c.promise;
 _8c.resolve(true);
 var _8e=this;
-_e("script[type='dojo/require']",_8a).forEach(function(_8f){
+_f("script[type='dojo/require']",_8a).forEach(function(_8f){
 _8d=_8d.then(function(){
 return _8e._require(_8f,_8b);
 });

@@ -62,34 +62,64 @@ _18.max=new this.dateClassObj(_18.max);
 }
 this.inherited(arguments);
 this._unboundedConstraints=_5.mixin({},this.constraints,{min:null,max:null});
-},_isInvalidDate:function(_1a){
-return !_1a||isNaN(_1a)||typeof _1a!="object"||_1a.toString()==this._invalidDate;
-},_setValueAttr:function(_1b,_1c,_1d){
-if(_1b!==undefined){
-if(typeof _1b=="string"){
-_1b=_3.fromISOString(_1b);
+},_isDefinitelyOutOfRange:function(){
+var _1a=this.inherited(arguments);
+var _1b=false;
+var _1c;
+var _1d;
+var _1e;
+var _1f;
+var _20;
+var _21;
+if(_1a&&(this.constraints.min||this.constraints.max)){
+var _22=new RegExp(this._lastRegExp);
+_1c=_22.exec(this._lastInputEventValue);
+if(_1c!=null){
+_1d=_1c[3];
+if(this.constraints.min){
+_21=this.constraints.min instanceof Date?this.constraints.min:new Date(String(this.constraints.min));
+minYear=_21.getFullYear();
+_1e=parseInt((_1d+"9999").substr(0,4),10);
+_1b=_1e<minYear;
 }
-if(this._isInvalidDate(_1b)){
-_1b=null;
+if(!_1b&&this.constraints.max){
+_20=this.constraints.max instanceof Date?this.constraints.max:new Date(String(this.constraints.max));
+maxYear=_20.getFullYear();
+_1f=parseInt((_1d+"0000").substr(0,4),10);
+_1b=_1f>maxYear;
 }
-if(_1b instanceof Date&&!(this.dateClassObj instanceof Date)){
-_1b=new this.dateClassObj(_1b);
+_1a=_1b;
 }
 }
-this.inherited(arguments,[_1b,_1c,_1d]);
+return _1a;
+},_isInvalidDate:function(_23){
+return !_23||isNaN(_23)||typeof _23!="object"||_23.toString()==this._invalidDate;
+},_setValueAttr:function(_24,_25,_26){
+if(_24!==undefined){
+if(typeof _24=="string"){
+_24=_3.fromISOString(_24);
+}
+if(this._isInvalidDate(_24)){
+_24=null;
+}
+if(_24 instanceof Date&&!(this.dateClassObj instanceof Date)){
+_24=new this.dateClassObj(_24);
+}
+}
+this.inherited(arguments,[_24,_25,_26]);
 if(this.value instanceof Date){
 this.filterString="";
 }
-if(_1c!==false&&this.dropDown){
-this.dropDown.set("value",_1b,false);
+if(_25!==false&&this.dropDown){
+this.dropDown.set("value",_24,false);
 }
-},_set:function(_1e,_1f){
-if(_1e=="value"){
-if(_1f instanceof Date&&!(this.dateClassObj instanceof Date)){
-_1f=new this.dateClassObj(_1f);
+},_set:function(_27,_28){
+if(_27=="value"){
+if(_28 instanceof Date&&!(this.dateClassObj instanceof Date)){
+_28=new this.dateClassObj(_28);
 }
-var _20=this._get("value");
-if(_20 instanceof this.dateClassObj&&this.compare(_1f,_20)==0){
+var _29=this._get("value");
+if(_29 instanceof this.dateClassObj&&this.compare(_28,_29)==0){
 return;
 }
 }
@@ -99,21 +129,21 @@ if(this._isInvalidDate(val)){
 val=new this.dateClassObj();
 }
 this._set("dropDownDefaultValue",val);
-},openDropDown:function(_21){
+},openDropDown:function(_2a){
 if(this.dropDown){
 this.dropDown.destroy();
 }
-var _22=_5.isString(this.popupClass)?_5.getObject(this.popupClass,false):this.popupClass,_23=this,_24=this.get("value");
-this.dropDown=new _22({onChange:function(_25){
-_23.set("value",_25,true);
-},id:this.id+"_popup",dir:_23.dir,lang:_23.lang,value:_24,textDir:_23.textDir,currentFocus:!this._isInvalidDate(_24)?_24:this.dropDownDefaultValue,constraints:_23.constraints,filterString:_23.filterString,datePackage:_23.datePackage,isDisabledDate:function(_26){
-return !_23.rangeCheck(_26,_23.constraints);
+var _2b=_5.isString(this.popupClass)?_5.getObject(this.popupClass,false):this.popupClass,_2c=this,_2d=this.get("value");
+this.dropDown=new _2b({onChange:function(_2e){
+_2c.set("value",_2e,true);
+},id:this.id+"_popup",dir:_2c.dir,lang:_2c.lang,value:_2d,textDir:_2c.textDir,currentFocus:!this._isInvalidDate(_2d)?_2d:this.dropDownDefaultValue,constraints:_2c.constraints,filterString:_2c.filterString,datePackage:_2c.datePackage,isDisabledDate:function(_2f){
+return !_2c.rangeCheck(_2f,_2c.constraints);
 }});
 this.inherited(arguments);
 },_getDisplayedValueAttr:function(){
 return this.textbox.value;
-},_setDisplayedValueAttr:function(_27,_28){
-this._setValueAttr(this.parse(_27,this.constraints),_28,_27);
+},_setDisplayedValueAttr:function(_30,_31){
+this._setValueAttr(this.parse(_30,this.constraints),_31,_30);
 }});
 return _9;
 });

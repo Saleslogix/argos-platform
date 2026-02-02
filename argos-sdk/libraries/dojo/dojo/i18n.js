@@ -144,7 +144,7 @@ _5e=_5a._localized;
 _14[_53(_5d,_5c,loc,_2)]=_5a;
 }
 if(loc!==_58){
-function _60(_61,_62,_63,_64){
+var _60=function _60(_61,_62,_63,_64){
 var _65=[],_66=[];
 _4d(_58,function(loc){
 if(_64[loc]){

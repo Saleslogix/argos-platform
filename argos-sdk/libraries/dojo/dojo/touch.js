@@ -70,7 +70,7 @@ _16=(typeof _11=="object"?_11.x:(typeof _11=="number"?_11:0))||4;
 _17=(typeof _11=="object"?_11.y:(typeof _11=="number"?_11:0))||4;
 if(!_10){
 _10=true;
-function _2c(e){
+var _2c=function _2c(e){
 if(_12){
 _11=_3.isDescendant(_9.doc.elementFromPoint((e.changedTouches?e.changedTouches[0].pageX-_9.global.pageXOffset:e.clientX),(e.changedTouches?e.changedTouches[0].pageY-_9.global.pageYOffset:e.clientY)),_13);
 }else{
@@ -98,7 +98,7 @@ if(_2d.tagName==="LABEL"){
 _2d=_3.byId(_2d.getAttribute("for"))||_2d;
 }
 var src=(e.changedTouches)?e.changedTouches[0]:e;
-function _2e(_2f){
+var _2e=function _2e(_2f){
 var evt=document.createEvent("MouseEvents");
 evt._dojo_click=true;
 evt.initMouseEvent(_2f,true,true,e.view,e.detail,src.screenX,src.screenY,src.clientX,src.clientY,e.ctrlKey,e.altKey,e.shiftKey,e.metaKey,0,null);
@@ -115,7 +115,7 @@ _18=(new Date()).getTime();
 },0);
 }
 },true);
-function _33(_34){
+var _33=function _33(_34){
 _9.doc.addEventListener(_34,function(e){
 var _35=e.target;
 if(_11&&!e._dojo_click&&(new Date()).getTime()<=_18+1000&&!(_35.tagName=="INPUT"&&_4.contains(_35,"dijitOffScreen"))){

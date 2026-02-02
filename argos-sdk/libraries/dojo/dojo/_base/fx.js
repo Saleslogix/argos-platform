@@ -263,7 +263,7 @@ if(_3.isFunction(_35.end)){
 _35.end=_35.end(n);
 }
 var _36=(p.toLowerCase().indexOf("color")>=0);
-function _37(_38,p){
+var _37=function _37(_38,p){
 var v={height:_38.offsetHeight,width:_38.offsetWidth}[p];
 if(v!==undefined){
 return v;
