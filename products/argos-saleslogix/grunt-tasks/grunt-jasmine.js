@@ -4,7 +4,7 @@ module.exports = function gruntJasmine(grunt) {
       src: ['src-out/**/*.js', 'configuration/**/*.js', 'localization/**/*.js'],
       options: {
         specs: 'tests/**/*.spec.js',
-        host: 'http://127.0.0.1:8001/products/argos-saleslogix/',
+        host: 'http://127.0.0.1:8002/products/argos-saleslogix/',
         template: 'GruntRunnerBasic.tmpl',
         summary: true,
         sandboxArgs: {
