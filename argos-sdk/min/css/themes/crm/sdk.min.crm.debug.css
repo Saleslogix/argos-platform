@@ -829,14 +829,7 @@ input.fileupload-background-transparent {
   box-shadow: 0 0 5px #888b94;
   z-index: 502;
 }
-.theme-soho-contrast .crm-modal,
-.theme-uplift-contrast .crm-modal,
-.theme-uplift-light .crm-modal,
-.theme-soho-light .crm-modal {
-  background-color: #fff;
-}
-.theme-uplift-dark .crm-modal,
-.theme-soho-dark .crm-modal {
+:is(.theme-classic-dark, .theme-new-dark, .theme-uplift-dark, .theme-soho-dark) .crm-modal {
   background-color: #414247;
 }
 .modal__content {
