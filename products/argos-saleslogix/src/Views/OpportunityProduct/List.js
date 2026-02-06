@@ -13,59 +13,61 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import List from 'argos/List';
-import getResource from 'argos/I18n';
+define('crm/Views/OpportunityProduct/List', [
+  'dojo/_base/declare',
+  'argos/List',
+  'argos/I18n'
+], function(declare, List, getResource) {
+  const resource = getResource('opportunityProductList');
 
-const resource = getResource('opportunityProductList');
+  const __class = declare('crm.Views.OpportunityProduct.List', [List], {
+    // Templates
+    itemTemplate: new Simplate([
+      '<p class="micro-text">',
+      '{% if ($.Product) { %} {%: $.Product.Family %} | {% } %}',
+      '{%: $.Program %} | {%: crm.Format.currency($.Price) %}',
+      '</p>',
+      '<p class="micro-text">',
+      '{%: $.Quantity %} x {%: crm.Format.currency($.CalculatedPrice) %} ',
+      '({%: crm.Format.percent($.Discount) %}) = ',
+      '<strong>',
+      '{% if (App.hasMultiCurrency()) { %}',
+      '{%: crm.Format.multiCurrency($.ExtendedPrice, App.getBaseExchangeRate().code) %}',
+      '{% } else { %}',
+      '{%: crm.Format.currency($.ExtendedPrice) %}',
+      '{% } %}',
+      '</strong>',
+      '</p>',
+    ]),
 
-const __class = declare('crm.Views.OpportunityProduct.List', [List], {
-  // Templates
-  itemTemplate: new Simplate([
-    '<p class="micro-text">',
-    '{% if ($.Product) { %} {%: $.Product.Family %} | {% } %}',
-    '{%: $.Program %} | {%: crm.Format.currency($.Price) %}',
-    '</p>',
-    '<p class="micro-text">',
-    '{%: $.Quantity %} x {%: crm.Format.currency($.CalculatedPrice) %} ',
-    '({%: crm.Format.percent($.Discount) %}) = ',
-    '<strong>',
-    '{% if (App.hasMultiCurrency()) { %}',
-    '{%: crm.Format.multiCurrency($.ExtendedPrice, App.getBaseExchangeRate().code) %}',
-    '{% } else { %}',
-    '{%: crm.Format.currency($.ExtendedPrice) %}',
-    '{% } %}',
-    '</strong>',
-    '</p>',
-  ]),
+    // Localization
+    titleText: resource.titleText,
 
-  // Localization
-  titleText: resource.titleText,
+    // View Properties
+    id: 'opportunityproduct_list',
+    security: 'Entities/Opportunity/View',
+    detailView: 'opportunityproduct_detail',
+    insertView: 'opportunityproduct_edit',
+    queryOrderBy: 'Sort',
+    querySelect: [
+      'Product/Name',
+      'Product/Family',
+      'Program',
+      'Price',
+      'Discount',
+      'CalculatedPrice',
+      'Quantity',
+      'ExtendedPrice',
+    ],
+    resourceKind: 'opportunityproducts',
+    allowSelection: true,
+    enableActions: true,
 
-  // View Properties
-  id: 'opportunityproduct_list',
-  security: 'Entities/Opportunity/View',
-  detailView: 'opportunityproduct_detail',
-  insertView: 'opportunityproduct_edit',
-  queryOrderBy: 'Sort',
-  querySelect: [
-    'Product/Name',
-    'Product/Family',
-    'Program',
-    'Price',
-    'Discount',
-    'CalculatedPrice',
-    'Quantity',
-    'ExtendedPrice',
-  ],
-  resourceKind: 'opportunityproducts',
-  allowSelection: true,
-  enableActions: true,
+    formatSearchQuery: function formatSearchQuery(searchQuery) {
+      const q = this.escapeSearchQuery(searchQuery.toUpperCase());
+      return `(upper(Product.Name) like "${q}%" or upper(Product.Family) like "${q}%")`;
+    },
+  });
 
-  formatSearchQuery: function formatSearchQuery(searchQuery) {
-    const q = this.escapeSearchQuery(searchQuery.toUpperCase());
-    return `(upper(Product.Name) like "${q}%" or upper(Product.Family) like "${q}%")`;
-  },
+  return __class;
 });
-
-export default __class;

@@ -13,25 +13,27 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import Edit from 'argos/Edit';
-import getResource from 'argos/I18n';
+define('crm/Views/TextEdit', [
+  'dojo/_base/declare',
+  'argos/Edit',
+  'argos/I18n'
+], function(declare, Edit, getResource) {
+  const resource = getResource('textEdit');
 
-const resource = getResource('textEdit');
+  const __class = declare('crm.Views.TextEdit', [Edit], {
+    // View Properties
+    id: 'text_edit',
+    titleText: resource.titleText,
 
-const __class = declare('crm.Views.TextEdit', [Edit], {
-  // View Properties
-  id: 'text_edit',
-  titleText: resource.titleText,
+    createLayout: function createLayout() {
+      return this.layout || (this.layout = [{
+        label: '',
+        cls: 'note-text-row',
+        name: 'Notes',
+        type: 'textarea',
+      }]);
+    },
+  });
 
-  createLayout: function createLayout() {
-    return this.layout || (this.layout = [{
-      label: '',
-      cls: 'note-text-row',
-      name: 'Notes',
-      type: 'textarea',
-    }]);
-  },
+  return __class;
 });
-
-export default __class;

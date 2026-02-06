@@ -1,7 +1,7 @@
 module.exports = function gruntJasmine(grunt) {
   grunt.config('jasmine', {
     basic: {
-      src: ['src-out/**/*.js', 'configuration/**/*.js', 'localization/**/*.js'],
+      src: ['src/**/*.js', 'configuration/**/*.js', 'localization/**/*.js'],
       options: {
         specs: 'tests/**/*.spec.js',
         host: 'http://127.0.0.1:8002/products/argos-saleslogix/',

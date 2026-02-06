@@ -13,22 +13,24 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import SearchWidget from 'argos/SearchWidget';
-import getResource from 'argos/I18n';
+define('crm/SpeedSearchWidget', [
+  'dojo/_base/declare',
+  'argos/SearchWidget',
+  'argos/I18n'
+], function(declare, SearchWidget, getResource) {
+  const resource = getResource('speedSearchWidget');
 
-const resource = getResource('speedSearchWidget');
+  const __class = declare('crm.SpeedSearchWidget', [SearchWidget], {
+    /*
+     * The placeholder text for the input.
+     */
+    searchText: resource.searchText,
 
-const __class = declare('crm.SpeedSearchWidget', [SearchWidget], {
-  /*
-   * The placeholder text for the input.
-   */
-  searchText: resource.searchText,
+    _setQueryValueAttr: function _setQueryValueAttr(value) {
+      this._onFocus();
+      this.queryNode.value = value;
+    },
+  });
 
-  _setQueryValueAttr: function _setQueryValueAttr(value) {
-    this._onFocus();
-    this.queryNode.value = value;
-  },
+  return __class;
 });
-
-export default __class;

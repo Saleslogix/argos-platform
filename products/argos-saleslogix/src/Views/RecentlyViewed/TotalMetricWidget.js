@@ -13,46 +13,48 @@
  * limitations under the License.
  */
 
-import MetricWidget from '../MetricWidget';
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import when from 'dojo/when';
-import MODEL_TYPES from 'argos/Models/Types';
-import Deferred from 'dojo/Deferred';
-import QueryResults from 'dojo/store/util/QueryResults';
-
-export default declare('crm.Views.RecentlyViewed.TotalMetricWidget', [MetricWidget], {
-  navToReportView: function navToReportView() {},
-  _buildQueryOptions: function _buildQueryOptions() {
-    const filters = (App.preferences && App.preferences.recentlyViewedEntityFilters) ? App.preferences.recentlyViewedEntityFilters : [];
-    return {
-      returnQueryResults: true,
-      filter: (entity) => {
-        // If the user has entity filters stored in preferences, filter based on that
-        if (filters) {
-          return filters.some(filter => entity.entityName === filter.name && filter.enabled);
-        }
-
-        // User has no entity filter preferences (from right drawer)
-        return true;
-      },
-    };
-  },
-  _getData: function _getData() {
-    const queryOptions = this._buildQueryOptions();
-    const model = App.ModelManager.getModel('RecentlyViewed', MODEL_TYPES.OFFLINE);
-    const queryResults = model.getEntries(null, queryOptions);
-    when(queryResults, lang.hitch(this, this._onQuerySuccessCount, queryResults), lang.hitch(this, this._onQueryError));
-  },
-  _onQuerySuccessCount: function _onQuerySuccessCount(results) {
-    const def = new Deferred();
-    when(results.total, (total) => {
-      const metricResults = [{
-        name: 'count',
-        value: total,
-      }];
-      def.resolve(metricResults);
-    });
-    this._onQuerySuccess(QueryResults(def.promise)); // eslint-disable-line
-  },
+define('crm/Views/RecentlyViewed/TotalMetricWidget', [
+  '../MetricWidget',
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  'dojo/when',
+  'argos/Models/Types',
+  'dojo/Deferred',
+  'dojo/store/util/QueryResults'
+], function(MetricWidget, declare, lang, when, MODEL_TYPES, Deferred, QueryResults) {
+  return declare('crm.Views.RecentlyViewed.TotalMetricWidget', [MetricWidget], {
+    navToReportView: function navToReportView() {},
+    _buildQueryOptions: function _buildQueryOptions() {
+      const filters = (App.preferences && App.preferences.recentlyViewedEntityFilters) ? App.preferences.recentlyViewedEntityFilters : [];
+      return {
+        returnQueryResults: true,
+        filter: (entity) => {
+          // If the user has entity filters stored in preferences, filter based on that
+          if (filters) {
+            return filters.some(filter => entity.entityName === filter.name && filter.enabled);
+          }
+  
+          // User has no entity filter preferences (from right drawer)
+          return true;
+        },
+      };
+    },
+    _getData: function _getData() {
+      const queryOptions = this._buildQueryOptions();
+      const model = App.ModelManager.getModel('RecentlyViewed', MODEL_TYPES.OFFLINE);
+      const queryResults = model.getEntries(null, queryOptions);
+      when(queryResults, lang.hitch(this, this._onQuerySuccessCount, queryResults), lang.hitch(this, this._onQueryError));
+    },
+    _onQuerySuccessCount: function _onQuerySuccessCount(results) {
+      const def = new Deferred();
+      when(results.total, (total) => {
+        const metricResults = [{
+          name: 'count',
+          value: total,
+        }];
+        def.resolve(metricResults);
+      });
+      this._onQuerySuccess(QueryResults(def.promise)); // eslint-disable-line
+    },
+  });
 });

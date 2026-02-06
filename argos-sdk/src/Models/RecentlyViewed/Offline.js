@@ -16,58 +16,61 @@
 /**
  * @module argos/Models/RecentlyViewed/Offline
  */
-import declare from 'dojo/_base/declare';
-import _OfflineModelBase from '../_OfflineModelBase';
-import Manager from '../Manager';
-import MODEL_TYPES from '../Types';
-import getResource from '../../I18n';
+define('argos/Models/RecentlyViewed/Offline', [
+  'dojo/_base/declare',
+  '../_OfflineModelBase',
+  '../Manager',
+  '../Types',
+  '../../I18n'
+], function(declare, _OfflineModelBase, Manager, MODEL_TYPES, getResource) {
+  const resource = getResource('recentlyViewedModel');
 
-const resource = getResource('recentlyViewedModel');
-
-/**
- * @class
- * @alias module:argos/Models/RecentlyViewed/Offline
- * @extends module:argos/Models/_OfflineModelBase
- */
-const __class = declare('argos.Models.RecentlyViewed.Offline', [_OfflineModelBase], /** @lends module:argos/Models/RecentlyViewed/Offline.prototype*/{
-  id: 'recentlyviewed_offline_model',
-  entityName: 'RecentlyViewed',
-  modelName: 'RecentlyViewed',
-  entityDisplayName: resource.entityDisplayName,
-  entityDisplayNamePlural: resource.entityDisplayNamePlural,
-  isSystem: true,
-  createEntry: function createEntity(viewId, entry, model) {
-    const entity = {}; // need to dynamicly create Properties;
-    entity.$key = `${viewId}_${model.getEntityId(entry)}`;
-    entity.$descriptor = model.getEntityDescription(entry);
-    entity.createDate = moment().toDate();
-    entity.modifyDate = moment().toDate();
-    entity.entityId = model.getEntityId(entry);
-    entity.entityName = model.entityName;
-    entity.description = model.getEntityDescription(entry);
-    entity.entityDisplayName = model.entityDisplayName;
-    entity.resourceKind = model.resourceKind;
-    entity.viewId = viewId;
-    entity.iconClass = model.getIconClass(entry);
-    return entity;
-  },
-  deleteEntryByEntityContext: function deleteEntryByEntityContext(entityId, entityName) {
-    const options = {
-      filter: function filter(entry) {
-        if (entry.entityId === entityId && entry.entityName === entityName) {
-          return entry;
+  /**
+   * @class
+   * @alias module:argos/Models/RecentlyViewed/Offline
+   * @extends module:argos/Models/_OfflineModelBase
+   */
+  const __class = declare('argos.Models.RecentlyViewed.Offline', [_OfflineModelBase], /** @lends module:argos/Models/RecentlyViewed/Offline.prototype*/{
+    id: 'recentlyviewed_offline_model',
+    entityName: 'RecentlyViewed',
+    modelName: 'RecentlyViewed',
+    entityDisplayName: resource.entityDisplayName,
+    entityDisplayNamePlural: resource.entityDisplayNamePlural,
+    isSystem: true,
+    createEntry: function createEntity(viewId, entry, model) {
+      const entity = {}; // need to dynamicly create Properties;
+      entity.$key = `${viewId}_${model.getEntityId(entry)}`;
+      entity.$descriptor = model.getEntityDescription(entry);
+      entity.createDate = moment().toDate();
+      entity.modifyDate = moment().toDate();
+      entity.entityId = model.getEntityId(entry);
+      entity.entityName = model.entityName;
+      entity.description = model.getEntityDescription(entry);
+      entity.entityDisplayName = model.entityDisplayName;
+      entity.resourceKind = model.resourceKind;
+      entity.viewId = viewId;
+      entity.iconClass = model.getIconClass(entry);
+      return entity;
+    },
+    deleteEntryByEntityContext: function deleteEntryByEntityContext(entityId, entityName) {
+      const options = {
+        filter: function filter(entry) {
+          if (entry.entityId === entityId && entry.entityName === entityName) {
+            return entry;
+          }
+        },
+      };
+      this.getEntries(null, options).then((entries) => {
+        if (entries) {
+          entries.forEach((entry) => {
+            this.deleteEntry(entry.$key);
+          });
         }
-      },
-    };
-    this.getEntries(null, options).then((entries) => {
-      if (entries) {
-        entries.forEach((entry) => {
-          this.deleteEntry(entry.$key);
-        });
-      }
-    });
-  },
-});
+      });
+    },
+  });
 
-Manager.register('RecentlyViewed', MODEL_TYPES.OFFLINE, __class);
-export default __class;
+  Manager.register('RecentlyViewed', MODEL_TYPES.OFFLINE, __class);
+
+  return __class;
+});

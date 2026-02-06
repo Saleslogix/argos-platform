@@ -13,66 +13,68 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import has from 'dojo/has';
-import MainToolbar from 'argos/MainToolbar';
-import getResource from 'argos/I18n';
+define('crm/Views/MainToolbar', [
+  'dojo/_base/declare',
+  'dojo/has',
+  'argos/MainToolbar',
+  'argos/I18n'
+], function(declare, has, MainToolbar, getResource) {
+  const resource = getResource('mainToolbar');
 
-const resource = getResource('mainToolbar');
+  const __class = declare('crm.Views.MainToolbar', [MainToolbar], {
+    backTooltipText: resource.backTooltipText,
 
-const __class = declare('crm.Views.MainToolbar', [MainToolbar], {
-  backTooltipText: resource.backTooltipText,
+    showTools: function showTools(tools) {
+      let isOnEdit;
+      const isOnFirstView = App.isOnFirstView();
 
-  showTools: function showTools(tools) {
-    let isOnEdit;
-    const isOnFirstView = App.isOnFirstView();
-
-    if (tools) {
-      for (let i = 0; i < tools.length; i++) {
-        if (tools[i].id === 'cancel') {
-          isOnEdit = true;
+      if (tools) {
+        for (let i = 0; i < tools.length; i++) {
+          if (tools[i].id === 'cancel') {
+            isOnEdit = true;
+          }
         }
       }
-    }
 
-    if (tools !== false) {
-      tools = tools || []; // eslint-disable-line
+      if (tools !== false) {
+        tools = tools || []; // eslint-disable-line
 
-      if (!isOnEdit && !isOnFirstView) {
-        tools = tools.concat([{ //eslint-disable-line
-          id: 'back',
-          svg: 'previous-page',
-          side: 'left',
-          title: this.backTooltipText,
-          fn: this.navigateBack,
-          scope: this,
-        }]);
+        if (!isOnEdit && !isOnFirstView) {
+          tools = tools.concat([{ //eslint-disable-line
+            id: 'back',
+            svg: 'previous-page',
+            side: 'left',
+            title: this.backTooltipText,
+            fn: this.navigateBack,
+            scope: this,
+          }]);
+        }
       }
-    }
 
-    this.inherited(showTools, arguments);
-  },
-  navigateBack: function navigateBack() {
-    ReUI.back();
-  },
-  navigateToHomeView: function navigateToHomeView() {
-    App.navigateToHomeView();
-  },
-  onTitleClick: function onTitleClick() {
-    const view = App.getPrimaryActiveView();
+      this.inherited(showTools, arguments);
+    },
+    navigateBack: function navigateBack() {
+      ReUI.back();
+    },
+    navigateToHomeView: function navigateToHomeView() {
+      App.navigateToHomeView();
+    },
+    onTitleClick: function onTitleClick() {
+      const view = App.getPrimaryActiveView();
 
-    if (view) {
-      const scrollerNode = view.get('scroller');
-      if (has('android')) {
-        // Hack to work around https://code.google.com/p/android/issues/detail?id=19625
-        $(scrollerNode).css('overflow', 'hidden');
-        scrollerNode.scrollTop = 0;
-        $(scrollerNode).css('overflow', 'auto');
-      } else {
-        scrollerNode.scrollTop = 0;
+      if (view) {
+        const scrollerNode = view.get('scroller');
+        if (has('android')) {
+          // Hack to work around https://code.google.com/p/android/issues/detail?id=19625
+          $(scrollerNode).css('overflow', 'hidden');
+          scrollerNode.scrollTop = 0;
+          $(scrollerNode).css('overflow', 'auto');
+        } else {
+          scrollerNode.scrollTop = 0;
+        }
       }
-    }
-  },
+    },
+  });
+
+  return __class;
 });
-
-export default __class;

@@ -13,65 +13,67 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import List from 'argos/List';
-import getResource from 'argos/I18n';
+define('crm/Views/Owner/List', [
+  'dojo/_base/declare',
+  'argos/List',
+  'argos/I18n'
+], function(declare, List, getResource) {
+  const resource = getResource('ownerList');
 
-const resource = getResource('ownerList');
+  const __class = declare('crm.Views.Owner.List', [List], {
+    // Templates
+    itemTemplate: new Simplate([
+      '<p class="listview-heading">{%: $.OwnerDescription %}</p>',
+    ]),
 
-const __class = declare('crm.Views.Owner.List', [List], {
-  // Templates
-  itemTemplate: new Simplate([
-    '<p class="listview-heading">{%: $.OwnerDescription %}</p>',
-  ]),
+    // Localization
+    titleText: resource.titleText,
 
-  // Localization
-  titleText: resource.titleText,
+    // View Properties
+    id: 'owner_list',
+    isCardView: false,
+    security: 'Entities/Owner/View',
+    queryOrderBy: 'OwnerDescription',
+    querySelect: [
+      'OwnerDescription',
+      'User/Enabled',
+      'User/Type',
+      'Type',
+    ],
+    queryWhere: 'Type ne "Department"',
+    resourceKind: 'owners',
 
-  // View Properties
-  id: 'owner_list',
-  isCardView: false,
-  security: 'Entities/Owner/View',
-  queryOrderBy: 'OwnerDescription',
-  querySelect: [
-    'OwnerDescription',
-    'User/Enabled',
-    'User/Type',
-    'Type',
-  ],
-  queryWhere: 'Type ne "Department"',
-  resourceKind: 'owners',
+    formatSearchQuery: function formatSearchQuery(searchQuery) {
+      const q = this.escapeSearchQuery(searchQuery.toUpperCase());
+      return `upper(OwnerDescription) like "%${q}%"`;
+    },
+    processData: function processData(items) {
+      if (items) {
+        items = items.filter((item) => { // eslint-disable-line
+          return this._userEnabled(item) && this._isCorrectType(item);
+        }, this);
+      }
 
-  formatSearchQuery: function formatSearchQuery(searchQuery) {
-    const q = this.escapeSearchQuery(searchQuery.toUpperCase());
-    return `upper(OwnerDescription) like "%${q}%"`;
-  },
-  processData: function processData(items) {
-    if (items) {
-      items = items.filter((item) => { // eslint-disable-line
-        return this._userEnabled(item) && this._isCorrectType(item);
-      }, this);
-    }
+      this.inherited(processData, arguments);
+    },
+    _userEnabled: function _userEnabled(item) {
+      // If User is null, it is probably a team
+      if (item.User === null || item.User.Enabled) {
+        return true;
+      }
 
-    this.inherited(processData, arguments);
-  },
-  _userEnabled: function _userEnabled(item) {
-    // If User is null, it is probably a team
-    if (item.User === null || item.User.Enabled) {
-      return true;
-    }
+      return false;
+    },
+    _isCorrectType: function _isCorrectType(item) {
+      // If user is null, it is probably a team
+      if (item.User === null) {
+        return true;
+      }
 
-    return false;
-  },
-  _isCorrectType: function _isCorrectType(item) {
-    // If user is null, it is probably a team
-    if (item.User === null) {
-      return true;
-    }
+      // Filter out WebViewer, Retired, Template and AddOn users like the user list does
+      return item.User.Type !== 3 && item.User.Type !== 5 && item.User.Type !== 6 && item.User.Type !== 7;
+    },
+  });
 
-    // Filter out WebViewer, Retired, Template and AddOn users like the user list does
-    return item.User.Type !== 3 && item.User.Type !== 5 && item.User.Type !== 6 && item.User.Type !== 7;
-  },
+  return __class;
 });
-
-export default __class;

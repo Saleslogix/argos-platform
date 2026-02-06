@@ -16,59 +16,61 @@
 /**
  * @module argos/Models/Briefcase/Offline
  */
-import declare from 'dojo/_base/declare';
-import _OfflineModelBase from '../_OfflineModelBase';
-import Manager from '../Manager';
-import MODEL_TYPES from '../Types';
-import getResource from '../../I18n';
+define('argos/Models/Briefcase/Offline', [
+  'dojo/_base/declare',
+  '../_OfflineModelBase',
+  '../Manager',
+  '../Types',
+  '../../I18n'
+], function(declare, _OfflineModelBase, Manager, MODEL_TYPES, getResource) {
+  const resource = getResource('briefcaseModel');
 
-
-const resource = getResource('briefcaseModel');
-
-/**
- * @class
- * @alias module:argos/Models/Briefcase/Offline
- * @extends module:argos/Models/_OfflineModelBase
- */
-const __class = declare('argos.Models.Briefcase.Offline', [_OfflineModelBase], /** @lends module:argos/Models/Briefcase/Offline.prototype */{
-  id: 'briefcase_offline_model',
-  entityName: 'Briefcase',
-  modelName: 'Briefcase',
-  entityDisplayName: resource.entityDisplayName,
-  entityDisplayNamePlural: resource.entityDisplayNamePlural,
-  isSystem: true,
-  createEntry: function createEntity(entry, model, options) {
-    const entity = {}; // need to dynamicly create Properties;
-    entity.$key = `${model.entityName}_${model.getEntityId(entry)}`;
-    entity.$descriptor = model.getEntityDescription(entry);
-    entity.createDate = moment().toDate();
-    entity.modifyDate = moment().toDate();
-    entity.entityId = model.getEntityId(entry);
-    entity.entityName = model.entityName;
-    entity.description = model.getEntityDescription(entry);
-    entity.entityDisplayName = model.entityDisplayName;
-    entity.resourceKind = model.resourceKind;
-    entity.viewId = (options && options.viewId) ? options.viewId : model.detailViewId;
-    entity.iconClass = (options && options.iconClass) ? options.iconClass : model.getIconClass(entry);
-    return entity;
-  },
-  deleteEntryByEntityContext: function deleteEntryByEntityContext(entityId, entityName) {
-    const options = {
-      filter: function filter(entry) {
-        if (entry.entityId === entityId && entry.entityName === entityName) {
-          return entry;
+  /**
+   * @class
+   * @alias module:argos/Models/Briefcase/Offline
+   * @extends module:argos/Models/_OfflineModelBase
+   */
+  const __class = declare('argos.Models.Briefcase.Offline', [_OfflineModelBase], /** @lends module:argos/Models/Briefcase/Offline.prototype */{
+    id: 'briefcase_offline_model',
+    entityName: 'Briefcase',
+    modelName: 'Briefcase',
+    entityDisplayName: resource.entityDisplayName,
+    entityDisplayNamePlural: resource.entityDisplayNamePlural,
+    isSystem: true,
+    createEntry: function createEntity(entry, model, options) {
+      const entity = {}; // need to dynamicly create Properties;
+      entity.$key = `${model.entityName}_${model.getEntityId(entry)}`;
+      entity.$descriptor = model.getEntityDescription(entry);
+      entity.createDate = moment().toDate();
+      entity.modifyDate = moment().toDate();
+      entity.entityId = model.getEntityId(entry);
+      entity.entityName = model.entityName;
+      entity.description = model.getEntityDescription(entry);
+      entity.entityDisplayName = model.entityDisplayName;
+      entity.resourceKind = model.resourceKind;
+      entity.viewId = (options && options.viewId) ? options.viewId : model.detailViewId;
+      entity.iconClass = (options && options.iconClass) ? options.iconClass : model.getIconClass(entry);
+      return entity;
+    },
+    deleteEntryByEntityContext: function deleteEntryByEntityContext(entityId, entityName) {
+      const options = {
+        filter: function filter(entry) {
+          if (entry.entityId === entityId && entry.entityName === entityName) {
+            return entry;
+          }
+        },
+      };
+      this.getEntries(null, options).then((entries) => {
+        if (entries) {
+          entries.forEach((entry) => {
+            this.deleteEntry(entry.$key);
+          });
         }
-      },
-    };
-    this.getEntries(null, options).then((entries) => {
-      if (entries) {
-        entries.forEach((entry) => {
-          this.deleteEntry(entry.$key);
-        });
-      }
-    });
-  },
-});
+      });
+    },
+  });
 
-Manager.register('Briefcase', MODEL_TYPES.OFFLINE, __class);
-export default __class;
+  Manager.register('Briefcase', MODEL_TYPES.OFFLINE, __class);
+
+  return __class;
+});

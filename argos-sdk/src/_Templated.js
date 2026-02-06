@@ -16,54 +16,55 @@
 /**
  * @module argos/_Templated
  */
-import declare from 'dojo/_base/declare';
-import _TemplatedMixin from 'dijit/_TemplatedMixin';
-
-
-/**
- * @class
- * @alias module:argos/_Templated
- * @mixin
- * @classdesc _Templated serves as an override for dijit Widgets to enable the use of
- * Simplates for templates it also holds the function to pull the resource strings from l20n.
- */
-const __class = declare('argos._Templated', [_TemplatedMixin], /** @lends module:argos/_Templated.prototype */ {
-
-  _stringRepl: function _stringRepl(tmpl) {
-    return tmpl;
-  },
-
+define('argos/_Templated', [
+  'dojo/_base/declare',
+  'dijit/_TemplatedMixin'
+], function(declare, _TemplatedMixin) {
   /**
-   * Processes `this.widgetTemplate` or `this.contentTemplate`
+   * @class
+   * @alias module:argos/_Templated
+   * @mixin
+   * @classdesc _Templated serves as an override for dijit Widgets to enable the use of
+   * Simplates for templates it also holds the function to pull the resource strings from l20n.
    */
-  buildRendering: function buildRendering() {
-    if (this.widgetTemplate && this.contentTemplate) {
-      throw new Error('Both "widgetTemplate" and "contentTemplate" cannot be specified at the same time.');
-    }
+  const __class = declare('argos._Templated', [_TemplatedMixin], /** @lends module:argos/_Templated.prototype */ {
 
-    if (this.contentTemplate) {
-      this.templateString = ['<div>', this.contentTemplate.apply(this), '</div>'].join('');
-    } else if (this.widgetTemplate) {
-      this.templateString = this.widgetTemplate.apply(this);
-      const root = $(this.templateString);
+    _stringRepl: function _stringRepl(tmpl) {
+      return tmpl;
+    },
 
-      if (root.length > 1) {
-        this.templateString = ['<div>', this.templateString, '</div>'].join('');
+    /**
+     * Processes `this.widgetTemplate` or `this.contentTemplate`
+     */
+    buildRendering: function buildRendering() {
+      if (this.widgetTemplate && this.contentTemplate) {
+        throw new Error('Both "widgetTemplate" and "contentTemplate" cannot be specified at the same time.');
       }
-    }
 
-    this.inherited(buildRendering, arguments);
-  },
-  startup: function startup() {
-    this.inherited(startup, arguments);
-    setTimeout(() => {
-      this.initSoho();
-    }, 1);
-  },
-  initSoho: function initSoho() {
-  },
-  updateSoho: function updateSoho() {
-  },
+      if (this.contentTemplate) {
+        this.templateString = ['<div>', this.contentTemplate.apply(this), '</div>'].join('');
+      } else if (this.widgetTemplate) {
+        this.templateString = this.widgetTemplate.apply(this);
+        const root = $(this.templateString);
+
+        if (root.length > 1) {
+          this.templateString = ['<div>', this.templateString, '</div>'].join('');
+        }
+      }
+
+      this.inherited(buildRendering, arguments);
+    },
+    startup: function startup() {
+      this.inherited(startup, arguments);
+      setTimeout(() => {
+        this.initSoho();
+      }, 1);
+    },
+    initSoho: function initSoho() {
+    },
+    updateSoho: function updateSoho() {
+    },
+  });
+
+  return __class;
 });
-
-export default __class;

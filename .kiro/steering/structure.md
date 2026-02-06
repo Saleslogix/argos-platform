@@ -17,7 +17,7 @@ monorepo-root/
 
 ```
 argos-sdk/
-├── src/                    # ES6+ source code
+├── src/                    # AMD modules with modern JavaScript
 │   ├── Application.js      # Main application class
 │   ├── View.js             # Base view class
 │   ├── List.js             # List view base
@@ -32,7 +32,6 @@ argos-sdk/
 │   ├── Groups/             # List grouping logic
 │   ├── actions/            # Redux actions
 │   └── reducers/           # Redux reducers
-├── src-out/                # Transpiled AMD modules (build output)
 ├── tests/                  # Jasmine unit tests
 ├── libraries/              # Third-party libraries
 │   ├── dojo/               # Dojo toolkit
@@ -49,7 +48,7 @@ argos-sdk/
 
 ```
 products/argos-saleslogix/
-├── src/                    # ES6+ source code
+├── src/                    # AMD modules with modern JavaScript
 │   ├── Application.js      # SalesLogix app (extends SDK)
 │   ├── ApplicationModule.js # Module registration
 │   ├── Views/              # CRM-specific views
@@ -63,7 +62,6 @@ products/argos-saleslogix/
 │   ├── Integrations/       # Third-party integrations
 │   ├── actions/            # Redux actions
 │   └── reducers/           # Redux reducers
-├── src-out/                # Transpiled AMD modules
 ├── tests/                  # Unit and E2E tests
 │   ├── src/                # Mocha unit tests
 │   └── e2e/                # Playwright E2E tests
@@ -111,7 +109,6 @@ products/argos-saleslogix/
 
 ## Build Output
 
-- **src-out/**: Transpiled AMD modules (ES6+ → ES5 AMD)
 - **min/css/**: Compiled and minified CSS from LESS
 - **build/**: Grunt build artifacts
 - **deploy/**: Deployment bundles (SalesLogix only)

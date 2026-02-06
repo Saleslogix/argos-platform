@@ -13,145 +13,147 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import List from 'argos/List';
-import MemoryStore from 'dojo/store/Memory';
-import getResource from 'argos/I18n';
-import * as activityTypeIcons from '../../Models/Activity/ActivityTypeIcon';
+define('crm/Views/Activity/TypesList', [
+  'dojo/_base/declare',
+  'argos/List',
+  'dojo/store/Memory',
+  'argos/I18n',
+  '../../Models/Activity/ActivityTypeIcon'
+], function(declare, List, MemoryStore, getResource, activityTypeIcons) {
+  const resource = getResource('activityTypesList');
 
-const resource = getResource('activityTypesList');
+  const __class = declare('crm.Views.Activity.TypesList', [List], {
+    // Templates
+    liRowTemplate: new Simplate([
+      '<li data-action="activateEntry" data-key="{%= $.$key %}" data-descriptor="{%: $.$descriptor %}">',
+      '{% if ($.icon) { %}',
+      `<button type="button" class="btn-icon hide-focus list-item-selector visible">
+        <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.icon || "" %}"></use>
+        </svg>
+      </button>`,
+      '{% } else if ($.iconClass) { %}',
+      '<div class="{%= $.iconClass %}"></div>',
+      '{% } %}',
+      '{%! $$.itemTemplate %}',
+      '</li>',
+    ]),
+    itemTemplate: new Simplate([
+      '<h4 class="',
+      '{% if ($.icon) { %}',
+      'list-item-content',
+      '{% } %} ">',
+      '{%: $.$descriptor %}</h4>',
+    ]),
+    isCardView: false,
+    // Localization
+    titleText: resource.titleText,
+    activityTypeText: {
+      atToDo: resource.toDo,
+      atPhoneCall: resource.phoneCall,
+      atAppointment: resource.meeting,
+      atLiterature: resource.literature,
+      atPersonal: resource.personal,
+      event: resource.eventText,
+    },
 
-const __class = declare('crm.Views.Activity.TypesList', [List], {
-  // Templates
-  liRowTemplate: new Simplate([
-    '<li data-action="activateEntry" data-key="{%= $.$key %}" data-descriptor="{%: $.$descriptor %}">',
-    '{% if ($.icon) { %}',
-    `<button type="button" class="btn-icon hide-focus list-item-selector visible">
-      <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.icon || "" %}"></use>
-      </svg>
-    </button>`,
-    '{% } else if ($.iconClass) { %}',
-    '<div class="{%= $.iconClass %}"></div>',
-    '{% } %}',
-    '{%! $$.itemTemplate %}',
-    '</li>',
-  ]),
-  itemTemplate: new Simplate([
-    '<h4 class="',
-    '{% if ($.icon) { %}',
-    'list-item-content',
-    '{% } %} ">',
-    '{%: $.$descriptor %}</h4>',
-  ]),
-  isCardView: false,
-  // Localization
-  titleText: resource.titleText,
-  activityTypeText: {
-    atToDo: resource.toDo,
-    atPhoneCall: resource.phoneCall,
-    atAppointment: resource.meeting,
-    atLiterature: resource.literature,
-    atPersonal: resource.personal,
-    event: resource.eventText,
-  },
+    activityTypeOrder: [
+      'atAppointment',
+      // 'atLiterature', // For [#7206791], We will enable this later.
+      'atPersonal',
+      'atPhoneCall',
+      'atToDo',
+      'event',
+    ],
+    expose: false,
+    enableSearch: false,
+    enablePullToRefresh: false,
+    id: 'activity_types_list',
+    editView: 'activity_edit',
+    eventEditView: 'event_edit',
+    unscheduledView: 'activity_complete',
 
-  activityTypeOrder: [
-    'atAppointment',
-    // 'atLiterature', // For [#7206791], We will enable this later.
-    'atPersonal',
-    'atPhoneCall',
-    'atToDo',
-    'event',
-  ],
-  expose: false,
-  enableSearch: false,
-  enablePullToRefresh: false,
-  id: 'activity_types_list',
-  editView: 'activity_edit',
-  eventEditView: 'event_edit',
-  unscheduledView: 'activity_complete',
+    allowSelection: true, // adds list-show-selectors class to listview for displaying icons
+    activityTypeIcon: activityTypeIcons.default,
+    activateEntry: function activateEntry(params) {
+      if (params.key) {
+        let view = App.getView((params.key === 'event') ? this.eventEditView : this.editView);
 
-  allowSelection: true, // adds list-show-selectors class to listview for displaying icons
-  activityTypeIcon: activityTypeIcons.default,
-  activateEntry: function activateEntry(params) {
-    if (params.key) {
-      let view = App.getView((params.key === 'event') ? this.eventEditView : this.editView);
+        if (this.options.unscheduled === true) {
+          view = App.getView(this.unscheduledView);
+        }
 
-      if (this.options.unscheduled === true) {
-        view = App.getView(this.unscheduledView);
+        if (view) {
+          const source = this.options && this.options.source;
+          view.show({
+            insert: true,
+            entry: (this.options && this.options.entry) || null,
+            source,
+            activityType: params.key,
+            title: this.activityTypeText[params.key],
+            returnTo: this.options && this.options.returnTo,
+            currentDate: this.options && this.options.currentDate,
+            unscheduled: this.options.unscheduled,
+          }, {
+            returnTo: -1,
+          });
+        }
       }
+    },
+    refreshRequiredFor: function refreshRequiredFor(options) {
+      let toReturn;
+      if (this.options) {
+        toReturn = options;
+      } else {
+        toReturn = true;
+      }
+      return toReturn;
+    },
+    hasMoreData: function hasMoreData() {
+      return false;
+    },
+    createStore: function createStore() {
+      const list = [];
+      const eventViews = [
+        'calendar_view',
+        'calendar_monthlist',
+        'calendar_weeklist',
+        'calendar_daylist',
+        'calendar_yearlist',
+      ];
 
-      if (view) {
-        const source = this.options && this.options.source;
-        view.show({
-          insert: true,
-          entry: (this.options && this.options.entry) || null,
-          source,
-          activityType: params.key,
-          title: this.activityTypeText[params.key],
-          returnTo: this.options && this.options.returnTo,
-          currentDate: this.options && this.options.currentDate,
-          unscheduled: this.options.unscheduled,
-        }, {
-          returnTo: -1,
+      for (let i = 0; i < this.activityTypeOrder.length; i++) {
+        list.push({
+          $key: this.activityTypeOrder[i],
+          $descriptor: this.activityTypeText[this.activityTypeOrder[i]],
+          icon: this.activityTypeIcon[this.activityTypeOrder[i]],
+          type: this.activityTypeOrder[i],
         });
       }
-    }
-  },
-  refreshRequiredFor: function refreshRequiredFor(options) {
-    let toReturn;
-    if (this.options) {
-      toReturn = options;
-    } else {
-      toReturn = true;
-    }
-    return toReturn;
-  },
-  hasMoreData: function hasMoreData() {
-    return false;
-  },
-  createStore: function createStore() {
-    const list = [];
-    const eventViews = [
-      'calendar_view',
-      'calendar_monthlist',
-      'calendar_weeklist',
-      'calendar_daylist',
-      'calendar_yearlist',
-    ];
 
-    for (let i = 0; i < this.activityTypeOrder.length; i++) {
-      list.push({
-        $key: this.activityTypeOrder[i],
-        $descriptor: this.activityTypeText[this.activityTypeOrder[i]],
-        icon: this.activityTypeIcon[this.activityTypeOrder[i]],
-        type: this.activityTypeOrder[i],
+      if (eventViews.indexOf(this.options.returnTo) === -1) {
+        list.pop(); // remove event for non event views
+      }
+
+      const store = new MemoryStore({
+        data: list,
       });
-    }
+      return store;
+    },
+    init: function init() {
+      this.inherited(init, arguments);
+    },
+    onTransitionAway: function onTransitionAway() {
+      this.inherited(onTransitionAway, arguments);
+      this.refreshRequired = true;
+      this.store = null;
+    },
+    createToolLayout: function createToolLayout() {
+      return this.tools || (this.tools = {
+        tbar: [],
+      });
+    },
+  });
 
-    if (eventViews.indexOf(this.options.returnTo) === -1) {
-      list.pop(); // remove event for non event views
-    }
-
-    const store = new MemoryStore({
-      data: list,
-    });
-    return store;
-  },
-  init: function init() {
-    this.inherited(init, arguments);
-  },
-  onTransitionAway: function onTransitionAway() {
-    this.inherited(onTransitionAway, arguments);
-    this.refreshRequired = true;
-    this.store = null;
-  },
-  createToolLayout: function createToolLayout() {
-    return this.tools || (this.tools = {
-      tbar: [],
-    });
-  },
+  return __class;
 });
-
-export default __class;

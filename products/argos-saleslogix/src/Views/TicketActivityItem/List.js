@@ -13,43 +13,45 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import List from 'argos/List';
-import getResource from 'argos/I18n';
+define('crm/Views/TicketActivityItem/List', [
+  'dojo/_base/declare',
+  'argos/List',
+  'argos/I18n'
+], function(declare, List, getResource) {
+  const resource = getResource('ticketActivityItemList');
 
-const resource = getResource('ticketActivityItemList');
+  const __class = declare('crm.Views.TicketActivityItem.List', [List], {
+    // Templates
+    itemTemplate: new Simplate([
+      '<p class="micro-text">{%: $.Product.ActualId %} - {%: crm.Format.currency($.ItemAmount) %}</p>',
+      '<p class="micro-text">{%: $.ItemDescription %}</p>',
+    ]),
 
-const __class = declare('crm.Views.TicketActivityItem.List', [List], {
-  // Templates
-  itemTemplate: new Simplate([
-    '<p class="micro-text">{%: $.Product.ActualId %} - {%: crm.Format.currency($.ItemAmount) %}</p>',
-    '<p class="micro-text">{%: $.ItemDescription %}</p>',
-  ]),
+    // Localization
+    titleText: resource.titleText,
 
-  // Localization
-  titleText: resource.titleText,
+    // View Properties
+    id: 'ticketactivityitem_list',
+    detailView: 'ticketactivityitem_detail',
+    expose: false,
+    querySelect: [
+      'Product/Name',
+      'Product/ActualId',
+      'ItemDescription',
+      'ItemAmount',
+    ],
+    resourceKind: 'ticketActivityItems',
 
-  // View Properties
-  id: 'ticketactivityitem_list',
-  detailView: 'ticketactivityitem_detail',
-  expose: false,
-  querySelect: [
-    'Product/Name',
-    'Product/ActualId',
-    'ItemDescription',
-    'ItemAmount',
-  ],
-  resourceKind: 'ticketActivityItems',
+    createToolLayout: function createToolLayout() {
+      return this.tools || (this.tools = {
+        tbar: [],
+      });
+    },
+    formatSearchQuery: function formatSearchQuery(searchQuery) {
+      const q = this.escapeSearchQuery(searchQuery.toUpperCase());
+      return `(upper(Product.Name) like "${q}%" or upper(Product.Family) like "${q}%")`;
+    },
+  });
 
-  createToolLayout: function createToolLayout() {
-    return this.tools || (this.tools = {
-      tbar: [],
-    });
-  },
-  formatSearchQuery: function formatSearchQuery(searchQuery) {
-    const q = this.escapeSearchQuery(searchQuery.toUpperCase());
-    return `(upper(Product.Name) like "${q}%" or upper(Product.Family) like "${q}%")`;
-  },
+  return __class;
 });
-
-export default __class;

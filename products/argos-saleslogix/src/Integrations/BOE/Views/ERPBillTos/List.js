@@ -13,51 +13,54 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import List from 'argos/List';
-import _RightDrawerListMixin from 'crm/Views/_RightDrawerListMixin';
-import _MetricListMixin from 'crm/Views/_MetricListMixin';
-import _GroupListMixin from 'crm/Views/_GroupListMixin';
-import MODEL_NAMES from '../../Models/Names';
-import getResource from 'argos/I18n';
+define('crm/Integrations/BOE/Views/ERPBillTos/List', [
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  'argos/List',
+  'crm/Views/_RightDrawerListMixin',
+  'crm/Views/_MetricListMixin',
+  'crm/Views/_GroupListMixin',
+  '../../Models/Names',
+  'argos/I18n'
+], function(declare, lang, List, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin, MODEL_NAMES, getResource) {
+  const resource = getResource('erpBillTosList');
 
-const resource = getResource('erpBillTosList');
+  const __class = declare('crm.Integrations.BOE.Views.ErpBillTos.List', [List, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin], {
+    // Templates
+    itemTemplate: new Simplate([
+      '<p class="listview-heading">{%: $.Name %}</p>',
+      '<p class="listview-heading address">{%: $.Address.FullAddress %}</p>',
+    ]),
 
-const __class = declare('crm.Integrations.BOE.Views.ErpBillTos.List', [List, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin], {
-  // Templates
-  itemTemplate: new Simplate([
-    '<p class="listview-heading">{%: $.Name %}</p>',
-    '<p class="listview-heading address">{%: $.Address.FullAddress %}</p>',
-  ]),
+    // Localization
+    titleText: resource.titleText,
 
-  // Localization
-  titleText: resource.titleText,
+    // View Properties
+    id: 'erpbillto_list',
+    detailView: 'erpbillto_detail',
+    insertView: 'erpbillto_edit',
+    allowSelection: true,
+    enableActions: false,
+    expose: false,
+    modelName: MODEL_NAMES.ERPBILLTO,
+    resourceKind: 'erpBillTos',
+    security: 'Entities/ErpBillTo/View',
+    insertSecurity: 'Entities/ErpBillTo/Add',
 
-  // View Properties
-  id: 'erpbillto_list',
-  detailView: 'erpbillto_detail',
-  insertView: 'erpbillto_edit',
-  allowSelection: true,
-  enableActions: false,
-  expose: false,
-  modelName: MODEL_NAMES.ERPBILLTO,
-  resourceKind: 'erpBillTos',
-  security: 'Entities/ErpBillTo/View',
-  insertSecurity: 'Entities/ErpBillTo/Add',
+    // Card layout
+    itemIconClass: '',
 
-  // Card layout
-  itemIconClass: '',
+    // Groups
+    enableDynamicGroupLayout: true,
+    groupsEnabled: true,
 
-  // Groups
-  enableDynamicGroupLayout: true,
-  groupsEnabled: true,
+    formatSearchQuery: function formatSearchQuery(searchQuery) {
+      const q = this.escapeSearchQuery(searchQuery.toUpperCase());
+      return `upper(Name) like "%${q}%"`;
+    },
+  });
 
-  formatSearchQuery: function formatSearchQuery(searchQuery) {
-    const q = this.escapeSearchQuery(searchQuery.toUpperCase());
-    return `upper(Name) like "%${q}%"`;
-  },
+  lang.setObject('icboe.Views.ErpBillTos.List', __class);
+
+  return __class;
 });
-
-lang.setObject('icboe.Views.ErpBillTos.List', __class);
-export default __class;

@@ -13,68 +13,71 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import _ModelBase from 'argos/Models/_ModelBase';
-import MODEL_NAMES from '../Names';
-import getResource from 'argos/I18n';
+define('crm/Models/Ticket/Base', [
+  'dojo/_base/declare',
+  'argos/Models/_ModelBase',
+  '../Names',
+  'argos/I18n'
+], function(declare, _ModelBase, MODEL_NAMES, getResource) {
+  const resource = getResource('ticketModel');
+  const accountResource = getResource('accountModel');
+  const contactResource = getResource('contactModel');
+  const activityResource = getResource('activityModel');
+  const historyResource = getResource('historyModel');
 
-const resource = getResource('ticketModel');
-const accountResource = getResource('accountModel');
-const contactResource = getResource('contactModel');
-const activityResource = getResource('activityModel');
-const historyResource = getResource('historyModel');
+  const __class = declare('crm.Models.Ticket.Base', [_ModelBase], {
+    entityName: 'Ticket',
+    entityDisplayName: resource.entityDisplayName,
+    entityDisplayNamePlural: resource.entityDisplayNamePlural,
+    iconClass: 'expense-report',
+    resourceKind: 'tickets',
+    security: 'Entities/Ticket/View',
+    modelName: MODEL_NAMES.TICKET,
 
-const __class = declare('crm.Models.Ticket.Base', [_ModelBase], {
-  entityName: 'Ticket',
-  entityDisplayName: resource.entityDisplayName,
-  entityDisplayNamePlural: resource.entityDisplayNamePlural,
-  iconClass: 'expense-report',
-  resourceKind: 'tickets',
-  security: 'Entities/Ticket/View',
-  modelName: MODEL_NAMES.TICKET,
+    createPicklists: function createPicklists() {
+      return this.picklists || (this.picklists = [{
+        name: 'Source',
+        property: 'ViaCode',
+      }, {
+        name: 'Ticket Status',
+        property: 'StatusCode',
+      }]);
+    },
+    createRelationships: function createRelationships() {
+      const rel = this.relationships || (this.relationships = [{
+        name: 'Account',
+        displayName: accountResource.entityDisplayName,
+        type: 'ManyToOne',
+        parentProperty: 'Account',
+        parentPropertyType: 'object',
+        relatedEntity: 'Account',
+        relatedPropertyType: 'object',
+      }, {
+        name: 'Contact',
+        displayName: contactResource.entityDisplayName,
+        type: 'ManyToOne',
+        parentProperty: 'Contact',
+        parentPropertyType: 'object',
+        relatedEntity: 'Contact',
+        relatedPropertyType: 'object',
+      }, {
+        name: 'History',
+        displayName: historyResource.entityDisplayNamePlural,
+        type: 'OneToMany',
+        relatedEntity: 'History',
+        relatedProperty: 'TicketId',
+        where: 'Type ne "atDatabaseChange"',
+      }, {
+        name: 'Activity',
+        displayName: activityResource.entityDisplayNamePlural,
+        type: 'OneToMany',
+        relatedEntity: 'Activity',
+        relatedProperty: 'TicketId',
+      }]);
+      return rel;
+    },
 
-  createPicklists: function createPicklists() {
-    return this.picklists || (this.picklists = [{
-      name: 'Source',
-      property: 'ViaCode',
-    }, {
-      name: 'Ticket Status',
-      property: 'StatusCode',
-    }]);
-  },
-  createRelationships: function createRelationships() {
-    const rel = this.relationships || (this.relationships = [{
-      name: 'Account',
-      displayName: accountResource.entityDisplayName,
-      type: 'ManyToOne',
-      parentProperty: 'Account',
-      parentPropertyType: 'object',
-      relatedEntity: 'Account',
-      relatedPropertyType: 'object',
-    }, {
-      name: 'Contact',
-      displayName: contactResource.entityDisplayName,
-      type: 'ManyToOne',
-      parentProperty: 'Contact',
-      parentPropertyType: 'object',
-      relatedEntity: 'Contact',
-      relatedPropertyType: 'object',
-    }, {
-      name: 'History',
-      displayName: historyResource.entityDisplayNamePlural,
-      type: 'OneToMany',
-      relatedEntity: 'History',
-      relatedProperty: 'TicketId',
-      where: 'Type ne "atDatabaseChange"',
-    }, {
-      name: 'Activity',
-      displayName: activityResource.entityDisplayNamePlural,
-      type: 'OneToMany',
-      relatedEntity: 'Activity',
-      relatedProperty: 'TicketId',
-    }]);
-    return rel;
-  },
+  });
 
+  return __class;
 });
-export default __class;

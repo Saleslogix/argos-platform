@@ -13,22 +13,25 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import _Module from './_Module';
-import '../Models/Product/Offline';
-import '../Models/Product/SData';
+define('crm/Integrations/BOE/Modules/ProductModule', [
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  './_Module',
+  '../Models/Product/Offline',
+  '../Models/Product/SData'
+], function(declare, lang, _Module) {
+  const __class = declare('crm.Integrations.BOE.Modules.ProductModule', [_Module], {
+    init: function init() {
+    },
+    loadViews: function loadViews() {
+    },
+    loadCustomizations: function loadCustomizations() {
+    },
+    loadToolbars: function loadToolbars() {
+    },
+  });
 
-const __class = declare('crm.Integrations.BOE.Modules.ProductModule', [_Module], {
-  init: function init() {
-  },
-  loadViews: function loadViews() {
-  },
-  loadCustomizations: function loadCustomizations() {
-  },
-  loadToolbars: function loadToolbars() {
-  },
+  lang.setObject('icboe.Modules.ProductModule', __class);
+
+  return __class;
 });
-
-lang.setObject('icboe.Modules.ProductModule', __class);
-export default __class;

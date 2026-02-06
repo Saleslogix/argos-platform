@@ -13,39 +13,41 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import List from 'argos/List';
-import getResource from 'argos/I18n';
+define('crm/Views/Contract/List', [
+  'dojo/_base/declare',
+  'argos/List',
+  'argos/I18n'
+], function(declare, List, getResource) {
+  const resource = getResource('contractList');
 
-const resource = getResource('contractList');
+  const __class = declare('crm.Views.Contract.List', [List], {
+    // Templates
+    itemTemplate: new Simplate([
+      '<p class="listview-heading">{%= $.Account ? $.Account.AccountName : "" %}</p>',
+    ]),
 
-const __class = declare('crm.Views.Contract.List', [List], {
-  // Templates
-  itemTemplate: new Simplate([
-    '<p class="listview-heading">{%= $.Account ? $.Account.AccountName : "" %}</p>',
-  ]),
+    // Localization
+    titleText: resource.titleText,
 
-  // Localization
-  titleText: resource.titleText,
+    // View Properties
+    contextView: 'context_dialog',
+    detailView: 'contract_detail',
+    id: 'contract_list',
+    security: 'Entities/Contract/View',
+    insertView: 'contract_edit',
+    queryOrderBy: 'ReferenceNumber asc',
+    querySelect: [
+      'Account/AccountName',
+      'Contact/FullName',
+      'ReferenceNumber',
+    ],
+    resourceKind: 'contracts',
 
-  // View Properties
-  contextView: 'context_dialog',
-  detailView: 'contract_detail',
-  id: 'contract_list',
-  security: 'Entities/Contract/View',
-  insertView: 'contract_edit',
-  queryOrderBy: 'ReferenceNumber asc',
-  querySelect: [
-    'Account/AccountName',
-    'Contact/FullName',
-    'ReferenceNumber',
-  ],
-  resourceKind: 'contracts',
+    formatSearchQuery: function formatSearchQuery(searchQuery) {
+      const q = this.escapeSearchQuery(searchQuery);
+      return `(ReferenceNumber like "%${q}%")`;
+    },
+  });
 
-  formatSearchQuery: function formatSearchQuery(searchQuery) {
-    const q = this.escapeSearchQuery(searchQuery);
-    return `(ReferenceNumber like "%${q}%")`;
-  },
+  return __class;
 });
-
-export default __class;

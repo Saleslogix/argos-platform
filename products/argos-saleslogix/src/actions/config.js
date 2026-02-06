@@ -14,41 +14,33 @@
  */
 
 // action Types
-export const SET_CONFIG = 'SET_CONFIG';
-export const SET_ENDPOINT = 'SET_ENDPOINT';
+define('crm/actions/config', [], function() {
+  const SET_CONFIG = 'SET_CONFIG';
 
-/*
+  const SET_ENDPOINT = 'SET_ENDPOINT';
 
-See: https://github.com/acdlite/flux-standard-action
+  function setConfig(config) {
+    return {
+      type: SET_CONFIG,
+      payload: {
+        config,
+      },
+    };
+  }
 
-An action MUST
-+ be a plain JavaScript object.
-+ have a type property.
+  function setEndPoint(url) {
+    return {
+      type: SET_ENDPOINT,
+      payload: {
+        url,
+      },
+    };
+  }
 
- An action MAY
-+ have an error property.
-+ have a payload property.
-+ have a meta property.
-
-An action MUST NOT
-+ include properties other than type, payload, error, and meta.
-*/
-
-// creators
-export function setConfig(config) {
   return {
-    type: SET_CONFIG,
-    payload: {
-      config,
-    },
+    SET_CONFIG,
+    SET_ENDPOINT,
+    setConfig,
+    setEndPoint
   };
-}
-
-export function setEndPoint(url) {
-  return {
-    type: SET_ENDPOINT,
-    payload: {
-      url,
-    },
-  };
-}
+});

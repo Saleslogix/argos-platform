@@ -13,12 +13,22 @@
  * limitations under the License.
  */
 
-import { config } from './config';
-import { user } from './user';
-import { speedsearch } from './speedsearch';
+define('crm/reducers/index', [
+  './config',
+  './user',
+  './speedsearch'
+], function(_config, _user, _speedsearch) {
+  const { config } = _config;
+  const { user } = _user;
+  const { speedsearch } = _speedsearch;
 
-export const app = Redux.combineReducers({
-  user,
-  config,
-  speedsearch,
+  const app = Redux.combineReducers({
+    user,
+    config,
+    speedsearch,
+  });
+
+  return {
+    app
+  };
 });

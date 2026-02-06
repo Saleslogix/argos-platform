@@ -13,44 +13,46 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import EditorField from 'argos/Fields/EditorField';
-import FieldManager from 'argos/FieldManager';
-import getResource from 'argos/I18n';
+define('crm/Fields/AddressField', [
+  'dojo/_base/declare',
+  'argos/Fields/EditorField',
+  'argos/FieldManager',
+  'argos/I18n'
+], function(declare, EditorField, FieldManager, getResource) {
+  const resource = getResource('addressField');
 
-const resource = getResource('addressField');
+  const control = declare('crm.Fields.AddressField', [EditorField], {
+    widgetTemplate: new Simplate([
+      `<label for="{%= $.name %}">{%: $.label %}</label>
+      <div class="field field-control-wrapper">
+        <button
+          class="button simpleSubHeaderButton field-control-trigger"
+          aria-label="{%: $.lookupLabelText %}">
+          <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
+          </svg>
+        </button>
+        <label data-dojo-attach-point="inputNode"></label>
+      </div>`,
+    ]),
+    iconClass: 'quick-edit',
 
-const control = declare('crm.Fields.AddressField', [EditorField], {
-  widgetTemplate: new Simplate([
-    `<label for="{%= $.name %}">{%: $.label %}</label>
-    <div class="field field-control-wrapper">
-      <button
-        class="button simpleSubHeaderButton field-control-trigger"
-        aria-label="{%: $.lookupLabelText %}">
-        <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
-        </svg>
-      </button>
-      <label data-dojo-attach-point="inputNode"></label>
-    </div>`,
-  ]),
-  iconClass: 'quick-edit',
-
-  attributeMap: {
-    addressContent: {
-      node: 'inputNode',
-      type: 'innerHTML',
+    attributeMap: {
+      addressContent: {
+        node: 'inputNode',
+        type: 'innerHTML',
+      },
     },
-  },
-  rows: 4,
-  lookupLabelText: resource.lookupLabelText,
-  emptyText: resource.emptyText,
+    rows: 4,
+    lookupLabelText: resource.lookupLabelText,
+    emptyText: resource.emptyText,
 
-  _enableTextElement: function _enableTextElement() {},
-  _disableTextElement: function _disableTextElement() {},
-  setText: function setText(text) {
-    this.set('addressContent', text);
-  },
+    _enableTextElement: function _enableTextElement() {},
+    _disableTextElement: function _disableTextElement() {},
+    setText: function setText(text) {
+      this.set('addressContent', text);
+    },
+  });
+
+  return FieldManager.register('address', control);
 });
-
-export default FieldManager.register('address', control);

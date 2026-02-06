@@ -13,35 +13,37 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import List from 'argos/List';
-import getResource from 'argos/I18n';
+define('crm/Views/LeadSource/List', [
+  'dojo/_base/declare',
+  'argos/List',
+  'argos/I18n'
+], function(declare, List, getResource) {
+  const resource = getResource('leadSourceList');
 
-const resource = getResource('leadSourceList');
+  const __class = declare('crm.Views.LeadSource.List', [List], {
+    // Templates
+    itemTemplate: new Simplate([
+      '<p class="micro-text">{%: $.Status %}</p>',
+    ]),
 
-const __class = declare('crm.Views.LeadSource.List', [List], {
-  // Templates
-  itemTemplate: new Simplate([
-    '<p class="micro-text">{%: $.Status %}</p>',
-  ]),
+    // Localization
+    titleText: resource.titleText,
 
-  // Localization
-  titleText: resource.titleText,
+    // View Properties
+    id: 'leadsource_list',
+    security: 'Entities/LeadSource/View',
+    queryOrderBy: 'Description',
+    querySelect: [
+      'Description',
+      'Status',
+    ],
+    resourceKind: 'leadsources',
 
-  // View Properties
-  id: 'leadsource_list',
-  security: 'Entities/LeadSource/View',
-  queryOrderBy: 'Description',
-  querySelect: [
-    'Description',
-    'Status',
-  ],
-  resourceKind: 'leadsources',
+    formatSearchQuery: function formatSearchQuery(searchQuery) {
+      const q = this.escapeSearchQuery(searchQuery.toUpperCase());
+      return `upper(Description) like "${q}%"`;
+    },
+  });
 
-  formatSearchQuery: function formatSearchQuery(searchQuery) {
-    const q = this.escapeSearchQuery(searchQuery.toUpperCase());
-    return `upper(Description) like "${q}%"`;
-  },
+  return __class;
 });
-
-export default __class;

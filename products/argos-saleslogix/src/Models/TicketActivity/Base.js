@@ -13,35 +13,38 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import _ModelBase from 'argos/Models/_ModelBase';
-import MODEL_NAMES from '../Names';
-import getResource from 'argos/I18n';
+define('crm/Models/TicketActivity/Base', [
+  'dojo/_base/declare',
+  'argos/Models/_ModelBase',
+  '../Names',
+  'argos/I18n'
+], function(declare, _ModelBase, MODEL_NAMES, getResource) {
+  const resource = getResource('ticketActivityModel');
 
-const resource = getResource('ticketActivityModel');
+  const __class = declare('crm.Models.TicketActivity.Base', [_ModelBase], {
+    entityName: 'TicketActivity',
+    entityDisplayName: resource.entityDisplayName,
+    entityDisplayNamePlural: resource.entityDisplayNamePlural,
+    iconClass: 'bullet-list',
+    resourceKind: 'ticketActivities',
+    security: 'Entities/Ticket/View',
+    modelName: MODEL_NAMES.TICKETACTIVITY,
 
-const __class = declare('crm.Models.TicketActivity.Base', [_ModelBase], {
-  entityName: 'TicketActivity',
-  entityDisplayName: resource.entityDisplayName,
-  entityDisplayNamePlural: resource.entityDisplayNamePlural,
-  iconClass: 'bullet-list',
-  resourceKind: 'ticketActivities',
-  security: 'Entities/Ticket/View',
-  modelName: MODEL_NAMES.TICKETACTIVITY,
+    createPicklists: function createPicklists() {
+      return this.picklists || (this.picklists = [{
+        name: 'Ticket Activity',
+        property: 'ActivityTypeCode',
+      }, {
+        name: 'Ticket Activity Public Access',
+        property: 'PublicAccessCode',
+      }]);
+    },
+    createRelationships: function createRelationships() {
+      const rel = this.relationships || (this.relationships = []);
+      return rel;
+    },
 
-  createPicklists: function createPicklists() {
-    return this.picklists || (this.picklists = [{
-      name: 'Ticket Activity',
-      property: 'ActivityTypeCode',
-    }, {
-      name: 'Ticket Activity Public Access',
-      property: 'PublicAccessCode',
-    }]);
-  },
-  createRelationships: function createRelationships() {
-    const rel = this.relationships || (this.relationships = []);
-    return rel;
-  },
+  });
 
+  return __class;
 });
-export default __class;

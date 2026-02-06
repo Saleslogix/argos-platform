@@ -13,103 +13,106 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import Base from './Base';
-import _SDataModelBase from 'argos/Models/_SDataModelBase';
-import Manager from 'argos/Models/Manager';
-import MODEL_TYPES from 'argos/Models/Types';
-import MODEL_NAMES from '../Names';
+define('crm/Models/ActivityAttendee/SData', [
+  'dojo/_base/declare',
+  './Base',
+  'argos/Models/_SDataModelBase',
+  'argos/Models/Manager',
+  'argos/Models/Types',
+  '../Names'
+], function(declare, Base, _SDataModelBase, Manager, MODEL_TYPES, MODEL_NAMES) {
+  const __class = declare('crm.Models.ActivityAttendee.SData', [Base, _SDataModelBase], {
+    id: 'activity_attendee_sdata_model',
+    createQueryModels: function createQueryModels() {
+      return [{
+        name: 'list',
+        queryOrderBy: 'Name',
+        querySelect: [
+          'EntityType',
+          'EntityId',
+          'Name',
+          'Description',
+          'Notes',
+          'AccountId',
+          'AccountName',
+          'Id',
+          'RoleName',
+          'PhoneNumber',
+          'Email',
+          'TimeZone',
+          'ActivityId',
+        ],
+      }, {
+        name: 'detail',
+        querySelect: [
+          'EntityType',
+          'EntityId',
+          'Name',
+          'Description',
+          'Notes',
+          'AccountId',
+          'AccountName',
+          'Id',
+          'RoleName',
+          'PhoneNumber',
+          'Email',
+          'TimeZone',
+          'IsPrimary',
+          'IsAttendee',
+          'ActivityId',
+          'EntityId',
+          'AccountId',
+        ],
+        queryInclude: [
+          '$permissions',
+        ],
+      }, {
+        name: 'edit',
+        querySelect: [
+          'EntityType',
+          'EntityId',
+          'Name',
+          'Description',
+          'Notes',
+          'AccountId',
+          'AccountName',
+          'Id',
+          'RoleName',
+          'PhoneNumber',
+          'Email',
+          'TimeZone',
+          'IsPrimary',
+          'IsAttendee',
+          'ActivityId',
+          'EntityId',
+          'AccountId',
+        ],
+        queryInclude: [
+          '$permissions',
+        ],
+      }];
+    },
+    deleteEntry: function getEntry(entityId) {
+      const request = new Sage.SData.Client.SDataSingleResourceRequest(App.getService())
+        .setContractName('dynamic')
+        .setResourceKind(this.resourceKind)
+        .setResourceSelector(`"${entityId}"`);
 
-const __class = declare('crm.Models.ActivityAttendee.SData', [Base, _SDataModelBase], {
-  id: 'activity_attendee_sdata_model',
-  createQueryModels: function createQueryModels() {
-    return [{
-      name: 'list',
-      queryOrderBy: 'Name',
-      querySelect: [
-        'EntityType',
-        'EntityId',
-        'Name',
-        'Description',
-        'Notes',
-        'AccountId',
-        'AccountName',
-        'Id',
-        'RoleName',
-        'PhoneNumber',
-        'Email',
-        'TimeZone',
-        'ActivityId',
-      ],
-    }, {
-      name: 'detail',
-      querySelect: [
-        'EntityType',
-        'EntityId',
-        'Name',
-        'Description',
-        'Notes',
-        'AccountId',
-        'AccountName',
-        'Id',
-        'RoleName',
-        'PhoneNumber',
-        'Email',
-        'TimeZone',
-        'IsPrimary',
-        'IsAttendee',
-        'ActivityId',
-        'EntityId',
-        'AccountId',
-      ],
-      queryInclude: [
-        '$permissions',
-      ],
-    }, {
-      name: 'edit',
-      querySelect: [
-        'EntityType',
-        'EntityId',
-        'Name',
-        'Description',
-        'Notes',
-        'AccountId',
-        'AccountName',
-        'Id',
-        'RoleName',
-        'PhoneNumber',
-        'Email',
-        'TimeZone',
-        'IsPrimary',
-        'IsAttendee',
-        'ActivityId',
-        'EntityId',
-        'AccountId',
-      ],
-      queryInclude: [
-        '$permissions',
-      ],
-    }];
-  },
-  deleteEntry: function getEntry(entityId) {
-    const request = new Sage.SData.Client.SDataSingleResourceRequest(App.getService())
-      .setContractName('dynamic')
-      .setResourceKind(this.resourceKind)
-      .setResourceSelector(`"${entityId}"`);
-
-    return new Promise((resolve, reject) => {
-      request.delete({}, {
-        success: function success(entry) {
-          resolve(entry);
-        },
-        failure: function failure(e) {
-          reject(e);
-        },
-        scope: this,
+      return new Promise((resolve, reject) => {
+        request.delete({}, {
+          success: function success(entry) {
+            resolve(entry);
+          },
+          failure: function failure(e) {
+            reject(e);
+          },
+          scope: this,
+        });
       });
-    });
-  },
-});
+    },
+  });
 
-Manager.register(MODEL_NAMES.ACTIVITYATTENDEE, MODEL_TYPES.SDATA, __class);
-export default __class;
+  Manager.register(MODEL_NAMES.ACTIVITYATTENDEE, MODEL_TYPES.SDATA, __class);
+
+  return __class;
+});

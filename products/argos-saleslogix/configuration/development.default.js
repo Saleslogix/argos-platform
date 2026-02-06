@@ -46,7 +46,7 @@ define('configuration/development.default', [
     enableRememberMe: true,
     speedSearch: {
       includeStemming: true,
-      includePhonic: true,
+      includePhonic: false,
       includeThesaurus: false,
       useFrequentFilter: false,
       searchType: 1,

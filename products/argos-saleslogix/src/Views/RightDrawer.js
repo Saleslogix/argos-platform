@@ -13,98 +13,99 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import Memory from 'dojo/store/Memory';
+define('crm/Views/RightDrawer', [
+  'dojo/_base/declare',
+  'dojo/store/Memory',
+  'argos/GroupedList'
+], function(declare, Memory, GroupedList) {
+  const __class = declare('crm.Views.RightDrawer', [GroupedList], {
+    // Templates
+    cls: ' contextualContent',
+    rowTemplate: new Simplate([
+      '<div class="accordion-header list-content" role="presentation">',
+      '<a data-action="{%= $.action %}"',
+      '{% if($.dataProps) { %}',
+      '{% for(var prop in $.dataProps) { %}',
+      ' data-{%= prop %}="{%= $.dataProps[prop] %}"',
+      '{% } %}',
+      '{% } %}',
+      '>',
+      '<span>{%: $.title %}</span></a>',
+      '</div>',
+    ]),
 
-import GroupedList from 'argos/GroupedList';
+    // View Properties
+    id: 'right_drawer',
+    expose: false,
+    enableSearch: false,
+    customizationSet: 'right_drawer',
+    enablePullToRefresh: false,
+    dataProps: null,
+    pageSize: 100,
 
-const __class = declare('crm.Views.RightDrawer', [GroupedList], {
-  // Templates
-  cls: ' contextualContent',
-  rowTemplate: new Simplate([
-    '<div class="accordion-header list-content" role="presentation">',
-    '<a data-action="{%= $.action %}"',
-    '{% if($.dataProps) { %}',
-    '{% for(var prop in $.dataProps) { %}',
-    ' data-{%= prop %}="{%= $.dataProps[prop] %}"',
-    '{% } %}',
-    '{% } %}',
-    '>',
-    '<span>{%: $.title %}</span></a>',
-    '</div>',
-  ]),
+    hasMoreData: function hasMoreData() {
+      return false;
+    },
+    getGroupForEntry: function getGroupForEntry() {},
+    init: function init() {
+      this.inherited(init, arguments);
+      this.connect(App, 'onRegistered', this._onRegistered);
+    },
+    initSoho: function initSoho() {
+      this.inherited(initSoho, arguments);
+    },
+    setLayout: function setLayout(layout) {
+      this.layout = layout;
+    },
+    createLayout: function createLayout() {
+      return this.layout || [];
+    },
+    createStore: function createStore() {
+      const layout = this._createCustomizedLayout(this.createLayout());
+      const list = [];
 
-  // View Properties
-  id: 'right_drawer',
-  expose: false,
-  enableSearch: false,
-  customizationSet: 'right_drawer',
-  enablePullToRefresh: false,
-  dataProps: null,
-  pageSize: 100,
+      for (let i = 0; i < layout.length; i++) {
+        const section = layout[i].children;
 
-  hasMoreData: function hasMoreData() {
-    return false;
-  },
-  getGroupForEntry: function getGroupForEntry() {},
-  init: function init() {
-    this.inherited(init, arguments);
-    this.connect(App, 'onRegistered', this._onRegistered);
-  },
-  initSoho: function initSoho() {
-    this.inherited(initSoho, arguments);
-  },
-  setLayout: function setLayout(layout) {
-    this.layout = layout;
-  },
-  createLayout: function createLayout() {
-    return this.layout || [];
-  },
-  createStore: function createStore() {
-    const layout = this._createCustomizedLayout(this.createLayout());
-    const list = [];
+        for (let j = 0; j < section.length; j++) {
+          const row = section[j];
 
-    for (let i = 0; i < layout.length; i++) {
-      const section = layout[i].children;
-
-      for (let j = 0; j < section.length; j++) {
-        const row = section[j];
-
-        if (row.security && !App.hasAccessTo(row.security)) {
-          continue;
-        }
-        if (typeof this.query !== 'function' || this.query(row)) {
-          list.push(row);
+          if (row.security && !App.hasAccessTo(row.security)) {
+            continue;
+          }
+          if (typeof this.query !== 'function' || this.query(row)) {
+            list.push(row);
+          }
         }
       }
-    }
 
-    const store = new Memory({
-      data: list,
-    });
-    return store;
-  },
-  clear: function clear() {
-    this.inherited(clear, arguments);
-    this.store = null;
-  },
-  /*
-   * Override the List refresh to also clear the view (something the beforeTransitionTo handles, but we are not using)
-   */
-  refresh: function refresh() {
-    this.clear();
-    this.requestData();
-  },
-  show: function show() {
-    if (this.onShow(this) === false) {
-      return;
-    }
+      const store = new Memory({
+        data: list,
+      });
+      return store;
+    },
+    clear: function clear() {
+      this.inherited(clear, arguments);
+      this.store = null;
+    },
+    /*
+     * Override the List refresh to also clear the view (something the beforeTransitionTo handles, but we are not using)
+     */
+    refresh: function refresh() {
+      this.clear();
+      this.requestData();
+    },
+    show: function show() {
+      if (this.onShow(this) === false) {
+        return;
+      }
 
-    this.refresh();
-  },
-  _onRegistered: function _onRegistered() {
-    this.refreshRequired = true;
-  },
+      this.refresh();
+    },
+    _onRegistered: function _onRegistered() {
+      this.refreshRequired = true;
+    },
+  });
+
+  return __class;
 });
-
-export default __class;

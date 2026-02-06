@@ -13,43 +13,45 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import Memory from 'dojo/store/Memory';
-import List from 'argos/List';
+define('crm/Views/SelectList', [
+  'dojo/_base/declare',
+  'dojo/store/Memory',
+  'argos/List'
+], function(declare, Memory, List) {
+  const __class = declare('crm.Views.SelectList', [List], {
+    // Templates
+    itemTemplate: new Simplate([
+      '<p class="listview-heading">{%: $.$descriptor %}</p>',
+    ]),
 
-const __class = declare('crm.Views.SelectList', [List], {
-  // Templates
-  itemTemplate: new Simplate([
-    '<p class="listview-heading">{%: $.$descriptor %}</p>',
-  ]),
+    // View Properties
+    id: 'select_list',
+    expose: false,
+    enablePullToRefresh: false,
+    isCardView: false,
+    refreshRequiredFor: function refreshRequiredFor(options) {
+      if (this.options) {
+        return options ? (this.options.data !== options.data) : false;
+      }
+      return true;
+    },
+    hasMoreData: function hasMoreData() {
+      return false;
+    },
+    requestData: function requestData() {
+      this.store = null;
+      this.inherited(requestData, arguments);
+    },
+    createStore: function createStore() {
+      // caller is responsible for passing in a well-structured feed object.
+      const data = this.expandExpression(this.options && this.options.data && this.options.data.$resources);
+      const store = new Memory({
+        data,
+      });
+      store.idProperty = '$key';
+      return store;
+    },
+  });
 
-  // View Properties
-  id: 'select_list',
-  expose: false,
-  enablePullToRefresh: false,
-  isCardView: false,
-  refreshRequiredFor: function refreshRequiredFor(options) {
-    if (this.options) {
-      return options ? (this.options.data !== options.data) : false;
-    }
-    return true;
-  },
-  hasMoreData: function hasMoreData() {
-    return false;
-  },
-  requestData: function requestData() {
-    this.store = null;
-    this.inherited(requestData, arguments);
-  },
-  createStore: function createStore() {
-    // caller is responsible for passing in a well-structured feed object.
-    const data = this.expandExpression(this.options && this.options.data && this.options.data.$resources);
-    const store = new Memory({
-      data,
-    });
-    store.idProperty = '$key';
-    return store;
-  },
+  return __class;
 });
-
-export default __class;

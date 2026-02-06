@@ -13,86 +13,89 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import Base from './Base';
-import _SDataModelBase from 'argos/Models/_SDataModelBase';
-import Manager from 'argos/Models/Manager';
-import MODEL_TYPE from 'argos/Models/Types';
-import MODEL_NAMES from '../Names';
+define('crm/Models/TicketActivity/SData', [
+  'dojo/_base/declare',
+  './Base',
+  'argos/Models/_SDataModelBase',
+  'argos/Models/Manager',
+  'argos/Models/Types',
+  '../Names'
+], function(declare, Base, _SDataModelBase, Manager, MODEL_TYPE, MODEL_NAMES) {
+  const __class = declare('crm.Models.TicketActivity.SData', [Base, _SDataModelBase], {
+    id: 'ticket_activity_sdata_model',
+    createQueryModels: function createQueryModels() {
+      return [{
+        name: 'list',
+        queryOrderBy: 'AssignedDate asc',
+        querySelect: [
+          'ActivityDescription',
+          'ActivityTypeCode',
+          'AssignedDate',
+          'CompletedDate',
+          'ElapsedUnits',
+          'FollowUp',
+          'PublicAccessCode',
+          'Rate',
+          'RateTypeDescription/Amount',
+          'RateTypeDescription/RateTypeCode',
+          'RateTypeDescription/TypeDescription',
+          'TotalFee',
+          'TotalLabor',
+          'TotalParts',
+          'Units',
+          'Ticket/Account/AccountName',
+          'Ticket/TicketNumber',
+          'Ticket/Contact/Name',
+          'User/UserInfo/LastName',
+          'User/UserInfo/FirstName',
+        ],
+        queryInclude: [
+          '$permissions',
+        ],
+      }, {
+        name: 'detail',
+        querySelect: [
+          'ActivityDescription',
+          'ActivityTypeCode',
+          'AssignedDate',
+          'CompletedDate',
+          'ElapsedUnits',
+          'FollowUp',
+          'PublicAccessCode',
+          'Rate',
+          'RateTypeDescription/Amount',
+          'RateTypeDescription/RateTypeCode',
+          'RateTypeDescription/TypeDescription',
+          'TotalFee',
+          'TotalLabor',
+          'TotalParts',
+          'Units',
+          'Ticket/Account/AccountName',
+          'Ticket/TicketNumber',
+          'Ticket/Contact/Name',
+          'User/UserInfo/LastName',
+          'User/UserInfo/FirstName',
+        ],
+      }, {
+        name: 'edit',
+        querySelect: [
+          'ActivityDescription',
+          'ActivityTypeCode',
+          'AssignedDate',
+          'CompletedDate',
+          'PublicAccessCode',
+          'User/UserName',
+          'User/UserInfo/FirstName',
+          'User/UserInfo/LastName',
+        ],
+        queryInclude: [
+          '$permissions',
+        ],
+      }];
+    },
+  });
 
-const __class = declare('crm.Models.TicketActivity.SData', [Base, _SDataModelBase], {
-  id: 'ticket_activity_sdata_model',
-  createQueryModels: function createQueryModels() {
-    return [{
-      name: 'list',
-      queryOrderBy: 'AssignedDate asc',
-      querySelect: [
-        'ActivityDescription',
-        'ActivityTypeCode',
-        'AssignedDate',
-        'CompletedDate',
-        'ElapsedUnits',
-        'FollowUp',
-        'PublicAccessCode',
-        'Rate',
-        'RateTypeDescription/Amount',
-        'RateTypeDescription/RateTypeCode',
-        'RateTypeDescription/TypeDescription',
-        'TotalFee',
-        'TotalLabor',
-        'TotalParts',
-        'Units',
-        'Ticket/Account/AccountName',
-        'Ticket/TicketNumber',
-        'Ticket/Contact/Name',
-        'User/UserInfo/LastName',
-        'User/UserInfo/FirstName',
-      ],
-      queryInclude: [
-        '$permissions',
-      ],
-    }, {
-      name: 'detail',
-      querySelect: [
-        'ActivityDescription',
-        'ActivityTypeCode',
-        'AssignedDate',
-        'CompletedDate',
-        'ElapsedUnits',
-        'FollowUp',
-        'PublicAccessCode',
-        'Rate',
-        'RateTypeDescription/Amount',
-        'RateTypeDescription/RateTypeCode',
-        'RateTypeDescription/TypeDescription',
-        'TotalFee',
-        'TotalLabor',
-        'TotalParts',
-        'Units',
-        'Ticket/Account/AccountName',
-        'Ticket/TicketNumber',
-        'Ticket/Contact/Name',
-        'User/UserInfo/LastName',
-        'User/UserInfo/FirstName',
-      ],
-    }, {
-      name: 'edit',
-      querySelect: [
-        'ActivityDescription',
-        'ActivityTypeCode',
-        'AssignedDate',
-        'CompletedDate',
-        'PublicAccessCode',
-        'User/UserName',
-        'User/UserInfo/FirstName',
-        'User/UserInfo/LastName',
-      ],
-      queryInclude: [
-        '$permissions',
-      ],
-    }];
-  },
+  Manager.register(MODEL_NAMES.TICKETACTIVITY, MODEL_TYPE.SDATA, __class);
+
+  return __class;
 });
-
-Manager.register(MODEL_NAMES.TICKETACTIVITY, MODEL_TYPE.SDATA, __class);
-export default __class;

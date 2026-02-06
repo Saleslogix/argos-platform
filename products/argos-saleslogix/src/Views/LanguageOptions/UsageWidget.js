@@ -13,143 +13,146 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import aspect from 'dojo/aspect';
-import string from 'dojo/string';
-import RelatedViewManager from 'argos/RelatedViewManager';
-import _RelatedViewWidgetBase from 'argos/_RelatedViewWidgetBase';
-import Dropdown from 'argos/Dropdown';
-import getResource from 'argos/I18n';
-import LanguageService from 'argos/LanguageService';
+define('crm/Views/LanguageOptions/UsageWidget', [
+  'dojo/_base/declare',
+  'dojo/aspect',
+  'dojo/string',
+  'argos/RelatedViewManager',
+  'argos/_RelatedViewWidgetBase',
+  'argos/Dropdown',
+  'argos/I18n',
+  'argos/LanguageService'
+], function(declare, aspect, string, RelatedViewManager, _RelatedViewWidgetBase, Dropdown, getResource, LanguageService) {
+  const resource = getResource('languageUsageWidget');
 
-const resource = getResource('languageUsageWidget');
+  const __class = declare('crm.Views.LanguageOptions.UsageWidget', [_RelatedViewWidgetBase], {
+    // Localization
+    regionText: resource.regionText,
+    languageText: resource.languageText,
+    toastTitle: resource.toastTitle,
+    toastMessage: resource.toastMessage,
+    invalidLanguageError: resource.invalidLanguageError,
+    invalidRegionError: resource.invalidRegionError,
+    languageService: null,
+    cls: 'related-language-usage-widget',
+    relatedContentTemplate: new Simplate([
+      '<div class="language-usage">',
+      '<span data-dojo-attach-point="_languageNode" ></span>',
+      '<span data-dojo-attach-point="_regionThanNode" ></span>',
+      '</div>',
+    ]),
+    onInit: function onInit() {
+      this.languageService = new LanguageService();
+      this.onLoad();
+      if (this.owner) {
+        aspect.after(this.owner, 'show', () => {
+          this.onRefreshView();
+        });
 
-const __class = declare('crm.Views.LanguageOptions.UsageWidget', [_RelatedViewWidgetBase], {
-  // Localization
-  regionText: resource.regionText,
-  languageText: resource.languageText,
-  toastTitle: resource.toastTitle,
-  toastMessage: resource.toastMessage,
-  invalidLanguageError: resource.invalidLanguageError,
-  invalidRegionError: resource.invalidRegionError,
-  languageService: null,
-  cls: 'related-language-usage-widget',
-  relatedContentTemplate: new Simplate([
-    '<div class="language-usage">',
-    '<span data-dojo-attach-point="_languageNode" ></span>',
-    '<span data-dojo-attach-point="_regionThanNode" ></span>',
-    '</div>',
-  ]),
-  onInit: function onInit() {
-    this.languageService = new LanguageService();
-    this.onLoad();
-    if (this.owner) {
-      aspect.after(this.owner, 'show', () => {
-        this.onRefreshView();
-      });
-
-      aspect.after(this.owner, 'save', () => {
-        this.onSave();
-      });
-    }
-  },
-  onLoad: function onLoad() {
-    const language = this.languageService.getLanguage('language');
-    const region = this.languageService.getRegion('region');
-    this.initUI(language || 'en', region || 'en');
-  },
-  initUI: function initUI(lang, region) {
-    const dropDownMap = (key) => {
-      return {
-        value: key,
-        text: window.languages[key],
-        key,
+        aspect.after(this.owner, 'save', () => {
+          this.onSave();
+        });
+      }
+    },
+    onLoad: function onLoad() {
+      const language = this.languageService.getLanguage('language');
+      const region = this.languageService.getRegion('region');
+      this.initUI(language || 'en', region || 'en');
+    },
+    initUI: function initUI(lang, region) {
+      const dropDownMap = (key) => {
+        return {
+          value: key,
+          text: window.languages[key],
+          key,
+        };
       };
-    };
 
-    const locales = Object.keys(window.languages)
-      .filter((key) => {
-        return window.localeContext.supportedLocales.indexOf(key) > -1;
-      })
-      .map(dropDownMap);
+      const locales = Object.keys(window.languages)
+        .filter((key) => {
+          return window.localeContext.supportedLocales.indexOf(key) > -1;
+        })
+        .map(dropDownMap);
 
-    const regions = Object.keys(window.languages)
-      .filter((key) => {
-        return window.regionalContext.supportedLocales.indexOf(key) > -1;
-      })
-      .map(dropDownMap);
+      const regions = Object.keys(window.languages)
+        .filter((key) => {
+          return window.regionalContext.supportedLocales.indexOf(key) > -1;
+        })
+        .map(dropDownMap);
 
-    if (!this._languageDropdown) {
-      this._languageDropdown = new Dropdown({
-        id: 'language-dropdown',
-        onSelectScope: this,
-        label: this.languageText,
-      });
-      this._languageDropdown.createList({
-        items: locales,
-      });
-      $(this._languageNode).append(this._languageDropdown.domNode);
-      this._languageDropdown.setValue(lang);
-      try {
-        this._languageDropdown.getValue();
-      } catch (e) {
-        console.error(string.substitute(this.invalidLanguageError, [lang])); // eslint-disable-line
-        this._languageDropdown.setValue('en');
-        this.languageService.setLanguage('en');
+      if (!this._languageDropdown) {
+        this._languageDropdown = new Dropdown({
+          id: 'language-dropdown',
+          onSelectScope: this,
+          label: this.languageText,
+        });
+        this._languageDropdown.createList({
+          items: locales,
+        });
+        $(this._languageNode).append(this._languageDropdown.domNode);
+        this._languageDropdown.setValue(lang);
+        try {
+          this._languageDropdown.getValue();
+        } catch (e) {
+          console.error(string.substitute(this.invalidLanguageError, [lang])); // eslint-disable-line
+          this._languageDropdown.setValue('en');
+          this.languageService.setLanguage('en');
+        }
       }
-    }
 
-    if (!this._regionDropdown) {
-      this._regionDropdown = new Dropdown({
-        id: 'region-dropdown',
-        onSelectScope: this,
-        label: this.regionText,
-      });
-      this._regionDropdown.createList({
-        items: regions,
-      });
-      $(this._regionThanNode).append(this._regionDropdown.domNode);
-      this._regionDropdown.setValue(region);
-      try {
-        this._regionDropdown.getValue();
-      } catch (e) {
-        console.error(string.substitute(this.invalidRegionError, [region]));  // eslint-disable-line
-        this._regionDropdown.setValue('en');
-        this.languageService.setRegion('en');
+      if (!this._regionDropdown) {
+        this._regionDropdown = new Dropdown({
+          id: 'region-dropdown',
+          onSelectScope: this,
+          label: this.regionText,
+        });
+        this._regionDropdown.createList({
+          items: regions,
+        });
+        $(this._regionThanNode).append(this._regionDropdown.domNode);
+        this._regionDropdown.setValue(region);
+        try {
+          this._regionDropdown.getValue();
+        } catch (e) {
+          console.error(string.substitute(this.invalidRegionError, [region]));  // eslint-disable-line
+          this._regionDropdown.setValue('en');
+          this.languageService.setRegion('en');
+        }
       }
-    }
-  },
-  onRefreshView: function onRefreshView() {
-    this.onLoad();
-  },
-  destroy: function destroy() {
-    if (this._regionDropdown) {
-      this._regionDropdown.destroy();
-    }
-    if (this._languageDropdown) {
-      this._languageDropdown.destroy();
-    }
-    this.inherited(destroy, arguments);
-  },
-  onSave: function onSave() {
-    const language = this._languageDropdown.getValue();
-    const region = this._regionDropdown.getValue();
+    },
+    onRefreshView: function onRefreshView() {
+      this.onLoad();
+    },
+    destroy: function destroy() {
+      if (this._regionDropdown) {
+        this._regionDropdown.destroy();
+      }
+      if (this._languageDropdown) {
+        this._languageDropdown.destroy();
+      }
+      this.inherited(destroy, arguments);
+    },
+    onSave: function onSave() {
+      const language = this._languageDropdown.getValue();
+      const region = this._regionDropdown.getValue();
 
-    try {
-      this.languageService.setLanguage(language);
-      this.languageService.setRegion(region);
-      App.clearMetricPreferences();
-      App.clearQuickActionPreferences();
-      App.toast.add({
-        message: this.toastMessage,
-        title: this.toastTitle,
-        toastTime: 3000,
-      });
-    } catch (e) {
-      console.error(e); // eslint-disable-line
-    }
-  },
+      try {
+        this.languageService.setLanguage(language);
+        this.languageService.setRegion(region);
+        App.clearMetricPreferences();
+        App.clearQuickActionPreferences();
+        App.toast.add({
+          message: this.toastMessage,
+          title: this.toastTitle,
+          toastTime: 3000,
+        });
+      } catch (e) {
+        console.error(e); // eslint-disable-line
+      }
+    },
+  });
+  const rvm = new RelatedViewManager();
+  rvm.registerType('languageUsageWidget', __class);
+
+  return __class;
 });
-const rvm = new RelatedViewManager();
-rvm.registerType('languageUsageWidget', __class);
-export default __class;

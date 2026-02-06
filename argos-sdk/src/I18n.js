@@ -12,31 +12,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import lang from 'dojo/_base/lang';
+define('argos/I18n', [
+  'dojo/_base/lang'
+], function(lang) {
+  /**
+   * Gets the localization dictionary for a given id.
+   * @param {String} id
+   * @module argos/I18n
+   */
 
-/**
- * Gets the localization dictionary for a given id.
- * @param {String} id
- * @module argos/I18n
- */
-export default function getResource(id) {
-  const { defaultLocaleContext, localeContext, regionalContext } = window;
-  if (!defaultLocaleContext || !localeContext) {
-    return new Proxy({}, {
-      properties: [],
-      get(target, name) {
-        if (name in target) {
-          return target[name];
-        }
-        return '';
-      },
-    });
+  function getResource(id) {
+    const { defaultLocaleContext, localeContext, regionalContext } = window;
+    if (!defaultLocaleContext || !localeContext) {
+      return new Proxy({}, {
+        properties: [],
+        get(target, name) {
+          if (name in target) {
+            return target[name];
+          }
+          return '';
+        },
+      });
+    }
+  
+    const defaultAttributes = defaultLocaleContext.getEntitySync(id).attributes;
+    const currentAttributes = localeContext.getEntitySync(id).attributes;
+    const regionalattributes = regionalContext.getEntitySync(id).attributes;
+  
+    lang.mixin(defaultAttributes, currentAttributes);
+    return lang.mixin(defaultAttributes, regionalattributes);
   }
 
-  const defaultAttributes = defaultLocaleContext.getEntitySync(id).attributes;
-  const currentAttributes = localeContext.getEntitySync(id).attributes;
-  const regionalattributes = regionalContext.getEntitySync(id).attributes;
-
-  lang.mixin(defaultAttributes, currentAttributes);
-  return lang.mixin(defaultAttributes, regionalattributes);
-}
+  return getResource;
+});

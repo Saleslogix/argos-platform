@@ -13,30 +13,33 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import _ModelBase from 'argos/Models/_ModelBase';
-import MODEL_NAMES from '../Names';
-import getResource from 'argos/I18n';
+define('crm/Integrations/BOE/Models/Return/Base', [
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  'argos/Models/_ModelBase',
+  '../Names',
+  'argos/I18n'
+], function(declare, lang, _ModelBase, MODEL_NAMES, getResource) {
+  const resource = getResource('returnModel');
 
-const resource = getResource('returnModel');
+  const __class = declare('crm.Integrations.BOE.Models.Return.Base', [_ModelBase], {
+    contractName: 'dynamic',
+    resourceKind: 'returns',
+    entityName: 'Return',
+    entityDisplayName: resource.entityDisplayName,
+    entityDisplayNamePlural: resource.entityDisplayNamePlural,
+    modelName: MODEL_NAMES.RETURN,
+    iconClass: 'load',
+    detailViewId: '',
+    listViewId: 'returns_list',
+    editViewId: '',
+    createRelationships: function createRelationships() {
+      const rel = this.relationships || (this.relationships = [
+      ]);
+      return rel;
+    },
+  });
+  lang.setObject('icboe.Models.Return.Base', __class);
 
-const __class = declare('crm.Integrations.BOE.Models.Return.Base', [_ModelBase], {
-  contractName: 'dynamic',
-  resourceKind: 'returns',
-  entityName: 'Return',
-  entityDisplayName: resource.entityDisplayName,
-  entityDisplayNamePlural: resource.entityDisplayNamePlural,
-  modelName: MODEL_NAMES.RETURN,
-  iconClass: 'load',
-  detailViewId: '',
-  listViewId: 'returns_list',
-  editViewId: '',
-  createRelationships: function createRelationships() {
-    const rel = this.relationships || (this.relationships = [
-    ]);
-    return rel;
-  },
+  return __class;
 });
-lang.setObject('icboe.Models.Return.Base', __class);
-export default __class;

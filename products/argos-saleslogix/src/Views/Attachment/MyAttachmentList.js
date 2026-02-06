@@ -13,26 +13,28 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import AttachmentList from './List';
-import getResource from 'argos/I18n';
+define('crm/Views/Attachment/MyAttachmentList', [
+  'dojo/_base/declare',
+  './List',
+  'argos/I18n'
+], function(declare, AttachmentList, getResource) {
+  const resource = getResource('attachmentMyList');
 
-const resource = getResource('attachmentMyList');
+  const __class = declare('crm.Views.Attachment.MyAttachmentList', [AttachmentList], {
+    id: 'myattachment_list',
+    titleText: resource.titleText,
+    queryWhere: function queryWhere() {
+      const q = this._formatUserKey(App.context.user.$key);
+      return `createUser eq "${q}"`;
+    },
+    _formatUserKey: function _formatUserKey(userKey) {
+      let key = userKey;
+      if (key === 'ADMIN') {
+        key = 'ADMIN       '; // The attachment feed is picky and requires the Admin key to be padded to a 12 char.
+      }
+      return key;
+    },
+  });
 
-const __class = declare('crm.Views.Attachment.MyAttachmentList', [AttachmentList], {
-  id: 'myattachment_list',
-  titleText: resource.titleText,
-  queryWhere: function queryWhere() {
-    const q = this._formatUserKey(App.context.user.$key);
-    return `createUser eq "${q}"`;
-  },
-  _formatUserKey: function _formatUserKey(userKey) {
-    let key = userKey;
-    if (key === 'ADMIN') {
-      key = 'ADMIN       '; // The attachment feed is picky and requires the Admin key to be padded to a 12 char.
-    }
-    return key;
-  },
+  return __class;
 });
-
-export default __class;

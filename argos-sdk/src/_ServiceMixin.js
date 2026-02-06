@@ -16,37 +16,39 @@
 /**
  * @module argos/_ServiceMixin
  */
-import declare from 'dojo/_base/declare';
+define('argos/_ServiceMixin', [
+  'dojo/_base/declare'
+], function(declare) {
+  /**
+   * @class
+   * @mixin
+   * @alias module:argos/_ServiceMixin
+   * @deprecated
+   */
+  const __class = declare('argos._ServiceMixin', null, {
+    serviceMap: null,
+    constructor: function constructor() {
+      const map = this.serviceMap;
+      if (map) {
+        for (const property in map) {
+          if (map.hasOwnProperty(property)) {
+            if (this[property]) {
+              continue; /* skip any that were explicitly mixed in */
+            }
 
-/**
- * @class
- * @mixin
- * @alias module:argos/_ServiceMixin
- * @deprecated
- */
-const __class = declare('argos._ServiceMixin', null, {
-  serviceMap: null,
-  constructor: function constructor() {
-    const map = this.serviceMap;
-    if (map) {
-      for (const property in map) {
-        if (map.hasOwnProperty(property)) {
-          if (this[property]) {
-            continue; /* skip any that were explicitly mixed in */
+            this[property] = this._resolveService(map[property]);
           }
-
-          this[property] = this._resolveService(map[property]);
         }
       }
-    }
-  },
-  _resolveService: function _resolveService(specification) {
-    if (specification && specification.type === 'sdata') {
-      return App.getService(specification.name);
-    }
+    },
+    _resolveService: function _resolveService(specification) {
+      if (specification && specification.type === 'sdata') {
+        return App.getService(specification.name);
+      }
 
-    return App.getService(specification);
-  },
+      return App.getService(specification);
+    },
+  });
+
+  return __class;
 });
-
-export default __class;

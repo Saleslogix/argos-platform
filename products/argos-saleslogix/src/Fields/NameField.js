@@ -13,41 +13,43 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import EditorField from 'argos/Fields/EditorField';
-import FieldManager from 'argos/FieldManager';
-import getResource from 'argos/I18n';
+define('crm/Fields/NameField', [
+  'dojo/_base/declare',
+  'argos/Fields/EditorField',
+  'argos/FieldManager',
+  'argos/I18n'
+], function(declare, EditorField, FieldManager, getResource) {
+  const resource = getResource('nameField');
 
-const resource = getResource('nameField');
+  const control = declare('crm.Fields.NameField', [EditorField], {
+    // Localization
+    emptyText: resource.emptyText,
+    widgetTemplate: new Simplate([
+      `<label for="{%= $.name %}"
+        {% if ($.required) { %}
+            class="required"
+        {% } %}>{%: $.label %}</label>
+      <div class="field field-control-wrapper">
+        <button class="button simpleSubHeaderButton field-control-trigger
+          aria-label="{%: $.lookupLabelText %}">
+          <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
+          </svg>
+        </button>
+        <input data-dojo-attach-point="inputNode" readonly="readonly" type="text" />
+      </div>`,
+    ]),
 
-const control = declare('crm.Fields.NameField', [EditorField], {
-  // Localization
-  emptyText: resource.emptyText,
-  widgetTemplate: new Simplate([
-    `<label for="{%= $.name %}"
-      {% if ($.required) { %}
-          class="required"
-      {% } %}>{%: $.label %}</label>
-    <div class="field field-control-wrapper">
-      <button class="button simpleSubHeaderButton field-control-trigger
-        aria-label="{%: $.lookupLabelText %}">
-        <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
-        </svg>
-      </button>
-      <input data-dojo-attach-point="inputNode" readonly="readonly" type="text" />
-    </div>`,
-  ]),
+    iconClass: 'quick-edit',
 
-  iconClass: 'quick-edit',
+    createNavigationOptions: function createNavigationOptions() {
+      const options = this.inherited(createNavigationOptions, arguments);
+      // Name does not have an entity.
+      delete options.entityName;
 
-  createNavigationOptions: function createNavigationOptions() {
-    const options = this.inherited(createNavigationOptions, arguments);
-    // Name does not have an entity.
-    delete options.entityName;
+      return options;
+    },
+  });
 
-    return options;
-  },
+  return FieldManager.register('name', control);
 });
-
-export default FieldManager.register('name', control);

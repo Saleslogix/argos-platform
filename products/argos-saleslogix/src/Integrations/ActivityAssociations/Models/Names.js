@@ -13,7 +13,9 @@
  * limitations under the License.
  */
 
-export default {
-  ACTIVITYASSOCIATION: 'ActivityAssociation',
-  HISTORYASSOCIATION: 'HistoryAssociation',
-};
+define('crm/Integrations/ActivityAssociations/Models/Names', [], function() {
+  return {
+    ACTIVITYASSOCIATION: 'ActivityAssociation',
+    HISTORYASSOCIATION: 'HistoryAssociation',
+  };
+});

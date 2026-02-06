@@ -13,20 +13,23 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import _Module from './_Module';
+define('crm/Integrations/BOE/Modules/InvoiceLineModule', [
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  './_Module'
+], function(declare, lang, _Module) {
+  const __class = declare('crm.Integrations.BOE.Modules.InvoiceLineModule', [_Module], {
+    init: function init() {
+    },
+    loadViews: function loadViews() {
+    },
+    loadCustomizations: function loadCustomizations() {
+    },
+    loadToolbars: function loadToolbars() {
+    },
+  });
 
-const __class = declare('crm.Integrations.BOE.Modules.InvoiceLineModule', [_Module], {
-  init: function init() {
-  },
-  loadViews: function loadViews() {
-  },
-  loadCustomizations: function loadCustomizations() {
-  },
-  loadToolbars: function loadToolbars() {
-  },
+  lang.setObject('icboe.Modules.InvoiceLineModule', __class);
+
+  return __class;
 });
-
-lang.setObject('icboe.Modules.InvoiceLineModule', __class);
-export default __class;

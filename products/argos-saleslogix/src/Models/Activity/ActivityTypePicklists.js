@@ -12,39 +12,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+define('crm/Models/Activity/ActivityTypePicklists', [], () => {
+  const ActivityTypePicklists = {
+    atAppointment: {
+      Category: 'Meeting Category Codes',
+      Description: 'Meeting Regarding',
+      Result: 'Meeting Result Codes',
+    },
+    atLiterature: {
+      Description: 'Lit Request Regarding',
+    },
+    atPersonal: {
+      Category: 'Meeting Category Codes',
+      Description: 'Personal Activity Regarding',
+      Result: 'Personal Activity Result Codes',
+    },
+    atPhoneCall: {
+      Category: 'Phone Call Category Codes',
+      Description: 'Phone Call Regarding',
+      Result: 'Phone Call Result Codes',
+    },
+    atToDo: {
+      Category: 'To Do Category Codes',
+      Description: 'To Do Regarding',
+      Result: 'To Do Result Codes',
+    },
+    atEMail: {
+      Category: 'E-mail Category Codes',
+      Description: 'E-mail Regarding',
+    },
+  };
 
-export const ActivityTypePicklists = {
-  atAppointment: {
-    Category: 'Meeting Category Codes',
-    Description: 'Meeting Regarding',
-    Result: 'Meeting Result Codes',
-  },
-  atLiterature: {
-    Description: 'Lit Request Regarding',
-  },
-  atPersonal: {
-    Category: 'Meeting Category Codes',
-    Description: 'Personal Activity Regarding',
-    Result: 'Personal Activity Result Codes',
-  },
-  atPhoneCall: {
-    Category: 'Phone Call Category Codes',
-    Description: 'Phone Call Regarding',
-    Result: 'Phone Call Result Codes',
-  },
-  atToDo: {
-    Category: 'To Do Category Codes',
-    Description: 'To Do Regarding',
-    Result: 'To Do Result Codes',
-  },
-  atEMail: {
-    Category: 'E-mail Category Codes',
-    Description: 'E-mail Regarding',
-  },
-};
+  function getPicklistByActivityType(type, which) {
+    return ActivityTypePicklists[type] && ActivityTypePicklists[type][which];
+  }
 
-export function getPicklistByActivityType(type, which) {
-  return ActivityTypePicklists[type] && ActivityTypePicklists[type][which];
-}
-
-export default ActivityTypePicklists;
+  return {
+    ActivityTypePicklists,
+    getPicklistByActivityType,
+  };
+});

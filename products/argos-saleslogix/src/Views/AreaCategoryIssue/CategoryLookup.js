@@ -13,42 +13,44 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import List from 'argos/List';
-import getResource from 'argos/I18n';
-import MODEL_NAMES from '../../Models/Names';
-import format from 'crm/Format';
+define('crm/Views/AreaCategoryIssue/CategoryLookup', [
+  'dojo/_base/declare',
+  'argos/List',
+  'argos/I18n',
+  '../../Models/Names',
+  'crm/Format'
+], function(declare, List, getResource, MODEL_NAMES, format) {
+  const resource = getResource('areaCategoryIssue_CategoryLookup');
 
-const resource = getResource('areaCategoryIssue_CategoryLookup');
+  const __class = declare('crm.Views.AreaCategoryIssue.CategoryLookup', [List], {
+    format,
+    // Templates
+    itemTemplate: new Simplate([
+      '<p class="listview-heading">{%: $.$descriptor %}</p>',
+    ]),
 
-const __class = declare('crm.Views.AreaCategoryIssue.CategoryLookup', [List], {
-  format,
-  // Templates
-  itemTemplate: new Simplate([
-    '<p class="listview-heading">{%: $.$descriptor %}</p>',
-  ]),
+    // Localization
+    titleText: resource.titleText,
 
-  // Localization
-  titleText: resource.titleText,
+    // View Properties
+    id: 'areacategoryissue_categorylookup',
+    modelName: MODEL_NAMES.AREACATEGORYISSUE,
+    expose: false,
+    enableSearch: false,
+    enablePullToRefresh: false,
+    isCardView: false,
+    _buildQueryExpression: function _buildQueryExpression() {
+      return 'category';
+    },
+    _applyStateToQueryOptions: function _applyStateToQueryOptions() {
+      return {
+        area: this.options.where.Area,
+      };
+    },
+    getRemainingCount: function getRemainingCount() {
+      return 0;
+    },
+  });
 
-  // View Properties
-  id: 'areacategoryissue_categorylookup',
-  modelName: MODEL_NAMES.AREACATEGORYISSUE,
-  expose: false,
-  enableSearch: false,
-  enablePullToRefresh: false,
-  isCardView: false,
-  _buildQueryExpression: function _buildQueryExpression() {
-    return 'category';
-  },
-  _applyStateToQueryOptions: function _applyStateToQueryOptions() {
-    return {
-      area: this.options.where.Area,
-    };
-  },
-  getRemainingCount: function getRemainingCount() {
-    return 0;
-  },
+  return __class;
 });
-
-export default __class;

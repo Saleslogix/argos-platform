@@ -11,8 +11,7 @@ mkdir deploy\content\images
 mkdir deploy\content\css
 mkdir deploy\scripts
 
-call grunt clean:css clean:js less
-call npm run build
+call grunt clean:css less
 
 REM .NET Build Tool
 ..\..\argos-sdk\tools\JsBit\jsbit.exe -p "build\release.jsb2" -d "."

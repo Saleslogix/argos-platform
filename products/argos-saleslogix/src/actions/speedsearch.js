@@ -14,31 +14,20 @@
  */
 
 // action Types
-export const SET_SEARCHTERM = 'SET_SEARCHTERM';
+define('crm/actions/speedsearch', [], function() {
+  const SET_SEARCHTERM = 'SET_SEARCHTERM';
 
-/*
+  function setSearchTerm(searchTerm) {
+    return {
+      type: SET_SEARCHTERM,
+      payload: {
+        searchTerm,
+      },
+    };
+  }
 
-See: https://github.com/acdlite/flux-standard-action
-
-An action MUST
-+ be a plain JavaScript object.
-+ have a type property.
-
- An action MAY
-+ have an error property.
-+ have a payload property.
-+ have a meta property.
-
-An action MUST NOT
-+ include properties other than type, payload, error, and meta.
-*/
-
-// creators
-export function setSearchTerm(searchTerm) {
   return {
-    type: SET_SEARCHTERM,
-    payload: {
-      searchTerm,
-    },
+    SET_SEARCHTERM,
+    setSearchTerm
   };
-}
+});

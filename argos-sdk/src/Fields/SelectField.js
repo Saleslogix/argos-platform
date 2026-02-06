@@ -16,56 +16,58 @@
 /**
  * @module argos/Fields/SelectField
  */
-import declare from 'dojo/_base/declare';
-import LookupField from './LookupField';
-import FieldManager from '../FieldManager';
+define('argos/Fields/SelectField', [
+  'dojo/_base/declare',
+  './LookupField',
+  '../FieldManager'
+], function(declare, LookupField, FieldManager) {
+  /**
+   * @class
+   * @alias module:argos/Fields/SelectField
+   * @classdesc The SelectField is a minor extension to te LookupField in that it explicitly hides search and actions.
+   *
+   * It may also optionally pass the `data` option which a view may optionally use instead of requesting data.
+   *
+   * @example
+   * {
+   *    name: 'State',
+   *    property: 'State',
+   *    label: this.stateText,
+   *    type: 'select',
+   *    view: 'state_list'
+   * }
+   * @extends module:argos/Fields/LookupField
+   */
+  const control = declare('argos.Fields.SelectField', [LookupField], /** @lends module:argos/Fields/SelectField.prototype */ {
+    /**
+     * @property {Boolean}
+     * Overrides the {@link LookupField LookupField} default to explicitly set it to false forcing
+     * the view to use the currentValue instead of a key/descriptor
+     */
+    valueKeyProperty: false,
+    /**
+     * @property {Boolean}
+     * Overrides the {@link LookupField LookupField} default to explicitly set it to false forcing
+     * the view to use the currentValue instead of a key/descriptor
+     */
+    valueTextProperty: false,
+    /**
+     * @property {Object|Object[]|Function}
+     * If defined will be expanded (if function) and passed in the navigation options to the lookup view
+     */
+    data: null,
+    /**
+     * Overides the {@link LookupField#createNavigationOptions parent implementation} to set search and actions to
+     * hidden and optionally pass data defined on the field.
+     */
+    createNavigationOptions: function createNavigationOptions() {
+      const options = this.inherited(createNavigationOptions, arguments);
+      options.hideSearch = true;
+      options.enableActions = false;
+      options.data = this.expandExpression(this.data);
+      return options;
+    },
+  });
 
-/**
- * @class
- * @alias module:argos/Fields/SelectField
- * @classdesc The SelectField is a minor extension to te LookupField in that it explicitly hides search and actions.
- *
- * It may also optionally pass the `data` option which a view may optionally use instead of requesting data.
- *
- * @example
- * {
- *    name: 'State',
- *    property: 'State',
- *    label: this.stateText,
- *    type: 'select',
- *    view: 'state_list'
- * }
- * @extends module:argos/Fields/LookupField
- */
-const control = declare('argos.Fields.SelectField', [LookupField], /** @lends module:argos/Fields/SelectField.prototype */ {
-  /**
-   * @property {Boolean}
-   * Overrides the {@link LookupField LookupField} default to explicitly set it to false forcing
-   * the view to use the currentValue instead of a key/descriptor
-   */
-  valueKeyProperty: false,
-  /**
-   * @property {Boolean}
-   * Overrides the {@link LookupField LookupField} default to explicitly set it to false forcing
-   * the view to use the currentValue instead of a key/descriptor
-   */
-  valueTextProperty: false,
-  /**
-   * @property {Object|Object[]|Function}
-   * If defined will be expanded (if function) and passed in the navigation options to the lookup view
-   */
-  data: null,
-  /**
-   * Overides the {@link LookupField#createNavigationOptions parent implementation} to set search and actions to
-   * hidden and optionally pass data defined on the field.
-   */
-  createNavigationOptions: function createNavigationOptions() {
-    const options = this.inherited(createNavigationOptions, arguments);
-    options.hideSearch = true;
-    options.enableActions = false;
-    options.data = this.expandExpression(this.data);
-    return options;
-  },
+  return FieldManager.register('select', control);
 });
-
-export default FieldManager.register('select', control);

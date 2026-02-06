@@ -13,56 +13,58 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import _EditBase from 'argos/_EditBase';
-import MODEL_TYPES from 'argos/Models/Types';
-import getResource from 'argos/I18n';
-import MODEL_NAMES from '../../Models/Names';
+define('crm/Views/History/EditOffline', [
+  'dojo/_base/declare',
+  'argos/_EditBase',
+  'argos/Models/Types',
+  'argos/I18n',
+  '../../Models/Names'
+], function(declare, _EditBase, MODEL_TYPES, getResource, MODEL_NAMES) {
+  const resource = getResource('historyEditOffline');
 
-const resource = getResource('historyEditOffline');
+  const __class = declare('crm.Views.History.EditOffline', [_EditBase], {
+    // Localization
+    titleText: resource.titleText,
 
-const __class = declare('crm.Views.History.EditOffline', [_EditBase], {
-  // Localization
-  titleText: resource.titleText,
+    // View Properties
+    id: 'history_edit_offline',
+    entityName: 'History',
+    resourceKind: 'history',
 
-  // View Properties
-  id: 'history_edit_offline',
-  entityName: 'History',
-  resourceKind: 'history',
+    getModel: function getModel() {
+      const model = App.ModelManager.getModel(MODEL_NAMES.HISTORY, MODEL_TYPES.OFFLINE);
+      return model;
+    },
+    createLayout: function createLayout() {
+      return this.layout || (this.layout = [{
+        title: resource.notesSectionText,
+        name: 'NotesSection',
+        children: [{
+          name: 'Text',
+          property: 'Text',
+          label: resource.notesLabelText,
+          cls: 'row-edit-text',
+          type: 'textarea',
+          autoFocus: true,
+        }, {
+          name: 'UID',
+          property: 'UID',
+          type: 'hidden',
+        }],
+      }]);
+    },
+    beforeTransitionTo: function beforeTransitionTo() {
+      this.inherited(beforeTransitionTo, arguments);
+      $(this.domNode).removeClass('panel-loading');
+    },
+    onTransitionTo: function onTransitionTo() {
+      this.inherited(onTransitionTo, arguments);
+      if (this.options.insert) {
+        const now = Date.now();
+        this.fields.UID.setValue(now);
+      }
+    },
+  });
 
-  getModel: function getModel() {
-    const model = App.ModelManager.getModel(MODEL_NAMES.HISTORY, MODEL_TYPES.OFFLINE);
-    return model;
-  },
-  createLayout: function createLayout() {
-    return this.layout || (this.layout = [{
-      title: resource.notesSectionText,
-      name: 'NotesSection',
-      children: [{
-        name: 'Text',
-        property: 'Text',
-        label: resource.notesLabelText,
-        cls: 'row-edit-text',
-        type: 'textarea',
-        autoFocus: true,
-      }, {
-        name: 'UID',
-        property: 'UID',
-        type: 'hidden',
-      }],
-    }]);
-  },
-  beforeTransitionTo: function beforeTransitionTo() {
-    this.inherited(beforeTransitionTo, arguments);
-    $(this.domNode).removeClass('panel-loading');
-  },
-  onTransitionTo: function onTransitionTo() {
-    this.inherited(onTransitionTo, arguments);
-    if (this.options.insert) {
-      const now = Date.now();
-      this.fields.UID.setValue(now);
-    }
-  },
+  return __class;
 });
-
-export default __class;

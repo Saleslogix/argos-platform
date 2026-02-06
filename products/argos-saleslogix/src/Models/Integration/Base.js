@@ -13,14 +13,16 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import _ModelBase from 'argos/Models/_ModelBase';
-import MODEL_NAMES from '../Names';
+define('crm/Models/Integration/Base', [
+  'dojo/_base/declare',
+  'argos/Models/_ModelBase',
+  '../Names'
+], function(declare, _ModelBase, MODEL_NAMES) {
+  const __class = declare('crm.Models.Integration.Base', [_ModelBase], {
+    resourceKind: 'integrations',
+    entityName: 'Integration',
+    modelName: MODEL_NAMES.INTEGRATION,
+  });
 
-
-const __class = declare('crm.Models.Integration.Base', [_ModelBase], {
-  resourceKind: 'integrations',
-  entityName: 'Integration',
-  modelName: MODEL_NAMES.INTEGRATION,
+  return __class;
 });
-export default __class;

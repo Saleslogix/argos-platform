@@ -13,117 +13,119 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import string from 'dojo/string';
-import Detail from 'argos/Detail';
-import getResource from 'argos/I18n';
-import format from 'crm/Format';
-import MODEL_NAMES from '../../Models/Names';
+define('crm/Views/OpportunityContact/Detail', [
+  'dojo/_base/declare',
+  'dojo/string',
+  'argos/Detail',
+  'argos/I18n',
+  'crm/Format',
+  '../../Models/Names'
+], function(declare, string, Detail, getResource, format, MODEL_NAMES) {
+  const resource = getResource('opportunityContactDetail');
 
-const resource = getResource('opportunityContactDetail');
+  const __class = declare('crm.Views.OpportunityContact.Detail', [Detail/* , _LegacySDataDetailMixin */], {
+    // Localization
+    titleText: resource.titleText,
+    accountText: resource.accountText,
+    contactTitleText: resource.contactTitleText,
+    nameText: resource.nameText,
+    salesRoleText: resource.salesRoleText,
+    strategyText: resource.strategyText,
+    personalBenefitsText: resource.personalBenefitsText,
+    standingText: resource.standingText,
+    issuesText: resource.issuesText,
+    competitorNameText: resource.competitorNameText,
+    removeContactTitleText: resource.removeContactTitleText,
+    confirmDeleteText: resource.confirmDeleteText,
+    contactText: resource.contactText,
+    entityText: resource.entityText,
 
-const __class = declare('crm.Views.OpportunityContact.Detail', [Detail/* , _LegacySDataDetailMixin */], {
-  // Localization
-  titleText: resource.titleText,
-  accountText: resource.accountText,
-  contactTitleText: resource.contactTitleText,
-  nameText: resource.nameText,
-  salesRoleText: resource.salesRoleText,
-  strategyText: resource.strategyText,
-  personalBenefitsText: resource.personalBenefitsText,
-  standingText: resource.standingText,
-  issuesText: resource.issuesText,
-  competitorNameText: resource.competitorNameText,
-  removeContactTitleText: resource.removeContactTitleText,
-  confirmDeleteText: resource.confirmDeleteText,
-  contactText: resource.contactText,
-  entityText: resource.entityText,
+    // View Properties
+    id: 'opportunitycontact_detail',
+    editView: 'opportunitycontact_edit',
+    security: 'Entities/Contact/View',
+    querySelect: [],
+    resourceKind: 'opportunityContacts',
+    modelName: MODEL_NAMES.OPPORTUNITYCONTACT,
 
-  // View Properties
-  id: 'opportunitycontact_detail',
-  editView: 'opportunitycontact_edit',
-  security: 'Entities/Contact/View',
-  querySelect: [],
-  resourceKind: 'opportunityContacts',
-  modelName: MODEL_NAMES.OPPORTUNITYCONTACT,
+    removeContact: function removeContact() {
+      const confirmMessage = string.substitute(this.confirmDeleteText, [this.entry.Contact.NameLF]);
+      if (!confirm(confirmMessage)) { // eslint-disable-line
+        return;
+      }
+      this.removeEntry();
+    },
+    formatPicklist: function formatPicklist(property) {
+      return format.picklist(this.app.picklistService, this._model, property);
+    },
+    createToolLayout: function createToolLayout() {
+      return this.tools || (this.tools = {
+        tbar: [{
+          id: 'edit',
+          title: this.editText,
+          action: 'navigateToEditView',
+          svg: 'edit',
+          security: App.getViewSecurity(this.editView, 'update'),
+        }, {
+          id: 'removeContact',
+          svg: 'close',
+          action: 'removeContact',
+          title: this.removeContactTitleText,
+        }],
+      });
+    },
+    createLayout: function createLayout() {
+      return this.layout || (this.layout = [{
+        title: this.contactText,
+        name: 'DetailsSection',
+        children: [{
+          name: 'NameLF',
+          property: 'Contact.NameLF',
+          label: this.nameText,
+          view: 'contact_detail',
+          key: 'Contact.$key',
+          descriptor: 'Contact.NameLF',
+        }, {
+          name: 'AccountName',
+          property: 'Contact.AccountName',
+          descriptor: 'AccountName',
+          label: this.accountText,
+          view: 'account_detail',
+          key: 'Contact.Account.$key',
+        }, {
+          name: 'Title',
+          property: 'Contact.Title',
+          label: this.contactTitleText,
+        }, {
+          name: 'SalesRole',
+          property: 'SalesRole',
+          label: this.salesRoleText,
+          renderer: this.formatPicklist('SalesRole'),
+        }, {
+          name: 'Standing',
+          property: 'Standing',
+          label: this.standingText,
+          renderer: this.formatPicklist('Standing'),
+        }, {
+          name: 'PersonalBenefits',
+          property: 'PersonalBenefits',
+          label: this.personalBenefitsText,
+        }, {
+          name: 'CompetitorName',
+          property: 'Competitors.CompetitorName',
+          label: this.competitorNameText,
+        }, {
+          name: 'Strategy',
+          property: 'Strategy',
+          label: this.strategyText,
+        }, {
+          name: 'Issues',
+          property: 'Issues',
+          label: this.issuesText,
+        }],
+      }]);
+    },
+  });
 
-  removeContact: function removeContact() {
-    const confirmMessage = string.substitute(this.confirmDeleteText, [this.entry.Contact.NameLF]);
-    if (!confirm(confirmMessage)) { // eslint-disable-line
-      return;
-    }
-    this.removeEntry();
-  },
-  formatPicklist: function formatPicklist(property) {
-    return format.picklist(this.app.picklistService, this._model, property);
-  },
-  createToolLayout: function createToolLayout() {
-    return this.tools || (this.tools = {
-      tbar: [{
-        id: 'edit',
-        title: this.editText,
-        action: 'navigateToEditView',
-        svg: 'edit',
-        security: App.getViewSecurity(this.editView, 'update'),
-      }, {
-        id: 'removeContact',
-        svg: 'close',
-        action: 'removeContact',
-        title: this.removeContactTitleText,
-      }],
-    });
-  },
-  createLayout: function createLayout() {
-    return this.layout || (this.layout = [{
-      title: this.contactText,
-      name: 'DetailsSection',
-      children: [{
-        name: 'NameLF',
-        property: 'Contact.NameLF',
-        label: this.nameText,
-        view: 'contact_detail',
-        key: 'Contact.$key',
-        descriptor: 'Contact.NameLF',
-      }, {
-        name: 'AccountName',
-        property: 'Contact.AccountName',
-        descriptor: 'AccountName',
-        label: this.accountText,
-        view: 'account_detail',
-        key: 'Contact.Account.$key',
-      }, {
-        name: 'Title',
-        property: 'Contact.Title',
-        label: this.contactTitleText,
-      }, {
-        name: 'SalesRole',
-        property: 'SalesRole',
-        label: this.salesRoleText,
-        renderer: this.formatPicklist('SalesRole'),
-      }, {
-        name: 'Standing',
-        property: 'Standing',
-        label: this.standingText,
-        renderer: this.formatPicklist('Standing'),
-      }, {
-        name: 'PersonalBenefits',
-        property: 'PersonalBenefits',
-        label: this.personalBenefitsText,
-      }, {
-        name: 'CompetitorName',
-        property: 'Competitors.CompetitorName',
-        label: this.competitorNameText,
-      }, {
-        name: 'Strategy',
-        property: 'Strategy',
-        label: this.strategyText,
-      }, {
-        name: 'Issues',
-        property: 'Issues',
-        label: this.issuesText,
-      }],
-    }]);
-  },
+  return __class;
 });
-
-export default __class;

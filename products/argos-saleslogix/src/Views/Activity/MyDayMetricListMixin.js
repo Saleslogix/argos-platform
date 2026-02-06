@@ -13,32 +13,35 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import MyDayMetricWidget from './MyDayMetricWidget';
-import _MetricListMixin from '../_MetricListMixin';
+define('crm/Views/Activity/MyDayMetricListMixin', [
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  './MyDayMetricWidget',
+  '../_MetricListMixin'
+], function(declare, lang, MyDayMetricWidget, _MetricListMixin) {
+  const __class = declare('crm.Views.Activity.MyDayMetricListMixin', [_MetricListMixin], {
 
-const __class = declare('crm.Views.Activity.MyDayMetricListMixin', [_MetricListMixin], {
+    metricWidgetCtor: MyDayMetricWidget,
+    _applyStateToWidgetOptions: function _applyStateToWidgetOptions(widgetOptions) {
+      const options = widgetOptions;
+      options.parent = this;
+      return options;
+    },
+    createMetricWidgetsLayout: function createMetricWidgetsLayout() {
+      let metrics = [];
+      let filtered = [];
 
-  metricWidgetCtor: MyDayMetricWidget,
-  _applyStateToWidgetOptions: function _applyStateToWidgetOptions(widgetOptions) {
-    const options = widgetOptions;
-    options.parent = this;
-    return options;
-  },
-  createMetricWidgetsLayout: function createMetricWidgetsLayout() {
-    let metrics = [];
-    let filtered = [];
+      metrics = App.getMetricsByResourceKind('userActivities');
 
-    metrics = App.getMetricsByResourceKind('userActivities');
+      if (metrics.length > 0) {
+        filtered = metrics.filter((item) => {
+          return item.enabled;
+        });
+      }
 
-    if (metrics.length > 0) {
-      filtered = metrics.filter((item) => {
-        return item.enabled;
-      });
-    }
+      return lang.clone(filtered);
+    },
+  });
 
-    return lang.clone(filtered);
-  },
+  return __class;
 });
-export default __class;

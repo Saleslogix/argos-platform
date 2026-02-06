@@ -16,45 +16,47 @@
 /**
  * @module argos/Fields/DropdownField
  */
-import declare from 'dojo/_base/declare';
-import Dropdown from '../Dropdown';
-import FieldManager from '../FieldManager';
-import _Field from './_Field';
-
-/**
- * @class
- * @alias module:argos/Fields/DropdownField
- */
-const __class = declare('argos.DropdownField', [_Field, Dropdown], /** @lends module:argos/Fields/DropdownField.prototype */{
-  widgetTemplate: new Simplate([
-    '<div data-dojo-attach-point="dropdownNode">',
-    '<label>{%: $.label %}</label>',
-    '<input readOnly data-dojo-attach-point="dropdownInput"></input>',
-    '<span class="{%: $.icon %}" style="position: absolute;color: #383838;font-size: 14px;height: 14px;width: 14px;margin-top: 15px;margin-left: -15px;tex-align: center;"></span>',
-    '<select class="dropdown__select--hidden" data-dojo-attach-point="dropdownSelect"></select>',
-    '</div>',
-    '</div>',
-  ]), // TODO: Remove the inline styling applied here... only organized way to override the nested styling occurring.
-  onClick: function onClick(evt) {
-    this.scrollToDropdown();
-    this.show();
-    evt.preventDefault();
-    evt.stopPropagation();
-  },
-  renderTo: function renderTo() {
-    this.createList({ items: this.items, defaultValue: this.defaultValue });
-    this.inherited(renderTo, arguments);
-    // TODO: Place in the getData function call and createList call here so the dropdown will be created with the relevant data
-  },
+define('argos/Fields/DropdownField', [
+  'dojo/_base/declare',
+  '../Dropdown',
+  '../FieldManager',
+  './_Field'
+], function(declare, Dropdown, FieldManager, _Field) {
   /**
-   * Extends the parent implementation to connect the `onclick` event of the fields container
-   * to {@link #_onClick _onClick}.
+   * @class
+   * @alias module:argos/Fields/DropdownField
    */
-  init: function init() {
-    this.inherited(init, arguments);
+  const __class = declare('argos.DropdownField', [_Field, Dropdown], /** @lends module:argos/Fields/DropdownField.prototype */{
+    widgetTemplate: new Simplate([
+      '<div data-dojo-attach-point="dropdownNode">',
+      '<label>{%: $.label %}</label>',
+      '<input readOnly data-dojo-attach-point="dropdownInput"></input>',
+      '<span class="{%: $.icon %}" style="position: absolute;color: #383838;font-size: 14px;height: 14px;width: 14px;margin-top: 15px;margin-left: -15px;tex-align: center;"></span>',
+      '<select class="dropdown__select--hidden" data-dojo-attach-point="dropdownSelect"></select>',
+      '</div>',
+      '</div>',
+    ]), // TODO: Remove the inline styling applied here... only organized way to override the nested styling occurring.
+    onClick: function onClick(evt) {
+      this.scrollToDropdown();
+      this.show();
+      evt.preventDefault();
+      evt.stopPropagation();
+    },
+    renderTo: function renderTo() {
+      this.createList({ items: this.items, defaultValue: this.defaultValue });
+      this.inherited(renderTo, arguments);
+      // TODO: Place in the getData function call and createList call here so the dropdown will be created with the relevant data
+    },
+    /**
+     * Extends the parent implementation to connect the `onclick` event of the fields container
+     * to {@link #_onClick _onClick}.
+     */
+    init: function init() {
+      this.inherited(init, arguments);
 
-    this.connect(this.containerNode, 'onclick', this.onClick);
-  },
+      this.connect(this.containerNode, 'onclick', this.onClick);
+    },
+  });
+
+  return FieldManager.register('dropdown', __class);
 });
-
-export default FieldManager.register('dropdown', __class);

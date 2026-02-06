@@ -13,45 +13,48 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import _Module from './_Module';
-import getResource from 'argos/I18n';
+define('crm/Integrations/BOE/Modules/HelpModule', [
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  './_Module',
+  'argos/I18n'
+], function(declare, lang, _Module, getResource) {
+  const resource = getResource('helpModule');
 
-const resource = getResource('helpModule');
+  const __class = declare('crm.Integrations.BOE.Modules.HelpModule', [_Module], {
+    sectionTitleText: resource.sectionTitleText,
+    init: function init() {
+    },
+    loadViews: function loadViews() {
+    },
+    loadCustomizations: function loadCustomizations() {
+      const am = this.applicationModule;
+      const onHelpRowCreated = crm.Views.Help.prototype.onHelpRowCreated;
+      am.registerCustomization('detail', 'help', {
+        at: (row) => {
+          return row.name === 'HelpSection';
+        },
+        type: 'insert',
+        where: 'after',
+        value: {
+          title: this.sectionTitleText,
+          name: 'BOEHelpSection',
+          children: [{
+            name: 'BOEHelp',
+            devRoot: 'argos-icboe',
+            baseUrl: 'help/locales/icboe',
+            fileName: 'help.html',
+            defaultUrl: 'help/locales/icboe/en/help.html',
+            onCreate: onHelpRowCreated,
+          }],
+        },
+      });
+    },
+    loadToolbars: function loadToolbars() {
+    },
+  });
 
-const __class = declare('crm.Integrations.BOE.Modules.HelpModule', [_Module], {
-  sectionTitleText: resource.sectionTitleText,
-  init: function init() {
-  },
-  loadViews: function loadViews() {
-  },
-  loadCustomizations: function loadCustomizations() {
-    const am = this.applicationModule;
-    const onHelpRowCreated = crm.Views.Help.prototype.onHelpRowCreated;
-    am.registerCustomization('detail', 'help', {
-      at: (row) => {
-        return row.name === 'HelpSection';
-      },
-      type: 'insert',
-      where: 'after',
-      value: {
-        title: this.sectionTitleText,
-        name: 'BOEHelpSection',
-        children: [{
-          name: 'BOEHelp',
-          devRoot: 'argos-icboe',
-          baseUrl: 'help/locales/icboe',
-          fileName: 'help.html',
-          defaultUrl: 'help/locales/icboe/en/help.html',
-          onCreate: onHelpRowCreated,
-        }],
-      },
-    });
-  },
-  loadToolbars: function loadToolbars() {
-  },
+  lang.setObject('icboe.Modules.HelpModule', __class);
+
+  return __class;
 });
-
-lang.setObject('icboe.Modules.HelpModule', __class);
-export default __class;

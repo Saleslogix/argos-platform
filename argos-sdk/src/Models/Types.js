@@ -22,7 +22,9 @@
  * @enum {string}
  * @alias module:argos/Models/Types
  */
-export default {
-  SDATA: 'sdata',
-  OFFLINE: 'offline',
-};
+define('argos/Models/Types', [], function() {
+  return {
+    SDATA: 'sdata',
+    OFFLINE: 'offline',
+  };
+});

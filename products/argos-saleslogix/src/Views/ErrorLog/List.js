@@ -13,67 +13,69 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import Memory from 'dojo/store/Memory';
-import convert from 'argos/Convert';
-import ErrorManager from 'argos/ErrorManager';
-import List from 'argos/_ListBase';
-import getResource from 'argos/I18n';
+define('crm/Views/ErrorLog/List', [
+  'dojo/_base/declare',
+  'dojo/store/Memory',
+  'argos/Convert',
+  'argos/ErrorManager',
+  'argos/_ListBase',
+  'argos/I18n'
+], function(declare, Memory, convert, ErrorManager, List, getResource) {
+  const resource = getResource('errorLogList');
+  const dtFormatResource = getResource('errorLogListDateTimeFormat');
 
-const resource = getResource('errorLogList');
-const dtFormatResource = getResource('errorLogListDateTimeFormat');
+  const __class = declare('crm.Views.ErrorLog.List', [List], {
+    // Localization
+    titleText: resource.titleText,
+    errorDateFormatText: dtFormatResource.errorDateFormatText,
+    errorDateFormatText24: dtFormatResource.errorDateFormatText24,
 
-const __class = declare('crm.Views.ErrorLog.List', [List], {
-  // Localization
-  titleText: resource.titleText,
-  errorDateFormatText: dtFormatResource.errorDateFormatText,
-  errorDateFormatText24: dtFormatResource.errorDateFormatText24,
+    // Templates
+    itemTemplate: new Simplate([
+      '<p class="listview-heading">{%: crm.Format.date($.Date, (App.is24HourClock()) ? $$.errorDateFormatText24 : $$.errorDateFormatText) %}</p>',
+    ]),
 
-  // Templates
-  itemTemplate: new Simplate([
-    '<p class="listview-heading">{%: crm.Format.date($.Date, (App.is24HourClock()) ? $$.errorDateFormatText24 : $$.errorDateFormatText) %}</p>',
-  ]),
+    // View Properties
+    id: 'errorlog_list',
+    enableSearch: false,
+    enablePullToRefresh: false,
+    hideSearch: true,
+    expose: false,
+    detailView: 'errorlog_detail',
+    idProperty: '$key',
+    labelProperty: 'Description',
 
-  // View Properties
-  id: 'errorlog_list',
-  enableSearch: false,
-  enablePullToRefresh: false,
-  hideSearch: true,
-  expose: false,
-  detailView: 'errorlog_detail',
-  idProperty: '$key',
-  labelProperty: 'Description',
+    _onRefresh: function _onRefresh(o) {
+      this.inherited(_onRefresh, arguments);
+      if (o.resourceKind === 'errorlogs' || o.resourceKind === 'localStorage') {
+        this.refreshRequired = true;
+      }
+    },
+    createStore: function createStore() {
+      const errorItems = ErrorManager.getAllErrors();
 
-  _onRefresh: function _onRefresh(o) {
-    this.inherited(_onRefresh, arguments);
-    if (o.resourceKind === 'errorlogs' || o.resourceKind === 'localStorage') {
-      this.refreshRequired = true;
-    }
-  },
-  createStore: function createStore() {
-    const errorItems = ErrorManager.getAllErrors();
+      errorItems.sort((a, b) => {
+        a.errorDateStamp = a.errorDateStamp || a.Date;
+        b.errorDateStamp = b.errorDateStamp || b.Date;
+        a.Date = a.errorDateStamp;
+        b.Date = b.errorDateStamp;
+        const A = convert.toDateFromString(a.errorDateStamp);
+        const B = convert.toDateFromString(b.errorDateStamp);
 
-    errorItems.sort((a, b) => {
-      a.errorDateStamp = a.errorDateStamp || a.Date;
-      b.errorDateStamp = b.errorDateStamp || b.Date;
-      a.Date = a.errorDateStamp;
-      b.Date = b.errorDateStamp;
-      const A = convert.toDateFromString(a.errorDateStamp);
-      const B = convert.toDateFromString(b.errorDateStamp);
+        return A.valueOf() > B.valueOf();
+      });
 
-      return A.valueOf() > B.valueOf();
-    });
+      return new Memory({
+        data: errorItems,
+        idProperty: this.idProperty,
+      });
+    },
+    createToolLayout: function createToolLayout() {
+      return this.tools || (this.tools = {
+        tbar: [],
+      });
+    },
+  });
 
-    return new Memory({
-      data: errorItems,
-      idProperty: this.idProperty,
-    });
-  },
-  createToolLayout: function createToolLayout() {
-    return this.tools || (this.tools = {
-      tbar: [],
-    });
-  },
+  return __class;
 });
-
-export default __class;

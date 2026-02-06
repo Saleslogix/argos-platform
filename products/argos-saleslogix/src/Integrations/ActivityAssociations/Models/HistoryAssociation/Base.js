@@ -13,23 +13,26 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import _ModelBase from 'argos/Models/_ModelBase';
-import MODEL_NAMES from '../Names';
-import getResource from 'argos/I18n';
+define('crm/Integrations/ActivityAssociations/Models/HistoryAssociation/Base', [
+  'dojo/_base/declare',
+  'argos/Models/_ModelBase',
+  '../Names',
+  'argos/I18n'
+], function(declare, _ModelBase, MODEL_NAMES, getResource) {
+  const resource = getResource('historyAssociationModel'); // eslint-disable-line
 
-const resource = getResource('historyAssociationModel'); // eslint-disable-line
+  const __class = declare('crm.Integrations.ActivityAssociations.Models.HistoryAssociation.Base', [_ModelBase], {
+    resourceKind: 'historyAssociations',
+    entityName: 'HistoryAssociation',
+    entityDisplayName: resource.entityDisplayName,
+    entityDisplayNamePlural: resource.entityDisplayNamePlural,
+    modelName: MODEL_NAMES.ACTIVITYASSOCIATION,
+    listViewId: 'history_association_list',
+    createRelationships: function createRelationships() {
+      const rel = this.relationships || (this.relationships = []);
+      return rel;
+    },
+  });
 
-const __class = declare('crm.Integrations.ActivityAssociations.Models.HistoryAssociation.Base', [_ModelBase], {
-  resourceKind: 'historyAssociations',
-  entityName: 'HistoryAssociation',
-  entityDisplayName: resource.entityDisplayName,
-  entityDisplayNamePlural: resource.entityDisplayNamePlural,
-  modelName: MODEL_NAMES.ACTIVITYASSOCIATION,
-  listViewId: 'history_association_list',
-  createRelationships: function createRelationships() {
-    const rel = this.relationships || (this.relationships = []);
-    return rel;
-  },
+  return __class;
 });
-export default __class;

@@ -13,40 +13,42 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import List from 'argos/List';
-import getResource from 'argos/I18n';
-import MODEL_NAMES from '../../Models/Names';
-import format from 'crm/Format';
+define('crm/Views/AreaCategoryIssue/AreaLookup', [
+  'dojo/_base/declare',
+  'argos/List',
+  'argos/I18n',
+  '../../Models/Names',
+  'crm/Format'
+], function(declare, List, getResource, MODEL_NAMES, format) {
+  const resource = getResource('areaCategoryIssue_AreaLookup');
 
-const resource = getResource('areaCategoryIssue_AreaLookup');
+  const __class = declare('crm.Views.AreaCategoryIssue.AreaLookup', [List], {
+    format,
+    // Templates
+    itemTemplate: new Simplate([
+      '<p class="listview-heading">{%: $.$descriptor %}</p>',
+    ]),
 
-const __class = declare('crm.Views.AreaCategoryIssue.AreaLookup', [List], {
-  format,
-  // Templates
-  itemTemplate: new Simplate([
-    '<p class="listview-heading">{%: $.$descriptor %}</p>',
-  ]),
+    // Localization
+    titleText: resource.titleText,
 
-  // Localization
-  titleText: resource.titleText,
+    // View Properties
+    id: 'areacategoryissue_arealookup',
+    modelName: MODEL_NAMES.AREACATEGORYISSUE,
+    expose: false,
+    enableSearch: false,
+    enablePullToRefresh: false,
+    isCardView: false,
+    _buildQueryExpression: function _buildQueryExpression() {
+      return 'area';
+    },
+    _applyStateToQueryOptions: function _applyStateToQueryOptions(options) {
+      return options;
+    },
+    getRemainingCount: function getRemainingCount() {
+      return 0;
+    },
+  });
 
-  // View Properties
-  id: 'areacategoryissue_arealookup',
-  modelName: MODEL_NAMES.AREACATEGORYISSUE,
-  expose: false,
-  enableSearch: false,
-  enablePullToRefresh: false,
-  isCardView: false,
-  _buildQueryExpression: function _buildQueryExpression() {
-    return 'area';
-  },
-  _applyStateToQueryOptions: function _applyStateToQueryOptions(options) {
-    return options;
-  },
-  getRemainingCount: function getRemainingCount() {
-    return 0;
-  },
+  return __class;
 });
-
-export default __class;

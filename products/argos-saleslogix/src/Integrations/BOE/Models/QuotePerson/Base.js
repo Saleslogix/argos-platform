@@ -13,37 +13,40 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import _ModelBase from 'argos/Models/_ModelBase';
-import MODEL_NAMES from '../Names';
-import getResource from 'argos/I18n';
+define('crm/Integrations/BOE/Models/QuotePerson/Base', [
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  'argos/Models/_ModelBase',
+  '../Names',
+  'argos/I18n'
+], function(declare, lang, _ModelBase, MODEL_NAMES, getResource) {
+  const resource = getResource('quotePersonModel');
+  const quoteResource = getResource('quoteModel');
 
-const resource = getResource('quotePersonModel');
-const quoteResource = getResource('quoteModel');
-
-const __class = declare('crm.Integrations.BOE.Models.QuotePerson.Base', [_ModelBase], {
-  contractName: 'dynamic',
-  resourceKind: 'quotePersons',
-  entityName: 'QuotePerson',
-  entityDisplayName: resource.entityDisplayName,
-  entityDisplayNamePlural: resource.entityDisplayNamePlural,
-  modelName: MODEL_NAMES.QUOTEPERSON,
-  iconClass: '',
-  detailViewId: '',
-  listViewId: 'quotePerson_list',
-  editViewId: '',
-  createRelationships: function createRelationships() {
-    const rel = this.relationships || (this.relationships = [{
-      name: 'Quote',
-      displayName: quoteResource.entityDisplayNamePlural,
-      type: 'OneToMany',
-      relatedEntity: 'Quote',
-      relatedProperty: 'EntityId',
+  const __class = declare('crm.Integrations.BOE.Models.QuotePerson.Base', [_ModelBase], {
+    contractName: 'dynamic',
+    resourceKind: 'quotePersons',
+    entityName: 'QuotePerson',
+    entityDisplayName: resource.entityDisplayName,
+    entityDisplayNamePlural: resource.entityDisplayNamePlural,
+    modelName: MODEL_NAMES.QUOTEPERSON,
+    iconClass: '',
+    detailViewId: '',
+    listViewId: 'quotePerson_list',
+    editViewId: '',
+    createRelationships: function createRelationships() {
+      const rel = this.relationships || (this.relationships = [{
+        name: 'Quote',
+        displayName: quoteResource.entityDisplayNamePlural,
+        type: 'OneToMany',
+        relatedEntity: 'Quote',
+        relatedProperty: 'EntityId',
+      },
+      ]);
+      return rel;
     },
-    ]);
-    return rel;
-  },
+  });
+  lang.setObject('icboe.Models.QuotePerson.Base', __class);
+
+  return __class;
 });
-lang.setObject('icboe.Models.QuotePerson.Base', __class);
-export default __class;

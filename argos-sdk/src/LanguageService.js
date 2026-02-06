@@ -16,83 +16,86 @@
 /**
  * @module argos/LanguageService
  */
-import declare from 'dojo/_base/declare';
-
-/**
- * @class
- * @alias module:argos/LanguageService
- */
-const __class = declare('argos.LanguageService', [], /** @lends module:argos/LanguageService.prototype */{
-
+define('argos/LanguageService', [
+  'dojo/_base/declare'
+], function(declare) {
   /**
-   *
+   * @class
+   * @alias module:argos/LanguageService
    */
-  getLanguage: function getLanguage() {
-    return window.localStorage && window.localStorage.getItem('language');
-  },
+  const __class = declare('argos.LanguageService', [], /** @lends module:argos/LanguageService.prototype */{
 
-  /**
-   *
-   */
-  getRegion: function getRegion() {
-    return window.localStorage && window.localStorage.getItem('region');
-  },
+    /**
+     *
+     */
+    getLanguage: function getLanguage() {
+      return window.localStorage && window.localStorage.getItem('language');
+    },
 
-  /**
-   *
-   */
-  setLanguage: function setLanguage(value) {
-    const language = this.normalizeLocale(value) || value;
-    return window.localStorage && window.localStorage.setItem('language', language);
-  },
+    /**
+     *
+     */
+    getRegion: function getRegion() {
+      return window.localStorage && window.localStorage.getItem('region');
+    },
 
-  /**
-   *
-   */
-  setRegion: function setRegion(value) {
-    const region = this.normalizeLocale(value) || value;
-    return window.localStorage && window.localStorage.setItem('region', region);
-  },
+    /**
+     *
+     */
+    setLanguage: function setLanguage(value) {
+      const language = this.normalizeLocale(value) || value;
+      return window.localStorage && window.localStorage.setItem('language', language);
+    },
 
-  /**
-   *
-   */
-  normalizeLocale: function normalizeLanguageCode(locale) {
-    let language = locale;
-    if (language.length > 2) {
-      const split = locale.split('-');
-      if (split[0] === split[1]) {
-        language = split[0];
-      } else if (split[1]) {
-        language = `${split[0]}-${split[1].toUpperCase()}`;
+    /**
+     *
+     */
+    setRegion: function setRegion(value) {
+      const region = this.normalizeLocale(value) || value;
+      return window.localStorage && window.localStorage.setItem('region', region);
+    },
+
+    /**
+     *
+     */
+    normalizeLocale: function normalizeLanguageCode(locale) {
+      let language = locale;
+      if (language.length > 2) {
+        const split = locale.split('-');
+        if (split[0] === split[1]) {
+          language = split[0];
+        } else if (split[1]) {
+          language = `${split[0]}-${split[1].toUpperCase()}`;
+        }
       }
-    }
-    return language;
-  },
-  /**
-   * Gets a list of supported locales.
-   */
-  getLanguages: function getLanguages() {
-    return window.supportedLocales;
-  },
+      return language;
+    },
+    /**
+     * Gets a list of supported locales.
+     */
+    getLanguages: function getLanguages() {
+      return window.supportedLocales;
+    },
 
-  /**
-   *
-   */
-  bestAvailableLocale: function BestAvailableLocale(availableLocales, locale) {
-    let candidate = this.normalizeLocale(locale);
-    if (availableLocales.indexOf(candidate) !== -1) {
+    /**
+     *
+     */
+    bestAvailableLocale: function BestAvailableLocale(availableLocales, locale) {
+      let candidate = this.normalizeLocale(locale);
+      if (availableLocales.indexOf(candidate) !== -1) {
+        return candidate;
+      }
+      let pos = candidate.lastIndexOf('-');
+      if (pos === -1) {
+        return undefined;
+      }
+      if (pos >= 2 && candidate[pos - 2] === '-') {
+        pos -= 2;
+      }
+      candidate = candidate.substring(0, pos);
       return candidate;
-    }
-    let pos = candidate.lastIndexOf('-');
-    if (pos === -1) {
-      return undefined;
-    }
-    if (pos >= 2 && candidate[pos - 2] === '-') {
-      pos -= 2;
-    }
-    candidate = candidate.substring(0, pos);
-    return candidate;
-  },
+    },
+  });
+
+  return __class;
 });
-export default __class;

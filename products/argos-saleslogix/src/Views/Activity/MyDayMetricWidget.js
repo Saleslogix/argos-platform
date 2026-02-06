@@ -13,55 +13,57 @@
  * limitations under the License.
  */
 
-import MetricWidget from '../MetricWidget';
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import when from 'dojo/when';
-import Deferred from 'dojo/Deferred';
-import MODEL_TYPES from 'argos/Models/Types';
-import QueryResults from 'dojo/store/util/QueryResults';
-
-export default declare('crm.Views.Activity.MyDayMetricWidget', [MetricWidget], {
-  navToReportView: function navToReportView() {},
-  activityType: '',
-  _buildQueryOptions: function _buildQueryOptions() {
-    const self = this;
-    return {
-      returnQueryResults: true,
-      filter: (entity) => {
-        if (entity.Type === self.activityType) {
-          if (self.parent) {
-            const filter = self.parent.getCurrentFilter();
-            if (filter && filter.fn) {
-              const result = filter.fn.apply(self.parent, [entity]);
-              if (result) {
-                return true;
+define('crm/Views/Activity/MyDayMetricWidget', [
+  '../MetricWidget',
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  'dojo/when',
+  'dojo/Deferred',
+  'argos/Models/Types',
+  'dojo/store/util/QueryResults'
+], function(MetricWidget, declare, lang, when, Deferred, MODEL_TYPES, QueryResults) {
+  return declare('crm.Views.Activity.MyDayMetricWidget', [MetricWidget], {
+    navToReportView: function navToReportView() {},
+    activityType: '',
+    _buildQueryOptions: function _buildQueryOptions() {
+      const self = this;
+      return {
+        returnQueryResults: true,
+        filter: (entity) => {
+          if (entity.Type === self.activityType) {
+            if (self.parent) {
+              const filter = self.parent.getCurrentFilter();
+              if (filter && filter.fn) {
+                const result = filter.fn.apply(self.parent, [entity]);
+                if (result) {
+                  return true;
+                }
+                return false;
               }
-              return false;
             }
+            return true;
           }
-          return true;
-        }
-
-        return false;
-      },
-    };
-  },
-  _getData: function _getData() {
-    const queryOptions = this._buildQueryOptions();
-    const model = App.ModelManager.getModel('Activity', MODEL_TYPES.OFFLINE);
-    const queryResults = model.getEntries(null, queryOptions);
-    when(queryResults, lang.hitch(this, this._onQuerySuccessCount, queryResults), lang.hitch(this, this._onQueryError));
-  },
-  _onQuerySuccessCount: function _onQuerySuccessCount(results) {
-    const def = new Deferred();
-    when(results.total, (total) => {
-      const metricResults = [{
-        name: this.activityType,
-        value: total,
-      }];
-      def.resolve(metricResults);
-    });
-    this._onQuerySuccess(QueryResults(def.promise)); // eslint-disable-line
-  },
+  
+          return false;
+        },
+      };
+    },
+    _getData: function _getData() {
+      const queryOptions = this._buildQueryOptions();
+      const model = App.ModelManager.getModel('Activity', MODEL_TYPES.OFFLINE);
+      const queryResults = model.getEntries(null, queryOptions);
+      when(queryResults, lang.hitch(this, this._onQuerySuccessCount, queryResults), lang.hitch(this, this._onQueryError));
+    },
+    _onQuerySuccessCount: function _onQuerySuccessCount(results) {
+      const def = new Deferred();
+      when(results.total, (total) => {
+        const metricResults = [{
+          name: this.activityType,
+          value: total,
+        }];
+        def.resolve(metricResults);
+      });
+      this._onQuerySuccess(QueryResults(def.promise)); // eslint-disable-line
+    },
+  });
 });

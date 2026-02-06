@@ -21,11 +21,13 @@
   * @class
   * @alias module:argos/Scene
   */
-class Scene {
-  constructor(store) {
-    this.viewset = [];
-    this.store = store;
+define('argos/Scene', [], function() {
+  class Scene {
+    constructor(store) {
+      this.viewset = [];
+      this.store = store;
+    }
   }
-}
 
-export default Scene;
+  return Scene;
+});

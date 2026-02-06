@@ -4,9 +4,8 @@
 
 - **Package Manager**: npm workspaces (migrated from Yarn)
 - **Task Runner**: Grunt
-- **Transpiler**: Babel 6 (ES2015/ES2016/ES2017 → AMD modules)
 - **CSS Preprocessor**: LESS
-- **Module Format**: AMD (Asynchronous Module Definition)
+- **Module Format**: AMD (Asynchronous Module Definition) with modern JavaScript
 
 ## Core Technologies
 
@@ -44,22 +43,11 @@
 npm install
 ```
 
-### Building
+### CSS Compilation
 ```bash
-# Build all packages
-npm run build:all
-
-# Build SDK only
-npm run build:sdk
-npm run build -w argos-sdk
-
-# Build SalesLogix only
-npm run build:saleslogix
-npm run build -w products/argos-saleslogix
-
-# Watch mode (auto-rebuild on changes)
-cd argos-sdk && npm run watch
-cd products/argos-saleslogix && npm run watch
+# Compile LESS to CSS
+cd argos-sdk && npm run less
+cd products/argos-saleslogix && npm run less
 ```
 
 ### Testing
@@ -103,16 +91,68 @@ cd products/argos-saleslogix && npm run less
 cd products/argos-saleslogix && npm start
 ```
 
-## Babel Configuration
+## Module Format
 
-Transpiles ES2015+ to AMD modules with:
-- Presets: es2015 (modules: false), es2016, es2017
-- Plugins: add-module-exports, transform-es2015-modules-amd (strict: false), transform-object-rest-spread
-- Module IDs enabled with moduleRoot: "argos"
+Source files use AMD (Asynchronous Module Definition) with modern JavaScript features. No transpilation is required - browsers load modules directly.
+
+### Module ID Convention
+
+- **argos-sdk modules**: Use `argos/` prefix
+  - `argos-sdk/src/Application.js` → `define('argos/Application', ...)`
+  - `argos-sdk/src/Fields/TextField.js` → `define('argos/Fields/TextField', ...)`
+
+- **argos-saleslogix modules**: Use `crm/` prefix
+  - `products/argos-saleslogix/src/Application.js` → `define('crm/Application', ...)`
+  - `products/argos-saleslogix/src/Views/Account/List.js` → `define('crm/Views/Account/List', ...)`
+
+### AMD Module Structure
+
+```javascript
+define('argos/Application', [
+  './View',
+  './I18n',
+  './actions/connection'
+], function(View, getResource, connectionActions) {
+  const { setConnectionState } = connectionActions;
+  
+  class Application extends View {
+    constructor() {
+      super();
+      this.views = [];
+    }
+    
+    async initialize() {
+      const config = await this.loadConfig();
+      return config;
+    }
+  }
+  
+  return Application;
+});
+```
+
+### Modern JavaScript Features
+
+Source files use modern JavaScript features supported by current browsers:
+- `const` and `let` declarations
+- Arrow functions
+- Template literals
+- Class syntax
+- Destructuring
+- Spread operators
+- `async`/`await`
+- Object shorthand notation
+
+### Dependency Paths
+
+- **Relative imports**: Use `./` or `../` for same-package modules
+- **Cross-package imports**: Use full module ID (e.g., `argos/View` from argos-saleslogix)
+- **External libraries**: Use library paths (e.g., `dojo/_base/declare`, `dijit/_WidgetBase`)
 
 ## Workspace Structure
 
 The monorepo uses npm workspaces with dependency hoisting:
-- Shared dev dependencies at root (grunt, babel, eslint)
+- Shared dev dependencies at root (grunt, eslint)
 - Package-specific dependencies in each workspace
 - argos-saleslogix depends on argos-sdk via workspace symlink
+- Source files are in AMD format and used directly by browsers

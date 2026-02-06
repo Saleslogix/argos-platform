@@ -13,42 +13,44 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import View from 'argos/View';
-import getResource from 'argos/I18n';
+define('crm/Views/LogOff', [
+  'dojo/_base/declare',
+  'argos/View',
+  'argos/I18n'
+], function(declare, View, getResource) {
+  const resource = getResource('logOff');
 
-const resource = getResource('logOff');
+  const __class = declare('crm.Views.LogOff', [View], {
+    // Templates
+    widgetTemplate: new Simplate([
+      '<div class="panel">',
+      '<div class="wrapper">',
+      '<div data-title="{%: $.titleText %}" class="signin {%= $.cls %}" hideBackButton="true">',
+      '<p>{%= $.messageText %}</p>',
+      '<p><a href="#" class="hyperlink" data-action="login">{%: $.loginText %}</a></p>',
+      '</div>',
+      '</div>',
+      '</div>',
+    ]),
 
-const __class = declare('crm.Views.LogOff', [View], {
-  // Templates
-  widgetTemplate: new Simplate([
-    '<div class="panel">',
-    '<div class="wrapper">',
-    '<div data-title="{%: $.titleText %}" class="signin {%= $.cls %}" hideBackButton="true">',
-    '<p>{%= $.messageText %}</p>',
-    '<p><a href="#" class="hyperlink" data-action="login">{%: $.loginText %}</a></p>',
-    '</div>',
-    '</div>',
-    '</div>',
-  ]),
+    // Localization
+    messageText: resource.messageText,
+    loginText: resource.loginText,
+    titleText: resource.titleText,
 
-  // Localization
-  messageText: resource.messageText,
-  loginText: resource.loginText,
-  titleText: resource.titleText,
+    id: 'logoff',
 
-  id: 'logoff',
+    login: function login() {
+      window.location.reload();
+    },
 
-  login: function login() {
-    window.location.reload();
-  },
+    createToolLayout: function createToolLayout() {
+      return this.tools || (this.tools = {
+        bbar: false,
+        tbar: false,
+      });
+    },
+  });
 
-  createToolLayout: function createToolLayout() {
-    return this.tools || (this.tools = {
-      bbar: false,
-      tbar: false,
-    });
-  },
+  return __class;
 });
-
-export default __class;

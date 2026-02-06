@@ -13,16 +13,19 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import Base from './Base';
-import _OfflineModelBase from 'argos/Models/_OfflineModelBase';
-import Manager from 'argos/Models/Manager';
-import MODEL_TYPES from 'argos/Models/Types';
-import MODEL_NAMES from '../Names';
+define('crm/Integrations/BOE/Models/ErpShipToAccount/Offline', [
+  'dojo/_base/declare',
+  './Base',
+  'argos/Models/_OfflineModelBase',
+  'argos/Models/Manager',
+  'argos/Models/Types',
+  '../Names'
+], function(declare, Base, _OfflineModelBase, Manager, MODEL_TYPES, MODEL_NAMES) {
+  const __class = declare('crm.Integrations.BOE.Models.ErpShipToAccount.Offline', [Base, _OfflineModelBase], {
+    id: 'erpshiptoaccount_offline_model',
+  });
 
-const __class = declare('crm.Integrations.BOE.Models.ErpShipToAccount.Offline', [Base, _OfflineModelBase], {
-  id: 'erpshiptoaccount_offline_model',
+  Manager.register(MODEL_NAMES.ERPSHIPTOACCOUNT, MODEL_TYPES.OFFLINE, __class);
+
+  return __class;
 });
-
-Manager.register(MODEL_NAMES.ERPSHIPTOACCOUNT, MODEL_TYPES.OFFLINE, __class);
-export default __class;

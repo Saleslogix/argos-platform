@@ -16,49 +16,51 @@
 /**
  * @module argos/Fields/HiddenField
  */
-import declare from 'dojo/_base/declare';
-import TextField from './TextField';
-import FieldManager from '../FieldManager';
-
-/**
- * @class
- * @alias module:argos/Fields/HiddenField
- * @classdesc The Hidden Field is {@link module:argos/Fields/TextField TextField} but instead binds to an `<input type="hidden"`>.
- *
- * Meaning that the field will not be displayed on screen but may still store strings of text.
- *
- * @example
- * {
- *   name: 'StatusCodeKey',
- *   property: 'StatusCodeKey',
- *   type: 'hidden'
- * }
- * @extends module:argos/Fields/TextField
- */
-const control = declare('argos.Fields.HiddenField', [TextField], /** @lends module:argos/Fields/HiddenField.prototype */{
-  propertyTemplate: new Simplate([
-    '<div style="display: none;" data-field="{%= $.name || $.property %}" data-field-type="{%= $.type %}">',
-    '</div>',
-  ]),
-
+define('argos/Fields/HiddenField', [
+  'dojo/_base/declare',
+  './TextField',
+  '../FieldManager'
+], function(declare, TextField, FieldManager) {
   /**
-   * @property {Simplate}
-   * Simplate that defines the fields HTML Markup
+   * @class
+   * @alias module:argos/Fields/HiddenField
+   * @classdesc The Hidden Field is {@link module:argos/Fields/TextField TextField} but instead binds to an `<input type="hidden"`>.
    *
-   * * `$` => Field instance
-   * * `$$` => Owner View instance
+   * Meaning that the field will not be displayed on screen but may still store strings of text.
    *
+   * @example
+   * {
+   *   name: 'StatusCodeKey',
+   *   property: 'StatusCodeKey',
+   *   type: 'hidden'
+   * }
+   * @extends module:argos/Fields/TextField
    */
-  widgetTemplate: new Simplate([
-    '<input data-dojo-attach-point="inputNode" type="hidden">',
-  ]),
-  /**
-   * @deprecated
-   */
-  bind: function bind() {
-    // call field's bind. we don't want event handlers for this.
-    this.inherited(bind, arguments);
-  },
+  const control = declare('argos.Fields.HiddenField', [TextField], /** @lends module:argos/Fields/HiddenField.prototype */{
+    propertyTemplate: new Simplate([
+      '<div style="display: none;" data-field="{%= $.name || $.property %}" data-field-type="{%= $.type %}">',
+      '</div>',
+    ]),
+
+    /**
+     * @property {Simplate}
+     * Simplate that defines the fields HTML Markup
+     *
+     * * `$` => Field instance
+     * * `$$` => Owner View instance
+     *
+     */
+    widgetTemplate: new Simplate([
+      '<input data-dojo-attach-point="inputNode" type="hidden">',
+    ]),
+    /**
+     * @deprecated
+     */
+    bind: function bind() {
+      // call field's bind. we don't want event handlers for this.
+      this.inherited(bind, arguments);
+    },
+  });
+
+  return FieldManager.register('hidden', control);
 });
-
-export default FieldManager.register('hidden', control);

@@ -13,25 +13,28 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import _Module from './_Module';
-import ERPReceivableItemsDetail from '../Views/ERPReceivableItems/Detail';
-import '../Models/ErpReceivableItem/Offline';
-import '../Models/ErpReceivableItem/SData';
+define('crm/Integrations/BOE/Modules/ReceivableLineModule', [
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  './_Module',
+  '../Views/ERPReceivableItems/Detail',
+  '../Models/ErpReceivableItem/Offline',
+  '../Models/ErpReceivableItem/SData'
+], function(declare, lang, _Module, ERPReceivableItemsDetail) {
+  const __class = declare('crm.Integrations.BOE.Modules.ReceivableLineModule', [_Module], {
+    init: function init() {
+    },
+    loadViews: function loadViews() {
+      const am = this.applicationModule;
+      am.registerView(new ERPReceivableItemsDetail());
+    },
+    loadCustomizations: function loadCustomizations() {
+    },
+    loadToolbars: function loadToolbars() {
+    },
+  });
 
-const __class = declare('crm.Integrations.BOE.Modules.ReceivableLineModule', [_Module], {
-  init: function init() {
-  },
-  loadViews: function loadViews() {
-    const am = this.applicationModule;
-    am.registerView(new ERPReceivableItemsDetail());
-  },
-  loadCustomizations: function loadCustomizations() {
-  },
-  loadToolbars: function loadToolbars() {
-  },
+  lang.setObject('icboe.Modules.ReceivableLineModule', __class);
+
+  return __class;
 });
-
-lang.setObject('icboe.Modules.ReceivableLineModule', __class);
-export default __class;

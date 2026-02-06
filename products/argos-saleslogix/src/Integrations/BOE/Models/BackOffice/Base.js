@@ -13,30 +13,33 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import _ModelBase from 'argos/Models/_ModelBase';
-import MODEL_NAMES from '../Names';
-import getResource from 'argos/I18n';
+define('crm/Integrations/BOE/Models/BackOffice/Base', [
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  'argos/Models/_ModelBase',
+  '../Names',
+  'argos/I18n'
+], function(declare, lang, _ModelBase, MODEL_NAMES, getResource) {
+  const resource = getResource('backOfficeModel');
 
-const resource = getResource('backOfficeModel');
+  const __class = declare('crm.Integrations.BOE.Models.BackOffice.Base', [_ModelBase], {
+    contractName: 'dynamic',
+    resourceKind: 'backOffices',
+    entityName: 'BackOffice',
+    entityDisplayName: resource.entityDisplayName,
+    entityDisplayNamePlural: resource.entityDisplayNamePlural,
+    modelName: MODEL_NAMES.BACKOFFICE,
+    iconClass: 'spreadsheet',
+    detailViewId: '',
+    listViewId: 'backoffices_list',
+    editViewId: '',
+    createRelationships: function createRelationships() {
+      const rel = this.relationships || (this.relationships = [
+      ]);
+      return rel;
+    },
+  });
+  lang.setObject('icboe.Models.BackOffice.Base', __class);
 
-const __class = declare('crm.Integrations.BOE.Models.BackOffice.Base', [_ModelBase], {
-  contractName: 'dynamic',
-  resourceKind: 'backOffices',
-  entityName: 'BackOffice',
-  entityDisplayName: resource.entityDisplayName,
-  entityDisplayNamePlural: resource.entityDisplayNamePlural,
-  modelName: MODEL_NAMES.BACKOFFICE,
-  iconClass: 'spreadsheet',
-  detailViewId: '',
-  listViewId: 'backoffices_list',
-  editViewId: '',
-  createRelationships: function createRelationships() {
-    const rel = this.relationships || (this.relationships = [
-    ]);
-    return rel;
-  },
+  return __class;
 });
-lang.setObject('icboe.Models.BackOffice.Base', __class);
-export default __class;

@@ -13,46 +13,49 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import Base from './Base';
-import _SDataModelBase from 'argos/Models/_SDataModelBase';
-import Manager from 'argos/Models/Manager';
-import MODEL_TYPE from 'argos/Models/Types';
-import MODEL_NAMES from '../Names';
+define('crm/Models/OpportunityContact/SData', [
+  'dojo/_base/declare',
+  './Base',
+  'argos/Models/_SDataModelBase',
+  'argos/Models/Manager',
+  'argos/Models/Types',
+  '../Names'
+], function(declare, Base, _SDataModelBase, Manager, MODEL_TYPE, MODEL_NAMES) {
+  const __class = declare('crm.Models.OpportunityContact.SData', [Base, _SDataModelBase], {
+    id: 'opportunity_contact_sdata_model',
+    createQueryModels: function createQueryModels() {
+      return [{
+        name: 'list',
+        queryOrderBy: 'Contact.NameLF',
+        querySelect: [
+          'Contact/Account/AccountName',
+          'Contact/AccountName',
+          'SalesRole',
+          'IsPrimary',
+          'Contact/NameLF',
+          'Contact/Title',
+        ],
+      }, {
+        name: 'detail',
+        querySelect: [
+          'Opportunity/Description',
+          'Contact/Account/AccountName',
+          'Contact/AccountName',
+          'SalesRole',
+          'Contact/NameLF',
+          'Contact/Title',
+          'IsPrimary',
+          'Competitors/CompetitorName',
+          'Issues',
+          'PersonalBenefits',
+          'Standing',
+          'Strategy',
+        ],
+      }];
+    },
+  });
 
-const __class = declare('crm.Models.OpportunityContact.SData', [Base, _SDataModelBase], {
-  id: 'opportunity_contact_sdata_model',
-  createQueryModels: function createQueryModels() {
-    return [{
-      name: 'list',
-      queryOrderBy: 'Contact.NameLF',
-      querySelect: [
-        'Contact/Account/AccountName',
-        'Contact/AccountName',
-        'SalesRole',
-        'IsPrimary',
-        'Contact/NameLF',
-        'Contact/Title',
-      ],
-    }, {
-      name: 'detail',
-      querySelect: [
-        'Opportunity/Description',
-        'Contact/Account/AccountName',
-        'Contact/AccountName',
-        'SalesRole',
-        'Contact/NameLF',
-        'Contact/Title',
-        'IsPrimary',
-        'Competitors/CompetitorName',
-        'Issues',
-        'PersonalBenefits',
-        'Standing',
-        'Strategy',
-      ],
-    }];
-  },
+  Manager.register(MODEL_NAMES.OPPORTUNITYCONTACT, MODEL_TYPE.SDATA, __class);
+
+  return __class;
 });
-
-Manager.register(MODEL_NAMES.OPPORTUNITYCONTACT, MODEL_TYPE.SDATA, __class);
-export default __class;

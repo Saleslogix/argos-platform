@@ -13,38 +13,40 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import List from 'argos/List';
-import getResource from 'argos/I18n';
+define('crm/Views/Competitor/List', [
+  'dojo/_base/declare',
+  'argos/List',
+  'argos/I18n'
+], function(declare, List, getResource) {
+  const resource = getResource('competitorList');
 
-const resource = getResource('competitorList');
+  const __class = declare('crm.Views.Competitor.List', [List], {
+    // Templates
+    itemTemplate: new Simplate([
+      '<p class="listview-heading">{%= $.CompetitorName %}</p>',
+      '{% if ($.WebAddress) { %}<p class="micro-text">{%= $.WebAddress %}</p>{% } %}',
+    ]),
 
-const __class = declare('crm.Views.Competitor.List', [List], {
-  // Templates
-  itemTemplate: new Simplate([
-    '<p class="listview-heading">{%= $.CompetitorName %}</p>',
-    '{% if ($.WebAddress) { %}<p class="micro-text">{%= $.WebAddress %}</p>{% } %}',
-  ]),
+    // Localization
+    titleText: resource.titleText,
 
-  // Localization
-  titleText: resource.titleText,
+    // View Properties
+    detailView: 'competitor_detail',
+    id: 'competitor_list',
+    security: 'Entities/Competitor/View',
+    insertView: 'competitor_edit',
+    queryOrderBy: 'CompetitorName asc',
+    querySelect: [
+      'CompetitorName',
+      'WebAddress',
+    ],
+    resourceKind: 'competitors',
 
-  // View Properties
-  detailView: 'competitor_detail',
-  id: 'competitor_list',
-  security: 'Entities/Competitor/View',
-  insertView: 'competitor_edit',
-  queryOrderBy: 'CompetitorName asc',
-  querySelect: [
-    'CompetitorName',
-    'WebAddress',
-  ],
-  resourceKind: 'competitors',
+    formatSearchQuery: function formatSearchQuery(searchQuery) {
+      const q = this.escapeSearchQuery(searchQuery);
+      return `(CompetitorName like "%${q}%")`;
+    },
+  });
 
-  formatSearchQuery: function formatSearchQuery(searchQuery) {
-    const q = this.escapeSearchQuery(searchQuery);
-    return `(CompetitorName like "%${q}%")`;
-  },
+  return __class;
 });
-
-export default __class;

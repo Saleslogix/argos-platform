@@ -13,26 +13,29 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import _ModelBase from 'argos/Models/_ModelBase';
-import MODEL_NAMES from '../Names';
-import getResource from 'argos/I18n';
+define('crm/Models/History/Base', [
+  'dojo/_base/declare',
+  'argos/Models/_ModelBase',
+  '../Names',
+  'argos/I18n'
+], function(declare, _ModelBase, MODEL_NAMES, getResource) {
+  const resource = getResource('historyModel');
 
-const resource = getResource('historyModel');
+  const __class = declare('crm.Models.History.Base', [_ModelBase], {
+    resourceKind: 'history',
+    entityName: 'History',
+    entityDisplayName: resource.entityDisplayName,
+    entityDisplayNamePlural: resource.entityDisplayNamePlural,
+    modelName: MODEL_NAMES.HISTORY,
+    iconClass: 'bullet-list',
 
-const __class = declare('crm.Models.History.Base', [_ModelBase], {
-  resourceKind: 'history',
-  entityName: 'History',
-  entityDisplayName: resource.entityDisplayName,
-  entityDisplayNamePlural: resource.entityDisplayNamePlural,
-  modelName: MODEL_NAMES.HISTORY,
-  iconClass: 'bullet-list',
+    createPicklists: function createPicklists() {
+      return this.picklists || (this.picklists = [{
+        name: 'Note Regarding',
+        property: 'Description',
+      }]);
+    },
+  });
 
-  createPicklists: function createPicklists() {
-    return this.picklists || (this.picklists = [{
-      name: 'Note Regarding',
-      property: 'Description',
-    }]);
-  },
+  return __class;
 });
-export default __class;

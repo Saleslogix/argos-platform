@@ -13,47 +13,49 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import List from 'argos/List';
-import MODEL_NAMES from '../../Models/Names';
-import getResource from 'argos/I18n';
+define('crm/Integrations/ActivityAssociations/Views/HistoryAssociation/List', [
+  'dojo/_base/declare',
+  'argos/List',
+  '../../Models/Names',
+  'argos/I18n'
+], function(declare, List, MODEL_NAMES, getResource) {
+  const resource = getResource('historyAssociationList');
 
-const resource = getResource('historyAssociationList');
+  const __class = declare('crm.Integrations.ActivityAssociations.Views.HistoryAssociation.List', [List], {
+    // Localization
+    titleText: resource.titleText,
+    primaryText: resource.primaryText,
 
-const __class = declare('crm.Integrations.ActivityAssociations.Views.HistoryAssociation.List', [List], {
-  // Localization
-  titleText: resource.titleText,
-  primaryText: resource.primaryText,
+    // Templates
+    itemTemplate: new Simplate([
+      '<p class="micro-text">{%: $.EntityType %} | {%: $.EntityName %}</p>',
+      '<p class="micro-text">{%: $$.primaryText %} {%: $.IsPrimary %}</p>',
+    ]),
 
-  // Templates
-  itemTemplate: new Simplate([
-    '<p class="micro-text">{%: $.EntityType %} | {%: $.EntityName %}</p>',
-    '<p class="micro-text">{%: $$.primaryText %} {%: $.IsPrimary %}</p>',
-  ]),
+    // View Properties
+    id: 'history_association_list',
+    security: null,
+    enableActions: true,
+    pageSize: 105,
+    resourceKind: 'historyAssociations',
+    modelName: MODEL_NAMES.HISTORYASSOCIATION,
 
-  // View Properties
-  id: 'history_association_list',
-  security: null,
-  enableActions: true,
-  pageSize: 105,
-  resourceKind: 'historyAssociations',
-  modelName: MODEL_NAMES.HISTORYASSOCIATION,
+    formatSearchQuery: function formatSearchQuery(searchQuery) {
+      return `upper(EntityName) like "%${this.escapeSearchQuery(searchQuery.toUpperCase())}%"`;
+    },
+    getTitle: function getTitle(entry) {
+      if (!entry) {
+        return '';
+      }
 
-  formatSearchQuery: function formatSearchQuery(searchQuery) {
-    return `upper(EntityName) like "%${this.escapeSearchQuery(searchQuery.toUpperCase())}%"`;
-  },
-  getTitle: function getTitle(entry) {
-    if (!entry) {
-      return '';
-    }
+      return (this._model && this._model.getEntityDescription(entry)) || entry.EntityName;
+    },
+    createToolLayout: function createToolLayout() {
+      return this.tools || (this.tools = {
+        tbar: [],
+      });
+    },
+  });
 
-    return (this._model && this._model.getEntityDescription(entry)) || entry.EntityName;
-  },
-  createToolLayout: function createToolLayout() {
-    return this.tools || (this.tools = {
-      tbar: [],
-    });
-  },
+  return __class;
 });
-
-export default __class;

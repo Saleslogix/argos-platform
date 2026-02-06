@@ -13,75 +13,78 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import Base from './Base';
-import _SDataModelBase from 'argos/Models/_SDataModelBase';
-import Manager from 'argos/Models/Manager';
-import MODEL_TYPES from 'argos/Models/Types';
-import MODEL_NAMES from '../Names';
-
-const __class = declare('crm.Models.Account.SData', [Base, _SDataModelBase], {
-  id: 'account_sdata_model',
-  createQueryModels: function createQueryModels() {
-    return [{
-      name: 'list',
-      queryOrderBy: 'AccountNameUpper',
-      querySelect: [
-        'AccountName',
-        'AccountManager/UserInfo/UserName',
-        'AccountManager/UserInfo/LastName',
-        'AccountManager/UserInfo/FirstName',
-        'Owner/OwnerDescription',
-        'WebAddress',
-        'Industry',
-        'LeadSource/Description',
-        'MainPhone',
-        'Fax',
-        'Status',
-        'SubType',
-        'Type',
-        'ModifyDate',
-      ],
-    }, {
-      name: 'detail',
-      querySelect: [
-        'AccountManager/UserInfo/FirstName',
-        'AccountManager/UserInfo/LastName',
-        'AccountName',
-        'Address/*',
-        'BusinessDescription',
-        'CreateDate',
-        'CreateUser',
-        'Description',
-        'Fax',
-        'GlobalSyncID',
-        'ImportSource',
-        'Industry',
-        'LeadSource/Description',
-        'MainPhone',
-        'Notes',
-        'Owner/OwnerDescription',
-        'Status',
-        'SubType',
-        'Type',
-        'WebAddress',
-      ],
-      queryInclude: [
-        '$permissions',
-      ],
-    }];
-  },
-  getEntry: function getEntry(/* options */) {
-    const results$ = this.inherited(getEntry, arguments);
-    return results$.then((entry) => {
-      return new Promise((resolve) => {
-        App.picklistService.requestPicklist(`Account ${entry.Type}`).then(() => {
-          resolve(entry);
+define('crm/Models/Account/SData', [
+  'dojo/_base/declare',
+  './Base',
+  'argos/Models/_SDataModelBase',
+  'argos/Models/Manager',
+  'argos/Models/Types',
+  '../Names'
+], function(declare, Base, _SDataModelBase, Manager, MODEL_TYPES, MODEL_NAMES) {
+  const __class = declare('crm.Models.Account.SData', [Base, _SDataModelBase], {
+    id: 'account_sdata_model',
+    createQueryModels: function createQueryModels() {
+      return [{
+        name: 'list',
+        queryOrderBy: 'AccountNameUpper',
+        querySelect: [
+          'AccountName',
+          'AccountManager/UserInfo/UserName',
+          'AccountManager/UserInfo/LastName',
+          'AccountManager/UserInfo/FirstName',
+          'Owner/OwnerDescription',
+          'WebAddress',
+          'Industry',
+          'LeadSource/Description',
+          'MainPhone',
+          'Fax',
+          'Status',
+          'SubType',
+          'Type',
+          'ModifyDate',
+        ],
+      }, {
+        name: 'detail',
+        querySelect: [
+          'AccountManager/UserInfo/FirstName',
+          'AccountManager/UserInfo/LastName',
+          'AccountName',
+          'Address/*',
+          'BusinessDescription',
+          'CreateDate',
+          'CreateUser',
+          'Description',
+          'Fax',
+          'GlobalSyncID',
+          'ImportSource',
+          'Industry',
+          'LeadSource/Description',
+          'MainPhone',
+          'Notes',
+          'Owner/OwnerDescription',
+          'Status',
+          'SubType',
+          'Type',
+          'WebAddress',
+        ],
+        queryInclude: [
+          '$permissions',
+        ],
+      }];
+    },
+    getEntry: function getEntry(/* options */) {
+      const results$ = this.inherited(getEntry, arguments);
+      return results$.then((entry) => {
+        return new Promise((resolve) => {
+          App.picklistService.requestPicklist(`Account ${entry.Type}`).then(() => {
+            resolve(entry);
+          });
         });
       });
-    });
-  },
-});
+    },
+  });
 
-Manager.register(MODEL_NAMES.ACCOUNT, MODEL_TYPES.SDATA, __class);
-export default __class;
+  Manager.register(MODEL_NAMES.ACCOUNT, MODEL_TYPES.SDATA, __class);
+
+  return __class;
+});

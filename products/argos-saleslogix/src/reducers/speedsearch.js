@@ -13,20 +13,28 @@
  * limitations under the License.
  */
 
-import { SET_SEARCHTERM } from '../actions/speedsearch';
+define('crm/reducers/speedsearch', [
+  '../actions/speedsearch'
+], function(speedsearchActions) {
+  const { SET_SEARCHTERM } = speedsearchActions;
 
-const initialUserState = {
-  searchTerm: '',
-};
+  const initialUserState = {
+    searchTerm: '',
+  };
 
-export function speedsearch(state = initialUserState, action) {
-  const { type, payload, error, meta } = action; // eslint-disable-line
-  switch (type) {
-    case SET_SEARCHTERM:
-      return Object.assign({}, state, {
-        searchTerm: payload.searchTerm,
-      });
-    default:
-      return state;
+  function speedsearch(state = initialUserState, action) {
+    const { type, payload, error, meta } = action; // eslint-disable-line
+    switch (type) {
+      case SET_SEARCHTERM:
+        return Object.assign({}, state, {
+          searchTerm: payload.searchTerm,
+        });
+      default:
+        return state;
+    }
   }
-}
+
+  return {
+    speedsearch
+  };
+});

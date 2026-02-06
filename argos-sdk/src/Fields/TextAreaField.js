@@ -16,58 +16,60 @@
 /**
  * @module argos/Fields/TextAreaField
  */
-import declare from 'dojo/_base/declare';
-import TextField from './TextField';
-import FieldManager from '../FieldManager';
-
-/**
- * @class
- * @alias module:argos/Fields/TextAreaField
- * @classdesc The TextAreaField extends the base TextField by changing the input element to
- * an `<textarea>` element with a configurable amount of visible rows.
- *
- * @example
- * {
- *   name: 'Description',
- *   property: 'Description',
- *   label: this.descriptionText,
- *   type: 'textarea',
- *   rows: 6
- * }
- * @extends module:argos/Fields/TextField
- */
-const control = declare('argos.Fields.TextAreaField', [TextField], /** @lends module:argos/Fields/TextAreaField.prototype */{
+define('argos/Fields/TextAreaField', [
+  'dojo/_base/declare',
+  './TextField',
+  '../FieldManager'
+], function(declare, TextField, FieldManager) {
   /**
-   * @cfg {Number}
-   * Number of rows to show visually, does not constrain input.
-   */
-  rows: 4,
-  /**
-   * @property {Boolean}
-   * Overrides default to hide the clear button.
-   */
-  enableClearButton: false,
-  /**
-   * @property {Simplate}
-   * Simplate that defines the fields HTML Markup
+   * @class
+   * @alias module:argos/Fields/TextAreaField
+   * @classdesc The TextAreaField extends the base TextField by changing the input element to
+   * an `<textarea>` element with a configurable amount of visible rows.
    *
-   * * `$` => Field instance
-   * * `$$` => Owner View instance
-   *
+   * @example
+   * {
+   *   name: 'Description',
+   *   property: 'Description',
+   *   label: this.descriptionText,
+   *   type: 'textarea',
+   *   rows: 6
+   * }
+   * @extends module:argos/Fields/TextField
    */
-  widgetTemplate: new Simplate([
-    '<label for="{%= $.name %}">{%: $.label %}</label>',
-    '<textarea data-dojo-attach-point="inputNode" name="{%= $.name %}" rows="{%: $.rows %}" {% if ($.readonly) { %} readonly {% } %}></textarea>',
-  ]),
-  setValue: function setValue(val = '', initial) {
-    if (initial) {
-      this.originalValue = val;
-    }
+  const control = declare('argos.Fields.TextAreaField', [TextField], /** @lends module:argos/Fields/TextAreaField.prototype */{
+    /**
+     * @cfg {Number}
+     * Number of rows to show visually, does not constrain input.
+     */
+    rows: 4,
+    /**
+     * @property {Boolean}
+     * Overrides default to hide the clear button.
+     */
+    enableClearButton: false,
+    /**
+     * @property {Simplate}
+     * Simplate that defines the fields HTML Markup
+     *
+     * * `$` => Field instance
+     * * `$$` => Owner View instance
+     *
+     */
+    widgetTemplate: new Simplate([
+      '<label for="{%= $.name %}">{%: $.label %}</label>',
+      '<textarea data-dojo-attach-point="inputNode" name="{%= $.name %}" rows="{%: $.rows %}" {% if ($.readonly) { %} readonly {% } %}></textarea>',
+    ]),
+    setValue: function setValue(val = '', initial) {
+      if (initial) {
+        this.originalValue = val;
+      }
 
-    this.previousValue = false;
-    // IE/Edge shows null values in Text Area Fields, check that we're not setting displayed value as null
-    this.set('inputValue', val === null ? '' : val);
-  },
+      this.previousValue = false;
+      // IE/Edge shows null values in Text Area Fields, check that we're not setting displayed value as null
+      this.set('inputValue', val === null ? '' : val);
+    },
+  });
+
+  return FieldManager.register('textarea', control);
 });
-
-export default FieldManager.register('textarea', control);

@@ -16,40 +16,42 @@
 /**
  * @module argos/FieldManager
  */
-import lang from 'dojo/_base/lang';
+define('argos/FieldManager', [
+  'dojo/_base/lang'
+], function(lang) {
+  const store = {};
 
-const store = {};
+  /**
+   * @class
+   * @alias module:argos/FieldManager
+   * @classdesc Field Manager is a registry for field types that enables the Edit View layouts to
+   * simply define `type: 'myFieldType'`.
+   * @static
+   */
+  const __class = lang.setObject('argos.FieldManager', /** @lends module:argos/FieldManager */{
+    /**
+     * @property {Object}
+     * The type map that translates string type names to constructor functions
+     */
+    types: store,
+    /**
+     * Registers a field type by providing a unique name and the constructor to be called
+     * @param {String} name Unique string name of field, will be what is used in Edit View layouts.
+     * @param {Function} ctor Constructor function of field
+     */
+    register: function register(name, ctor) {
+      store[name] = ctor;
+      return ctor;
+    },
+    /**
+     * Retrieves a constructor for the given field name
+     * @param name Unique name of field
+     * @return {Function} Constructor for the given field type
+     */
+    get: function get(name) {
+      return store[name];
+    },
+  });
 
-/**
- * @class
- * @alias module:argos/FieldManager
- * @classdesc Field Manager is a registry for field types that enables the Edit View layouts to
- * simply define `type: 'myFieldType'`.
- * @static
- */
-const __class = lang.setObject('argos.FieldManager', /** @lends module:argos/FieldManager */{
-  /**
-   * @property {Object}
-   * The type map that translates string type names to constructor functions
-   */
-  types: store,
-  /**
-   * Registers a field type by providing a unique name and the constructor to be called
-   * @param {String} name Unique string name of field, will be what is used in Edit View layouts.
-   * @param {Function} ctor Constructor function of field
-   */
-  register: function register(name, ctor) {
-    store[name] = ctor;
-    return ctor;
-  },
-  /**
-   * Retrieves a constructor for the given field name
-   * @param name Unique name of field
-   * @return {Function} Constructor for the given field type
-   */
-  get: function get(name) {
-    return store[name];
-  },
+  return __class;
 });
-
-export default __class;

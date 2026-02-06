@@ -13,58 +13,61 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import Base from './Base';
-import _SDataModelBase from 'argos/Models/_SDataModelBase';
-import Manager from 'argos/Models/Manager';
-import MODEL_TYPES from 'argos/Models/Types';
-import MODEL_NAMES from '../Names';
+define('crm/Models/HistoryAttendee/SData', [
+  'dojo/_base/declare',
+  './Base',
+  'argos/Models/_SDataModelBase',
+  'argos/Models/Manager',
+  'argos/Models/Types',
+  '../Names'
+], function(declare, Base, _SDataModelBase, Manager, MODEL_TYPES, MODEL_NAMES) {
+  const __class = declare('crm.Models.HistoryAttendee.SData', [Base, _SDataModelBase], {
+    id: 'history_attendee_sdata_model',
+    createQueryModels: function createQueryModels() {
+      return [{
+        name: 'list',
+        queryOrderBy: 'Name',
+        querySelect: [
+          'EntityType',
+          'EntityId',
+          'Name',
+          'Note',
+          'AccountId',
+          'AccountName',
+          'Id',
+          'RoleName',
+          'PhoneNumber',
+          'Email',
+          'TimeZone',
+          'HistoryId',
+        ],
+      }, {
+        name: 'detail',
+        querySelect: [
+          'EntityType',
+          'EntityId',
+          'Name',
+          'Note',
+          'AccountId',
+          'AccountName',
+          'Id',
+          'RoleName',
+          'PhoneNumber',
+          'Email',
+          'TimeZone',
+          'IsPrimary',
+          'IsAttendee',
+          'HistoryId',
+          'EntityId',
+        ],
+        queryInclude: [
+          '$permissions',
+        ],
+      }];
+    },
+  });
 
-const __class = declare('crm.Models.HistoryAttendee.SData', [Base, _SDataModelBase], {
-  id: 'history_attendee_sdata_model',
-  createQueryModels: function createQueryModels() {
-    return [{
-      name: 'list',
-      queryOrderBy: 'Name',
-      querySelect: [
-        'EntityType',
-        'EntityId',
-        'Name',
-        'Note',
-        'AccountId',
-        'AccountName',
-        'Id',
-        'RoleName',
-        'PhoneNumber',
-        'Email',
-        'TimeZone',
-        'HistoryId',
-      ],
-    }, {
-      name: 'detail',
-      querySelect: [
-        'EntityType',
-        'EntityId',
-        'Name',
-        'Note',
-        'AccountId',
-        'AccountName',
-        'Id',
-        'RoleName',
-        'PhoneNumber',
-        'Email',
-        'TimeZone',
-        'IsPrimary',
-        'IsAttendee',
-        'HistoryId',
-        'EntityId',
-      ],
-      queryInclude: [
-        '$permissions',
-      ],
-    }];
-  },
+  Manager.register(MODEL_NAMES.HISTORYATTENDEE, MODEL_TYPES.SDATA, __class);
+
+  return __class;
 });
-
-Manager.register(MODEL_NAMES.HISTORYATTENDEE, MODEL_TYPES.SDATA, __class);
-export default __class;

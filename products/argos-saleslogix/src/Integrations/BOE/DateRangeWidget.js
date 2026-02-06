@@ -12,36 +12,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import _Widget from 'dijit/_Widget';
-import _Templated from 'argos/_Templated';
+define('crm/Integrations/BOE/DateRangeWidget', [
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  'dijit/_Widget',
+  'argos/_Templated'
+], function(declare, lang, _Widget, _Templated) {
+  const __class = declare('crm.Integrations.BOE.DateRangeWidget', [_Widget, _Templated], {
+    widgetTemplate: new Simplate([
+      '<div class="range-widget">',
+      '<button data-dojo-attach-event="onclick:changeRange">',
+      '<div data-dojo-attach-point="rangeDetailNode" class="range-detail">',
+      '{%! $.itemTemplate %}',
+      '</div>',
+      '</button>',
+      '</div>',
+    ]),
 
-const __class = declare('crm.Integrations.BOE.DateRangeWidget', [_Widget, _Templated], {
-  widgetTemplate: new Simplate([
-    '<div class="range-widget">',
-    '<button data-dojo-attach-event="onclick:changeRange">',
-    '<div data-dojo-attach-point="rangeDetailNode" class="range-detail">',
-    '{%! $.itemTemplate %}',
-    '</div>',
-    '</button>',
-    '</div>',
-  ]),
+    /*
+     * HTML markup for the range detail (name/value)
+     */
+    itemTemplate: new Simplate([
+      '<span class="range-value">{%: $.value %} {%: $.valueUnit %}</span>',
+    ]),
 
-  /*
-   * HTML markup for the range detail (name/value)
-   */
-  itemTemplate: new Simplate([
-    '<span class="range-value">{%: $.value %} {%: $.valueUnit %}</span>',
-  ]),
+    // Localization
+    value: '',
 
-  // Localization
-  value: '',
+    // This is the onclick function that is to be overriden by the class that is using this widget
+    changeRange: function changeRange() {
+    },
+  });
 
-  // This is the onclick function that is to be overriden by the class that is using this widget
-  changeRange: function changeRange() {
-  },
+  lang.setObject('crm.Views.DateRangeWidget', __class);
+
+  return __class;
 });
-
-lang.setObject('crm.Views.DateRangeWidget', __class);
-export default __class;

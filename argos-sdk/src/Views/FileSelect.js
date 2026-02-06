@@ -16,252 +16,253 @@
 /**
  * @module argos/Views/FileSelect
  */
-import declare from 'dojo/_base/declare';
-
-import getResource from '../I18n';
-import View from '../View';
-import '../Fields/TextField';
-
-const resource = getResource('fileSelect');
-
-/**
- * @class
- * @alias module:argos/Views/FileSelect
- * @classdesc File Select View is a view for selection files capabilities.
- * @extends module:argos/View
- */
-const __class = declare('argos.Views.FileSelect', [View], /** @lends module:argos/Views/FileSelect.prototype */{
-  // Localization
-  titleText: resource.titleText,
-  addFileText: resource.addFileText,
-  uploadText: resource.uploadText,
-  cancelText: resource.cancelText,
-  selectFileText: resource.selectFileText,
-  loadingText: resource.loadingText,
-  descriptionText: resource.descriptionText,
-  bytesText: resource.bytesText,
-  notSupportedText: resource.notSupportedText,
+define('argos/Views/FileSelect', [
+  'dojo/_base/declare',
+  '../I18n',
+  '../View',
+  '../Fields/TextField'
+], function(declare, getResource, View) {
+  const resource = getResource('fileSelect');
 
   /**
-   * @property {Simplate}
-   * The template used to render the loading message when the view is requesting more data.
-   *
-   * The default template uses the following properties:
-   *
-   *      name                description
-   *      ----------------------------------------------------------------
-   *      loadingText         The text to display while loading.
+   * @class
+   * @alias module:argos/Views/FileSelect
+   * @classdesc File Select View is a view for selection files capabilities.
+   * @extends module:argos/View
    */
-  loadingTemplate: new Simplate([
-    '<li><label id="progress-label">{%= $.loadingText %}</label></li>',
-    `<li class="progress">
-      <div class="progress-bar" id="progressbar" aria-labelledby="progress-label"></div>
-    </li>`,
-  ]),
+  const __class = declare('argos.Views.FileSelect', [View], /** @lends module:argos/Views/FileSelect.prototype */{
+    // Localization
+    titleText: resource.titleText,
+    addFileText: resource.addFileText,
+    uploadText: resource.uploadText,
+    cancelText: resource.cancelText,
+    selectFileText: resource.selectFileText,
+    loadingText: resource.loadingText,
+    descriptionText: resource.descriptionText,
+    bytesText: resource.bytesText,
+    notSupportedText: resource.notSupportedText,
 
-  /**
-   * @property {Simplate}
-   * The template that displays when HTML5 file api is not supported.
-   */
-  notSupportedTemplate: new Simplate([
-    '<h2>{%= $$.notSupportedText %}</h2>',
-  ]),
+    /**
+     * @property {Simplate}
+     * The template used to render the loading message when the view is requesting more data.
+     *
+     * The default template uses the following properties:
+     *
+     *      name                description
+     *      ----------------------------------------------------------------
+     *      loadingText         The text to display while loading.
+     */
+    loadingTemplate: new Simplate([
+      '<li><label id="progress-label">{%= $.loadingText %}</label></li>',
+      `<li class="progress">
+        <div class="progress-bar" id="progressbar" aria-labelledby="progress-label"></div>
+      </li>`,
+    ]),
 
-  /**
-   * @property {Simplate}
-   * Simplate that defines the HTML Markup
-   *
-   * * `$` => File Select view instance
-   *
-   */
-  widgetTemplate: new Simplate([
-    '<div style="padding-top: 10px;" data-title="{%: $.titleText %}" class="panel twelve columns {%= $.cls %}">',
-    '<br>', // TODO: all views should be placed in .row -> .columns
-    '<div data-dojo-attach-point="fileArea" class="file-area">',
-    `<div class="field" data-dojo-attach-point="fileWrapper">
-      <label class="fileupload" data-dojo-attach-point="fileupload">
-          <span class="audible">{%: $.addFileText %}</span>
-          <input type="file" data-dojo-attach-point="btnFileSelect" name="file-input" size="71" />
-      </label>
-    </div>`,
-    '</div>',
-    '<ul class="list-content" data-dojo-attach-point="contentNode"></ul>',
-    '<div class="buttons">',
-    '<div><button id="fileSelect-btn-upload" data-dojo-attach-point="btnUploadFiles" class="btn-primary" data-action="onUploadFiles"><span>{%: $.uploadText %}</span></button>',
-    '<button id="fileSelect-btn-cancel" class="btn" data-action="cancelSelect"><span>{%: $.cancelText %}</span></button><div>',
-    '</div>',
-    '</div>',
-  ]),
-  /**
-   * @property {Simplate} fileTemplate
-   */
-  fileTemplate: new Simplate([
-    '<li class="row {%= $.cls %}" data-property="{%= $.property || $.name %}">',
-    '<p class="file-name">{%: $.fileName %}</p>',
-    '<label>{%: $$.descriptionText %}</label>',
-    '<input id="{%=  $.name %}" type="text" value="{%=  $.description %}">',
-    '</li>',
-  ]),
+    /**
+     * @property {Simplate}
+     * The template that displays when HTML5 file api is not supported.
+     */
+    notSupportedTemplate: new Simplate([
+      '<h2>{%= $$.notSupportedText %}</h2>',
+    ]),
 
-  signatureNode: null,
-  id: 'fileSelect_edit',
-  btnFileSelect: null,
-  _files: null,
-  _formParts: [],
+    /**
+     * @property {Simplate}
+     * Simplate that defines the HTML Markup
+     *
+     * * `$` => File Select view instance
+     *
+     */
+    widgetTemplate: new Simplate([
+      '<div style="padding-top: 10px;" data-title="{%: $.titleText %}" class="panel twelve columns {%= $.cls %}">',
+      '<br>', // TODO: all views should be placed in .row -> .columns
+      '<div data-dojo-attach-point="fileArea" class="file-area">',
+      `<div class="field" data-dojo-attach-point="fileWrapper">
+        <label class="fileupload" data-dojo-attach-point="fileupload">
+            <span class="audible">{%: $.addFileText %}</span>
+            <input type="file" data-dojo-attach-point="btnFileSelect" name="file-input" size="71" />
+        </label>
+      </div>`,
+      '</div>',
+      '<ul class="list-content" data-dojo-attach-point="contentNode"></ul>',
+      '<div class="buttons">',
+      '<div><button id="fileSelect-btn-upload" data-dojo-attach-point="btnUploadFiles" class="btn-primary" data-action="onUploadFiles"><span>{%: $.uploadText %}</span></button>',
+      '<button id="fileSelect-btn-cancel" class="btn" data-action="cancelSelect"><span>{%: $.cancelText %}</span></button><div>',
+      '</div>',
+      '</div>',
+    ]),
+    /**
+     * @property {Simplate} fileTemplate
+     */
+    fileTemplate: new Simplate([
+      '<li class="row {%= $.cls %}" data-property="{%= $.property || $.name %}">',
+      '<p class="file-name">{%: $.fileName %}</p>',
+      '<label>{%: $$.descriptionText %}</label>',
+      '<input id="{%=  $.name %}" type="text" value="{%=  $.description %}">',
+      '</li>',
+    ]),
 
-  /**
-   * @constructs
-   */
-  constructor: function constructor() {},
-  postCreate: function postCreate() {
-    this.inherited(postCreate, arguments);
-    $(this.domNode).removeClass('list-loading');
-  },
-  /**
-   * Extends the @{link Sage.Platlform.Mobile.View} show to clear out the onchange event of the file input.
-   * The onchange event will only fire once per file, so we must re-insert the dom node and re-attach the event.
-   * @extends show
-   */
-  show: function show(/* options*/) {
-    this.inherited(show, arguments);
+    signatureNode: null,
+    id: 'fileSelect_edit',
+    btnFileSelect: null,
+    _files: null,
+    _formParts: [],
 
-    if (!App.supportsFileAPI()) {
-      $(this.domNode).empty().append(this.notSupportedTemplate.apply({}, this));
-      return;
-    }
+    /**
+     * @constructs
+     */
+    constructor: function constructor() {},
+    postCreate: function postCreate() {
+      this.inherited(postCreate, arguments);
+      $(this.domNode).removeClass('list-loading');
+    },
+    /**
+     * Extends the @{link Sage.Platlform.Mobile.View} show to clear out the onchange event of the file input.
+     * The onchange event will only fire once per file, so we must re-insert the dom node and re-attach the event.
+     * @extends show
+     */
+    show: function show(/* options*/) {
+      this.inherited(show, arguments);
 
-    this._files = [];
-
-    // Reset the input or the onchange will not fire if the same file is uploaded multiple times.
-    if ($(this.fileupload).data('fileupload')) {
-      $(this.fileupload).data('fileupload').destroy();
-    }
-
-    $(this.fileupload).fileupload();
-
-    this.btnFileSelect.onchange = function onchange(e) {
-      this._onSelectFile(e);
-    }.bind(this);
-
-    this.contentNode.innerHTML = '';
-    $(this.fileArea).show();
-    $(this.btnUploadFiles).show();
-    this.onUpdateProgress('0');
-  },
-  _browesForFiles: function _browesForFiles(/* file*/) {
-    this.btnFileSelect.click();
-  },
-  removeFile: function removeFile(/* fileId*/) {},
-  /**
-   * Returns an array of objects with the properties of: file, fileName, and description.
-   * @returns {Array}
-   */
-  getFileItems: function getFileItems() {
-    const fileItems = [];
-    const files = this._files;
-    let description = '';
-    for (let i = 0; i < files.length; i++) {
-      description = this._getFileDescription(i);
-      fileItems.push({
-        file: files[i],
-        fileName: files[i].name,
-        description,
-      });
-    }
-    return fileItems;
-  },
-  _getFileDescription: function _getFileDescription(fileIndex) {
-    const n = document.getElementById(`File_${fileIndex}`);
-    let desc;
-
-    if (n) {
-      desc = n.value;
-    }
-    return desc;
-  },
-  _onSelectFile: function _onSelectFile() {
-    const files = this.btnFileSelect.files;
-    if (files && files.length > 0) {
-      for (let i = 0; i < files.length; i++) {
-        this._files.push(files[i]);
+      if (!App.supportsFileAPI()) {
+        $(this.domNode).empty().append(this.notSupportedTemplate.apply({}, this));
+        return;
       }
-      this._buildForm(files);
-    }
-    $(this.btnUploadFiles).show();
-    $(this.fileArea).hide();
-  },
-  _addFile: function _addFile(file, index) {
-    const filelength = this._getFileLength(file);
-    const data = {
-      name: `File_${index}`,
-      fileName: `${file.name}  (${filelength})`,
-      description: this._getDefaultDescription(file.name),
-    };
-    $(this.contentNode).append(this.fileTemplate.apply(data, this));
-  },
-  _getFileLength: function _getFileLength(file) {
-    let filelength = 0;
-    if (file.size === 0) {
-      filelength = 0;
-    } else {
-      filelength = file.size || file.blob.length;
-    }
-    if (filelength === 0) {
-      filelength += `0 ${this.bytesTextBytes}`;
-    } else {
-      if (filelength) {
-        if (filelength > 1024) {
-          if (filelength > 1048576) {
-            filelength = `${Math.round(filelength / 1048576)} MB`;
+
+      this._files = [];
+
+      // Reset the input or the onchange will not fire if the same file is uploaded multiple times.
+      if ($(this.fileupload).data('fileupload')) {
+        $(this.fileupload).data('fileupload').destroy();
+      }
+
+      $(this.fileupload).fileupload();
+
+      this.btnFileSelect.onchange = function onchange(e) {
+        this._onSelectFile(e);
+      }.bind(this);
+
+      this.contentNode.innerHTML = '';
+      $(this.fileArea).show();
+      $(this.btnUploadFiles).show();
+      this.onUpdateProgress('0');
+    },
+    _browesForFiles: function _browesForFiles(/* file*/) {
+      this.btnFileSelect.click();
+    },
+    removeFile: function removeFile(/* fileId*/) {},
+    /**
+     * Returns an array of objects with the properties of: file, fileName, and description.
+     * @returns {Array}
+     */
+    getFileItems: function getFileItems() {
+      const fileItems = [];
+      const files = this._files;
+      let description = '';
+      for (let i = 0; i < files.length; i++) {
+        description = this._getFileDescription(i);
+        fileItems.push({
+          file: files[i],
+          fileName: files[i].name,
+          description,
+        });
+      }
+      return fileItems;
+    },
+    _getFileDescription: function _getFileDescription(fileIndex) {
+      const n = document.getElementById(`File_${fileIndex}`);
+      let desc;
+
+      if (n) {
+        desc = n.value;
+      }
+      return desc;
+    },
+    _onSelectFile: function _onSelectFile() {
+      const files = this.btnFileSelect.files;
+      if (files && files.length > 0) {
+        for (let i = 0; i < files.length; i++) {
+          this._files.push(files[i]);
+        }
+        this._buildForm(files);
+      }
+      $(this.btnUploadFiles).show();
+      $(this.fileArea).hide();
+    },
+    _addFile: function _addFile(file, index) {
+      const filelength = this._getFileLength(file);
+      const data = {
+        name: `File_${index}`,
+        fileName: `${file.name}  (${filelength})`,
+        description: this._getDefaultDescription(file.name),
+      };
+      $(this.contentNode).append(this.fileTemplate.apply(data, this));
+    },
+    _getFileLength: function _getFileLength(file) {
+      let filelength = 0;
+      if (file.size === 0) {
+        filelength = 0;
+      } else {
+        filelength = file.size || file.blob.length;
+      }
+      if (filelength === 0) {
+        filelength += `0 ${this.bytesTextBytes}`;
+      } else {
+        if (filelength) {
+          if (filelength > 1024) {
+            if (filelength > 1048576) {
+              filelength = `${Math.round(filelength / 1048576)} MB`;
+            } else {
+              filelength = `${Math.round(filelength / 1024)} KB`;
+            }
           } else {
-            filelength = `${Math.round(filelength / 1024)} KB`;
+            filelength += ` ${this.bytesTextBytesBytes}`;
           }
-        } else {
-          filelength += ` ${this.bytesTextBytesBytes}`;
         }
       }
-    }
-    return filelength;
-  },
-  _buildForm: function _buildForm(files) {
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      this._addFile(file, i);
-    }
-  },
-  _getDefaultDescription: function _getDefaultDescription(filename) {
-    return filename.replace(/\.[\w]*/, '');
-  },
-  /**
-   * Handles the display when the user clicks upload.
-   */
-  onUploadFiles: function onUploadFiles() {
-    $(this.btnUploadFiles).hide();
-    const tpl = this.loadingTemplate.apply(this);
-    $(this.domNode).addClass('list-loading');
-    $(this.contentNode).prepend(tpl);
-    $('#progressbar', this.contentNode).progress();
-  },
-  cancelSelect: function cancelSelect() {},
-  /**
-   * Handles the display when progress events are recieved.
-   */
-  onUpdateProgress: function onUpdateProgress(msg) {
-    const progressbar = $('#progressbar', this.contentNode);
-    if (progressbar.length) {
-      if (!(msg instanceof Array) && !isNaN(msg.replace('%', ''))) {
-        progressbar.data('progress').update(msg.replace('%', ''));
+      return filelength;
+    },
+    _buildForm: function _buildForm(files) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        this._addFile(file, i);
       }
-      $('#progress-label', this.contentNode).text(`${this.loadingText} ${msg}`);
-    }
-  },
-  /**
-   * Handles the display when the upload fails.
-   */
-  onUpdateFailed: function onUpdateFailed(msg) {
-    this.onUpdateProgress(msg);
-    $(this.domNode).removeClass('list-loading');
-  },
-});
+    },
+    _getDefaultDescription: function _getDefaultDescription(filename) {
+      return filename.replace(/\.[\w]*/, '');
+    },
+    /**
+     * Handles the display when the user clicks upload.
+     */
+    onUploadFiles: function onUploadFiles() {
+      $(this.btnUploadFiles).hide();
+      const tpl = this.loadingTemplate.apply(this);
+      $(this.domNode).addClass('list-loading');
+      $(this.contentNode).prepend(tpl);
+      $('#progressbar', this.contentNode).progress();
+    },
+    cancelSelect: function cancelSelect() {},
+    /**
+     * Handles the display when progress events are recieved.
+     */
+    onUpdateProgress: function onUpdateProgress(msg) {
+      const progressbar = $('#progressbar', this.contentNode);
+      if (progressbar.length) {
+        if (!(msg instanceof Array) && !isNaN(msg.replace('%', ''))) {
+          progressbar.data('progress').update(msg.replace('%', ''));
+        }
+        $('#progress-label', this.contentNode).text(`${this.loadingText} ${msg}`);
+      }
+    },
+    /**
+     * Handles the display when the upload fails.
+     */
+    onUpdateFailed: function onUpdateFailed(msg) {
+      this.onUpdateProgress(msg);
+      $(this.domNode).removeClass('list-loading');
+    },
+  });
 
-export default __class;
+  return __class;
+});

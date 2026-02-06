@@ -13,21 +13,24 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import _Module from './_Module';
-import '../Models/QuotePerson/SData';
+define('crm/Integrations/BOE/Modules/QuotePersonModule', [
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  './_Module',
+  '../Models/QuotePerson/SData'
+], function(declare, lang, _Module) {
+  const __class = declare('crm.Integrations.BOE.Modules.QuotePersonModule', [_Module], {
+    init: function init() {
+    },
+    loadViews: function loadViews() {
+    },
+    loadCustomizations: function loadCustomizations() {
+    },
+    loadToolbars: function loadToolbars() {
+    },
+  });
 
-const __class = declare('crm.Integrations.BOE.Modules.QuotePersonModule', [_Module], {
-  init: function init() {
-  },
-  loadViews: function loadViews() {
-  },
-  loadCustomizations: function loadCustomizations() {
-  },
-  loadToolbars: function loadToolbars() {
-  },
+  lang.setObject('icboe.Modules.QuotePersonModule', __class);
+
+  return __class;
 });
-
-lang.setObject('icboe.Modules.QuotePersonModule', __class);
-export default __class;

@@ -15,9 +15,7 @@ mkdir -p deploy/content/dojox
 
 npm install
 grunt clean:css
-grunt clean:js
 grunt less
-npm run build
 
 # Requires mono
 mono tools/JsBit/jsbit.exe -p "build/release.jsb2" -d "."

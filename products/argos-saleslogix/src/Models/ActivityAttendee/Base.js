@@ -13,26 +13,29 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import _ModelBase from 'argos/Models/_ModelBase';
-import MODEL_NAMES from '../Names';
-import getResource from 'argos/I18n';
+define('crm/Models/ActivityAttendee/Base', [
+  'dojo/_base/declare',
+  'argos/Models/_ModelBase',
+  '../Names',
+  'argos/I18n'
+], function(declare, _ModelBase, MODEL_NAMES, getResource) {
+  const resource = getResource('activityAttendeeModel');
 
-const resource = getResource('activityAttendeeModel');
+  const __class = declare('crm.Models.ActivityAttendee.Base', [_ModelBase], {
+    resourceKind: 'activityAttendees',
+    entityName: 'ActivityAttendee',
+    entityDisplayName: resource.entityDisplayName,
+    entityDisplayNamePlural: resource.entityDisplayNamePlural,
+    modelName: MODEL_NAMES.ACTIVITYATTENDEE,
+    iconClass: 'user',
+    listViewId: 'activity_attendee_related',
+    createPicklists: function createPicklists() {
+      return this.picklists || (this.picklists = [{
+        name: 'Attendee Role',
+        property: 'RoleName',
+      }]);
+    },
+  });
 
-const __class = declare('crm.Models.ActivityAttendee.Base', [_ModelBase], {
-  resourceKind: 'activityAttendees',
-  entityName: 'ActivityAttendee',
-  entityDisplayName: resource.entityDisplayName,
-  entityDisplayNamePlural: resource.entityDisplayNamePlural,
-  modelName: MODEL_NAMES.ACTIVITYATTENDEE,
-  iconClass: 'user',
-  listViewId: 'activity_attendee_related',
-  createPicklists: function createPicklists() {
-    return this.picklists || (this.picklists = [{
-      name: 'Attendee Role',
-      property: 'RoleName',
-    }]);
-  },
+  return __class;
 });
-export default __class;

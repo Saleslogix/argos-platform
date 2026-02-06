@@ -13,22 +13,24 @@
  * limitations under the License.
  */
 
-export default {
-  ACCOUNT: 'Account',
-  AUTHENTICATION: 'Authentication',
-  ACTIVITY: 'Activity',
-  ACTIVITYATTENDEE: 'ActivityAttendee',
-  HISTORYATTENDEE: 'HistoryAttendee',
-  CONTACT: 'Contact',
-  INTEGRATION: 'Integration',
-  LEAD: 'Lead',
-  LEADADDRESS: 'LeadAddress',
-  OPPORTUNITY: 'Opportunity',
-  OPPORTUNITYCONTACT: 'OpportunityContact',
-  TICKET: 'Ticket',
-  TICKETACTIVITY: 'TicketActivity',
-  USERACTIVITY: 'UserActivity',
-  ADDRESS: 'Address',
-  HISTORY: 'History',
-  AREACATEGORYISSUE: 'AreaCategoryIssue',
-};
+define('crm/Models/Names', [], function() {
+  return {
+    ACCOUNT: 'Account',
+    AUTHENTICATION: 'Authentication',
+    ACTIVITY: 'Activity',
+    ACTIVITYATTENDEE: 'ActivityAttendee',
+    HISTORYATTENDEE: 'HistoryAttendee',
+    CONTACT: 'Contact',
+    INTEGRATION: 'Integration',
+    LEAD: 'Lead',
+    LEADADDRESS: 'LeadAddress',
+    OPPORTUNITY: 'Opportunity',
+    OPPORTUNITYCONTACT: 'OpportunityContact',
+    TICKET: 'Ticket',
+    TICKETACTIVITY: 'TicketActivity',
+    USERACTIVITY: 'UserActivity',
+    ADDRESS: 'Address',
+    HISTORY: 'History',
+    AREACATEGORYISSUE: 'AreaCategoryIssue',
+  };
+});

@@ -13,39 +13,41 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import List from 'argos/List';
-import getResource from 'argos/I18n';
+define('crm/Views/ProductProgram/List', [
+  'dojo/_base/declare',
+  'argos/List',
+  'argos/I18n'
+], function(declare, List, getResource) {
+  const resource = getResource('productProgramList');
 
-const resource = getResource('productProgramList');
+  const __class = declare('crm.Views.ProductProgram.List', [List], {
+    // Templates
+    itemTemplate: new Simplate([
+      '<p class="listview-heading">{%: $.Program %}</p>',
+      '<p class="micro-text">',
+      '{%: $.Price %}',
+      '</p>',
+    ]),
 
-const __class = declare('crm.Views.ProductProgram.List', [List], {
-  // Templates
-  itemTemplate: new Simplate([
-    '<p class="listview-heading">{%: $.Program %}</p>',
-    '<p class="micro-text">',
-    '{%: $.Price %}',
-    '</p>',
-  ]),
+    // Localization
+    titleText: resource.titleText,
 
-  // Localization
-  titleText: resource.titleText,
+    // View Properties
+    id: 'productprogram_list',
+    security: 'Entities/ProductProgram/View',
+    queryOrderBy: 'Program',
+    querySelect: [
+      'DefaultProgram',
+      'Program',
+      'Price',
+    ],
+    resourceKind: 'productPrograms',
 
-  // View Properties
-  id: 'productprogram_list',
-  security: 'Entities/ProductProgram/View',
-  queryOrderBy: 'Program',
-  querySelect: [
-    'DefaultProgram',
-    'Program',
-    'Price',
-  ],
-  resourceKind: 'productPrograms',
+    formatSearchQuery: function formatSearchQuery(searchQuery) {
+      const q = this.escapeSearchQuery(searchQuery.toUpperCase());
+      return `(upper(Program) like "${q}%")`;
+    },
+  });
 
-  formatSearchQuery: function formatSearchQuery(searchQuery) {
-    const q = this.escapeSearchQuery(searchQuery.toUpperCase());
-    return `(upper(Program) like "${q}%")`;
-  },
+  return __class;
 });
-
-export default __class;

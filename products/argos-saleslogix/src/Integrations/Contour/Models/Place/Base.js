@@ -13,30 +13,33 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import _ModelBase from 'argos/Models/_ModelBase';
-import MODEL_NAMES from '../Names';
-import getResource from 'argos/I18n';
+define('crm/Integrations/Contour/Models/Place/Base', [
+  'dojo/_base/declare',
+  'argos/Models/_ModelBase',
+  '../Names',
+  'argos/I18n'
+], function(declare, _ModelBase, MODEL_NAMES, getResource) {
+  const resource = getResource('placeModel'); // eslint-disable-line
+  const addressResource = getResource('addressModel');
 
-const resource = getResource('placeModel'); // eslint-disable-line
-const addressResource = getResource('addressModel');
+  const __class = declare('crm.Integrations.Contour.Models.Place.Base', [_ModelBase], {
+    resourceKind: 'places',
+    entityName: 'Place',
+    entityDisplayName: resource.entityDisplayName,
+    entityDisplayNamePlural: resource.entityDisplayNamePlural,
+    modelName: MODEL_NAMES.PLACE,
+    listViewId: 'pxSearch_locations',
+    createRelationships: function createRelationships() {
+      const rel = this.relationships || (this.relationships = [{
+        name: 'Addresses',
+        displayName: addressResource.entityDisplayNamePlural,
+        type: 'OneToMany',
+        relatedEntity: 'Address',
+        relatedProperty: 'EntityId',
+      }]);
+      return rel;
+    },
+  });
 
-const __class = declare('crm.Integrations.Contour.Models.Place.Base', [_ModelBase], {
-  resourceKind: 'places',
-  entityName: 'Place',
-  entityDisplayName: resource.entityDisplayName,
-  entityDisplayNamePlural: resource.entityDisplayNamePlural,
-  modelName: MODEL_NAMES.PLACE,
-  listViewId: 'pxSearch_locations',
-  createRelationships: function createRelationships() {
-    const rel = this.relationships || (this.relationships = [{
-      name: 'Addresses',
-      displayName: addressResource.entityDisplayNamePlural,
-      type: 'OneToMany',
-      relatedEntity: 'Address',
-      relatedProperty: 'EntityId',
-    }]);
-    return rel;
-  },
+  return __class;
 });
-export default __class;

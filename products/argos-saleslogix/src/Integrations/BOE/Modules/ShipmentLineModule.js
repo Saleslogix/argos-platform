@@ -13,32 +13,35 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import _Module from './_Module';
-import ShipmentItemsDetail from '../Views/ERPShipmentItems/Detail';
-import '../Models/ErpShipmentItem/Offline';
-import '../Models/ErpShipmentItem/SData';
+define('crm/Integrations/BOE/Modules/ShipmentLineModule', [
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  './_Module',
+  '../Views/ERPShipmentItems/Detail',
+  '../Models/ErpShipmentItem/Offline',
+  '../Models/ErpShipmentItem/SData'
+], function(declare, lang, _Module, ShipmentItemsDetail) {
+  const __class = declare('crm.Integrations.BOE.Modules.ShipmentLineModule', [_Module], {
+    init: function init() {
+    },
+    loadViews: function loadViews() {
+      const am = this.applicationModule;
+      am.registerView(new ShipmentItemsDetail());
+    },
+    loadCustomizations: function loadCustomizations() {
+      const am = this.applicationModule;
+      am.registerCustomization('detail/tools', 'erpshipment_items_detail', {
+        at: function at(tool) {
+          return tool.id === 'edit';
+        },
+        type: 'remove',
+      });
+    },
+    loadToolbars: function loadToolbars() {
+    },
+  });
 
-const __class = declare('crm.Integrations.BOE.Modules.ShipmentLineModule', [_Module], {
-  init: function init() {
-  },
-  loadViews: function loadViews() {
-    const am = this.applicationModule;
-    am.registerView(new ShipmentItemsDetail());
-  },
-  loadCustomizations: function loadCustomizations() {
-    const am = this.applicationModule;
-    am.registerCustomization('detail/tools', 'erpshipment_items_detail', {
-      at: function at(tool) {
-        return tool.id === 'edit';
-      },
-      type: 'remove',
-    });
-  },
-  loadToolbars: function loadToolbars() {
-  },
+  lang.setObject('icboe.Modules.ShipmentLineModule', __class);
+
+  return __class;
 });
-
-lang.setObject('icboe.Modules.ShipmentLineModule', __class);
-export default __class;

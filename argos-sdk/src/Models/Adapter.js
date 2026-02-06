@@ -16,23 +16,26 @@
 /**
  * @module argos/Models/Adapter
  */
-import Manager from './Manager';
-import MODEL_TYPES from './Types';
+define('argos/Models/Adapter', [
+  './Manager',
+  './Types'
+], function(Manager, MODEL_TYPES) {
+  /**
+   * @class
+   * @alias module:argos/Models/Adapter
+   * @static
+   */
 
-/**
- * @class
- * @alias module:argos/Models/Adapter
- * @static
- */
-export default /** @lends module:argos/Models/Adapter */{
-  getModel: function getModel(entityName) {
-    let Ctor;
-    if (App.onLine) {
-      Ctor = Manager.get(entityName, MODEL_TYPES.SDATA);
-    } else {
-      Ctor = Manager.get(entityName, MODEL_TYPES.OFFLINE);
-    }
-
-    return typeof Ctor === 'function' ? new Ctor() : false;
-  },
-};
+  return {
+    getModel: function getModel(entityName) {
+      let Ctor;
+      if (App.onLine) {
+        Ctor = Manager.get(entityName, MODEL_TYPES.SDATA);
+      } else {
+        Ctor = Manager.get(entityName, MODEL_TYPES.OFFLINE);
+      }
+  
+      return typeof Ctor === 'function' ? new Ctor() : false;
+    },
+  };
+});

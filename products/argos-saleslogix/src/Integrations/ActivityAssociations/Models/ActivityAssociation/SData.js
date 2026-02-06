@@ -13,71 +13,74 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import Base from './Base';
-import _SDataModelBase from 'argos/Models/_SDataModelBase';
-import Manager from 'argos/Models/Manager';
-import MODEL_TYPES from 'argos/Models/Types';
-import MODEL_NAMES from '../Names';
+define('crm/Integrations/ActivityAssociations/Models/ActivityAssociation/SData', [
+  'dojo/_base/declare',
+  './Base',
+  'argos/Models/_SDataModelBase',
+  'argos/Models/Manager',
+  'argos/Models/Types',
+  '../Names'
+], function(declare, Base, _SDataModelBase, Manager, MODEL_TYPES, MODEL_NAMES) {
+  const __class = declare('crm.Integrations.ActivityAssociations.Models.ActivityAssociation.SData', [Base, _SDataModelBase], {
+    id: 'activity_association_sdata_model',
+    createQueryModels: function createQueryModels() {
+      return [{
+        name: 'list',
+        queryOrderBy: 'EntityName',
+        querySelect: [
+          'EntityType',
+          'EntityId',
+          'EntityName',
+          'IsPrimary',
+          'ActivityId',
+        ],
+      }, {
+        name: 'detail',
+        querySelect: [
+          'EntityType',
+          'EntityId',
+          'EntityName',
+          'IsPrimary',
+          'ActivityId',
+        ],
+        queryInclude: [
+          '$permissions',
+        ],
+      }, {
+        name: 'edit',
+        querySelect: [
+          'EntityType',
+          'EntityId',
+          'EntityName',
+          'IsPrimary',
+          'ActivityId',
+        ],
+        queryInclude: [
+          '$permissions',
+        ],
+      }];
+    },
+    deleteEntry: function getEntry(entityId) {
+      const request = new Sage.SData.Client.SDataSingleResourceRequest(App.getService())
+        .setContractName('dynamic')
+        .setResourceKind(this.resourceKind)
+        .setResourceSelector(`"${entityId}"`);
 
-const __class = declare('crm.Integrations.ActivityAssociations.Models.ActivityAssociation.SData', [Base, _SDataModelBase], {
-  id: 'activity_association_sdata_model',
-  createQueryModels: function createQueryModels() {
-    return [{
-      name: 'list',
-      queryOrderBy: 'EntityName',
-      querySelect: [
-        'EntityType',
-        'EntityId',
-        'EntityName',
-        'IsPrimary',
-        'ActivityId',
-      ],
-    }, {
-      name: 'detail',
-      querySelect: [
-        'EntityType',
-        'EntityId',
-        'EntityName',
-        'IsPrimary',
-        'ActivityId',
-      ],
-      queryInclude: [
-        '$permissions',
-      ],
-    }, {
-      name: 'edit',
-      querySelect: [
-        'EntityType',
-        'EntityId',
-        'EntityName',
-        'IsPrimary',
-        'ActivityId',
-      ],
-      queryInclude: [
-        '$permissions',
-      ],
-    }];
-  },
-  deleteEntry: function getEntry(entityId) {
-    const request = new Sage.SData.Client.SDataSingleResourceRequest(App.getService())
-      .setContractName('dynamic')
-      .setResourceKind(this.resourceKind)
-      .setResourceSelector(`"${entityId}"`);
-
-    return new Promise((resolve, reject) => {
-      request.delete({}, {
-        success: function success(entry) {
-          resolve(entry);
-        },
-        failure: function failure(e) {
-          reject(e);
-        },
-        scope: this,
+      return new Promise((resolve, reject) => {
+        request.delete({}, {
+          success: function success(entry) {
+            resolve(entry);
+          },
+          failure: function failure(e) {
+            reject(e);
+          },
+          scope: this,
+        });
       });
-    });
-  },
-});
+    },
+  });
 
-Manager.register(MODEL_NAMES.ACTIVITYASSOCIATION, MODEL_TYPES.SDATA, __class);
-export default __class;
+  Manager.register(MODEL_NAMES.ACTIVITYASSOCIATION, MODEL_TYPES.SDATA, __class);
+
+  return __class;
+});

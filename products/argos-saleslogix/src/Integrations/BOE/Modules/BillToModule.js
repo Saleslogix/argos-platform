@@ -13,129 +13,132 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import _Module from './_Module';
-import AccountList from '../../../Views/Account/List';
-import BillToDetail from '../Views/ERPBillTos/Detail';
-import BillToEdit from '../Views/ERPBillTos/Edit';
-import BillToList from '../Views/ERPBillTos/List';
-import InvoiceList from '../Views/ERPInvoices/List';
-import QuoteList from '../Views/Quotes/List';
-import ReceivableList from '../Views/ERPReceivables/List';
-import ReturnList from '../Views/Returns/List';
-import SalesOrderList from '../Views/SalesOrders/List';
-import ShipToList from '../Views/ERPShipTos/List';
-import SyncResultsList from '../Views/SyncResults/List';
-import '../Models/ErpBillTo/Offline';
-import '../Models/ErpBillTo/SData';
+define('crm/Integrations/BOE/Modules/BillToModule', [
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  './_Module',
+  '../../../Views/Account/List',
+  '../Views/ERPBillTos/Detail',
+  '../Views/ERPBillTos/Edit',
+  '../Views/ERPBillTos/List',
+  '../Views/ERPInvoices/List',
+  '../Views/Quotes/List',
+  '../Views/ERPReceivables/List',
+  '../Views/Returns/List',
+  '../Views/SalesOrders/List',
+  '../Views/ERPShipTos/List',
+  '../Views/SyncResults/List',
+  '../Models/ErpBillTo/Offline',
+  '../Models/ErpBillTo/SData'
+], function(declare, lang, _Module, AccountList, BillToDetail, BillToEdit, BillToList, InvoiceList, QuoteList, ReceivableList, ReturnList, SalesOrderList, ShipToList, SyncResultsList) {
+  const __class = declare('crm.Integrations.BOE.Modules.BillToModule', [_Module], {
+    init: function init() {
+      App.picklistService.registerPicklistToView('SyncStatus', 'erpbillto_detail');
+    },
+    loadViews: function loadViews() {
+      const am = this.applicationModule;
+      am.registerView(new BillToList());
+      am.registerView(new BillToDetail());
+      am.registerView(new BillToEdit());
 
-const __class = declare('crm.Integrations.BOE.Modules.BillToModule', [_Module], {
-  init: function init() {
-    App.picklistService.registerPicklistToView('SyncStatus', 'erpbillto_detail');
-  },
-  loadViews: function loadViews() {
-    const am = this.applicationModule;
-    am.registerView(new BillToList());
-    am.registerView(new BillToDetail());
-    am.registerView(new BillToEdit());
+      am.registerView(new AccountList({
+        id: 'billto_accounts_related',
+        expose: false,
+        groupsEnabled: false,
+        defaultSearchTerm: function defaultSearchTerm() {
+          return '';
+        },
+      }));
+      am.registerView(new ShipToList({
+        id: 'billto_shiptos_related',
+        expose: false,
+        groupsEnabled: false,
+        defaultSearchTerm: function defaultSearchTerm() {
+          return '';
+        },
+      }));
+      am.registerView(new QuoteList({
+        id: 'billto_quotes_related',
+        expose: false,
+        groupsEnabled: false,
+        defaultSearchTerm: function defaultSearchTerm() {
+          return '';
+        },
+      }));
+      am.registerView(new SalesOrderList({
+        id: 'billto_orders_related',
+        expose: false,
+        groupsEnabled: false,
+        defaultSearchTerm: function defaultSearchTerm() {
+          return '';
+        },
+      }));
+      am.registerView(new ReceivableList({
+        id: 'billto_receivables_related',
+        expose: false,
+        groupsEnabled: false,
+        defaultSearchTerm: function defaultSearchTerm() {
+          return '';
+        },
+      }));
+      am.registerView(new InvoiceList({
+        id: 'billto_invoices_related',
+        expose: false,
+        groupsEnabled: false,
+        defaultSearchTerm: function defaultSearchTerm() {
+          return '';
+        },
+      }));
+      am.registerView(new ReturnList({
+        id: 'billto_returns_related',
+        expose: false,
+        groupsEnabled: false,
+        defaultSearchTerm: function defaultSearchTerm() {
+          return '';
+        },
+      }));
+      am.registerView(new SyncResultsList({
+        id: 'billto_synchistory_related',
+      }));
+    },
+    loadCustomizations: function loadCustomizations() {
+      const am = this.applicationModule;
+      am.registerCustomization('detail/tools', 'erpbillto_detail', {
+        at: function at(tool) {
+          return tool.id === 'edit';
+        },
+        type: 'remove',
+      });
+      am.registerCustomization('list/tools', 'billto_accounts_related', {
+        at: (tool) => {
+          return tool.id === 'new';
+        },
+        type: 'remove',
+      });
+      am.registerCustomization('list/tools', 'billto_receivables_related', {
+        at: (tool) => {
+          return tool.id === 'new';
+        },
+        type: 'remove',
+      });
+      am.registerCustomization('list/tools', 'billto_invoices_related', {
+        at: (tool) => {
+          return tool.id === 'new';
+        },
+        type: 'remove',
+      });
+      am.registerCustomization('list/tools', 'billto_returns_related', {
+        at: (tool) => {
+          return tool.id === 'new';
+        },
+        type: 'remove',
+      });
+    },
+    loadToolbars: function loadToolbars() {
+    },
+  });
 
-    am.registerView(new AccountList({
-      id: 'billto_accounts_related',
-      expose: false,
-      groupsEnabled: false,
-      defaultSearchTerm: function defaultSearchTerm() {
-        return '';
-      },
-    }));
-    am.registerView(new ShipToList({
-      id: 'billto_shiptos_related',
-      expose: false,
-      groupsEnabled: false,
-      defaultSearchTerm: function defaultSearchTerm() {
-        return '';
-      },
-    }));
-    am.registerView(new QuoteList({
-      id: 'billto_quotes_related',
-      expose: false,
-      groupsEnabled: false,
-      defaultSearchTerm: function defaultSearchTerm() {
-        return '';
-      },
-    }));
-    am.registerView(new SalesOrderList({
-      id: 'billto_orders_related',
-      expose: false,
-      groupsEnabled: false,
-      defaultSearchTerm: function defaultSearchTerm() {
-        return '';
-      },
-    }));
-    am.registerView(new ReceivableList({
-      id: 'billto_receivables_related',
-      expose: false,
-      groupsEnabled: false,
-      defaultSearchTerm: function defaultSearchTerm() {
-        return '';
-      },
-    }));
-    am.registerView(new InvoiceList({
-      id: 'billto_invoices_related',
-      expose: false,
-      groupsEnabled: false,
-      defaultSearchTerm: function defaultSearchTerm() {
-        return '';
-      },
-    }));
-    am.registerView(new ReturnList({
-      id: 'billto_returns_related',
-      expose: false,
-      groupsEnabled: false,
-      defaultSearchTerm: function defaultSearchTerm() {
-        return '';
-      },
-    }));
-    am.registerView(new SyncResultsList({
-      id: 'billto_synchistory_related',
-    }));
-  },
-  loadCustomizations: function loadCustomizations() {
-    const am = this.applicationModule;
-    am.registerCustomization('detail/tools', 'erpbillto_detail', {
-      at: function at(tool) {
-        return tool.id === 'edit';
-      },
-      type: 'remove',
-    });
-    am.registerCustomization('list/tools', 'billto_accounts_related', {
-      at: (tool) => {
-        return tool.id === 'new';
-      },
-      type: 'remove',
-    });
-    am.registerCustomization('list/tools', 'billto_receivables_related', {
-      at: (tool) => {
-        return tool.id === 'new';
-      },
-      type: 'remove',
-    });
-    am.registerCustomization('list/tools', 'billto_invoices_related', {
-      at: (tool) => {
-        return tool.id === 'new';
-      },
-      type: 'remove',
-    });
-    am.registerCustomization('list/tools', 'billto_returns_related', {
-      at: (tool) => {
-        return tool.id === 'new';
-      },
-      type: 'remove',
-    });
-  },
-  loadToolbars: function loadToolbars() {
-  },
+  lang.setObject('icboe.Modules.BillToModule', __class);
+
+  return __class;
 });
-
-lang.setObject('icboe.Modules.BillToModule', __class);
-export default __class;

@@ -13,56 +13,59 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import _Module from './_Module';
-import ShipmentsDetail from '../Views/ERPShipments/Detail';
-import ShipmentsList from '../Views/ERPShipments/List';
-import ShipmentItemsList from '../Views/ERPShipmentItems/List';
-import '../Models/ErpShipment/Offline';
-import '../Models/ErpShipment/SData';
+define('crm/Integrations/BOE/Modules/ShipmentModule', [
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  './_Module',
+  '../Views/ERPShipments/Detail',
+  '../Views/ERPShipments/List',
+  '../Views/ERPShipmentItems/List',
+  '../Models/ErpShipment/Offline',
+  '../Models/ErpShipment/SData'
+], function(declare, lang, _Module, ShipmentsDetail, ShipmentsList, ShipmentItemsList) {
+  const __class = declare('crm.Integrations.BOE.Modules.ShipmentModule', [_Module], {
+    defaultViews: ['erpshipments_list'],
+    init: function init() {
+    },
+    loadViews: function loadViews() {
+      const am = this.applicationModule;
 
-const __class = declare('crm.Integrations.BOE.Modules.ShipmentModule', [_Module], {
-  defaultViews: ['erpshipments_list'],
-  init: function init() {
-  },
-  loadViews: function loadViews() {
-    const am = this.applicationModule;
+      am.registerView(new ShipmentsDetail());
+      am.registerView(new ShipmentsList());
 
-    am.registerView(new ShipmentsDetail());
-    am.registerView(new ShipmentsList());
+      am.registerView(new ShipmentItemsList({
+        id: 'shipment_lines_related',
+        hasSettings: false,
+        expose: false,
+      }));
+    },
+    loadCustomizations: function loadCustomizations() {
+      const am = this.applicationModule;
+      am.registerCustomization('list/tools', 'erpshipments_list', {
+        at: function at(tool) {
+          return tool.id === 'new';
+        },
+        type: 'remove',
+      });
 
-    am.registerView(new ShipmentItemsList({
-      id: 'shipment_lines_related',
-      hasSettings: false,
-      expose: false,
-    }));
-  },
-  loadCustomizations: function loadCustomizations() {
-    const am = this.applicationModule;
-    am.registerCustomization('list/tools', 'erpshipments_list', {
-      at: function at(tool) {
-        return tool.id === 'new';
-      },
-      type: 'remove',
-    });
+      am.registerCustomization('list/tools', 'shipment_lines_related', {
+        at: function at(tool) {
+          return tool.id === 'new';
+        },
+        type: 'remove',
+      });
 
-    am.registerCustomization('list/tools', 'shipment_lines_related', {
-      at: function at(tool) {
-        return tool.id === 'new';
-      },
-      type: 'remove',
-    });
+      am.registerCustomization('detail/tools', 'erpshipments_detail', {
+        at: function at(tool) {
+          return tool.id === 'edit';
+        },
+        type: 'remove',
+      });
+    },
+    loadToolbars: function loadToolbars() {
+    },
+  });
+  lang.setObject('icboe.Modules.ShipmentModule', __class);
 
-    am.registerCustomization('detail/tools', 'erpshipments_detail', {
-      at: function at(tool) {
-        return tool.id === 'edit';
-      },
-      type: 'remove',
-    });
-  },
-  loadToolbars: function loadToolbars() {
-  },
+  return __class;
 });
-lang.setObject('icboe.Modules.ShipmentModule', __class);
-export default __class;

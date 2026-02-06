@@ -13,91 +13,93 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import _RightDrawerListMixin from '../_RightDrawerListMixin';
-import _MetricListMixin from '../_MetricListMixin';
-import MODEL_NAMES from '../../Models/Names';
-import MyList from './MyList';
-import MyDayOffline from './MyDayOffline';
-import getResource from 'argos/I18n';
+define('crm/Views/Activity/MyDay', [
+  'dojo/_base/declare',
+  '../_RightDrawerListMixin',
+  '../_MetricListMixin',
+  '../../Models/Names',
+  './MyList',
+  './MyDayOffline',
+  'argos/I18n'
+], function(declare, _RightDrawerListMixin, _MetricListMixin, MODEL_NAMES, MyList, MyDayOffline, getResource) {
+  const resource = getResource('activityMyDay');
 
-const resource = getResource('activityMyDay');
+  const __class = declare('crm.Views.Activity.MyDay', [MyList, _RightDrawerListMixin, _MetricListMixin], {
 
-const __class = declare('crm.Views.Activity.MyDay', [MyList, _RightDrawerListMixin, _MetricListMixin], {
+    // Localization
+    titleText: resource.titleText,
 
-  // Localization
-  titleText: resource.titleText,
+    // View Properties
+    id: 'myday_list',
+    resourceKind: 'userActivities',
+    modelName: MODEL_NAMES.USERACTIVITY,
+    enableSearch: false,
+    pageSize: 105,
+    queryModelName: 'myday',
+    enableOfflineSupport: true,
 
-  // View Properties
-  id: 'myday_list',
-  resourceKind: 'userActivities',
-  modelName: MODEL_NAMES.USERACTIVITY,
-  enableSearch: false,
-  pageSize: 105,
-  queryModelName: 'myday',
-  enableOfflineSupport: true,
+    _onRefresh: function _onRefresh(options) {
+      this.inherited(_onRefresh, arguments);
+      if (options.resourceKind === 'activities') {
+        this.refreshRequired = true;
+      }
+    },
 
-  _onRefresh: function _onRefresh(options) {
-    this.inherited(_onRefresh, arguments);
-    if (options.resourceKind === 'activities') {
+    show: function show(options) {
+      if (!App.onLine) {
+        this._showOfflineView(options);
+        return;
+      }
+      this.inherited(show, arguments);
+    },
+    _showOfflineView: function _showOfflineView(options) {
+      let view = App.getView('myday_offline_list');
+      if (!view) {
+        view = new MyDayOffline();
+        App.registerView(view);
+      }
+
+      view = App.getView('myday_offline_list');
+      if (view) {
+        view.show(options);
+      }
+    },
+    createToolLayout: function createToolLayout() {
+      this.inherited(createToolLayout, arguments);
+      if (this.tools && this.tools.tbar && !this._refreshAdded && !window.App.supportsTouch()) {
+        this.tools.tbar.push({
+          id: 'refresh',
+          svg: 'refresh',
+          action: '_refreshClicked',
+        });
+
+        this._refreshAdded = true;
+      }
+
+      return this.tools;
+    },
+    _refreshAdded: false,
+    _refreshClicked: function _refreshClicked() {
+      this.clear();
       this.refreshRequired = true;
-    }
-  },
+      this.refresh();
 
-  show: function show(options) {
-    if (!App.onLine) {
-      this._showOfflineView(options);
-      return;
-    }
-    this.inherited(show, arguments);
-  },
-  _showOfflineView: function _showOfflineView(options) {
-    let view = App.getView('myday_offline_list');
-    if (!view) {
-      view = new MyDayOffline();
-      App.registerView(view);
-    }
+      // Hook for customizers
+      this.onRefreshClicked();
+    },
+    onRefreshClicked: function onRefreshClicked() {},
+    _getCurrentQuery: function _getCurrentQuery(options) {
+      const myDayQuery = this._model.getMyDayQuery();
+      const optionsQuery = options && options.queryArgs && options.queryArgs.activeFilter;
+      return [myDayQuery, optionsQuery].filter((item) => {
+        return !!item;
+      })
+        .join(' and ');
+    },
+    allowSelection: true,
+    enableActions: true,
+    hashTagQueriesText: {},
+  });
 
-    view = App.getView('myday_offline_list');
-    if (view) {
-      view.show(options);
-    }
-  },
-  createToolLayout: function createToolLayout() {
-    this.inherited(createToolLayout, arguments);
-    if (this.tools && this.tools.tbar && !this._refreshAdded && !window.App.supportsTouch()) {
-      this.tools.tbar.push({
-        id: 'refresh',
-        svg: 'refresh',
-        action: '_refreshClicked',
-      });
-
-      this._refreshAdded = true;
-    }
-
-    return this.tools;
-  },
-  _refreshAdded: false,
-  _refreshClicked: function _refreshClicked() {
-    this.clear();
-    this.refreshRequired = true;
-    this.refresh();
-
-    // Hook for customizers
-    this.onRefreshClicked();
-  },
-  onRefreshClicked: function onRefreshClicked() {},
-  _getCurrentQuery: function _getCurrentQuery(options) {
-    const myDayQuery = this._model.getMyDayQuery();
-    const optionsQuery = options && options.queryArgs && options.queryArgs.activeFilter;
-    return [myDayQuery, optionsQuery].filter((item) => {
-      return !!item;
-    })
-      .join(' and ');
-  },
-  allowSelection: true,
-  enableActions: true,
-  hashTagQueriesText: {},
+  return __class;
 });
-
-export default __class;

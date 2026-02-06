@@ -13,24 +13,27 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import ActivityBase from '../Activity/Base';
-import MODEL_NAMES from '../Names';
-import getResource from 'argos/I18n';
+define('crm/Models/UserActivity/Base', [
+  'dojo/_base/declare',
+  '../Activity/Base',
+  '../Names',
+  'argos/I18n'
+], function(declare, ActivityBase, MODEL_NAMES, getResource) {
+  const resource = getResource('userActivityModel');
 
-const resource = getResource('userActivityModel');
+  const __class = declare('crm.Models.UserActivity.Base', [ActivityBase], {
+    modelName: MODEL_NAMES.USERACTIVITY,
+    entityName: 'UserActivity',
+    entityDisplayName: resource.entityDisplayName,
+    entityDisplayNamePlural: resource.entityDisplayNamePlural,
+    iconClass: 'bullet-list',
+    resourceKind: 'userActivities',
+    contractName: 'system',
+    createRelationships: function createRelationships() {
+      const rel = this.relationships || (this.relationships = []);
+      return rel;
+    },
+  });
 
-const __class = declare('crm.Models.UserActivity.Base', [ActivityBase], {
-  modelName: MODEL_NAMES.USERACTIVITY,
-  entityName: 'UserActivity',
-  entityDisplayName: resource.entityDisplayName,
-  entityDisplayNamePlural: resource.entityDisplayNamePlural,
-  iconClass: 'bullet-list',
-  resourceKind: 'userActivities',
-  contractName: 'system',
-  createRelationships: function createRelationships() {
-    const rel = this.relationships || (this.relationships = []);
-    return rel;
-  },
+  return __class;
 });
-export default __class;

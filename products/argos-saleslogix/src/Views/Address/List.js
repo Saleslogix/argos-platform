@@ -13,53 +13,55 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import format from '../../Format';
-import List from 'argos/List';
-import getResource from 'argos/I18n';
+define('crm/Views/Address/List', [
+  'dojo/_base/declare',
+  '../../Format',
+  'argos/List',
+  'argos/I18n'
+], function(declare, format, List, getResource) {
+  const resource = getResource('addressList');
 
-const resource = getResource('addressList');
+  const __class = declare('crm.Views.Address.List', [List], {
+    // Templates
+    itemTemplate: new Simplate([
+      '<p class="listview-heading">{%: $.$descriptor %}</p>',
+      '<p class="micro-text">{%= $$.format.address($, true) %}</p>',
+    ]),
 
-const __class = declare('crm.Views.Address.List', [List], {
-  // Templates
-  itemTemplate: new Simplate([
-    '<p class="listview-heading">{%: $.$descriptor %}</p>',
-    '<p class="micro-text">{%= $$.format.address($, true) %}</p>',
-  ]),
+    // Localization
+    titleText: resource.titleText,
 
-  // Localization
-  titleText: resource.titleText,
+    // View Properties
+    detailView: null,
+    id: 'address_list',
+    security: null, // 'Entities/Address/View',
+    insertSecurity: 'Entities/Address/Add',
+    insertView: 'address_edit',
+    resourceKind: 'addresses',
+    allowSelection: true,
+    enableActions: true,
+    format,
+    isCardView: false,
 
-  // View Properties
-  detailView: null,
-  id: 'address_list',
-  security: null, // 'Entities/Address/View',
-  insertSecurity: 'Entities/Address/Add',
-  insertView: 'address_edit',
-  resourceKind: 'addresses',
-  allowSelection: true,
-  enableActions: true,
-  format,
-  isCardView: false,
+    formatSearchQuery: function formatSearchQuery(searchQuery) {
+      const q = this.escapeSearchQuery(searchQuery.toUpperCase());
+      return `(upper(Description) like "${q}%" or upper(City) like "${q}%")`;
+    },
+    // Disable Add/Insert on toolbar
+    createToolLayout: function createToolLayout() {
+      return this.tools || (this.tools = {
+        tbar: [],
+      });
+    },
+    selectEntry: function selectEntry(params) {
+      const row = $(params.$source).closest('[data-key]')[0];
+      const key = row ? $(row).attr('data-key') : false;
 
-  formatSearchQuery: function formatSearchQuery(searchQuery) {
-    const q = this.escapeSearchQuery(searchQuery.toUpperCase());
-    return `(upper(Description) like "${q}%" or upper(City) like "${q}%")`;
-  },
-  // Disable Add/Insert on toolbar
-  createToolLayout: function createToolLayout() {
-    return this.tools || (this.tools = {
-      tbar: [],
-    });
-  },
-  selectEntry: function selectEntry(params) {
-    const row = $(params.$source).closest('[data-key]')[0];
-    const key = row ? $(row).attr('data-key') : false;
+      if (this._selectionModel && key) {
+        App.showMapForAddress(format.address(this.entries[key], true, ' '));
+      }
+    },
+  });
 
-    if (this._selectionModel && key) {
-      App.showMapForAddress(format.address(this.entries[key], true, ' '));
-    }
-  },
+  return __class;
 });
-
-export default __class;

@@ -13,16 +13,19 @@
  * limitations under the License.
  */
 
-import getResource from 'argos/I18n';
+define('crm/Models/Activity/ActivityTypeText', [
+  'argos/I18n'
+], function(getResource) {
+  const resource = getResource('activityTypeText');
 
-const resource = getResource('activityTypeText');
-export default {
-  atToDo: resource.atToDoText,
-  atPhoneCall: resource.atPhoneCallText,
-  atAppointment: resource.atAppointmentText,
-  atLiterature: resource.atLiteratureText,
-  atPersonal: resource.atPersonalText,
-  atQuestion: resource.atQuestionText,
-  atNote: resource.atNoteText,
-  atEMail: resource.atEMailText,
-};
+  return {
+    atToDo: resource.atToDoText,
+    atPhoneCall: resource.atPhoneCallText,
+    atAppointment: resource.atAppointmentText,
+    atLiterature: resource.atLiteratureText,
+    atPersonal: resource.atPersonalText,
+    atQuestion: resource.atQuestionText,
+    atNote: resource.atNoteText,
+    atEMail: resource.atEMailText,
+  };
+});

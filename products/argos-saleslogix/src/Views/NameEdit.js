@@ -13,103 +13,105 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import validator from '../Validator';
-import Edit from 'argos/Edit';
-import getResource from 'argos/I18n';
+define('crm/Views/NameEdit', [
+  'dojo/_base/declare',
+  '../Validator',
+  'argos/Edit',
+  'argos/I18n'
+], function(declare, validator, Edit, getResource) {
+  const resource = getResource('nameEdit');
 
-const resource = getResource('nameEdit');
+  const __class = declare('crm.Views.NameEdit', [Edit], {
+    // Localization
+    titleText: resource.titleText,
+    firstNameText: resource.firstNameText,
+    middleNameText: resource.middleNameText,
+    lastNameText: resource.lastNameText,
+    prefixText: resource.prefixText,
+    prefixTitleText: resource.prefixTitleText,
+    suffixText: resource.suffixText,
+    suffixTitleText: resource.suffixTitleText,
 
-const __class = declare('crm.Views.NameEdit', [Edit], {
-  // Localization
-  titleText: resource.titleText,
-  firstNameText: resource.firstNameText,
-  middleNameText: resource.middleNameText,
-  lastNameText: resource.lastNameText,
-  prefixText: resource.prefixText,
-  prefixTitleText: resource.prefixTitleText,
-  suffixText: resource.suffixText,
-  suffixTitleText: resource.suffixTitleText,
+    // View Properties
+    id: 'name_edit',
 
-  // View Properties
-  id: 'name_edit',
-
-  createLayout: function createLayout() {
-    return this.layout || (this.layout = [{
-      emptyText: '',
-      label: this.prefixText,
-      name: 'Prefix',
-      property: 'Prefix',
-      picklist: 'Name Prefix',
-      picklistOptions: (entry) => {
-        // Checks if entry is a Contact
-        if (entry.hasOwnProperty('NameLF')) {
+    createLayout: function createLayout() {
+      return this.layout || (this.layout = [{
+        emptyText: '',
+        label: this.prefixText,
+        name: 'Prefix',
+        property: 'Prefix',
+        picklist: 'Name Prefix',
+        picklistOptions: (entry) => {
+          // Checks if entry is a Contact
+          if (entry.hasOwnProperty('NameLF')) {
+            return {
+              filterByLanguage: true,
+              language: entry.LocationCode && entry.LocationCode.trim() || App.getCurrentLocale(),
+              storageMode: 'text',
+            };
+          }
           return {
-            filterByLanguage: true,
-            language: entry.LocationCode && entry.LocationCode.trim() || App.getCurrentLocale(),
+            filterByLanguage: false,
+            language: ' ',
             storageMode: 'text',
           };
-        }
-        return {
-          filterByLanguage: false,
-          language: ' ',
-          storageMode: 'text',
-        };
-      },
-      languageCodeProperty: 'LocationCode',
-      requireSelection: false,
-      storageMode: 'text',
-      title: this.prefixTitleText,
-      type: 'picklist',
-    }, {
-      name: 'FirstName',
-      property: 'FirstName',
-      label: this.firstNameText,
-      type: 'text',
-      maxTextLength: 32,
-      validator: validator.exceedsMaxTextLength,
-    }, {
-      name: 'MiddleName',
-      property: 'MiddleName',
-      label: this.middleNameText,
-      type: 'text',
-      maxTextLength: 32,
-      validator: validator.exceedsMaxTextLength,
-    }, {
-      name: 'LastName',
-      property: 'LastName',
-      label: this.lastNameText,
-      type: 'text',
-      maxTextLength: 32,
-      validator: validator.exceedsMaxTextLength,
-    }, {
-      emptyText: '',
-      label: this.suffixText,
-      name: 'Suffix',
-      property: 'Suffix',
-      picklist: 'Name Suffix',
-      picklistOptions: (entry) => {
-        // Checks if entry is a Contact
-        if (entry.hasOwnProperty('NameLF')) {
+        },
+        languageCodeProperty: 'LocationCode',
+        requireSelection: false,
+        storageMode: 'text',
+        title: this.prefixTitleText,
+        type: 'picklist',
+      }, {
+        name: 'FirstName',
+        property: 'FirstName',
+        label: this.firstNameText,
+        type: 'text',
+        maxTextLength: 32,
+        validator: validator.exceedsMaxTextLength,
+      }, {
+        name: 'MiddleName',
+        property: 'MiddleName',
+        label: this.middleNameText,
+        type: 'text',
+        maxTextLength: 32,
+        validator: validator.exceedsMaxTextLength,
+      }, {
+        name: 'LastName',
+        property: 'LastName',
+        label: this.lastNameText,
+        type: 'text',
+        maxTextLength: 32,
+        validator: validator.exceedsMaxTextLength,
+      }, {
+        emptyText: '',
+        label: this.suffixText,
+        name: 'Suffix',
+        property: 'Suffix',
+        picklist: 'Name Suffix',
+        picklistOptions: (entry) => {
+          // Checks if entry is a Contact
+          if (entry.hasOwnProperty('NameLF')) {
+            return {
+              filterByLanguage: true,
+              language: entry.LocationCode && entry.LocationCode.trim() || App.getCurrentLocale(),
+              storageMode: 'text',
+            };
+          }
           return {
-            filterByLanguage: true,
-            language: entry.LocationCode && entry.LocationCode.trim() || App.getCurrentLocale(),
+            filterByLanguage: false,
+            language: ' ',
             storageMode: 'text',
           };
-        }
-        return {
-          filterByLanguage: false,
-          language: ' ',
-          storageMode: 'text',
-        };
-      },
-      languageCodeProperty: 'LocationCode',
-      requireSelection: false,
-      storageMode: 'text',
-      title: this.suffixTitleText,
-      type: 'picklist',
-    }]);
-  },
+        },
+        languageCodeProperty: 'LocationCode',
+        requireSelection: false,
+        storageMode: 'text',
+        title: this.suffixTitleText,
+        type: 'picklist',
+      }]);
+    },
+  });
+
+  return __class;
 });
-
-export default __class;

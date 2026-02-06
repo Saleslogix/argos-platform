@@ -13,302 +13,303 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import string from 'dojo/string';
-import action from 'Mobile/SalesLogix/Action';
-import SearchWidget from 'Sage/Platform/Mobile/SearchWidget';
-import utility from 'argos/Utility';
-import List from 'argos/List';
-import format from '../../../../Format';
-import _LegacyListBase from 'argos/_LegacySDataListMixin';
-import getResource from 'argos/I18n';
-import ErrorManager from 'argos/ErrorManager';
+define('crm/Integrations/Contour/Views/PxSearch/AccountPxSearch', [
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  'dojo/string',
+  'crm/Action',
+  'argos/SearchWidget',
+  'argos/Utility',
+  'argos/List',
+  '../../../../Format',
+  'argos/_LegacySDataListMixin',
+  'argos/I18n',
+  'argos/ErrorManager',
+], function(declare, lang, string, action, SearchWidget, utility, List, format, _LegacyListBase, getResource, ErrorManager) {
+  const resource = getResource('acctPxSearch');
 
+  const __class = declare('crm.Integrations.Contour.Views.PxSearch.AccountPxSearch', [List, _LegacyListBase], {
+    // Localization strings
+    accountsNearMeText: resource.accountsNearMeText,
+    addActivityActionText: resource.addActivityActionText,
+    addAttachmentActionText: resource.addAttachmentActionText,
+    addNoteActionText: resource.addNoteActionText,
+    callMainActionText: resource.callMainActionText,
+    currentLocationErrorText: resource.currentLocationErrorText,
+    editActionText: resource.editActionText,
+    faxAbbreviationText: resource.faxAbbreviationText,
+    kilometerAbbrevText: resource.kilometerAbbrevText,
+    mileAbbrevText: resource.mileAbbrevText,
+    phoneAbbreviationText: resource.phoneAbbreviationText,
+    titleText: resource.titleText,
+    viewContactsActionText: resource.viewContactsActionText,
+    accountTypeText: resource.accountTypeText,
 
-const resource = getResource('acctPxSearch');
-
-const __class = declare('crm.Integrations.Contour.Views.PxSearch.AccountPxSearch', [List, _LegacyListBase], {
-  // Localization strings
-  accountsNearMeText: resource.accountsNearMeText,
-  addActivityActionText: resource.addActivityActionText,
-  addAttachmentActionText: resource.addAttachmentActionText,
-  addNoteActionText: resource.addNoteActionText,
-  callMainActionText: resource.callMainActionText,
-  currentLocationErrorText: resource.currentLocationErrorText,
-  editActionText: resource.editActionText,
-  faxAbbreviationText: resource.faxAbbreviationText,
-  kilometerAbbrevText: resource.kilometerAbbrevText,
-  mileAbbrevText: resource.mileAbbrevText,
-  phoneAbbreviationText: resource.phoneAbbreviationText,
-  titleText: resource.titleText,
-  viewContactsActionText: resource.viewContactsActionText,
-  accountTypeText: resource.accountTypeText,
-
-  // Templates
-  itemTemplate: new Simplate([
-    '<p class="listview-heading">{%: $.AccountName %}</p>',
-    '<p class="micro-text">{%: this.formatDecimal($.Distance) %} {%: this.distanceText() %}</p>',
-    '<p class="micro-text">',
-    '{%: $$.joinFields(" | ", [$.Type, $.SubType]) %}',
-    '</p>',
-    '<p class="micro-text">{%: $.AccountManagerLF ? $.AccountManagerLF : "" %} | {%: $.OwnerDescription %}</p>',
-    '{% if ($.MainPhone) { %}',
-    '<p class="micro-text">',
-    '{%: $$.phoneAbbreviationText %} <span class="hyperlink" data-action="callMain" data-key="{%: $.$key %}">{%: argos.Format.phone($.MainPhone) %}</span>', // TODO: Avoid global
-    '</p>',
-    '{% } %}',
-  ]),
-  itemRowContentTemplate: new Simplate([
-    '<div id="top_item_indicators" class="list-item-indicator-content"></div>',
-    '<div class="list-item-content">{%! $$.itemTemplate %}</div>',
-  ]),
-
-  // Functions
-  formatDecimal(n) {
-    return format.fixedLocale(n, 2);
-  },
-  distanceText() {
-    return App.isCurrentRegionMetric() ? this.kilometerAbbrevText : this.mileAbbrevText;
-  },
-  distanceCalc(gLat, gLon) {
-    const conv = App.isCurrentRegionMetric() ? 1.609344 : 1;
-    return conv * Math.sqrt(
-      Math.pow((69.1 * (gLat - this.lat)), 2) +
-      Math.pow((53.0 * (gLon - this.lon)), 2)
-    );
-  },
-  joinFields: function joinFields(sep, fields) {
-    return utility.joinFields(sep, fields);
-  },
-
-  // Add a search template for account type dropdown
-  searchWidget: new SearchWidget({
-    class: 'list-search',
-    widgetTemplate: new Simplate([
-      '<div class="search-widget" style="display: none;">', // hide the stock search stuff
-      '<div class="table-layout">',
-      '<div><input type="text" name="query" class="query" autocorrect="off" autocapitalize="off" data-dojo-attach-point="queryNode" data-dojo-attach-event="onfocus:_onFocus,onblur:_onBlur,onkeypress:_onKeyPress" /></div>',
-      '<div class="hasButton"><button class="clear-button" data-dojo-attach-event="onclick: _onClearClick"></button></div>',
-      '<div class="hasButton"><button class="subHeaderButton searchButton" data-dojo-attach-event="click: search">{%= $.searchText %}</button></div>',
-      '</div>',
-      '<label data-dojo-attach-point="labelNode">{%= $.searchText %}</label>',
-      '</div>',
-      '<div>$$.accountTypeText<select id="queryType" style="font-size: 16px"></select></div>', // add our own search stuff
+    // Templates
+    itemTemplate: new Simplate([
+      '<p class="listview-heading">{%: $.AccountName %}</p>',
+      '<p class="micro-text">{%: this.formatDecimal($.Distance) %} {%: this.distanceText() %}</p>',
+      '<p class="micro-text">',
+      '{%: $$.joinFields(" | ", [$.Type, $.SubType]) %}',
+      '</p>',
+      '<p class="micro-text">{%: $.AccountManagerLF ? $.AccountManagerLF : "" %} | {%: $.OwnerDescription %}</p>',
+      '{% if ($.MainPhone) { %}',
+      '<p class="micro-text">',
+      '{%: $$.phoneAbbreviationText %} <span class="hyperlink" data-action="callMain" data-key="{%: $.$key %}">{%: argos.Format.phone($.MainPhone) %}</span>', // TODO: Avoid global
+      '</p>',
+      '{% } %}',
     ]),
-  }),
+    itemRowContentTemplate: new Simplate([
+      '<div id="top_item_indicators" class="list-item-indicator-content"></div>',
+      '<div class="list-item-content">{%! $$.itemTemplate %}</div>',
+    ]),
 
-  // View Properties
-  detailView: 'account_detail',
-  itemIconClass: 'spreadsheet', // todo: replace with appropriate icon
-  id: 'pxSearch_Accounts',
-  idProperty: 'AccountId',
-  labelProperty: 'AccountName',
-  security: 'Contour/Map/Account',
-  entityName: 'Account',
-  allowSelection: true,
-  enableActions: true,
-  pageSize: 100,
-  offlineIds: null,
-  resourceKind: 'accounts',
-  enableSearch: true,
-  editView: 'account_edit',
-  editSecurity: 'Entities/Account/Edit',
-  relatedViews: {},
-  maxDistance: 500,
+    // Functions
+    formatDecimal(n) {
+      return format.fixedLocale(n, 2);
+    },
+    distanceText() {
+      return App.isCurrentRegionMetric() ? this.kilometerAbbrevText : this.mileAbbrevText;
+    },
+    distanceCalc(gLat, gLon) {
+      const conv = App.isCurrentRegionMetric() ? 1.609344 : 1;
+      return conv * Math.sqrt(
+        Math.pow((69.1 * (gLat - this.lat)), 2) +
+        Math.pow((53.0 * (gLon - this.lon)), 2)
+      );
+    },
+    joinFields: function joinFields(sep, fields) {
+      return utility.joinFields(sep, fields);
+    },
 
-  lat: null, // latitude
-  lon: null, // longitude
+    // Add a search template for account type dropdown
+    searchWidget: new SearchWidget({
+      class: 'list-search',
+      widgetTemplate: new Simplate([
+        '<div class="search-widget" style="display: none;">', // hide the stock search stuff
+        '<div class="table-layout">',
+        '<div><input type="text" name="query" class="query" autocorrect="off" autocapitalize="off" data-dojo-attach-point="queryNode" data-dojo-attach-event="onfocus:_onFocus,onblur:_onBlur,onkeypress:_onKeyPress" /></div>',
+        '<div class="hasButton"><button class="clear-button" data-dojo-attach-event="onclick: _onClearClick"></button></div>',
+        '<div class="hasButton"><button class="subHeaderButton searchButton" data-dojo-attach-event="click: search">{%= $.searchText %}</button></div>',
+        '</div>',
+        '<label data-dojo-attach-point="labelNode">{%= $.searchText %}</label>',
+        '</div>',
+        '<div>$$.accountTypeText<select id="queryType" style="font-size: 16px"></select></div>', // add our own search stuff
+      ]),
+    }),
 
-  createRequest: function createRequest() {
-    const request = new Sage.SData.Client.SDataBaseRequest(this.getService());
-    const pageSize = this.pageSize;
-    const startIndex = this.feed && this.feed.$startIndex > 0 && this.feed.$itemsPerPage > 0 ? this.feed.$startIndex + this.feed.$itemsPerPage : 1;
-    request.uri.setPathSegment(0, '$app');
-    request.uri.setPathSegment(1, 'mashups');
-    request.uri.setPathSegment(2, '-');
-    request.uri.setPathSegment(3, 'mashups(\'GetAccountsByGeocode\')');
-    request.uri.setPathSegment(4, '$queries');
-    request.uri.setPathSegment(5, 'execute');
-    request.uri.setQueryArg('_resultName', 'GetAccountsByGeocodeMashup');
-    request.uri.setQueryArg('_Lat', this.lat);
-    request.uri.setQueryArg('_Lon', this.lon);
-    request.uri.setQueryArg('_Distance', this.maxDistance);
-    request.uri.setQueryArg('_AccountType', this.acctType ? this.acctType : 'Customer');
-    request.uri.setQueryArg('_SubType', 'All');
-    request.uri.setQueryArg('format', 'JSON');
-    request.uri.setStartIndex(startIndex);
-    request.uri.setCount(pageSize);
-    return request;
-  },
-  _requestDistanceCalc() {
-    const conv = App.isCurrentRegionMetric() ? 1.609344 : 1;
-    return `((${conv} mul sqrt((((69.1 mul (Address.GeocodeLatitude-(${this.lat})))) mul (69.1 mul (Address.GeocodeLatitude-(${this.lat}))))+((53 mul (Address.GeocodeLongitude-(${this.lon}))) mul (53 mul (Address.GeocodeLongitude-(${this.lon})))))) lt ${this.maxDistance})`;
-  },
-  requestData: function requestData() {
-    this.loadAccountTypes();
-    $(this.domNode).addClass('list-loading');
+    // View Properties
+    detailView: 'account_detail',
+    itemIconClass: 'spreadsheet', // todo: replace with appropriate icon
+    id: 'pxSearch_Accounts',
+    idProperty: 'AccountId',
+    labelProperty: 'AccountName',
+    security: 'Contour/Map/Account',
+    entityName: 'Account',
+    allowSelection: true,
+    enableActions: true,
+    pageSize: 100,
+    offlineIds: null,
+    resourceKind: 'accounts',
+    enableSearch: true,
+    editView: 'account_edit',
+    editSecurity: 'Entities/Account/Edit',
+    relatedViews: {},
+    maxDistance: 500,
 
-    if (this.lat && this.lon) {
-      const request = this.createRequest();
-      request.service.readFeed(request, {
-        success: this.onRequestDataSuccess,
-        failure: this.onRequestDataFailure,
-        aborted: this.onRequestDataAborted,
-        scope: this,
-      });
-    } else {
-      navigator.geolocation.getCurrentPosition(lang.hitch(this, 'geoLocationReceived'), lang.hitch(this, 'geoLocationError'), {
-        enableHighAccuracy: true,
-      });
-    }
-  },
-  // custom request data success method to insert our "me" at the front
-  onRequestDataSuccess: function onRequestDataSuccess(feed) {
-    this.processFeed(feed);
-    $(this.domNode).removeClass('list-loading');
-  },
-  processFeed: function processFeed(_feed) {
-    const feed = _feed;
-    if (!this.feed) {
-      this.set('listContent', '');
-    }
+    lat: null, // latitude
+    lon: null, // longitude
 
-    this.feed = feed;
+    createRequest: function createRequest() {
+      const request = new Sage.SData.Client.SDataBaseRequest(this.getService());
+      const pageSize = this.pageSize;
+      const startIndex = this.feed && this.feed.$startIndex > 0 && this.feed.$itemsPerPage > 0 ? this.feed.$startIndex + this.feed.$itemsPerPage : 1;
+      request.uri.setPathSegment(0, '$app');
+      request.uri.setPathSegment(1, 'mashups');
+      request.uri.setPathSegment(2, '-');
+      request.uri.setPathSegment(3, 'mashups(\'GetAccountsByGeocode\')');
+      request.uri.setPathSegment(4, '$queries');
+      request.uri.setPathSegment(5, 'execute');
+      request.uri.setQueryArg('_resultName', 'GetAccountsByGeocodeMashup');
+      request.uri.setQueryArg('_Lat', this.lat);
+      request.uri.setQueryArg('_Lon', this.lon);
+      request.uri.setQueryArg('_Distance', this.maxDistance);
+      request.uri.setQueryArg('_AccountType', this.acctType ? this.acctType : 'Customer');
+      request.uri.setQueryArg('_SubType', 'All');
+      request.uri.setQueryArg('format', 'JSON');
+      request.uri.setStartIndex(startIndex);
+      request.uri.setCount(pageSize);
+      return request;
+    },
+    _requestDistanceCalc() {
+      const conv = App.isCurrentRegionMetric() ? 1.609344 : 1;
+      return `((${conv} mul sqrt((((69.1 mul (Address.GeocodeLatitude-(${this.lat})))) mul (69.1 mul (Address.GeocodeLatitude-(${this.lat}))))+((53 mul (Address.GeocodeLongitude-(${this.lon}))) mul (53 mul (Address.GeocodeLongitude-(${this.lon})))))) lt ${this.maxDistance})`;
+    },
+    requestData: function requestData() {
+      this.loadAccountTypes();
+      $(this.domNode).addClass('list-loading');
 
-    if (this.feed.$totalResults === 0) {
-      this.set('listContent', this.noDataTemplate.apply(this));
-    } else if (feed.$resources) {
-      const docfrag = document.createDocumentFragment();
-      for (let i = 0; i < feed.$resources.length; i++) {
-        const entry = feed.$resources[i];
-        entry.$descriptor = entry.$descriptor || feed.$descriptor;
-        this.entries[entry.$key] = entry;
-        const rowNode = $(this.rowTemplate.apply(entry, this)).get(0);
-        docfrag.appendChild(rowNode);
-        this.onApplyRowTemplate(entry, rowNode);
-        if (this.relatedViews.length > 0) {
-          this.onProcessRelatedViews(entry, rowNode, feed);
+      if (this.lat && this.lon) {
+        const request = this.createRequest();
+        request.service.readFeed(request, {
+          success: this.onRequestDataSuccess,
+          failure: this.onRequestDataFailure,
+          aborted: this.onRequestDataAborted,
+          scope: this,
+        });
+      } else {
+        navigator.geolocation.getCurrentPosition(lang.hitch(this, 'geoLocationReceived'), lang.hitch(this, 'geoLocationError'), {
+          enableHighAccuracy: true,
+        });
+      }
+    },
+    // custom request data success method to insert our "me" at the front
+    onRequestDataSuccess: function onRequestDataSuccess(feed) {
+      this.processFeed(feed);
+      $(this.domNode).removeClass('list-loading');
+    },
+    processFeed: function processFeed(_feed) {
+      const feed = _feed;
+      if (!this.feed) {
+        this.set('listContent', '');
+      }
+
+      this.feed = feed;
+
+      if (this.feed.$totalResults === 0) {
+        this.set('listContent', this.noDataTemplate.apply(this));
+      } else if (feed.$resources) {
+        const docfrag = document.createDocumentFragment();
+        for (let i = 0; i < feed.$resources.length; i++) {
+          const entry = feed.$resources[i];
+          entry.$descriptor = entry.$descriptor || feed.$descriptor;
+          this.entries[entry.$key] = entry;
+          const rowNode = $(this.rowTemplate.apply(entry, this)).get(0);
+          docfrag.appendChild(rowNode);
+          this.onApplyRowTemplate(entry, rowNode);
+          if (this.relatedViews.length > 0) {
+            this.onProcessRelatedViews(entry, rowNode, feed);
+          }
+        }
+
+        if (docfrag.childNodes.length > 0) {
+          $(this.contentNode).append(docfrag);
         }
       }
 
-      if (docfrag.childNodes.length > 0) {
-        $(this.contentNode).append(docfrag);
+      if (typeof this.feed.$totalResults !== 'undefined') {
+        const remaining = this.feed.$totalResults - (this.feed.$startIndex + this.feed.$itemsPerPage - 1);
+        this.set('remainingContent', string.substitute(this.remainingText, [remaining]));
       }
-    }
 
-    if (typeof this.feed.$totalResults !== 'undefined') {
-      const remaining = this.feed.$totalResults - (this.feed.$startIndex + this.feed.$itemsPerPage - 1);
-      this.set('remainingContent', string.substitute(this.remainingText, [remaining]));
-    }
+      $(this.domNode).toggleClass('list-has-more', this.hasMoreData());
 
-    $(this.domNode).toggleClass('list-has-more', this.hasMoreData());
-
-    if (this.options.allowEmptySelection) {
-      $(this.domNode).addClass('list-has-empty-opt');
-    }
-
-    this._loadPreviousSelections();
-  },
-  geoLocationError: function geoLocationError(positionError) {
-    App.toast.add({ title: this.currentLocationErrorText, message: positionError.message });
-    $(this.domNode).removeClass('list-loading');
-    this.set('listContent', '');
-    ErrorManager.addSimpleError('Geolocation error.', positionError.message);
-  },
-  geoLocationReceived: function geoLocationReceived(position) {
-    this.lat = position.coords.latitude;
-    this.lon = position.coords.longitude;
-    this.requestData();
-  },
-  options: {},
-  // always refresh
-  refreshRequiredFor: function refreshRequiredFor(options) {
-    if (!options) { // if no options were passed in, then we are searching from an account
-      this.lat = null;
-      this.lon = null;
-      this.options.title = this.accountsNearMeText;
-    }
-    return true;
-  },
-  createToolLayout: function createToolLayout() {
-    return this.tools || (this.tools = {
-      tbar: [],
-    });
-  },
-  init: function init() {
-    this.startup();
-    this.initConnects();
-    this.titleEl = document.getElementById('pageTitle');
-    this.inherited(init, arguments);
-  },
-  loadAccountTypes: function loadAccountTypes() {
-    this.queryTypeEl = document.getElementById('queryType');
-    this.queryTypeEl.onchange = lang.hitch(this, 'onAccountTypeChange'); // this.;
-    const request = new Sage.SData.Client.SDataResourceCollectionRequest(App.getService())
-      .setResourceKind('picklists')
-      .setContractName('system');
-    const uri = request.getUri();
-    uri.setPathSegment(Sage.SData.Client.SDataUri.ResourcePropertyIndex, 'items');
-    uri.setCollectionPredicate('name eq "Account Type"');
-    request.allowCacheUse = true;
-    request.read({
-      success: this.onAccountTypeLoad,
-      failure() {
-        console.error('failed to load account type'); // eslint-disable-line
-      },
-      scope: this,
-    });
-  },
-  onAccountTypeChange: function onAccountTypeChange() {
-    this.acctType = this.queryTypeEl.value;
-    this.clear();
-    this.requestData();
-  },
-  onAccountTypeLoad: function onAccountTypeLoad(data) {
-    if (this.queryTypeEl.options && this.queryTypeEl.options.length > 0) {
-      return;
-    }
-
-    for (let i = 0; i < data.$resources.length; i++) {
-      this.queryTypeEl.options[i] = new Option(data.$resources[i].text, data.$resources[i].code, true, false);
-      if (this.queryTypeEl.options[i].value === 'Customer') {
-        this.queryTypeEl.options[i].selected = 'True';
+      if (this.options.allowEmptySelection) {
+        $(this.domNode).addClass('list-has-empty-opt');
       }
-    }
-  },
-  formatSearchQuery: function formatSearchQuery(qry) {
-    return `AccountName like "${this.escapeSearchQuery(qry)}%"`;
-  },
-  createActionLayout: function createActionLayout() {
-    return this.actions || (this.actions = [{
-      id: 'callMain',
-      cls: 'phone',
-      label: this.callMainActionText,
-      enabled: action.hasProperty.bindDelegate(this, 'MainPhone'),
-      fn: action.callPhone.bindDelegate(this, 'MainPhone'),
-    }, {
-      id: 'addNote',
-      cls: 'edit',
-      label: this.addNoteActionText,
-      fn: action.addNote.bindDelegate(this),
-    }, {
-      id: 'addActivity',
-      cls: 'calendar',
-      label: this.addActivityActionText,
-      fn: action.addActivity.bindDelegate(this),
-    }, {
-      id: 'addAttachment',
-      cls: 'attach',
-      label: this.addAttachmentActionText,
-      fn: action.addAttachment.bindDelegate(this),
-    }]);
-  },
-  callMain: function callMain(params) {
-    this.invokeActionItemBy((a) => {
-      return a.id === 'callMain';
-    }, params.key);
-  },
+
+      this._loadPreviousSelections();
+    },
+    geoLocationError: function geoLocationError(positionError) {
+      App.toast.add({ title: this.currentLocationErrorText, message: positionError.message });
+      $(this.domNode).removeClass('list-loading');
+      this.set('listContent', '');
+      ErrorManager.addSimpleError('Geolocation error.', positionError.message);
+    },
+    geoLocationReceived: function geoLocationReceived(position) {
+      this.lat = position.coords.latitude;
+      this.lon = position.coords.longitude;
+      this.requestData();
+    },
+    options: {},
+    // always refresh
+    refreshRequiredFor: function refreshRequiredFor(options) {
+      if (!options) { // if no options were passed in, then we are searching from an account
+        this.lat = null;
+        this.lon = null;
+        this.options.title = this.accountsNearMeText;
+      }
+      return true;
+    },
+    createToolLayout: function createToolLayout() {
+      return this.tools || (this.tools = {
+        tbar: [],
+      });
+    },
+    init: function init() {
+      this.startup();
+      this.initConnects();
+      this.titleEl = document.getElementById('pageTitle');
+      this.inherited(init, arguments);
+    },
+    loadAccountTypes: function loadAccountTypes() {
+      this.queryTypeEl = document.getElementById('queryType');
+      this.queryTypeEl.onchange = lang.hitch(this, 'onAccountTypeChange'); // this.;
+      const request = new Sage.SData.Client.SDataResourceCollectionRequest(App.getService())
+        .setResourceKind('picklists')
+        .setContractName('system');
+      const uri = request.getUri();
+      uri.setPathSegment(Sage.SData.Client.SDataUri.ResourcePropertyIndex, 'items');
+      uri.setCollectionPredicate('name eq "Account Type"');
+      request.allowCacheUse = true;
+      request.read({
+        success: this.onAccountTypeLoad,
+        failure() {
+          console.error('failed to load account type'); // eslint-disable-line
+        },
+        scope: this,
+      });
+    },
+    onAccountTypeChange: function onAccountTypeChange() {
+      this.acctType = this.queryTypeEl.value;
+      this.clear();
+      this.requestData();
+    },
+    onAccountTypeLoad: function onAccountTypeLoad(data) {
+      if (this.queryTypeEl.options && this.queryTypeEl.options.length > 0) {
+        return;
+      }
+
+      for (let i = 0; i < data.$resources.length; i++) {
+        this.queryTypeEl.options[i] = new Option(data.$resources[i].text, data.$resources[i].code, true, false);
+        if (this.queryTypeEl.options[i].value === 'Customer') {
+          this.queryTypeEl.options[i].selected = 'True';
+        }
+      }
+    },
+    formatSearchQuery: function formatSearchQuery(qry) {
+      return `AccountName like "${this.escapeSearchQuery(qry)}%"`;
+    },
+    createActionLayout: function createActionLayout() {
+      return this.actions || (this.actions = [{
+        id: 'callMain',
+        cls: 'phone',
+        label: this.callMainActionText,
+        enabled: action.hasProperty.bindDelegate(this, 'MainPhone'),
+        fn: action.callPhone.bindDelegate(this, 'MainPhone'),
+      }, {
+        id: 'addNote',
+        cls: 'edit',
+        label: this.addNoteActionText,
+        fn: action.addNote.bindDelegate(this),
+      }, {
+        id: 'addActivity',
+        cls: 'calendar',
+        label: this.addActivityActionText,
+        fn: action.addActivity.bindDelegate(this),
+      }, {
+        id: 'addAttachment',
+        cls: 'attach',
+        label: this.addAttachmentActionText,
+        fn: action.addAttachment.bindDelegate(this),
+      }]);
+    },
+    callMain: function callMain(params) {
+      this.invokeActionItemBy((a) => {
+        return a.id === 'callMain';
+      }, params.key);
+    },
+  });
+
+  return __class;
 });
-
-export default __class;

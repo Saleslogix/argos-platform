@@ -13,58 +13,61 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import Base from './Base';
-import _SDataModelBase from 'argos/Models/_SDataModelBase';
-import Manager from 'argos/Models/Manager';
-import MODEL_TYPES from 'argos/Models/Types';
-import MODEL_NAMES from '../Names';
+define('crm/Integrations/BOE/Models/BackOffice/SData', [
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  './Base',
+  'argos/Models/_SDataModelBase',
+  'argos/Models/Manager',
+  'argos/Models/Types',
+  '../Names'
+], function(declare, lang, Base, _SDataModelBase, Manager, MODEL_TYPES, MODEL_NAMES) {
+  const __class = declare('crm.Integration.BOE.Models.BackOffice.SData', [Base, _SDataModelBase], {
+    id: 'backoffice_sdata_model',
+    createQueryModels: function createQueryModels() {
+      return [{
+        name: 'list',
+        queryOrderBy: 'BackOfficeName',
+        querySelect: [
+          'BackOfficeName',
+          'BackOfficeAccountingEntities/*',
+          'Integration/*',
+          'IsActive',
+          'LogicalId',
+          'CountryCodeFormat',
+          'Version',
+        ],
+      }, {
+        name: 'detail',
+        querySelect: [
+          'BackOfficeName',
+          'BackOfficeAccountingEntities/*',
+          'Integration/*',
+          'IsActive',
+          'LogicalId',
+          'CountryCodeFormat',
+          'Version',
+        ],
+        queryInclude: [
+          '$permissions',
+        ],
+      }, {
+        name: 'list-active',
+        queryOrderBy: 'BackOfficeName',
+        queryWhere: 'IsActive eq true',
+        querySelect: [
+          'BackOfficeName',
+          'IsActive',
+          'LogicalId',
+          'CountryCodeFormat',
+          'Version',
+        ],
+      }];
+    },
+  });
 
-const __class = declare('crm.Integration.BOE.Models.BackOffice.SData', [Base, _SDataModelBase], {
-  id: 'backoffice_sdata_model',
-  createQueryModels: function createQueryModels() {
-    return [{
-      name: 'list',
-      queryOrderBy: 'BackOfficeName',
-      querySelect: [
-        'BackOfficeName',
-        'BackOfficeAccountingEntities/*',
-        'Integration/*',
-        'IsActive',
-        'LogicalId',
-        'CountryCodeFormat',
-        'Version',
-      ],
-    }, {
-      name: 'detail',
-      querySelect: [
-        'BackOfficeName',
-        'BackOfficeAccountingEntities/*',
-        'Integration/*',
-        'IsActive',
-        'LogicalId',
-        'CountryCodeFormat',
-        'Version',
-      ],
-      queryInclude: [
-        '$permissions',
-      ],
-    }, {
-      name: 'list-active',
-      queryOrderBy: 'BackOfficeName',
-      queryWhere: 'IsActive eq true',
-      querySelect: [
-        'BackOfficeName',
-        'IsActive',
-        'LogicalId',
-        'CountryCodeFormat',
-        'Version',
-      ],
-    }];
-  },
+  Manager.register(MODEL_NAMES.BACKOFFICE, MODEL_TYPES.SDATA, __class);
+  lang.setObject('icboe.Models.BackOffice.SData', __class);
+
+  return __class;
 });
-
-Manager.register(MODEL_NAMES.BACKOFFICE, MODEL_TYPES.SDATA, __class);
-lang.setObject('icboe.Models.BackOffice.SData', __class);
-export default __class;

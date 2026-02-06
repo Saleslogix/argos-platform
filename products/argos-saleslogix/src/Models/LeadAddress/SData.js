@@ -13,25 +13,28 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import Base from './Base';
-import _SDataModelBase from 'argos/Models/_SDataModelBase';
-import Manager from 'argos/Models/Manager';
-import MODEL_TYPE from 'argos/Models/Types';
-import MODEL_NAMES from '../Names';
+define('crm/Models/LeadAddress/SData', [
+  'dojo/_base/declare',
+  './Base',
+  'argos/Models/_SDataModelBase',
+  'argos/Models/Manager',
+  'argos/Models/Types',
+  '../Names'
+], function(declare, Base, _SDataModelBase, Manager, MODEL_TYPE, MODEL_NAMES) {
+  const __class = declare('crm.Models.LeadAddress.SData', [Base, _SDataModelBase], {
+    id: 'leadaddress_sdata_model',
+    createQueryModels: function createQueryModels() {
+      return [{
+        name: 'list',
+        querySelect: [],
+      }, {
+        name: 'detail',
+        querySelect: [],
+      }];
+    },
+  });
 
-const __class = declare('crm.Models.LeadAddress.SData', [Base, _SDataModelBase], {
-  id: 'leadaddress_sdata_model',
-  createQueryModels: function createQueryModels() {
-    return [{
-      name: 'list',
-      querySelect: [],
-    }, {
-      name: 'detail',
-      querySelect: [],
-    }];
-  },
+  Manager.register(MODEL_NAMES.LEADADDRESS, MODEL_TYPE.SDATA, __class);
+
+  return __class;
 });
-
-Manager.register(MODEL_NAMES.LEADADDRESS, MODEL_TYPE.SDATA, __class);
-export default __class;

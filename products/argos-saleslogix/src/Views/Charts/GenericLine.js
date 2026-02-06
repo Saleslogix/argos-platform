@@ -16,82 +16,84 @@
 /**
  * @module crm/Views/Charts/GenericLine
  */
-import declare from 'dojo/_base/declare';
-import array from 'dojo/_base/array';
-import domGeo from 'dojo/dom-geometry';
-import View from 'argos/View';
-import _ChartMixin from './_ChartMixin';
+define('crm/Views/Charts/GenericLine', [
+  'dojo/_base/declare',
+  'dojo/_base/array',
+  'dojo/dom-geometry',
+  'argos/View',
+  './_ChartMixin'
+], function(declare, array, domGeo, View, _ChartMixin) {
+  /**
+   * @class
+   * @alias module:crm/Views/Charts/GenericLine
+   *
+   * @extends module:argos/View
+   * @mixes module:crm/Views/Charts/_ChartMixin
+   *
+   */
+  const __class = declare('crm.Views.Charts.GenericLine', [View, _ChartMixin], /** @lends module:crm/Views/Charts/GenericLine.prototype */{
+    id: 'chart_generic_line',
+    titleText: '',
+    expose: false,
+    chart: null,
+    lineColor: '#1D5F8A',
+    pointColor: '#1D5F8A',
+    fillColor: 'rgba(8,150,233, 0.2)',
 
-/**
- * @class
- * @alias module:crm/Views/Charts/GenericLine
- *
- * @extends module:argos/View
- * @mixes module:crm/Views/Charts/_ChartMixin
- *
- */
-const __class = declare('crm.Views.Charts.GenericLine', [View, _ChartMixin], /** @lends module:crm/Views/Charts/GenericLine.prototype */{
-  id: 'chart_generic_line',
-  titleText: '',
-  expose: false,
-  chart: null,
-  lineColor: '#1D5F8A',
-  pointColor: '#1D5F8A',
-  fillColor: 'rgba(8,150,233, 0.2)',
-
-  chartOptions: {
-    scaleShowGridLines: false,
-    bezierCurve: true,
-    bezierCurveTension: 0.4,
-    pointDot: true,
-    pointDotRadius: 4,
-    datasetFill: true,
-    legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].strokeColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
-  },
-
-  attributeMap: {
-    chartContent: {
-      node: 'contentNode',
-      type: 'innerHTML',
+    chartOptions: {
+      scaleShowGridLines: false,
+      bezierCurve: true,
+      bezierCurveTension: 0.4,
+      pointDot: true,
+      pointDotRadius: 4,
+      datasetFill: true,
+      legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].strokeColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
     },
-    title: View.prototype.attributeMap.title,
-    selected: View.prototype.attributeMap.selected,
-  },
 
-  createChart: function createChart(rawData) {
-    this.inherited(createChart, arguments);
+    attributeMap: {
+      chartContent: {
+        node: 'contentNode',
+        type: 'innerHTML',
+      },
+      title: View.prototype.attributeMap.title,
+      selected: View.prototype.attributeMap.selected,
+    },
 
-    this.showSearchExpression();
+    createChart: function createChart(rawData) {
+      this.inherited(createChart, arguments);
 
-    const labels = [];
-    const seriesData = array.map(rawData, (item) => {
-      labels.push(item.$descriptor);
-      return Math.round(item.value);
-    });
+      this.showSearchExpression();
 
-    const data = {
-      labels,
-      datasets: [{
-        label: 'Default',
-        strokeColor: this.lineColor,
-        pointColor: this.pointColor,
-        fillColor: this.fillColor,
-        data: seriesData,
-      }],
-    };
+      const labels = [];
+      const seriesData = array.map(rawData, (item) => {
+        labels.push(item.$descriptor);
+        return Math.round(item.value);
+      });
 
-    if (this.chart) {
-      this.chart.destroy();
-    }
+      const data = {
+        labels,
+        datasets: [{
+          label: 'Default',
+          strokeColor: this.lineColor,
+          pointColor: this.pointColor,
+          fillColor: this.fillColor,
+          data: seriesData,
+        }],
+      };
 
-    const box = domGeo.getMarginBox(this.domNode);
-    this.contentNode.width = box.w;
-    this.contentNode.height = box.h;
+      if (this.chart) {
+        this.chart.destroy();
+      }
 
-    const ctx = this.contentNode.getContext('2d');
+      const box = domGeo.getMarginBox(this.domNode);
+      this.contentNode.width = box.w;
+      this.contentNode.height = box.h;
 
-    this.chart = new window.Chart(ctx).Line(data, this.chartOptions); // eslint-disable-line
-  },
+      const ctx = this.contentNode.getContext('2d');
+
+      this.chart = new window.Chart(ctx).Line(data, this.chartOptions); // eslint-disable-line
+    },
+  });
+
+  return __class;
 });
-
-export default __class;

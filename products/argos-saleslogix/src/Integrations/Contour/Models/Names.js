@@ -13,16 +13,18 @@
  * limitations under the License.
  */
 
-export default {
-  ACCOUNT: 'Account',
-  ACTIVITY: 'Activity',
-  CONTACT: 'Contact',
-  LEAD: 'Lead',
-  LEADADDRESS: 'LeadAddress',
-  OPPORTUNITY: 'Opportunity',
-  TICKET: 'Ticket',
-  USERACTIVITY: 'UserActivity',
-  ADDRESS: 'Address',
-  HISTORY: 'History',
-  PLACE: 'Place',
-};
+define('crm/Integrations/Contour/Models/Names', [], function() {
+  return {
+    ACCOUNT: 'Account',
+    ACTIVITY: 'Activity',
+    CONTACT: 'Contact',
+    LEAD: 'Lead',
+    LEADADDRESS: 'LeadAddress',
+    OPPORTUNITY: 'Opportunity',
+    TICKET: 'Ticket',
+    USERACTIVITY: 'UserActivity',
+    ADDRESS: 'Address',
+    HISTORY: 'History',
+    PLACE: 'Place',
+  };
+});

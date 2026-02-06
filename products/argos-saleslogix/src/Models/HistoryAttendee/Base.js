@@ -13,20 +13,23 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import _ModelBase from 'argos/Models/_ModelBase';
-import MODEL_NAMES from '../Names';
-import getResource from 'argos/I18n';
+define('crm/Models/HistoryAttendee/Base', [
+  'dojo/_base/declare',
+  'argos/Models/_ModelBase',
+  '../Names',
+  'argos/I18n'
+], function(declare, _ModelBase, MODEL_NAMES, getResource) {
+  const resource = getResource('historyAttendeeModel');
 
-const resource = getResource('historyAttendeeModel');
+  const __class = declare('crm.Models.HistoryAttendee.Base', [_ModelBase], {
+    resourceKind: 'historyAttendees',
+    entityName: 'HistoryAttendee',
+    entityDisplayName: resource.entityDisplayName,
+    entityDisplayNamePlural: resource.entityDisplayNamePlural,
+    modelName: MODEL_NAMES.HISTORYATTENDEE,
+    iconClass: 'user',
+    listViewId: 'history_attendee_related',
+  });
 
-const __class = declare('crm.Models.HistoryAttendee.Base', [_ModelBase], {
-  resourceKind: 'historyAttendees',
-  entityName: 'HistoryAttendee',
-  entityDisplayName: resource.entityDisplayName,
-  entityDisplayNamePlural: resource.entityDisplayNamePlural,
-  modelName: MODEL_NAMES.HISTORYATTENDEE,
-  iconClass: 'user',
-  listViewId: 'history_attendee_related',
+  return __class;
 });
-export default __class;

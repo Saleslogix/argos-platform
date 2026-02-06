@@ -13,139 +13,142 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import List from 'argos/List';
-import format from 'crm/Format';
-import action from 'crm/Action';
-import _RightDrawerListMixin from 'crm/Views/_RightDrawerListMixin';
-import _MetricListMixin from 'crm/Views/_MetricListMixin';
-import _GroupListMixin from 'crm/Views/_GroupListMixin';
-import MODEL_NAMES from '../../Models/Names';
-import MODEL_TYPES from 'argos/Models/Types';
-import getResource from 'argos/I18n';
-import utility from '../../Utility';
+define('crm/Integrations/BOE/Views/SalesOrders/List', [
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  'argos/List',
+  'crm/Format',
+  'crm/Action',
+  'crm/Views/_RightDrawerListMixin',
+  'crm/Views/_MetricListMixin',
+  'crm/Views/_GroupListMixin',
+  '../../Models/Names',
+  'argos/Models/Types',
+  'argos/I18n',
+  '../../Utility'
+], function(declare, lang, List, format, action, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin, MODEL_NAMES, MODEL_TYPES, getResource, utility) {
+  const resource = getResource('salesOrdersList');
 
-const resource = getResource('salesOrdersList');
+  const __class = declare('crm.Integrations.BOE.Views.SalesOrders.List', [List, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin], {
+    formatter: format,
+    util: utility,
+    // Templates
+    itemTemplate: new Simplate([
+      '<p class="listview-heading">{%: $.SalesOrderNumber %}</p>',
+      '<p class="micro-text"><label class="group-label">{%: $$.erpOrderIdText %}</label> {%: $.ErpExtId %}</p>',
+      '<p class="micro-text"><label class="group-label">{%: $$.customerPONumberText %}</label> {%: $.CustomerPurchaseOrderNumber %}</p>',
+      '<p class="micro-text"><label class="group-label">{%: $$.accountText %}</label> {%: $.Account.AccountName %}</p>',
+      '<p class="micro-text"><label class="group-label">{%: $$.orderDateText %}</label> {%: $$.formatter.date($.OrderDate) %}</p>',
+      '<p class="micro-text"><label class="group-label">{%: $$.baseGrandTotalText %}</label> ',
+      '{%: $$.util.formatMultiCurrency($.GrandTotal, $.BaseCurrencyCode) %}',
+      '</p>',
+      '<p class="micro-text"><label class="group-label">{%: $$.grandTotalText %}</label> ',
+      '{%: $$.util.formatMultiCurrency($.DocGrandTotal, $.CurrencyCode) %}',
+      '</p>',
+      '{% if ($.ErpExtId) { %}',
+      '<p class="micro-text"><label class="group-label">{%: $$.erpStatusLabelText %}</label> {%: $$.formatErpStatus($.ERPSalesOrder.ERPStatus) %}</p>',
+      '<p class="micro-text"><label class="group-label">{%: $$.documentDateText %}</label> {%: $$.formatter.date($.ErpDocumentDate) %}</p>',
+      '{% } else { %}',
+      '<p class="micro-text"><label class="group-label">{%: $$.statusLabelText %}</label> {%: $.Status %}</p>',
+      '{% } %}',
+    ]),
 
-const __class = declare('crm.Integrations.BOE.Views.SalesOrders.List', [List, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin], {
-  formatter: format,
-  util: utility,
-  // Templates
-  itemTemplate: new Simplate([
-    '<p class="listview-heading">{%: $.SalesOrderNumber %}</p>',
-    '<p class="micro-text"><label class="group-label">{%: $$.erpOrderIdText %}</label> {%: $.ErpExtId %}</p>',
-    '<p class="micro-text"><label class="group-label">{%: $$.customerPONumberText %}</label> {%: $.CustomerPurchaseOrderNumber %}</p>',
-    '<p class="micro-text"><label class="group-label">{%: $$.accountText %}</label> {%: $.Account.AccountName %}</p>',
-    '<p class="micro-text"><label class="group-label">{%: $$.orderDateText %}</label> {%: $$.formatter.date($.OrderDate) %}</p>',
-    '<p class="micro-text"><label class="group-label">{%: $$.baseGrandTotalText %}</label> ',
-    '{%: $$.util.formatMultiCurrency($.GrandTotal, $.BaseCurrencyCode) %}',
-    '</p>',
-    '<p class="micro-text"><label class="group-label">{%: $$.grandTotalText %}</label> ',
-    '{%: $$.util.formatMultiCurrency($.DocGrandTotal, $.CurrencyCode) %}',
-    '</p>',
-    '{% if ($.ErpExtId) { %}',
-    '<p class="micro-text"><label class="group-label">{%: $$.erpStatusLabelText %}</label> {%: $$.formatErpStatus($.ERPSalesOrder.ERPStatus) %}</p>',
-    '<p class="micro-text"><label class="group-label">{%: $$.documentDateText %}</label> {%: $$.formatter.date($.ErpDocumentDate) %}</p>',
-    '{% } else { %}',
-    '<p class="micro-text"><label class="group-label">{%: $$.statusLabelText %}</label> {%: $.Status %}</p>',
-    '{% } %}',
-  ]),
+    // Localization
+    titleText: resource.titleText,
+    accountText: resource.accountText,
+    erpOrderIdText: resource.erpOrderIdText,
+    grandTotalText: resource.grandTotalText,
+    baseGrandTotalText: resource.baseGrandTotalText,
+    statusLabelText: resource.statusLabelText,
+    erpStatusLabelText: resource.erpStatusLabelText,
+    customerPONumberText: resource.customerPONumberText,
+    orderDateText: resource.orderDateText,
+    viewAccountActionText: resource.viewAccountActionText,
+    addLineItemsText: resource.addLineItemsText,
+    documentDateText: resource.documentDateText,
 
-  // Localization
-  titleText: resource.titleText,
-  accountText: resource.accountText,
-  erpOrderIdText: resource.erpOrderIdText,
-  grandTotalText: resource.grandTotalText,
-  baseGrandTotalText: resource.baseGrandTotalText,
-  statusLabelText: resource.statusLabelText,
-  erpStatusLabelText: resource.erpStatusLabelText,
-  customerPONumberText: resource.customerPONumberText,
-  orderDateText: resource.orderDateText,
-  viewAccountActionText: resource.viewAccountActionText,
-  addLineItemsText: resource.addLineItemsText,
-  documentDateText: resource.documentDateText,
+    // View Properties
+    id: 'salesorder_list',
+    modelName: MODEL_NAMES.SALESORDER,
+    resourceKind: 'salesOrders',
+    allowSelection: true,
+    enableActions: true,
+    detailView: 'salesorder_detail',
+    insertView: 'salesorder_edit',
+    security: 'Entities/SalesOrder/View',
+    insertSecurity: 'Entities/SalesOrder/Add',
 
-  // View Properties
-  id: 'salesorder_list',
-  modelName: MODEL_NAMES.SALESORDER,
-  resourceKind: 'salesOrders',
-  allowSelection: true,
-  enableActions: true,
-  detailView: 'salesorder_detail',
-  insertView: 'salesorder_edit',
-  security: 'Entities/SalesOrder/View',
-  insertSecurity: 'Entities/SalesOrder/Add',
+    // Card layout
+    itemIconClass: 'cart',
 
-  // Card layout
-  itemIconClass: 'cart',
+    // Groups
+    enableDynamicGroupLayout: true,
+    groupsEnabled: true,
 
-  // Groups
-  enableDynamicGroupLayout: true,
-  groupsEnabled: true,
+    // Metrics
+    entityName: 'SalesOrder',
 
-  // Metrics
-  entityName: 'SalesOrder',
+    createActionLayout: function createActionLayout() {
+      return this.actions || (this.actions = [{
+        id: 'viewAccount',
+        label: this.viewAccountActionText,
+        enabled: action.hasProperty.bindDelegate(this, 'Account.$key'),
+        fn: action.navigateToEntity.bindDelegate(this, {
+          view: 'account_detail',
+          keyProperty: 'Account.$key',
+          textProperty: 'Account.AccountName',
+        }),
+      }, {
+        id: 'addOrderItem',
+        cls: 'bullet-list',
+        label: this.addLineItemsText,
+        fn: this.onAddLineItems,
+        security: 'Entities/SalesOrder/Add',
+      }]);
+    },
+    onAddLineItems: function onAddLineItems(evt, selection) {
+      const key = selection && selection.data && selection.data.$key;
+      if (key) {
+        const salesOrderModel = App.ModelManager.getModel(MODEL_NAMES.SALESORDER, MODEL_TYPES.SDATA);
+        const isClosedPromise = salesOrderModel.isClosed(key);
+        isClosedPromise.then((isClosed) => {
+          if (isClosed) {
+            App.modal.createSimpleAlert({
+              title: 'alert',
+              content: `${this.statusLabelText}: ${selection.data.Status || ''}`,
+            });
+            return;
+          }
+          this.navigateToLineItems(evt, selection);
+        });
+      }
+    },
+    navigateToLineItems: function navigateToLineItems(evt, selection) {
+      const view = App.getView('salesorder_item_edit');
+      if (view) {
+        const options = {
+          insert: true,
+          context: {
+            SalesOrder: selection.data,
+          },
+        };
+        view.show(options);
+      }
+    },
+    formatSearchQuery: function formatSearchQuery(searchQuery) {
+      const q = this.escapeSearchQuery(searchQuery.toUpperCase());
+      return `(upper(SalesOrderNumber) like "${q}%" ) or (upper(ErpExtId) like "${0}%" ) or (upper(CustomerPurchaseOrderNumber) like "${q}%" ) or (upper(Account.AccountName) like "${q}%" ) `;
+    },
+    formatErpStatus: function formatErpStatus(value) {
+      const text = App.picklistService.getPicklistItemTextByCode('ErpSalesOrderStatus', value);
+      if (text) {
+        return text;
+      }
+      return value;
+    },
+  });
 
-  createActionLayout: function createActionLayout() {
-    return this.actions || (this.actions = [{
-      id: 'viewAccount',
-      label: this.viewAccountActionText,
-      enabled: action.hasProperty.bindDelegate(this, 'Account.$key'),
-      fn: action.navigateToEntity.bindDelegate(this, {
-        view: 'account_detail',
-        keyProperty: 'Account.$key',
-        textProperty: 'Account.AccountName',
-      }),
-    }, {
-      id: 'addOrderItem',
-      cls: 'bullet-list',
-      label: this.addLineItemsText,
-      fn: this.onAddLineItems,
-      security: 'Entities/SalesOrder/Add',
-    }]);
-  },
-  onAddLineItems: function onAddLineItems(evt, selection) {
-    const key = selection && selection.data && selection.data.$key;
-    if (key) {
-      const salesOrderModel = App.ModelManager.getModel(MODEL_NAMES.SALESORDER, MODEL_TYPES.SDATA);
-      const isClosedPromise = salesOrderModel.isClosed(key);
-      isClosedPromise.then((isClosed) => {
-        if (isClosed) {
-          App.modal.createSimpleAlert({
-            title: 'alert',
-            content: `${this.statusLabelText}: ${selection.data.Status || ''}`,
-          });
-          return;
-        }
-        this.navigateToLineItems(evt, selection);
-      });
-    }
-  },
-  navigateToLineItems: function navigateToLineItems(evt, selection) {
-    const view = App.getView('salesorder_item_edit');
-    if (view) {
-      const options = {
-        insert: true,
-        context: {
-          SalesOrder: selection.data,
-        },
-      };
-      view.show(options);
-    }
-  },
-  formatSearchQuery: function formatSearchQuery(searchQuery) {
-    const q = this.escapeSearchQuery(searchQuery.toUpperCase());
-    return `(upper(SalesOrderNumber) like "${q}%" ) or (upper(ErpExtId) like "${0}%" ) or (upper(CustomerPurchaseOrderNumber) like "${q}%" ) or (upper(Account.AccountName) like "${q}%" ) `;
-  },
-  formatErpStatus: function formatErpStatus(value) {
-    const text = App.picklistService.getPicklistItemTextByCode('ErpSalesOrderStatus', value);
-    if (text) {
-      return text;
-    }
-    return value;
-  },
+  lang.setObject('icboe.Views.SalesOrders.List', __class);
+
+  return __class;
 });
-
-lang.setObject('icboe.Views.SalesOrders.List', __class);
-export default __class;

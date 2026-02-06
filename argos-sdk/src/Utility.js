@@ -16,63 +16,65 @@
 /**
  * @module argos/Utility
  */
-import lang from 'dojo/_base/lang';
-
-const util = ICRMCommonSDK.utility;
-
-/**
- * @class
- * @alias module:argos/Utility
- * @classdesc Utility provides functions that are more javascript enhancers than application related code.
- */
-const __class = lang.setObject('argos.Utility', /** @lends module:argos/Utility */{
-  /**
-   * Replaces a single `"` with two `""` for proper SData query expressions.
-   * @param {String} searchQuery Search expression to be escaped.
-   * @return {String}
-   */
-  escapeSearchQuery: util.escapeSearchQuery,
+define('argos/Utility', [
+  'dojo/_base/lang'
+], function(lang) {
+  const util = ICRMCommonSDK.utility;
 
   /**
-   *
+   * @class
+   * @alias module:argos/Utility
+   * @classdesc Utility provides functions that are more javascript enhancers than application related code.
    */
-  memoize: util.memoize,
+  const __class = lang.setObject('argos.Utility', /** @lends module:argos/Utility */{
+    /**
+     * Replaces a single `"` with two `""` for proper SData query expressions.
+     * @param {String} searchQuery Search expression to be escaped.
+     * @return {String}
+     */
+    escapeSearchQuery: util.escapeSearchQuery,
 
-  /**
-   *
-   */
-  debounce: util.debounce,
+    /**
+     *
+     */
+    memoize: util.memoize,
 
-  /**
-   *
-   */
-  getValue: util.getValue,
+    /**
+     *
+     */
+    debounce: util.debounce,
 
-  /**
-   *
-   */
-  setValue: util.setValue,
+    /**
+     *
+     */
+    getValue: util.getValue,
 
-  /**
-   *
-   */
-  expand: util.expand,
+    /**
+     *
+     */
+    setValue: util.setValue,
 
-  /**
-   *
-   */
-  roundNumberTo: util.roundNumberTo,
+    /**
+     *
+     */
+    expand: util.expand,
 
-  /**
-   * Utility function to join fields within a Simplate template.
-   */
-  joinFields: util.joinFields,
-  /**
-   * Sanitizes an Object so that JSON.stringify will work without errors by discarding non-stringable keys.
-   * @param {Object} obj Object to be cleansed of non-stringify friendly keys/values.
-   * @return {Object} Object ready to be JSON.stringified.
-   */
-  sanitizeForJson: util.sanitizeForJson,
+    /**
+     *
+     */
+    roundNumberTo: util.roundNumberTo,
+
+    /**
+     * Utility function to join fields within a Simplate template.
+     */
+    joinFields: util.joinFields,
+    /**
+     * Sanitizes an Object so that JSON.stringify will work without errors by discarding non-stringable keys.
+     * @param {Object} obj Object to be cleansed of non-stringify friendly keys/values.
+     * @return {Object} Object ready to be JSON.stringified.
+     */
+    sanitizeForJson: util.sanitizeForJson,
+  });
+
+  return __class;
 });
-
-export default __class;

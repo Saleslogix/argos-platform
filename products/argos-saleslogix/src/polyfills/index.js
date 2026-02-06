@@ -13,10 +13,11 @@
  * limitations under the License.
  */
 
-import * as nodelist from './nodelist';
+define('crm/polyfills/index', [
+  './nodelist'
+], function(nodelist) {
+  const p = Object.assign({},
+    nodelist
+  );
 
-const p = Object.assign({},
-  nodelist
-);
-
-p.nodelist();
+  p.nodelist();});

@@ -16,18 +16,21 @@
 /**
  * @module argos/List
  */
-import declare from 'dojo/_base/declare';
-import _ListBase from './_ListBase';
-import _SDataListMixin from './_SDataListMixin';
-import _RelatedWidgetListMixin from './_RelatedViewWidgetListMixin';
+define('argos/List', [
+  'dojo/_base/declare',
+  './_ListBase',
+  './_SDataListMixin',
+  './_RelatedViewWidgetListMixin'
+], function(declare, _ListBase, _SDataListMixin, _RelatedWidgetListMixin) {
+  /**
+   * @class
+   * @alias module:argos/List
+   * @classdesc List extends _ListBase and mixes in _SDataListMixin to provide backwards compatibility for consumers.
+   * @extends module:argos/_ListBase
+   * @extends module:argos/_SDataListMixin
+   * @mixes module:argos/_RelateViewdWidgetListMixin
+   */
+  const __class = declare('argos.List', [_ListBase, _SDataListMixin, _RelatedWidgetListMixin], {});
 
-/**
- * @class
- * @alias module:argos/List
- * @classdesc List extends _ListBase and mixes in _SDataListMixin to provide backwards compatibility for consumers.
- * @extends module:argos/_ListBase
- * @extends module:argos/_SDataListMixin
- * @mixes module:argos/_RelateViewdWidgetListMixin
- */
-const __class = declare('argos.List', [_ListBase, _SDataListMixin, _RelatedWidgetListMixin], {});
-export default __class;
+  return __class;
+});

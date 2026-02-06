@@ -16,116 +16,117 @@
 /**
  * @module argos/Dropdown
  */
-import declare from 'dojo/_base/declare';
-import _WidgetBase from 'dijit/_WidgetBase';
-import _Templated from './_Templated';
+define('argos/Dropdown', [
+  'dojo/_base/declare',
+  'dijit/_WidgetBase',
+  './_Templated'
+], function(declare, _WidgetBase, _Templated) {
+  /**
+   * @class
+   * @alias module:argos/Dropdown
+   * @extends module:argos/_Templated
+   */
+  const __class = declare('argos.Dropdown', [_WidgetBase, _Templated], /** @lends module:argos/Dropdown.prototype */ {
+    widgetTemplate: new Simplate([
+      '<div class="field">',
+      '<label for="{%= $.id %}_dropdownNode" class="label">{%: $.label %}</label>',
+      '<select id="{%= $.id %}_dropdownNode" class="dropdown {%: $.dropdownClass %}" data-dojo-attach-point="dropdownSelect"></select>',
+      '</div>',
+    ]),
+    selectItemTemplate: new Simplate([
+      '<option value="{%= $.value %}">',
+      '{% if ($.text) { %}',
+      '{%= $.text %}',
+      '{% } else { %}',
+      '{%= $.value %}',
+      '{% } %}',
+      '</option>',
+    ]),
 
+    dropdownClass: '',
+    id: 'dropdown-template',
+    multiSelect: false,
+    onSelect: null,
+    onSelectScope: null,
+    _eventConnections: null,
+    _list: null,
+    _selected: null,
+    items: null,
+    itemMustExist: true,
+    selectedItem: null,
+    constructor: function constructor() {
+      this._eventConnections = [];
+      this.items = [];
+    },
+    createList: function createList({ items, defaultValue }) {
+      let itemFound = null;
+      this.items = (items) ? items : [];
+      this._defaultValue = defaultValue;
 
-/**
- * @class
- * @alias module:argos/Dropdown
- * @extends module:argos/_Templated
- */
-const __class = declare('argos.Dropdown', [_WidgetBase, _Templated], /** @lends module:argos/Dropdown.prototype */ {
-  widgetTemplate: new Simplate([
-    '<div class="field">',
-    '<label for="{%= $.id %}_dropdownNode" class="label">{%: $.label %}</label>',
-    '<select id="{%= $.id %}_dropdownNode" class="dropdown {%: $.dropdownClass %}" data-dojo-attach-point="dropdownSelect"></select>',
-    '</div>',
-  ]),
-  selectItemTemplate: new Simplate([
-    '<option value="{%= $.value %}">',
-    '{% if ($.text) { %}',
-    '{%= $.text %}',
-    '{% } else { %}',
-    '{%= $.value %}',
-    '{% } %}',
-    '</option>',
-  ]),
-
-  dropdownClass: '',
-  id: 'dropdown-template',
-  multiSelect: false,
-  onSelect: null,
-  onSelectScope: null,
-  _eventConnections: null,
-  _list: null,
-  _selected: null,
-  items: null,
-  itemMustExist: true,
-  selectedItem: null,
-  constructor: function constructor() {
-    this._eventConnections = [];
-    this.items = [];
-  },
-  createList: function createList({ items, defaultValue }) {
-    let itemFound = null;
-    this.items = (items) ? items : [];
-    this._defaultValue = defaultValue;
-
-    items.forEach((item) => {
-      if (item.value === defaultValue) {
-        itemFound = item;
+      items.forEach((item) => {
+        if (item.value === defaultValue) {
+          itemFound = item;
+        }
+      }, this);
+      if (this.itemMustExist && !itemFound) {
+        itemFound = { key: -1, value: defaultValue, text: defaultValue };
+        this.items.splice(0, 0, itemFound);
       }
-    }, this);
-    if (this.itemMustExist && !itemFound) {
-      itemFound = { key: -1, value: defaultValue, text: defaultValue };
-      this.items.splice(0, 0, itemFound);
-    }
 
-    items.forEach((item) => {
-      const option = $(this.selectItemTemplate.apply({
-        key: item.key,
-        value: item.value,
-        text: item.text,
-      }, this));
-      $(this.dropdownSelect).append(option);
-    });
+      items.forEach((item) => {
+        const option = $(this.selectItemTemplate.apply({
+          key: item.key,
+          value: item.value,
+          text: item.text,
+        }, this));
+        $(this.dropdownSelect).append(option);
+      });
 
-    $(this.dropdownSelect).dropdown({
-      noSearch: true,
-    });
-    if (itemFound) {
-      this.setValue(itemFound.value);
-    }
-    if (this.onSelect) {
-      $(this.dropdownSelect).on('change', this.onSelect.bind(this.onSelectScope || this));
-    }
-    return this;
-  },
-  destroy: function destroy() {
-    this._eventConnections.forEach((evt) => {
-      evt.remove();
-    });
-    this._eventConnections = [];
-    this.inherited(destroy, arguments);
-  },
-  findValue: function findValue(text) {
-    const value = this._list.children.filter((element) => {
-      return element.innerText === text;
-    });
-    return value[0];
-  },
-  getSelected: function getSelected() {
-    return this._selected;
-  },
-  getText: function getText() {
-    const text = (this.dropdownSelect.options[this.dropdownSelect.selectedIndex]) ? this.dropdownSelect.options[this.dropdownSelect.selectedIndex].text : '';
-    return text;
-  },
-  getValue: function getValue() {
-    const value = this.dropdownSelect.options[this.dropdownSelect.selectedIndex].value;
-    return value;
-  },
-  postCreate: function postCreate() {
-    this.inherited(postCreate, arguments);
-  },
-  setValue: function setValue(value) {
-    if (value === 0 || value) {
-      this.dropdownSelect.value = value;
-      $(this.dropdownSelect).data('dropdown').updated();
-    }
-  },
+      $(this.dropdownSelect).dropdown({
+        noSearch: true,
+      });
+      if (itemFound) {
+        this.setValue(itemFound.value);
+      }
+      if (this.onSelect) {
+        $(this.dropdownSelect).on('change', this.onSelect.bind(this.onSelectScope || this));
+      }
+      return this;
+    },
+    destroy: function destroy() {
+      this._eventConnections.forEach((evt) => {
+        evt.remove();
+      });
+      this._eventConnections = [];
+      this.inherited(destroy, arguments);
+    },
+    findValue: function findValue(text) {
+      const value = this._list.children.filter((element) => {
+        return element.innerText === text;
+      });
+      return value[0];
+    },
+    getSelected: function getSelected() {
+      return this._selected;
+    },
+    getText: function getText() {
+      const text = (this.dropdownSelect.options[this.dropdownSelect.selectedIndex]) ? this.dropdownSelect.options[this.dropdownSelect.selectedIndex].text : '';
+      return text;
+    },
+    getValue: function getValue() {
+      const value = this.dropdownSelect.options[this.dropdownSelect.selectedIndex].value;
+      return value;
+    },
+    postCreate: function postCreate() {
+      this.inherited(postCreate, arguments);
+    },
+    setValue: function setValue(value) {
+      if (value === 0 || value) {
+        this.dropdownSelect.value = value;
+        $(this.dropdownSelect).data('dropdown').updated();
+      }
+    },
+  });
+
+  return __class;
 });
-
-export default __class;

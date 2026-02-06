@@ -13,69 +13,72 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import _ModelBase from 'argos/Models/_ModelBase';
-import MODEL_NAMES from '../Names';
-import getResource from 'argos/I18n';
+define('crm/Models/Opportunity/Base', [
+  'dojo/_base/declare',
+  'argos/Models/_ModelBase',
+  '../Names',
+  'argos/I18n'
+], function(declare, _ModelBase, MODEL_NAMES, getResource) {
+  const resource = getResource('opportunityModel');
+  const accountResource = getResource('accountModel');
+  const activityResource = getResource('activityModel');
+  const historyResource = getResource('historyModel');
 
-const resource = getResource('opportunityModel');
-const accountResource = getResource('accountModel');
-const activityResource = getResource('activityModel');
-const historyResource = getResource('historyModel');
+  const __class = declare('crm.Models.Opportunity.Base', [_ModelBase], {
+    entityName: 'Opportunity',
+    entityDisplayName: resource.entityDisplayName,
+    entityDisplayNamePlural: resource.entityDisplayNamePlural,
+    iconClass: 'finance',
+    resourceKind: 'opportunities',
+    modelName: MODEL_NAMES.OPPORTUNITY,
+    security: 'Entities/Opportunity/View',
 
-const __class = declare('crm.Models.Opportunity.Base', [_ModelBase], {
-  entityName: 'Opportunity',
-  entityDisplayName: resource.entityDisplayName,
-  entityDisplayNamePlural: resource.entityDisplayNamePlural,
-  iconClass: 'finance',
-  resourceKind: 'opportunities',
-  modelName: MODEL_NAMES.OPPORTUNITY,
-  security: 'Entities/Opportunity/View',
+    createPicklists: function createPicklists() {
+      return this.picklists || (this.picklists = [{
+        name: 'Opportunity Type',
+        property: 'Type',
+      }, {
+        name: 'Opportunity Status',
+        property: 'Status',
+      }, {
+        name: 'Opportunity Probability',
+        property: 'CloseProbability',
+      }]);
+    },
+    createRelationships: function createRelationships() {
+      const rel = this.relationships || (this.relationships = [{
+        name: 'Account',
+        displayName: accountResource.entityDisplayName,
+        type: 'ManyToOne',
+        parentProperty: 'Account',
+        parentPropertyType: 'object',
+        relatedEntity: 'Account',
+        relatedPropertyType: 'object',
+      }, {
+        name: 'Reseller',
+        displayName: resource.resellerText,
+        type: 'ManyToOne',
+        parentProperty: 'Reseller',
+        parentPropertyType: 'object',
+        relatedEntity: 'Account',
+        relatedPropertyType: 'object',
+      }, {
+        name: 'History',
+        displayName: historyResource.entityDisplayNamePlural,
+        type: 'OneToMany',
+        relatedEntity: 'History',
+        relatedProperty: 'OpportunityId',
+        where: 'Type ne "atDatabaseChange"',
+      }, {
+        name: 'Activity',
+        displayName: activityResource.entityDisplayNamePlural,
+        type: 'OneToMany',
+        relatedEntity: 'Activity',
+        relatedProperty: 'OpportunityId',
+      }]);
+      return rel;
+    },
+  });
 
-  createPicklists: function createPicklists() {
-    return this.picklists || (this.picklists = [{
-      name: 'Opportunity Type',
-      property: 'Type',
-    }, {
-      name: 'Opportunity Status',
-      property: 'Status',
-    }, {
-      name: 'Opportunity Probability',
-      property: 'CloseProbability',
-    }]);
-  },
-  createRelationships: function createRelationships() {
-    const rel = this.relationships || (this.relationships = [{
-      name: 'Account',
-      displayName: accountResource.entityDisplayName,
-      type: 'ManyToOne',
-      parentProperty: 'Account',
-      parentPropertyType: 'object',
-      relatedEntity: 'Account',
-      relatedPropertyType: 'object',
-    }, {
-      name: 'Reseller',
-      displayName: resource.resellerText,
-      type: 'ManyToOne',
-      parentProperty: 'Reseller',
-      parentPropertyType: 'object',
-      relatedEntity: 'Account',
-      relatedPropertyType: 'object',
-    }, {
-      name: 'History',
-      displayName: historyResource.entityDisplayNamePlural,
-      type: 'OneToMany',
-      relatedEntity: 'History',
-      relatedProperty: 'OpportunityId',
-      where: 'Type ne "atDatabaseChange"',
-    }, {
-      name: 'Activity',
-      displayName: activityResource.entityDisplayNamePlural,
-      type: 'OneToMany',
-      relatedEntity: 'Activity',
-      relatedProperty: 'OpportunityId',
-    }]);
-    return rel;
-  },
+  return __class;
 });
-export default __class;

@@ -13,20 +13,23 @@
  * limitations under the License.
  */
 
-import lang from 'dojo/_base/lang';
+define('argos/CultureInfo', [
+  'dojo/_base/lang'
+], function(lang) {
+  /**
+   * Gets the culture information from the regional context (l20n).
+   * @module argos/CultureInfo
+   */
 
-/**
- * Gets the culture information from the regional context (l20n).
- * @module argos/CultureInfo
- */
-export default function () { // eslint-disable-line
-  const localeContext = window.regionalContext;
-  const entity = localeContext.getEntitySync('CultureInfo');
-
-  if (!entity) {
-    throw new Error('Failed loading CultureInfo.');
-  }
-
-  const parsed = JSON.parse(entity.value);
-  lang.setObject('Mobile.CultureInfo', parsed);
-}
+  return function () { // eslint-disable-line
+    const localeContext = window.regionalContext;
+    const entity = localeContext.getEntitySync('CultureInfo');
+  
+    if (!entity) {
+      throw new Error('Failed loading CultureInfo.');
+    }
+  
+    const parsed = JSON.parse(entity.value);
+    lang.setObject('Mobile.CultureInfo', parsed);
+  };
+});

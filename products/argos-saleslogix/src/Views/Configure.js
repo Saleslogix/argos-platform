@@ -13,77 +13,79 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import Memory from 'dojo/store/Memory';
-import _ConfigureBase from 'argos/_ConfigureBase';
-import getResource from 'argos/I18n';
+define('crm/Views/Configure', [
+  'dojo/_base/declare',
+  'dojo/store/Memory',
+  'argos/_ConfigureBase',
+  'argos/I18n'
+], function(declare, Memory, _ConfigureBase, getResource) {
+  const resource = getResource('configure');
 
-const resource = getResource('configure');
+  const __class = declare('crm.Views.Configure', [_ConfigureBase], {
+    // Localization
+    titleText: resource.titleText,
 
-const __class = declare('crm.Views.Configure', [_ConfigureBase], {
-  // Localization
-  titleText: resource.titleText,
+    // View Properties
+    id: 'configure',
+    idProperty: '$key',
+    labelProperty: '$descriptor',
 
-  // View Properties
-  id: 'configure',
-  idProperty: '$key',
-  labelProperty: '$descriptor',
+    onSave: function onSave() {
+      App.preferences.home = App.preferences.home || {};
+      App.preferences.configure = App.preferences.configure || {};
 
-  onSave: function onSave() {
-    App.preferences.home = App.preferences.home || {};
-    App.preferences.configure = App.preferences.configure || {};
+      App.preferences.configure.order = this.getOrderedKeys();
+      App.preferences.home.visible = this.getSelectedKeys();
 
-    App.preferences.configure.order = this.getOrderedKeys();
-    App.preferences.home.visible = this.getSelectedKeys();
+      App.persistPreferences();
 
-    App.persistPreferences();
-
-    ReUI.back();
-    const view = App.getView('left_drawer');
-    if (view) {
-      view.refresh();
-    }
-  },
-  createStore: function createStore() {
-    const exposed = App.getExposedViews();
-    const order = this.getSavedOrderedKeys();
-    let list = [];
-
-    // De-dup id's
-    const all = order.concat(exposed);
-    let reduced = all.reduce((previous, current) => {
-      if (previous.indexOf(current) === -1) {
-        previous.push(current);
+      ReUI.back();
+      const view = App.getView('left_drawer');
+      if (view) {
+        view.refresh();
       }
+    },
+    createStore: function createStore() {
+      const exposed = App.getExposedViews();
+      const order = this.getSavedOrderedKeys();
+      let list = [];
 
-      return previous;
-    }, []);
+      // De-dup id's
+      const all = order.concat(exposed);
+      let reduced = all.reduce((previous, current) => {
+        if (previous.indexOf(current) === -1) {
+          previous.push(current);
+        }
 
-    // The order array could have had stale id's, filter out valid views here
-    reduced = reduced.filter((key) => {
-      const view = App.getView(key);
-      return view && typeof view.getSecurity === 'function' && App.hasAccessTo(view.getSecurity()) && exposed.indexOf(key) !== -1;
-    });
+        return previous;
+      }, []);
 
-    list = reduced.map((key) => {
-      const view = App.getView(key);
-      return {
-        $key: view.id,
-        $descriptor: view.titleText,
-        icon: view.icon,
-      };
-    });
+      // The order array could have had stale id's, filter out valid views here
+      reduced = reduced.filter((key) => {
+        const view = App.getView(key);
+        return view && typeof view.getSecurity === 'function' && App.hasAccessTo(view.getSecurity()) && exposed.indexOf(key) !== -1;
+      });
 
-    return Memory({ // eslint-disable-line
-      data: list,
-    });
-  },
-  getSavedOrderedKeys: function getSavedOrderedKeys() {
-    return (App.preferences.configure && App.preferences.configure.order) || [];
-  },
-  getSavedSelectedKeys: function getSavedSelectedKeys() {
-    return (App.preferences.home && App.preferences.home.visible) || [];
-  },
+      list = reduced.map((key) => {
+        const view = App.getView(key);
+        return {
+          $key: view.id,
+          $descriptor: view.titleText,
+          icon: view.icon,
+        };
+      });
+
+      return Memory({ // eslint-disable-line
+        data: list,
+      });
+    },
+    getSavedOrderedKeys: function getSavedOrderedKeys() {
+      return (App.preferences.configure && App.preferences.configure.order) || [];
+    },
+    getSavedSelectedKeys: function getSavedSelectedKeys() {
+      return (App.preferences.home && App.preferences.home.visible) || [];
+    },
+  });
+
+  return __class;
 });
-
-export default __class;

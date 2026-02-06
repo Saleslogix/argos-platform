@@ -13,41 +13,43 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import EditorField from 'argos/Fields/EditorField';
-import FieldManager from 'argos/FieldManager';
-import getResource from 'argos/I18n';
+define('crm/Fields/RecurrencesField', [
+  'dojo/_base/declare',
+  'argos/Fields/EditorField',
+  'argos/FieldManager',
+  'argos/I18n'
+], function(declare, EditorField, FieldManager, getResource) {
+  const resource = getResource('recurrencesField');
 
-const resource = getResource('recurrencesField');
-
-const control = declare('crm.Fields.RecurrencesField', [EditorField], {
-  // Localization
-  titleText: resource.titleText,
-  emptyText: resource.emptyText,
-  attributeMap: {
-    noteText: {
-      node: 'inputNode',
-      type: 'innerHTML',
+  const control = declare('crm.Fields.RecurrencesField', [EditorField], {
+    // Localization
+    titleText: resource.titleText,
+    emptyText: resource.emptyText,
+    attributeMap: {
+      noteText: {
+        node: 'inputNode',
+        type: 'innerHTML',
+      },
     },
-  },
 
-  widgetTemplate: new Simplate([
-    '<label for="{%= $.name %}">{%: $.label %}</label>',
-    '<div class="field field-control-wrapper">',
-    `<button class="button simpleSubHeaderButton field-control-trigger {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}" aria-label="{%: $.lookupLabelText %}">
-      <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
-        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
-      </svg>
-      <span>{%: $.lookupText %}</span>
-    </button>`,
-    '<div data-dojo-attach-point="inputNode" class="note-text"></div>',
-    '</div>',
-  ]),
-  iconClass: 'more',
+    widgetTemplate: new Simplate([
+      '<label for="{%= $.name %}">{%: $.label %}</label>',
+      '<div class="field field-control-wrapper">',
+      `<button class="button simpleSubHeaderButton field-control-trigger {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}" aria-label="{%: $.lookupLabelText %}">
+        <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
+        </svg>
+        <span>{%: $.lookupText %}</span>
+      </button>`,
+      '<div data-dojo-attach-point="inputNode" class="note-text"></div>',
+      '</div>',
+    ]),
+    iconClass: 'more',
 
-  setText: function setText(text) {
-    this.set('noteText', text);
-  },
+    setText: function setText(text) {
+      this.set('noteText', text);
+    },
+  });
+
+  return FieldManager.register('recurrences', control);
 });
-
-export default FieldManager.register('recurrences', control);

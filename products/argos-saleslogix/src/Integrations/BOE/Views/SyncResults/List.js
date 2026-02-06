@@ -13,70 +13,73 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import List from 'argos/List';
-import format from 'crm/Format';
-import MODEL_NAMES from '../../Models/Names';
-import getResource from 'argos/I18n';
+define('crm/Integrations/BOE/Views/SyncResults/List', [
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  'argos/List',
+  'crm/Format',
+  '../../Models/Names',
+  'argos/I18n'
+], function(declare, lang, List, format, MODEL_NAMES, getResource) {
+  const resource = getResource('syncResultsList');
+  const dtFormatResource = getResource('syncResultsListDateTimeFormat');
 
-const resource = getResource('syncResultsList');
-const dtFormatResource = getResource('syncResultsListDateTimeFormat');
+  const __class = declare('crm.Integrations.BOE.Views.SyncResults.List', [List], {
+    formatter: format,
+    // Templates
+    itemTemplate: new Simplate([
+      '<p class="listview-heading"><label class="group-label">{%: $$.directionText %}: </label>{%: $.RunName %}</p>',
+      '<p class="micro-text"><label class="group-label">{%: $$.statusText %}: </label>{%: $.HttpStatus %}</p>',
+      '{% if ($.ErrorMessage) { %}',
+      '<p class="micro-text"><label class="group-label">{%: $$.errorMessageText %}: </label>{%: $.ErrorMessage %}</p>',
+      '{% } %}',
+      '{% if ($.SyncedFrom) { %}',
+      '<p class="micro-text"><label class="group-label">{%: $$.sentFromText %}: </label>{%: $.SyncedFrom.Name %}</p>',
+      '{% } %}',
+      '{% if ($.SyncedTo) { %}',
+      '<p class="micro-text"><label class="group-label">{%: $$.processedByText %}: </label>{%: $.SyncedTo.Name %}</p>',
+      '{% } %}',
+      '<p class="micro-text"><label class="group-label">{%: $$.loggedText %}: </label>{%: $$.formatter.date($.Stamp, $$.dateFormatText) %}</p>',
+    ]),
 
-const __class = declare('crm.Integrations.BOE.Views.SyncResults.List', [List], {
-  formatter: format,
-  // Templates
-  itemTemplate: new Simplate([
-    '<p class="listview-heading"><label class="group-label">{%: $$.directionText %}: </label>{%: $.RunName %}</p>',
-    '<p class="micro-text"><label class="group-label">{%: $$.statusText %}: </label>{%: $.HttpStatus %}</p>',
-    '{% if ($.ErrorMessage) { %}',
-    '<p class="micro-text"><label class="group-label">{%: $$.errorMessageText %}: </label>{%: $.ErrorMessage %}</p>',
-    '{% } %}',
-    '{% if ($.SyncedFrom) { %}',
-    '<p class="micro-text"><label class="group-label">{%: $$.sentFromText %}: </label>{%: $.SyncedFrom.Name %}</p>',
-    '{% } %}',
-    '{% if ($.SyncedTo) { %}',
-    '<p class="micro-text"><label class="group-label">{%: $$.processedByText %}: </label>{%: $.SyncedTo.Name %}</p>',
-    '{% } %}',
-    '<p class="micro-text"><label class="group-label">{%: $$.loggedText %}: </label>{%: $$.formatter.date($.Stamp, $$.dateFormatText) %}</p>',
-  ]),
+    // Localization
+    titleText: resource.titleText,
+    directionText: resource.directionText,
+    userText: resource.userText,
+    sentFromText: resource.sentFromText,
+    processedByText: resource.processedByText,
+    loggedText: resource.loggedText,
+    statusText: resource.statusText,
+    errorMessageText: resource.errorMessageText,
+    dateFormatText: dtFormatResource.dateFormatText,
 
-  // Localization
-  titleText: resource.titleText,
-  directionText: resource.directionText,
-  userText: resource.userText,
-  sentFromText: resource.sentFromText,
-  processedByText: resource.processedByText,
-  loggedText: resource.loggedText,
-  statusText: resource.statusText,
-  errorMessageText: resource.errorMessageText,
-  dateFormatText: dtFormatResource.dateFormatText,
+    // View Properties
+    id: 'syncresult_list',
+    detailView: '',
+    modelName: MODEL_NAMES.SYNCRESULT,
+    resourceKind: 'syncResults',
+    enableActions: false,
+    groupsEnabled: false,
+    hasSettings: false,
+    expose: false,
 
-  // View Properties
-  id: 'syncresult_list',
-  detailView: '',
-  modelName: MODEL_NAMES.SYNCRESULT,
-  resourceKind: 'syncResults',
-  enableActions: false,
-  groupsEnabled: false,
-  hasSettings: false,
-  expose: false,
+    // Card layout
+    itemIconClass: '',
 
-  // Card layout
-  itemIconClass: '',
+    // Metrics
+    entityName: 'SyncResult',
 
-  // Metrics
-  entityName: 'SyncResult',
+    createToolLayout: function createToolLayout() {
+      return this.tools || (this.tools = {
+      });
+    },
+    formatSearchQuery: function formatSearchQuery(searchQuery) {
+      const q = this.escapeSearchQuery(searchQuery.toUpperCase());
+      return `upper(HttpStatus) like "${q}%"`;
+    },
+  });
 
-  createToolLayout: function createToolLayout() {
-    return this.tools || (this.tools = {
-    });
-  },
-  formatSearchQuery: function formatSearchQuery(searchQuery) {
-    const q = this.escapeSearchQuery(searchQuery.toUpperCase());
-    return `upper(HttpStatus) like "${q}%"`;
-  },
+  lang.setObject('icboe.Views.SyncResults.List', __class);
+
+  return __class;
 });
-
-lang.setObject('icboe.Views.SyncResults.List', __class);
-export default __class;

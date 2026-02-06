@@ -18,46 +18,33 @@
  */
 
 // action Types
-export const SET_MAX_VIEWPORTS = 'SET_MAX_VIEWPORTS';
-export const INSERT_HISTORY = 'INSERT_HISTORY';
+define('argos/actions/index', [], function() {
+  const SET_MAX_VIEWPORTS = 'SET_MAX_VIEWPORTS';
 
-/*
+  const INSERT_HISTORY = 'INSERT_HISTORY';
 
-See: https://github.com/acdlite/flux-standard-action
+  function setMaxViewPorts(max) {
+    return {
+      type: SET_MAX_VIEWPORTS,
+      payload: {
+        max,
+      },
+    };
+  }
 
-An action MUST
-+ be a plain JavaScript object.
-+ have a type property.
+  function insertHistory(data) {
+    return {
+      type: INSERT_HISTORY,
+      payload: {
+        data,
+      },
+    };
+  }
 
- An action MAY
-+ have an error property.
-+ have a payload property.
-+ have a meta property.
-
-An action MUST NOT
-+ include properties other than type, payload, error, and meta.
-*/
-
-/**
- * @param {Number} max
- */
-export function setMaxViewPorts(max) {
   return {
-    type: SET_MAX_VIEWPORTS,
-    payload: {
-      max,
-    },
+    SET_MAX_VIEWPORTS,
+    INSERT_HISTORY,
+    setMaxViewPorts,
+    insertHistory
   };
-}
-
-/**
- * @param {Object} data
- */
-export function insertHistory(data) {
-  return {
-    type: INSERT_HISTORY,
-    payload: {
-      data,
-    },
-  };
-}
+});

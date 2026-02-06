@@ -13,44 +13,46 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import Base from './Base';
-import _OfflineModelBase from 'argos/Models/_OfflineModelBase';
-import Manager from 'argos/Models/Manager';
-import MODEL_TYPES from 'argos/Models/Types';
-import MODEL_NAMES from '../Names';
-
-
-const __class = declare('crm.Models.History.Offline', [Base, _OfflineModelBase], {
-  id: 'history_offline_model',
-  deleteEntry: function deleteEntry(entry) {
-    return new Promise((resolve, reject) => {
-      const store = this.getStore();
-      store.query((doc, emit) => {
-        if (doc.entityName === this.entityName && doc.entity && doc.entity.entityId === null || typeof doc.entity.entityId === 'undefined') {
-          if (doc.entity.UID === entry.UID) {
-            emit(doc);
+define('crm/Models/History/Offline', [
+  'dojo/_base/declare',
+  './Base',
+  'argos/Models/_OfflineModelBase',
+  'argos/Models/Manager',
+  'argos/Models/Types',
+  '../Names'
+], function(declare, Base, _OfflineModelBase, Manager, MODEL_TYPES, MODEL_NAMES) {
+  const __class = declare('crm.Models.History.Offline', [Base, _OfflineModelBase], {
+    id: 'history_offline_model',
+    deleteEntry: function deleteEntry(entry) {
+      return new Promise((resolve, reject) => {
+        const store = this.getStore();
+        store.query((doc, emit) => {
+          if (doc.entityName === this.entityName && doc.entity && doc.entity.entityId === null || typeof doc.entity.entityId === 'undefined') {
+            if (doc.entity.UID === entry.UID) {
+              emit(doc);
+            }
           }
-        }
-      }).then((docs) => {
-        if (docs && docs.length === 1) {
-          const doc = docs[0];
-          this._removeDoc(doc.key).then((result) => {
-            this.onEntryDelete(entry);
-            resolve(result);
-          }, (err) => {
-            reject(err);
-          });
-        } else {
-          reject('No entry to delete.');
-        }
-      }, (err) => {
-        reject(err);
+        }).then((docs) => {
+          if (docs && docs.length === 1) {
+            const doc = docs[0];
+            this._removeDoc(doc.key).then((result) => {
+              this.onEntryDelete(entry);
+              resolve(result);
+            }, (err) => {
+              reject(err);
+            });
+          } else {
+            reject('No entry to delete.');
+          }
+        }, (err) => {
+          reject(err);
+        });
       });
-    });
-  },
+    },
+  });
+
+
+  Manager.register(MODEL_NAMES.HISTORY, MODEL_TYPES.OFFLINE, __class);
+
+  return __class;
 });
-
-
-Manager.register(MODEL_NAMES.HISTORY, MODEL_TYPES.OFFLINE, __class);
-export default __class;

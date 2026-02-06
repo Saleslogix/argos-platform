@@ -13,42 +13,44 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import List from 'argos/List';
-import getResource from 'argos/I18n';
+define('crm/Views/Product/List', [
+  'dojo/_base/declare',
+  'argos/List',
+  'argos/I18n'
+], function(declare, List, getResource) {
+  const resource = getResource('productList');
 
-const resource = getResource('productList');
+  const __class = declare('crm.Views.Product.List', [List], {
+    // Templates
+    itemTemplate: new Simplate([
+      '<p class="listview-heading">{%: $.Name %} | {%: $.Description %}</p>',
+      '<p class="micro-text">',
+      '{%: $.Family %}',
+      '</p>',
+    ]),
 
-const __class = declare('crm.Views.Product.List', [List], {
-  // Templates
-  itemTemplate: new Simplate([
-    '<p class="listview-heading">{%: $.Name %} | {%: $.Description %}</p>',
-    '<p class="micro-text">',
-    '{%: $.Family %}',
-    '</p>',
-  ]),
+    // Localization
+    titleText: resource.titleText,
 
-  // Localization
-  titleText: resource.titleText,
+    // View Properties
+    id: 'product_list',
+    security: 'Entities/Product/View',
+    queryOrderBy: 'Name',
+    querySelect: [
+      'Description',
+      'Name',
+      'Family',
+      'Price',
+      'Program',
+      'FixedCost',
+    ],
+    resourceKind: 'products',
 
-  // View Properties
-  id: 'product_list',
-  security: 'Entities/Product/View',
-  queryOrderBy: 'Name',
-  querySelect: [
-    'Description',
-    'Name',
-    'Family',
-    'Price',
-    'Program',
-    'FixedCost',
-  ],
-  resourceKind: 'products',
+    formatSearchQuery: function formatSearchQuery(searchQuery) {
+      const q = this.escapeSearchQuery(searchQuery.toUpperCase());
+      return `(upper(Name) like "${q}%" or upper(Family) like "${q}%")`;
+    },
+  });
 
-  formatSearchQuery: function formatSearchQuery(searchQuery) {
-    const q = this.escapeSearchQuery(searchQuery.toUpperCase());
-    return `(upper(Name) like "${q}%" or upper(Family) like "${q}%")`;
-  },
+  return __class;
 });
-
-export default __class;

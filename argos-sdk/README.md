@@ -29,8 +29,36 @@ The products sub-folder is for applications that reference the SDK.
 
 ### Building the source
 - Open a command prompt in the argos-sdk directory (C:\code\mobile\argos-sdk)
-- Run `npm install` to install dependencies specified in the project.json file
-- Run `npm run build`
+- Run `npm install` to install dependencies specified in the package.json file
+- Source files are in AMD format and can be used directly - no build step required
+- Run `npm run less` to compile LESS stylesheets to CSS
+
+### Module Format
+
+argos-sdk uses AMD (Asynchronous Module Definition) modules with modern JavaScript features. All modules use the `argos/` prefix:
+
+**Example module structure:**
+```javascript
+define('argos/Application', [
+  './View',
+  './I18n'
+], function(View, getResource) {
+  class Application {
+    constructor() {
+      this.views = [];
+    }
+  }
+  
+  return Application;
+});
+```
+
+**Module ID convention:**
+- `src/Application.js` → `define('argos/Application', ...)`
+- `src/Fields/TextField.js` → `define('argos/Fields/TextField', ...)`
+- `src/Models/Adapter.js` → `define('argos/Models/Adapter', ...)`
+
+Modern JavaScript features (classes, arrow functions, const/let, async/await, etc.) are preserved and supported by current browsers.
 
 ### Development
 

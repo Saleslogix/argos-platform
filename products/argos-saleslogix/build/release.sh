@@ -9,12 +9,10 @@ mkdir -p deploy/content/javascript
 mkdir -p deploy/content/images
 mkdir -p deploy/content/css
 
-# Grunt tasks required to generate a build (less for css and babel for js)
+# Grunt tasks required to generate a build (less for css)
 npm install
 grunt clean:css
-grunt clean:js
 grunt less
-npm run build
 
 # Mono build Tool
 mono ../../argos-sdk/tools/JsBit/jsbit.exe -p "build/release.jsb2" -d "."

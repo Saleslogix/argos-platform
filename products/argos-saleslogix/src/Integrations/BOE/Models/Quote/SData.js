@@ -13,172 +13,175 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import lang from 'dojo/_base/lang';
-import Base from './Base';
-import _SDataModelBase from 'argos/Models/_SDataModelBase';
-import Manager from 'argos/Models/Manager';
-import ErrorManager from 'argos/ErrorManager';
-import MODEL_TYPES from 'argos/Models/Types';
-import MODEL_NAMES from '../Names';
+define('crm/Integrations/BOE/Models/Quote/SData', [
+  'dojo/_base/declare',
+  'dojo/_base/lang',
+  './Base',
+  'argos/Models/_SDataModelBase',
+  'argos/Models/Manager',
+  'argos/ErrorManager',
+  'argos/Models/Types',
+  '../Names'
+], function(declare, lang, Base, _SDataModelBase, Manager, ErrorManager, MODEL_TYPES, MODEL_NAMES) {
+  const __class = declare('crm.Integrations.BOE.Models.Quotes.SData', [Base, _SDataModelBase], {
+    id: 'quote_sdata_model',
+    createQueryModels: function createQueryModels() {
+      return [{
+        name: 'list',
+        queryOrderBy: 'DocumentDate desc, CreateDate desc',
+        querySelect: [
+          'QuoteNumber',
+          'ErpExtId',
+          'Account/AccountName',
+          'GrandTotal',
+          'DocGrandTotal',
+          'CreateDate',
+          'ModifyDate',
+          'CurrencyCode',
+          'BaseCurrencyCode',
+          'ErpStatus',
+          'StatusDate',
+          'Status',
+          'DocumentDate',
+        ],
+      }, {
+        name: 'detail',
+        querySelect: [
+          'QuoteNumber',
+          'ErpExtId',
+          'Account/AccountName',
+          'Account/AccountManager/*',
+          'Account/ErpExtId',
+          'Opportunity/Description',
+          'GrandTotal',
+          'CreateDate',
+          'ModifyDate',
+          'Status',
+          'ShipTo/Name',
+          'ShipTo/Address/*',
+          'BillTo/Name',
+          'BillTo/Address/*',
+          'PayFrom/Address/*',
+          'CurrencyCode',
+          'BaseCurrencyCode',
+          'Total',
+          'DocTotal',
+          'DocGrandTotal',
+          'RequestedBy/NameLF',
+          'ExpectedDeliveryDate',
+          'StartDate',
+          'EndDate',
+          'DocumentDate',
+          'Comments',
+          'Type',
+          'DropShip',
+          'ShipEarly',
+          'PartialShip',
+          'AccountManager/*',
+          'CustomerRFQNumber',
+          'SalesOrder/*',
+          'BillingContact/Address/*',
+          'ShippingContact/Address/*',
+          'ExchangeRate',
+          'ErpLogicalId',
+          'ErpAccountingEntityId',
+          'SyncStatus',
+          'ErpLocation',
+          'Warehouse/Address/*',
+          'Warehouse/Description',
+          'Location/Address/*',
+          'Location/Description',
+          'Carrier/CarrierName',
+          'QuoteItems/*',
+          'ErpStatus',
+          'StatusDate',
+        ],
+        queryInclude: [
+          '$permissions',
+        ],
+      }, {
+        name: 'edit',
+        querySelect: [
+          'QuoteNumber',
+          'ErpExtId',
+          'Account/AccountName',
+          'Account/AccountManager/*',
+          'Account/ErpExtId',
+          'Opportunity/Description',
+          'GrandTotal',
+          'CreateDate',
+          'ModifyDate',
+          'Status',
+          'ShipTo/Address/*',
+          'BillTo/Address/*',
+          'PayFrom/Address/*',
+          'CurrencyCode',
+          'BaseCurrencyCode',
+          'Total',
+          'RequestedBy/NameLF',
+          'ExpectedDeliveryDate',
+          'StartDate',
+          'EndDate',
+          'DocumentDate',
+          'Comments',
+          'Type',
+          'DropShip',
+          'ShipEarly',
+          'PartialShip',
+          'AccountManager/*',
+          'CustomerRFQNumber',
+          'BillingContact/Address/*',
+          'ShippingContact/Address/*',
+          'ErpLogicalId',
+          'ErpAccountingEntityId',
+          'ErpLocation',
+          'Warehouse/*',
+          'Location/*',
+          'Carrier/*',
+        ],
+        queryInclude: [
+          '$permissions',
+        ],
+      }];
+    },
+    isClosed: function isClosed($key, options) {
+      const request = new Sage.SData.Client.SDataServiceOperationRequest(App.getService())
+        .setResourceKind(this.resourceKind)
+        .setOperationName('isClosed');
+      const entry = {
+        $name: 'isClosed',
+        request: {
+          entity: {
+            $key,
+          },
+        },
+      };
+      return new Promise((resolve, reject) => {
+        request.execute(entry, {
+          success: (data) => {
+            const { response: { Result } } = data;
+            resolve(Result);
+          },
+          failure: (response, o) => {
+            ErrorManager.addError(response, o, options, 'failure');
+            reject(response);
+          },
+        });
+      });
+    },
+    getEntry: function getEntry(key, options) {
+      const results$ = this.inherited(getEntry, arguments);
+      const closed$ = this.isClosed(key, options);
+      return Promise.all([results$, closed$])
+        .then(([entry, closed]) => {
+          entry.IsClosed = closed;
+          return entry;
+        });
+    },
+  });
 
-const __class = declare('crm.Integrations.BOE.Models.Quotes.SData', [Base, _SDataModelBase], {
-  id: 'quote_sdata_model',
-  createQueryModels: function createQueryModels() {
-    return [{
-      name: 'list',
-      queryOrderBy: 'DocumentDate desc, CreateDate desc',
-      querySelect: [
-        'QuoteNumber',
-        'ErpExtId',
-        'Account/AccountName',
-        'GrandTotal',
-        'DocGrandTotal',
-        'CreateDate',
-        'ModifyDate',
-        'CurrencyCode',
-        'BaseCurrencyCode',
-        'ErpStatus',
-        'StatusDate',
-        'Status',
-        'DocumentDate',
-      ],
-    }, {
-      name: 'detail',
-      querySelect: [
-        'QuoteNumber',
-        'ErpExtId',
-        'Account/AccountName',
-        'Account/AccountManager/*',
-        'Account/ErpExtId',
-        'Opportunity/Description',
-        'GrandTotal',
-        'CreateDate',
-        'ModifyDate',
-        'Status',
-        'ShipTo/Name',
-        'ShipTo/Address/*',
-        'BillTo/Name',
-        'BillTo/Address/*',
-        'PayFrom/Address/*',
-        'CurrencyCode',
-        'BaseCurrencyCode',
-        'Total',
-        'DocTotal',
-        'DocGrandTotal',
-        'RequestedBy/NameLF',
-        'ExpectedDeliveryDate',
-        'StartDate',
-        'EndDate',
-        'DocumentDate',
-        'Comments',
-        'Type',
-        'DropShip',
-        'ShipEarly',
-        'PartialShip',
-        'AccountManager/*',
-        'CustomerRFQNumber',
-        'SalesOrder/*',
-        'BillingContact/Address/*',
-        'ShippingContact/Address/*',
-        'ExchangeRate',
-        'ErpLogicalId',
-        'ErpAccountingEntityId',
-        'SyncStatus',
-        'ErpLocation',
-        'Warehouse/Address/*',
-        'Warehouse/Description',
-        'Location/Address/*',
-        'Location/Description',
-        'Carrier/CarrierName',
-        'QuoteItems/*',
-        'ErpStatus',
-        'StatusDate',
-      ],
-      queryInclude: [
-        '$permissions',
-      ],
-    }, {
-      name: 'edit',
-      querySelect: [
-        'QuoteNumber',
-        'ErpExtId',
-        'Account/AccountName',
-        'Account/AccountManager/*',
-        'Account/ErpExtId',
-        'Opportunity/Description',
-        'GrandTotal',
-        'CreateDate',
-        'ModifyDate',
-        'Status',
-        'ShipTo/Address/*',
-        'BillTo/Address/*',
-        'PayFrom/Address/*',
-        'CurrencyCode',
-        'BaseCurrencyCode',
-        'Total',
-        'RequestedBy/NameLF',
-        'ExpectedDeliveryDate',
-        'StartDate',
-        'EndDate',
-        'DocumentDate',
-        'Comments',
-        'Type',
-        'DropShip',
-        'ShipEarly',
-        'PartialShip',
-        'AccountManager/*',
-        'CustomerRFQNumber',
-        'BillingContact/Address/*',
-        'ShippingContact/Address/*',
-        'ErpLogicalId',
-        'ErpAccountingEntityId',
-        'ErpLocation',
-        'Warehouse/*',
-        'Location/*',
-        'Carrier/*',
-      ],
-      queryInclude: [
-        '$permissions',
-      ],
-    }];
-  },
-  isClosed: function isClosed($key, options) {
-    const request = new Sage.SData.Client.SDataServiceOperationRequest(App.getService())
-      .setResourceKind(this.resourceKind)
-      .setOperationName('isClosed');
-    const entry = {
-      $name: 'isClosed',
-      request: {
-        entity: {
-          $key,
-        },
-      },
-    };
-    return new Promise((resolve, reject) => {
-      request.execute(entry, {
-        success: (data) => {
-          const { response: { Result } } = data;
-          resolve(Result);
-        },
-        failure: (response, o) => {
-          ErrorManager.addError(response, o, options, 'failure');
-          reject(response);
-        },
-      });
-    });
-  },
-  getEntry: function getEntry(key, options) {
-    const results$ = this.inherited(getEntry, arguments);
-    const closed$ = this.isClosed(key, options);
-    return Promise.all([results$, closed$])
-      .then(([entry, closed]) => {
-        entry.IsClosed = closed;
-        return entry;
-      });
-  },
+  Manager.register(MODEL_NAMES.QUOTE, MODEL_TYPES.SDATA, __class);
+  lang.setObject('icboe.Models.Quotes.SData', __class);
+
+  return __class;
 });
-
-Manager.register(MODEL_NAMES.QUOTE, MODEL_TYPES.SDATA, __class);
-lang.setObject('icboe.Models.Quotes.SData', __class);
-export default __class;

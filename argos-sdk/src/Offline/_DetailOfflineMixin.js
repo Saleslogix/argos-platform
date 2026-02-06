@@ -16,118 +16,121 @@
 /**
  * @module argos/Offline/_DetailOfflineMixin
  */
-import declare from 'dojo/_base/declare';
-import OfflineManager from './Manager';
-import BusyIndicator from '../Dialogs/BusyIndicator';
-import ErrorManager from '../ErrorManager';
-import getResource from '../I18n';
+define('argos/Offline/_DetailOfflineMixin', [
+  'dojo/_base/declare',
+  './Manager',
+  '../Dialogs/BusyIndicator',
+  '../ErrorManager',
+  '../I18n'
+], function(declare, OfflineManager, BusyIndicator, ErrorManager, getResource) {
+  const resource = getResource('_detailOfflineMixin');
 
-const resource = getResource('_detailOfflineMixin');
 
+  /**
+   * @class
+   * @alias module:argos/Offline/_DetailOfflineMixin
+   * @classdesc A mixin that provides the detail view offline specific methods and properties
+   */
 
-/**
- * @class
- * @alias module:argos/Offline/_DetailOfflineMixin
- * @classdesc A mixin that provides the detail view offline specific methods and properties
- */
-export default declare('argos.Offline._DetailOfflineMixin', null, /** @lends module:argos/Offline/_DetailOfflineMixin.prototype */{
-
-  createToolLayout: function createToolLayout() {
-    if (this.tools) {
-      return this.tools;
-    }
-    const tools = this.inherited(createToolLayout, arguments);
-    if (tools && tools.tbar && this.enableOffline && App.enableOfflineSupport) {
-      tools.tbar.push({
-        id: 'briefCase',
-        svg: 'roles',
-        title: resource.briefcaseTooltipText,
-        action: 'briefCaseEntity',
-        security: '',
+  return declare('argos.Offline._DetailOfflineMixin', null, /** @lends module:argos/Offline/_DetailOfflineMixin.prototype */{
+  
+    createToolLayout: function createToolLayout() {
+      if (this.tools) {
+        return this.tools;
+      }
+      const tools = this.inherited(createToolLayout, arguments);
+      if (tools && tools.tbar && this.enableOffline && App.enableOfflineSupport) {
+        tools.tbar.push({
+          id: 'briefCase',
+          svg: 'roles',
+          title: resource.briefcaseTooltipText,
+          action: 'briefCaseEntity',
+          security: '',
+        });
+      }
+      return tools;
+    },
+    briefCaseEntity: function briefCaseEntity(action, selection) { // eslint-disable-line
+      // Start busy indicator modal
+      const busyIndicator = this.createBusyModal();
+  
+      // Start briefcasing
+      const entityName = this.modelName;
+      const entityId = this.entry.$key; // thie should be resolved from the model or adapter.
+      const options = {
+        includeRelated: true,
+        viewId: this.id,
+      };
+      OfflineManager.briefCaseEntity(entityName, entityId, options).then((result) => {
+        // Show complete modal dialog
+        const modalPromise = this.createCompleteDialog(busyIndicator, result);
+        modalPromise.then(this.onEntityBriefcased.bind(this));
+      }, (error) => {
+        ErrorManager.addSimpleError(`${resource.errorBriefcasingText} ${this.id}`, error);
+        this.createAlertDialog(busyIndicator);
       });
-    }
-    return tools;
-  },
-  briefCaseEntity: function briefCaseEntity(action, selection) { // eslint-disable-line
-    // Start busy indicator modal
-    const busyIndicator = this.createBusyModal();
-
-    // Start briefcasing
-    const entityName = this.modelName;
-    const entityId = this.entry.$key; // thie should be resolved from the model or adapter.
-    const options = {
-      includeRelated: true,
-      viewId: this.id,
-    };
-    OfflineManager.briefCaseEntity(entityName, entityId, options).then((result) => {
-      // Show complete modal dialog
-      const modalPromise = this.createCompleteDialog(busyIndicator, result);
-      modalPromise.then(this.onEntityBriefcased.bind(this));
-    }, (error) => {
-      ErrorManager.addSimpleError(`${resource.errorBriefcasingText} ${this.id}`, error);
-      this.createAlertDialog(busyIndicator);
-    });
-  },
-  createAlertDialog: function createAlertDialog(busyIndicator) {
-    App.modal.disableClose = false;
-    App.modal.showToolbar = true;
-    busyIndicator.complete(true);
-    App.modal.resolveDeferred(true);
-    // Attach resolve to move to briefcase list (if user hits okay)
-    return App.modal.createSimpleDialog({ title: 'alert', content: resource.interruptedText, getContent: () => { return; }, leftButton: 'cancel', rightButton: 'confirm' });
-  },
-  createBusyModal: function createBusyModal() {
-    App.modal.disableClose = true;
-    App.modal.showToolbar = false;
-    const busyIndicator = new BusyIndicator({
-      id: 'busyIndicator__offline-list-briefcase',
-      label: resource.briefcasingText,
-    });
-    App.modal.add(busyIndicator);
-    busyIndicator.start();
-    return busyIndicator;
-  },
-  createCompleteDialog: function createCompleteDialog(busyIndicator, result = {}) {
-    App.modal.disableClose = false;
-    App.modal.showToolbar = true;
-    busyIndicator.complete(true);
-    App.modal.resolveDeferred(true);
-    // Attach resolve to move to briefcase list (if user hits okay)
-    return App.modal.createSimpleDialog({ title: 'complete', content: resource.goToDetailViewText, getContent: () => { return result; }, leftButton: 'cancel', rightButton: 'okay' });
-  },
-  onContentChange: function onContentChange() {
-    if (this.enableOffline) {
-      this.saveOffline();
-    }
-  },
-  show: function show() {
-    this.inherited(show, arguments);
-    // Check if we are coming back to a previously fetched entry.
-    // refreshRequired is an indication we are switching to a new entry and
-    // this.entry will be stale.
-    if (!this.refreshRequired && this.entry && this.enableOffline) {
-      this.saveOffline();
-    }
-  },
-  saveOffline: function saveOffline() {
-    if (App.enableOfflineSupport) {
-      OfflineManager.saveDetailView(this).then(() => {
-      }, function err(error) {
-        ErrorManager.addSimpleError(`${resource.errorSavingOfflineViewText} ${this.id}`, error);
+    },
+    createAlertDialog: function createAlertDialog(busyIndicator) {
+      App.modal.disableClose = false;
+      App.modal.showToolbar = true;
+      busyIndicator.complete(true);
+      App.modal.resolveDeferred(true);
+      // Attach resolve to move to briefcase list (if user hits okay)
+      return App.modal.createSimpleDialog({ title: 'alert', content: resource.interruptedText, getContent: () => { return; }, leftButton: 'cancel', rightButton: 'confirm' });
+    },
+    createBusyModal: function createBusyModal() {
+      App.modal.disableClose = true;
+      App.modal.showToolbar = false;
+      const busyIndicator = new BusyIndicator({
+        id: 'busyIndicator__offline-list-briefcase',
+        label: resource.briefcasingText,
       });
-    }
-  },
-  getOfflineDescription: function getOfflineDescription() {
-    return this.entry.$descriptor;
-  },
-  getOfflineIcon: function getOfflineIcon() {
-    const model = this.getModel();
-    return model.getIconClass();
-  },
-  onEntityBriefcased: function onEntityBriefcased() {
-    const view = this.app.getView('briefcase_list');
-    if (view) {
-      view.show({});
-    }
-  },
+      App.modal.add(busyIndicator);
+      busyIndicator.start();
+      return busyIndicator;
+    },
+    createCompleteDialog: function createCompleteDialog(busyIndicator, result = {}) {
+      App.modal.disableClose = false;
+      App.modal.showToolbar = true;
+      busyIndicator.complete(true);
+      App.modal.resolveDeferred(true);
+      // Attach resolve to move to briefcase list (if user hits okay)
+      return App.modal.createSimpleDialog({ title: 'complete', content: resource.goToDetailViewText, getContent: () => { return result; }, leftButton: 'cancel', rightButton: 'okay' });
+    },
+    onContentChange: function onContentChange() {
+      if (this.enableOffline) {
+        this.saveOffline();
+      }
+    },
+    show: function show() {
+      this.inherited(show, arguments);
+      // Check if we are coming back to a previously fetched entry.
+      // refreshRequired is an indication we are switching to a new entry and
+      // this.entry will be stale.
+      if (!this.refreshRequired && this.entry && this.enableOffline) {
+        this.saveOffline();
+      }
+    },
+    saveOffline: function saveOffline() {
+      if (App.enableOfflineSupport) {
+        OfflineManager.saveDetailView(this).then(() => {
+        }, function err(error) {
+          ErrorManager.addSimpleError(`${resource.errorSavingOfflineViewText} ${this.id}`, error);
+        });
+      }
+    },
+    getOfflineDescription: function getOfflineDescription() {
+      return this.entry.$descriptor;
+    },
+    getOfflineIcon: function getOfflineIcon() {
+      const model = this.getModel();
+      return model.getIconClass();
+    },
+    onEntityBriefcased: function onEntityBriefcased() {
+      const view = this.app.getView('briefcase_list');
+      if (view) {
+        view.show({});
+      }
+    },
+  });
 });

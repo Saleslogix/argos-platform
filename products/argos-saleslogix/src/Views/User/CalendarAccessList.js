@@ -13,40 +13,42 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import List from 'argos/List';
-import getResource from 'argos/I18n';
+define('crm/Views/User/CalendarAccessList', [
+  'dojo/_base/declare',
+  'argos/List',
+  'argos/I18n'
+], function(declare, List, getResource) {
+  const resource = getResource('userCalendarAccessList');
 
-const resource = getResource('userCalendarAccessList');
+  const __class = declare('crm.Views.User.CalendarAccessList', [List], {
+    // Templates
+    itemTemplate: new Simplate([
+      '<p class="micro-text">{%: $.SubType %}</p>',
+    ]),
 
-const __class = declare('crm.Views.User.CalendarAccessList', [List], {
-  // Templates
-  itemTemplate: new Simplate([
-    '<p class="micro-text">{%: $.SubType %}</p>',
-  ]),
+    // Localization
+    titleText: resource.titleText,
 
-  // Localization
-  titleText: resource.titleText,
+    // View Properties
+    id: 'calendar_access_list',
+    queryOrderBy: 'Name',
 
-  // View Properties
-  id: 'calendar_access_list',
-  queryOrderBy: 'Name',
+    queryWhere: function queryWhere() {
+      return `AllowAdd AND (AccessId eq 'EVERYONE' or AccessId eq '${App.context.user.$key}') AND Type eq 'User'`;
+    },
+    querySelect: [
+      'Name',
+      'SubType',
+      'AccessId',
+      'ResourceId',
+    ],
+    resourceKind: 'activityresourceviews',
 
-  queryWhere: function queryWhere() {
-    return `AllowAdd AND (AccessId eq 'EVERYONE' or AccessId eq '${App.context.user.$key}') AND Type eq 'User'`;
-  },
-  querySelect: [
-    'Name',
-    'SubType',
-    'AccessId',
-    'ResourceId',
-  ],
-  resourceKind: 'activityresourceviews',
+    formatSearchQuery: function formatSearchQuery(searchQuery) {
+      const q = this.escapeSearchQuery(searchQuery.toUpperCase());
+      return `upper(Name) like "%${q}%"`;
+    },
+  });
 
-  formatSearchQuery: function formatSearchQuery(searchQuery) {
-    const q = this.escapeSearchQuery(searchQuery.toUpperCase());
-    return `upper(Name) like "%${q}%"`;
-  },
+  return __class;
 });
-
-export default __class;

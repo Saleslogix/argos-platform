@@ -13,34 +13,36 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import DecimalField from 'argos/Fields/DecimalField';
-import FieldManager from 'argos/FieldManager';
+define('crm/Fields/MultiCurrencyField', [
+  'dojo/_base/declare',
+  'argos/Fields/DecimalField',
+  'argos/FieldManager'
+], function(declare, DecimalField, FieldManager) {
+  const control = declare('crm.Fields.MultiCurrencyField', [DecimalField], {
+    attributeMap: {
+      inputValue: {
+        node: 'inputNode',
+        type: 'attribute',
+        attribute: 'value',
+      },
+      currencyCode: {
+        node: 'currencyCodeNode',
+        type: 'innerHTML',
+      },
+    },
+    widgetTemplate: new Simplate([
+      '<label for="{%= $.name %}">{%: $.label %}</label>',
+      '{% if ($.enableClearButton && !$.readonly) { %}',
+      '<button class="clear-button" data-dojo-attach-point="clearNode" data-dojo-attach-event="onclick:_onClearClick"></button>',
+      '{% } %}',
+      '<span data-dojo-attach-point="currencyCodeNode" class="currency-code-editlabel">{%: $.currencyCode %}</span>',
+      '<input data-dojo-attach-point="inputNode" data-dojo-attach-event="onkeyup: _onKeyUp, onblur: _onBlur, onfocus: _onFocus" class="text-input" type="{%: $.inputType %}" name="{%= $.name %}" {% if ($.readonly) { %} readonly {% } %}>',
+    ]),
+    currencyCode: '',
+    setCurrencyCode: function setCurrencyCode(code) {
+      this.set('currencyCode', code);
+    },
+  });
 
-const control = declare('crm.Fields.MultiCurrencyField', [DecimalField], {
-  attributeMap: {
-    inputValue: {
-      node: 'inputNode',
-      type: 'attribute',
-      attribute: 'value',
-    },
-    currencyCode: {
-      node: 'currencyCodeNode',
-      type: 'innerHTML',
-    },
-  },
-  widgetTemplate: new Simplate([
-    '<label for="{%= $.name %}">{%: $.label %}</label>',
-    '{% if ($.enableClearButton && !$.readonly) { %}',
-    '<button class="clear-button" data-dojo-attach-point="clearNode" data-dojo-attach-event="onclick:_onClearClick"></button>',
-    '{% } %}',
-    '<span data-dojo-attach-point="currencyCodeNode" class="currency-code-editlabel">{%: $.currencyCode %}</span>',
-    '<input data-dojo-attach-point="inputNode" data-dojo-attach-event="onkeyup: _onKeyUp, onblur: _onBlur, onfocus: _onFocus" class="text-input" type="{%: $.inputType %}" name="{%= $.name %}" {% if ($.readonly) { %} readonly {% } %}>',
-  ]),
-  currencyCode: '',
-  setCurrencyCode: function setCurrencyCode(code) {
-    this.set('currencyCode', code);
-  },
+  return FieldManager.register('multiCurrency', control);
 });
-
-export default FieldManager.register('multiCurrency', control);

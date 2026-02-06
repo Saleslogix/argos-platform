@@ -16,205 +16,207 @@
 /**
  * @module crm/Format
  */
-import lang from 'dojo/_base/lang';
-import string from 'dojo/string';
-import format from 'argos/Format';
-import getResource from 'argos/I18n';
+define('crm/Format', [
+  'dojo/_base/lang',
+  'dojo/string',
+  'argos/Format',
+  'argos/I18n'
+], function(lang, string, format, getResource) {
+  const f = ICRMCommonSDK.format;
+  const resource = getResource('crmFormat');
 
-const f = ICRMCommonSDK.format;
-const resource = getResource('crmFormat');
-
-/**
- * @class
- * @alias module:crm/Format
- * @extends module:argos/Format
- * @static
- */
-const __class = lang.setObject('crm.Format', lang.mixin({}, format, /** @lends module:crm/Format */{
   /**
-   * Address Culture Formats as defined by crm.Format.address
-   * http://msdn.microsoft.com/en-us/library/cc195167.aspx
+   * @class
+   * @alias module:crm/Format
+   * @extends module:argos/Format
+   * @static
    */
-  addressCultureFormats: f.addressCultureFormats,
-  /**
-   * Country name to culture identification
-   * http://msdn.microsoft.com/en-us/goglobal/bb896001.aspx
-   */
-  countryCultures: f.countryCultures,
-  addressItems: f.addressItems,
-  /**
-  Converts the given value using the provided format, joining with the separator character
-  If no format given, will use predefined format for the addresses Country (or en-US as final fallback)
-  <pre>
-  Format    Description                                    Example
-  ------    -----------------------------------------    -----------------------
-   s         Salutation (Attention, Name)                ATTN: Mr. Bob
-   S         Salutation Uppercase                        ATTN: MR. BOB
-   a1        Address Line 1                              555 Oak Ave
-   a2        Address Line 2                                #2038
-   a3        Address Line 3
-   m        Municipality (City, town, hamlet)            Phoenix
-   M        Municipality Uppercase                        PHOENIX
-   z        County (parish, providence)                    Maricopa
-   Z         County Uppercase                            MARICOPA
-   r        Region (State, area)                        AZ
-   R        Region Uppercase                            AZ
-   p         Postal Code (ZIP code)                        85021
-   P         Postal Code Uppercase                        85021
-   c         Country                                     France
-   C         Country Uppercase                            FRANCE
+  const __class = lang.setObject('crm.Format', lang.mixin({}, format, /** @lends module:crm/Format */{
+    /**
+     * Address Culture Formats as defined by crm.Format.address
+     * http://msdn.microsoft.com/en-us/library/cc195167.aspx
+     */
+    addressCultureFormats: f.addressCultureFormats,
+    /**
+     * Country name to culture identification
+     * http://msdn.microsoft.com/en-us/goglobal/bb896001.aspx
+     */
+    countryCultures: f.countryCultures,
+    addressItems: f.addressItems,
+    /**
+    Converts the given value using the provided format, joining with the separator character
+    If no format given, will use predefined format for the addresses Country (or en-US as final fallback)
+    <pre>
+    Format    Description                                    Example
+    ------    -----------------------------------------    -----------------------
+     s         Salutation (Attention, Name)                ATTN: Mr. Bob
+     S         Salutation Uppercase                        ATTN: MR. BOB
+     a1        Address Line 1                              555 Oak Ave
+     a2        Address Line 2                                #2038
+     a3        Address Line 3
+     m        Municipality (City, town, hamlet)            Phoenix
+     M        Municipality Uppercase                        PHOENIX
+     z        County (parish, providence)                    Maricopa
+     Z         County Uppercase                            MARICOPA
+     r        Region (State, area)                        AZ
+     R        Region Uppercase                            AZ
+     p         Postal Code (ZIP code)                        85021
+     P         Postal Code Uppercase                        85021
+     c         Country                                     France
+     C         Country Uppercase                            FRANCE
 
-   |        separator                                    as defined by separator variable
-   </pre>
-   @param {object} addr Address Entity containing all the SData properties
-   @param {boolean} asText If set to true returns text only, if false returns anchor link to google maps
-   @param {string|boolean} separator If false - separates with html <br>,
-                        if true - separates with line return,
-                        if defined as string - uses string to separate
-   @param {string} fmt Address format to use, may also pass a culture string to use predefined format
-   @return {string} Formatted address
-  */
-  address: f.address,
-  collapseSpace: f.collapseSpace,
-  resolveAddressCulture: f.resolveAddressCulture,
-  replaceAddressPart: f.replaceAddressPart,
-  // These were added to the SDK, and should not be here. Keeping the alias to not break anyone with a minor update.
-  phoneFormat: f.phoneFormat,
-  phone: f.phone,
-  picklist: (
-    service, // Picklist service reference
-    model, // Reference to the entity's model for call getPicklistNameByProperty
-    property, // Property to reference for fetching the picklist off the model
-    picklistName, // Picklist name used (can use this instead of model-property)
-    languageCode = App.getCurrentLocale(), // Override for languageCode to fetch
-    picklistOptions = { // Override for picklistOptions on storage and display modes
-      storage: f.PicklistStorageType.CODE,
-      display: f.PicklistDataDisplayType.TEXT,
-    }
-  ) => {
-    let name = picklistName;
-    if (!name) {
-      if (!service || !model || !property) {
-        return val => val;
+     |        separator                                    as defined by separator variable
+     </pre>
+     @param {object} addr Address Entity containing all the SData properties
+     @param {boolean} asText If set to true returns text only, if false returns anchor link to google maps
+     @param {string|boolean} separator If false - separates with html <br>,
+                          if true - separates with line return,
+                          if defined as string - uses string to separate
+     @param {string} fmt Address format to use, may also pass a culture string to use predefined format
+     @return {string} Formatted address
+    */
+    address: f.address,
+    collapseSpace: f.collapseSpace,
+    resolveAddressCulture: f.resolveAddressCulture,
+    replaceAddressPart: f.replaceAddressPart,
+    // These were added to the SDK, and should not be here. Keeping the alias to not break anyone with a minor update.
+    phoneFormat: f.phoneFormat,
+    phone: f.phone,
+    picklist: (
+      service, // Picklist service reference
+      model, // Reference to the entity's model for call getPicklistNameByProperty
+      property, // Property to reference for fetching the picklist off the model
+      picklistName, // Picklist name used (can use this instead of model-property)
+      languageCode = App.getCurrentLocale(), // Override for languageCode to fetch
+      picklistOptions = { // Override for picklistOptions on storage and display modes
+        storage: f.PicklistStorageType.CODE,
+        display: f.PicklistDataDisplayType.TEXT,
       }
-      name = model.getPicklistNameByProperty(property);
-    }
-    const picklist = service.getPicklistByName(name, languageCode);
+    ) => {
+      let name = picklistName;
+      if (!name) {
+        if (!service || !model || !property) {
+          return val => val;
+        }
+        name = model.getPicklistNameByProperty(property);
+      }
+      const picklist = service.getPicklistByName(name, languageCode);
 
-    return (val) => {
-      return f.picklist(val, Object.assign({}, picklistOptions, picklist));
-    };
-  },
-  PicklistDataDisplayType: f.PicklistDataDisplayType,
-  PicklistStorageType: f.PicklistStorageType,
-  currency: function currency(_val) {
-    return f.currency(_val, Soho.Locale.currentLocale.data.numbers.decimal,
-      Soho.Locale.currentLocale.data.numbers.group);
-  },
-  bigNumber: function bigNumber(val) {
-    let numParse = typeof val !== 'number' ? parseFloat(val) : val;
-    const absVal = Math.abs(numParse);
+      return (val) => {
+        return f.picklist(val, Object.assign({}, picklistOptions, picklist));
+      };
+    },
+    PicklistDataDisplayType: f.PicklistDataDisplayType,
+    PicklistStorageType: f.PicklistStorageType,
+    currency: function currency(_val) {
+      return f.currency(_val, Soho.Locale.currentLocale.data.numbers.decimal,
+        Soho.Locale.currentLocale.data.numbers.group);
+    },
+    bigNumber: function bigNumber(val) {
+      let numParse = typeof val !== 'number' ? parseFloat(val) : val;
+      const absVal = Math.abs(numParse);
 
-    if (isNaN(numParse)) {
-      return val;
-    }
+      if (isNaN(numParse)) {
+        return val;
+      }
 
-    let results = numParse.toString();
-    if (absVal >= 1000000000) {
-      // Billion
-      numParse = numParse / 1000000000;
-      results = string.substitute(resource.billionText, {
-        val: Soho.Locale.formatNumber(numParse, { round: true, minimumFractionDigits: 1 }),
-      });
-    } else if (absVal >= 1000000) {
-      numParse = numParse / 1000000;
-      results = string.substitute(resource.millionText, {
-        val: Soho.Locale.formatNumber(numParse, { round: true, minimumFractionDigits: 1 }),
-      });
-    } else if (absVal >= 1000) {
-      numParse = numParse / 1000;
-      results = string.substitute(resource.thousandText, {
-        val: Soho.Locale.formatNumber(numParse, { round: true, minimumFractionDigits: 1 }),
-      });
-    } else {
-      results = Soho.Locale.formatNumber(numParse, { round: true, minimumFractionDigits: 0, maximumFractionDigits: 0 }).toString();
-    }
-
-    return results;
-  },
-  relativeDate: function relativeDate(date, timeless) {
-    const val = f.date(date, timeless);
-    return moment(val).fromNow();
-  },
-  multiCurrency: function multiCurrency(_val, code) {
-    return f.multiCurrency(_val, code, Soho.Locale.currentLocale.data.numbers.decimal,
-      Soho.Locale.currentLocale.data.numbers.group);
-  },
-  nameLF: f.nameLF,
-  mail: f.mail,
-  // TODO: L20n
-  userActivityFormatText: {
-    asUnconfirmed: 'Unconfirmed',
-    asAccepted: 'Accepted',
-    asDeclned: 'Declined',
-  },
-  // TODO: Move
-  userActivityStatus: function userActivityStatus(val) {
-    return crm.Format.userActivityFormatText[val];
-  },
-  /**
-   * Takes a string input and converts name to First amd Last initials
-   * `Lee Hogan` -> `LH`
-   * @param val
-   * @returns {String}
-   */
-  formatUserInitial: f.formatUserInitial,
-  /**
-   * Takes a string input and the user name to First amd Last name
-   * `Hogan, Lee` -> `Lee Hogan`
-   * @param val
-   * @returns {String}
-   */
-  formatByUser: f.formatByUser,
-  /**
-   * Takes a string input and the user name to First amd Last name
-   * `Hogan, Lee` -> `Lee Hogan`
-   * @param val
-   * @returns {String}
-   */
-  resolveFirstLast: f.resolveFirstLast,
-  fixedLocale: function fixedLocale(val, d) {
-    return f.fixedLocale(val, d, Soho.Locale.currentLocale.data.numbers.group,
-      Soho.Locale.currentLocale.data.numbers.decimal);
-  },
-  time: function time(rawValue, type = 'days') {
-    let val = rawValue;
-
-    if (typeof rawValue !== 'number') {
-      val = parseFloat(rawValue);
-    }
-
-    const numParse = crm.Format.fixedLocale(val, 2);
-    switch (type) { // eslint-disable-line
-      case 'days':
-        return string.substitute(resource.daysText, {
-          val: numParse,
+      let results = numParse.toString();
+      if (absVal >= 1000000000) {
+        // Billion
+        numParse = numParse / 1000000000;
+        results = string.substitute(resource.billionText, {
+          val: Soho.Locale.formatNumber(numParse, { round: true, minimumFractionDigits: 1 }),
         });
-      case 'weeks':
-        return string.substitute(resource.weeksText, {
-          val: numParse,
+      } else if (absVal >= 1000000) {
+        numParse = numParse / 1000000;
+        results = string.substitute(resource.millionText, {
+          val: Soho.Locale.formatNumber(numParse, { round: true, minimumFractionDigits: 1 }),
         });
-      case 'months':
-        return string.substitute(resource.monthsText, {
-          val: numParse,
+      } else if (absVal >= 1000) {
+        numParse = numParse / 1000;
+        results = string.substitute(resource.thousandText, {
+          val: Soho.Locale.formatNumber(numParse, { round: true, minimumFractionDigits: 1 }),
         });
-      case 'years':
-        return string.substitute(resource.yearsText, {
-          val: numParse,
-        });
-    }
-    return rawValue;
-  },
-}));
+      } else {
+        results = Soho.Locale.formatNumber(numParse, { round: true, minimumFractionDigits: 0, maximumFractionDigits: 0 }).toString();
+      }
 
-export default __class;
+      return results;
+    },
+    relativeDate: function relativeDate(date, timeless) {
+      const val = f.date(date, timeless);
+      return moment(val).fromNow();
+    },
+    multiCurrency: function multiCurrency(_val, code) {
+      return f.multiCurrency(_val, code, Soho.Locale.currentLocale.data.numbers.decimal,
+        Soho.Locale.currentLocale.data.numbers.group);
+    },
+    nameLF: f.nameLF,
+    mail: f.mail,
+    // TODO: L20n
+    userActivityFormatText: {
+      asUnconfirmed: 'Unconfirmed',
+      asAccepted: 'Accepted',
+      asDeclned: 'Declined',
+    },
+    // TODO: Move
+    userActivityStatus: function userActivityStatus(val) {
+      return crm.Format.userActivityFormatText[val];
+    },
+    /**
+     * Takes a string input and converts name to First amd Last initials
+     * `Lee Hogan` -> `LH`
+     * @param val
+     * @returns {String}
+     */
+    formatUserInitial: f.formatUserInitial,
+    /**
+     * Takes a string input and the user name to First amd Last name
+     * `Hogan, Lee` -> `Lee Hogan`
+     * @param val
+     * @returns {String}
+     */
+    formatByUser: f.formatByUser,
+    /**
+     * Takes a string input and the user name to First amd Last name
+     * `Hogan, Lee` -> `Lee Hogan`
+     * @param val
+     * @returns {String}
+     */
+    resolveFirstLast: f.resolveFirstLast,
+    fixedLocale: function fixedLocale(val, d) {
+      return f.fixedLocale(val, d, Soho.Locale.currentLocale.data.numbers.group,
+        Soho.Locale.currentLocale.data.numbers.decimal);
+    },
+    time: function time(rawValue, type = 'days') {
+      let val = rawValue;
+
+      if (typeof rawValue !== 'number') {
+        val = parseFloat(rawValue);
+      }
+
+      const numParse = crm.Format.fixedLocale(val, 2);
+      switch (type) { // eslint-disable-line
+        case 'days':
+          return string.substitute(resource.daysText, {
+            val: numParse,
+          });
+        case 'weeks':
+          return string.substitute(resource.weeksText, {
+            val: numParse,
+          });
+        case 'months':
+          return string.substitute(resource.monthsText, {
+            val: numParse,
+          });
+        case 'years':
+          return string.substitute(resource.yearsText, {
+            val: numParse,
+          });
+      }
+      return rawValue;
+    },
+  }));
+
+  return __class;
+});

@@ -16,30 +16,32 @@
 /**
  * @module argos/Fields/NoteField
  */
-import declare from 'dojo/_base/declare';
-import TextAreaField from './TextAreaField';
-import FieldManager from '../FieldManager';
+define('argos/Fields/NoteField', [
+  'dojo/_base/declare',
+  './TextAreaField',
+  '../FieldManager'
+], function(declare, TextAreaField, FieldManager) {
+  /**
+   * @class
+   * @alias module:argos/Fields/NoteField
+   * @classdesc The NoteField is a special case where an overly long text string should be inserted and
+   * you want to take the user to another view for that specific input.
+   *
+   * The special part is that the it passes the value between its editor via an object with a
+   * "Note" property., meaning the Edit View layout should have a field bound to the `noteProperty`
+   * defined in this field ("Notes" by default").
+   *
+   * @example
+   * {
+   *   name: 'FullDescription',
+   *   property: 'FullDescription',
+   *   label: this.fullDescriptionText,
+   *   type: 'note',
+   *   view: 'text_editor_edit'
+   * }
+   * @extends module:argos/Fields/TextAreaField
+   */
+  const control = declare('argos.Fields.NoteField', [TextAreaField], {});
 
-/**
- * @class
- * @alias module:argos/Fields/NoteField
- * @classdesc The NoteField is a special case where an overly long text string should be inserted and
- * you want to take the user to another view for that specific input.
- *
- * The special part is that the it passes the value between its editor via an object with a
- * "Note" property., meaning the Edit View layout should have a field bound to the `noteProperty`
- * defined in this field ("Notes" by default").
- *
- * @example
- * {
- *   name: 'FullDescription',
- *   property: 'FullDescription',
- *   label: this.fullDescriptionText,
- *   type: 'note',
- *   view: 'text_editor_edit'
- * }
- * @extends module:argos/Fields/TextAreaField
- */
-const control = declare('argos.Fields.NoteField', [TextAreaField], {});
-
-export default FieldManager.register('note', control);
+  return FieldManager.register('note', control);
+});

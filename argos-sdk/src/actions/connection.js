@@ -18,36 +18,20 @@
  */
 
 // action Types
-export const SET_CONNECTION_STATE = 'SET_CONNECTION_STATE';
+define('argos/actions/connection', [], function() {
+  const SET_CONNECTION_STATE = 'SET_CONNECTION_STATE';
 
-/*
+  function setConnectionState(online) {
+    return {
+      type: SET_CONNECTION_STATE,
+      payload: {
+        online,
+      },
+    };
+  }
 
-See: https://github.com/acdlite/flux-standard-action
-
-An action MUST
-+ be a plain JavaScript object.
-+ have a type property.
-
- An action MAY
-+ have an error property.
-+ have a payload property.
-+ have a meta property.
-
-An action MUST NOT
-+ include properties other than type, payload, error, and meta.
-*/
-
-/**
- * Action creator for connection state. Returns a
- * reducer action of SET_CONNECTION_STATE with payload
- * online set to the param.
- * @param {Boolean} online
- */
-export function setConnectionState(online) {
   return {
-    type: SET_CONNECTION_STATE,
-    payload: {
-      online,
-    },
+    SET_CONNECTION_STATE,
+    setConnectionState
   };
-}
+});

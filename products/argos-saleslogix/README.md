@@ -29,15 +29,73 @@ The package.json file in the root of argos-saleslogix contains a list of depende
 - run `npm install`
 
 Once dependencies are installed, here are a list of commands available:
-* `npm run test` - Runs the unit tests using Jasmine. Requires grunt cli.
+* `npm run test` - Runs the unit tests using Mocha.
 * `npm start` - Local development web server. Open your browser to http://localhost:8000/. Copy scripts/default.config.json to scripts/config.json to override the port and/or the SData host.
 * `npm run lint` - Lints the src folder. We use the [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript/blob/master/README.md).
-* `npm run less` - Compiles .less stylesheets into CSS. Requires grunt cli.
-* `npm run build` - "Transpiles" the src folder and outputs to src-out. The src folder contains ECMAScript2015 code. The src-out folder will contain ECMAScript 5 code that older browsers will execute.
-* `npm run watch` - Watches the src folder for changes and runs `npm run build` and `npm run lint` automatically when files are changed.
+* `npm run less` - Compiles .less stylesheets into CSS.
+* `npm run e2e` - Runs Playwright end-to-end tests.
+
+### Module Format
+
+argos-saleslogix uses AMD (Asynchronous Module Definition) modules with modern JavaScript features. All modules use the `crm/` prefix:
+
+**Example module structure:**
+```javascript
+define('crm/Views/Account/List', [
+  'argos/List',
+  'argos/I18n'
+], function(List, getResource) {
+  class AccountList extends List {
+    constructor() {
+      super();
+      this.id = 'account_list';
+    }
+  }
+  
+  return AccountList;
+});
+```
+
+**Module ID convention:**
+- `src/Application.js` → `define('crm/Application', ...)`
+- `src/Views/Account/List.js` → `define('crm/Views/Account/List', ...)`
+- `src/Models/Account/SData.js` → `define('crm/Models/Account/SData', ...)`
+
+**Referencing argos-sdk modules:**
+Use the `argos/` prefix to reference SDK modules:
+```javascript
+define('crm/Application', [
+  'argos/Application',
+  'argos/View'
+], function(Application, View) {
+  // ...
+});
+```
+
+Modern JavaScript features (classes, arrow functions, const/let, async/await, template literals, destructuring, spread operators, etc.) are preserved and supported by current browsers. No transpilation is required.
 
 ### Notice To Customizers
-Starting in mobile 3.4, the index-dev-\*.html files no longer point to src, instead they point to src-out. The src folder now contains ECMAScript2015 (ES6) source code. A build step is required to populate the src-out. You will need to run `npm run build` from the argos-saleslogix directory if working from git.
+The index-dev-\*.html files now point directly to src. The src folder contains AMD modules with modern JavaScript features (ES6+) that are supported by current browsers. No build step is required.
+
+When creating customizations:
+- Use AMD module format with explicit module IDs
+- Follow the `crm/` prefix convention for your custom modules
+- Reference SDK modules using the `argos/` prefix
+- Modern JavaScript features are fully supported
+
+**Example customization module:**
+```javascript
+define('crm/Integrations/MyCustom/Views/List', [
+  'argos/List',
+  'crm/Format'
+], function(List, format) {
+  class MyCustomList extends List {
+    // Your customization code
+  }
+  
+  return MyCustomList;
+});
+```
 
 ### Clone repository
 1.	Open a command prompt.

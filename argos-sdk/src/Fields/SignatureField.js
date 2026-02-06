@@ -16,145 +16,146 @@
 /**
  * @module argos/Fields/SignatureField
  */
-import declare from 'dojo/_base/declare';
-import format from '../Format';
-import EditorField from './EditorField';
-import FieldManager from '../FieldManager';
-import getResource from '../I18n';
-
-
-const resource = getResource('signatureField');
-
-/**
- * @class
- * @alias module:argos/Fields//SignatureField
- * @classdesc The SignatureField uses an HTML5 canvas element to render previews of the signature vector
- * provided by it's editor view {@link module:argos/Views/Signature SignatureView}.
- *
- * @example
- * {
- *    name: 'Signature',
- *    property: 'Signature',
- *    label: this.signatureText,
- *    type: 'signature'
- * }
- * @extends module:argos/Fields/EditorField
- */
-const control = declare('argos.Fields.SignatureField', [EditorField], /** @lends module:argos/Fields/SignatureField.prototype */{
-  // Localization
-  /**
-   * @property {String}
-   * Text used for ARIA label
-   */
-  signatureLabelText: resource.signatureLabelText,
-  /**
-   * @property {String}
-   * Text used within button
-   */
-  signatureText: resource.signatureText,
+define('argos/Fields/SignatureField', [
+  'dojo/_base/declare',
+  '../Format',
+  './EditorField',
+  '../FieldManager',
+  '../I18n'
+], function(declare, format, EditorField, FieldManager, getResource) {
+  const resource = getResource('signatureField');
 
   /**
-   * @property {Number[][]}
-   * A series of x,y coordinates in the format of: `[[0,0],[1,5]]`
-   */
-  signature: [],
-  /**
-   * @cfg {Object}
-   * If overriding this value make sure to set all the values:
+   * @class
+   * @alias module:argos/Fields//SignatureField
+   * @classdesc The SignatureField uses an HTML5 canvas element to render previews of the signature vector
+   * provided by it's editor view {@link module:argos/Views/Signature SignatureView}.
    *
-   * key          default         description
-   * ---------   ---------        ---------------------------------
-   * scale       1                Ratio in which the vector to canvas should be drawn
-   * lineWidth   1                Stroke thickness of the line
-   * penColor    'blue'           Color of line. Accepts HTML safe string names or hex.
-   * width       180              Width of signature preview in field
-   * height      50               Height of signature preview in field
+   * @example
+   * {
+   *    name: 'Signature',
+   *    property: 'Signature',
+   *    label: this.signatureText,
+   *    type: 'signature'
+   * }
+   * @extends module:argos/Fields/EditorField
    */
-  config: {
-    scale: 1,
-    lineWidth: 1,
-    penColor: 'blue',
-    width: 180,
-    height: 50,
-    fillStyle: 'transparent',
-  },
-  /**
-   * @property {Simplate}
-   * Simplate that defines the fields HTML Markup
-   *
-   * * `$` => Field instance
-   * * `$$` => Owner View instance
-   *
-   */
-  widgetTemplate: new Simplate([
-    '<label for="{%= $.name %}">{%: $.label %}</label>',
-    '<button class="btn-secondary" aria-label="{%: $.signatureLabelText %}"><span aria-hidden="true">{%: $.signatureText %}</span></button>',
-    '<img data-dojo-attach-point="signatureNode" src="" width="{%: $.config.width %}" height="{%: $.config.height %}" alt="" />',
-    '<input data-dojo-attach-point="inputNode" type="hidden">',
-  ]),
-  /**
-   * Extends the {@link EditorField#createNavigationOptions parent} implementation by
-   * also passing the `signature` array.
-   * @return {Object} Navigation options
-   */
-  createNavigationOptions: function createNavigationOptions() {
-    const options = this.inherited(createNavigationOptions, arguments);
-    options.signature = this.signature;
-    return options;
-  },
-  /**
-   * Complete override that gets the editor view, gets the values and calls set value on the field
-   */
-  getValuesFromView: function getValuesFromView() {
-    const app = this.app;
-    const view = app && app.getPrimaryActiveView && app.getPrimaryActiveView();
-    if (view) {
-      const value = view.getValues();
-      this.currentValue = this.validationValue = value;
-      this.setValue(this.currentValue, false);
-    }
-  },
-  /**
-   * Sets the signature value by using {@link format#imageFromVector format.imageFromVector}
-   * to the img node and setting the array directly to `originalValue`.
-   * @param val
-   * @param initial
-   */
-  setValue: function setValue(val, initial) {
-    if (initial) {
-      this.originalValue = val;
-    }
+  const control = declare('argos.Fields.SignatureField', [EditorField], /** @lends module:argos/Fields/SignatureField.prototype */{
+    // Localization
+    /**
+     * @property {String}
+     * Text used for ARIA label
+     */
+    signatureLabelText: resource.signatureLabelText,
+    /**
+     * @property {String}
+     * Text used within button
+     */
+    signatureText: resource.signatureText,
 
-    this.currentValue = val;
-    $(this.inputNode).css('value', val || '');
+    /**
+     * @property {Number[][]}
+     * A series of x,y coordinates in the format of: `[[0,0],[1,5]]`
+     */
+    signature: [],
+    /**
+     * @cfg {Object}
+     * If overriding this value make sure to set all the values:
+     *
+     * key          default         description
+     * ---------   ---------        ---------------------------------
+     * scale       1                Ratio in which the vector to canvas should be drawn
+     * lineWidth   1                Stroke thickness of the line
+     * penColor    'blue'           Color of line. Accepts HTML safe string names or hex.
+     * width       180              Width of signature preview in field
+     * height      50               Height of signature preview in field
+     */
+    config: {
+      scale: 1,
+      lineWidth: 1,
+      penColor: 'blue',
+      width: 180,
+      height: 50,
+      fillStyle: 'transparent',
+    },
+    /**
+     * @property {Simplate}
+     * Simplate that defines the fields HTML Markup
+     *
+     * * `$` => Field instance
+     * * `$$` => Owner View instance
+     *
+     */
+    widgetTemplate: new Simplate([
+      '<label for="{%= $.name %}">{%: $.label %}</label>',
+      '<button class="btn-secondary" aria-label="{%: $.signatureLabelText %}"><span aria-hidden="true">{%: $.signatureText %}</span></button>',
+      '<img data-dojo-attach-point="signatureNode" src="" width="{%: $.config.width %}" height="{%: $.config.height %}" alt="" />',
+      '<input data-dojo-attach-point="inputNode" type="hidden">',
+    ]),
+    /**
+     * Extends the {@link EditorField#createNavigationOptions parent} implementation by
+     * also passing the `signature` array.
+     * @return {Object} Navigation options
+     */
+    createNavigationOptions: function createNavigationOptions() {
+      const options = this.inherited(createNavigationOptions, arguments);
+      options.signature = this.signature;
+      return options;
+    },
+    /**
+     * Complete override that gets the editor view, gets the values and calls set value on the field
+     */
+    getValuesFromView: function getValuesFromView() {
+      const app = this.app;
+      const view = app && app.getPrimaryActiveView && app.getPrimaryActiveView();
+      if (view) {
+        const value = view.getValues();
+        this.currentValue = this.validationValue = value;
+        this.setValue(this.currentValue, false);
+      }
+    },
+    /**
+     * Sets the signature value by using {@link format#imageFromVector format.imageFromVector}
+     * to the img node and setting the array directly to `originalValue`.
+     * @param val
+     * @param initial
+     */
+    setValue: function setValue(val, initial) {
+      if (initial) {
+        this.originalValue = val;
+      }
 
-    try {
-      this.signature = JSON.parse(val);
-    } catch (e) {
-      this.signature = [];
-    }
+      this.currentValue = val;
+      $(this.inputNode).css('value', val || '');
 
-    if (!this.signature || Array !== this.signature.constructor) {
-      this.signature = [];
-    }
+      try {
+        this.signature = JSON.parse(val);
+      } catch (e) {
+        this.signature = [];
+      }
 
-    this.signatureNode.src = format.imageFromVector(this.signature, this.config, false);
-  },
-  /**
-   * Clears the value set to the hidden field
-   */
-  clearValue: function clearValue() {
-    this.setValue('', true);
-  },
-  /**
-   * Since the EditorField calls `formatValue` during {@link EditorField#complete complete}
-   * we need to override to simply return the value given.
-   * @param val
-   * @return {Array/String}
-   */
-  formatValue: function formatValue(val) {
-    return val;
-  },
+      if (!this.signature || Array !== this.signature.constructor) {
+        this.signature = [];
+      }
+
+      this.signatureNode.src = format.imageFromVector(this.signature, this.config, false);
+    },
+    /**
+     * Clears the value set to the hidden field
+     */
+    clearValue: function clearValue() {
+      this.setValue('', true);
+    },
+    /**
+     * Since the EditorField calls `formatValue` during {@link EditorField#complete complete}
+     * we need to override to simply return the value given.
+     * @param val
+     * @return {Array/String}
+     */
+    formatValue: function formatValue(val) {
+      return val;
+    },
+  });
+
+  return FieldManager.register('signature', control);
 });
-
-export default FieldManager.register('signature', control);

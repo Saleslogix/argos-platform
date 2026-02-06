@@ -13,49 +13,51 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import MainToolbar from 'argos/MainToolbar';
-import getResource from 'argos/I18n';
+define('crm/Views/UpdateToolbar', [
+  'dojo/_base/declare',
+  'argos/MainToolbar',
+  'argos/I18n'
+], function(declare, MainToolbar, getResource) {
+  const resource = getResource('updateToolbar');
 
-const resource = getResource('updateToolbar');
+  const __class = declare('crm.Views.UpdateToolbar', [MainToolbar], {
+    widgetTemplate: new Simplate([
+      '<div class="update-toolbar">',
+      '<h1 data-action="reload">{%= $.updateText %}</h1>',
+      '</div>',
+    ]),
 
-const __class = declare('crm.Views.UpdateToolbar', [MainToolbar], {
-  widgetTemplate: new Simplate([
-    '<div class="update-toolbar">',
-    '<h1 data-action="reload">{%= $.updateText %}</h1>',
-    '</div>',
-  ]),
+    updateText: resource.updateText,
 
-  updateText: resource.updateText,
+    managed: false,
 
-  managed: false,
+    show: function show() {
+      $('body').addClass('update-available');
 
-  show: function show() {
-    $('body').addClass('update-available');
+      this.showTools([{
+        id: 'cancel',
+        side: 'right',
+        fn: this.cancel,
+        scope: this,
+      }]);
 
-    this.showTools([{
-      id: 'cancel',
-      side: 'right',
-      fn: this.cancel,
-      scope: this,
-    }]);
+      this.inherited(show, arguments);
+    },
 
-    this.inherited(show, arguments);
-  },
+    showTools: function showTools() {
+      this.inherited(showTools, arguments);
+    },
 
-  showTools: function showTools() {
-    this.inherited(showTools, arguments);
-  },
+    hide: function hide() {
+      $('body').removeClass('update-available');
+    },
+    reload: function reload() {
+      App.reload();
+    },
+    cancel: function cancel() {
+      this.hide();
+    },
+  });
 
-  hide: function hide() {
-    $('body').removeClass('update-available');
-  },
-  reload: function reload() {
-    App.reload();
-  },
-  cancel: function cancel() {
-    this.hide();
-  },
+  return __class;
 });
-
-export default __class;

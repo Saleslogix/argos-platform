@@ -16,40 +16,42 @@
 /**
  * @module argos/Views/Link
  */
-import declare from 'dojo/_base/declare';
-import View from '../View';
-
-/**
- * @class
- * @alias module:argos/Views/Link
- * @extends module:argos/View
- */
-const __class = declare('argos.Views.Link', [View], /** @lends module:argos/Views/Link.prototype */{
-  id: 'link_view',
-  titleText: '',
-  viewType: 'detail',
+define('argos/Views/Link', [
+  'dojo/_base/declare',
+  '../View'
+], function(declare, View) {
   /**
-   *
+   * @class
+   * @alias module:argos/Views/Link
+   * @extends module:argos/View
    */
-  link: '',
-  cls: 'link-view',
-  widgetTemplate: new Simplate([
-    '<div id="{%= $.id %}" data-title="{%= $.titleText %}" class="detail panel {%= $.cls %}">',
-    '<iframe class="link-node" data-dojo-attach-point="linkNode"',
-    'sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox">',
-    '</iframe>',
-    '</div>',
-  ]),
-  _getLink: function _getLink() {
-    const { link } = this.options;
-    return link || this.link;
-  },
-  onTransitionTo: function onTransitionTo() {
-    this.linkNode.contentWindow.location.replace(this._getLink());
-  },
-  onTransitionAway: function onTransitionAway() {
-    this.linkNode.contentWindow.location.replace('about:blank');
-  },
-});
+  const __class = declare('argos.Views.Link', [View], /** @lends module:argos/Views/Link.prototype */{
+    id: 'link_view',
+    titleText: '',
+    viewType: 'detail',
+    /**
+     *
+     */
+    link: '',
+    cls: 'link-view',
+    widgetTemplate: new Simplate([
+      '<div id="{%= $.id %}" data-title="{%= $.titleText %}" class="detail panel {%= $.cls %}">',
+      '<iframe class="link-node" data-dojo-attach-point="linkNode"',
+      'sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox">',
+      '</iframe>',
+      '</div>',
+    ]),
+    _getLink: function _getLink() {
+      const { link } = this.options;
+      return link || this.link;
+    },
+    onTransitionTo: function onTransitionTo() {
+      this.linkNode.contentWindow.location.replace(this._getLink());
+    },
+    onTransitionAway: function onTransitionAway() {
+      this.linkNode.contentWindow.location.replace('about:blank');
+    },
+  });
 
-export default __class;
+  return __class;
+});

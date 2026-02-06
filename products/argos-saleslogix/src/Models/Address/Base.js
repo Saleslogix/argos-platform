@@ -13,19 +13,22 @@
  * limitations under the License.
  */
 
-import declare from 'dojo/_base/declare';
-import _ModelBase from 'argos/Models/_ModelBase';
-import MODEL_NAMES from '../Names';
-import getResource from 'argos/I18n';
+define('crm/Models/Address/Base', [
+  'dojo/_base/declare',
+  'argos/Models/_ModelBase',
+  '../Names',
+  'argos/I18n'
+], function(declare, _ModelBase, MODEL_NAMES, getResource) {
+  const resource = getResource('addressModel');
 
-const resource = getResource('addressModel');
+  const __class = declare('crm.Models.Address.Base', [_ModelBase], {
+    resourceKind: 'addresses',
+    entityName: 'Address',
+    entityDisplayName: resource.entityDisplayName,
+    entityDisplayNamePlural: resource.entityDisplayNamePlural,
+    modelName: MODEL_NAMES.ADDRESS,
+    iconClass: 'bullet-list',
+  });
 
-const __class = declare('crm.Models.Address.Base', [_ModelBase], {
-  resourceKind: 'addresses',
-  entityName: 'Address',
-  entityDisplayName: resource.entityDisplayName,
-  entityDisplayNamePlural: resource.entityDisplayNamePlural,
-  modelName: MODEL_NAMES.ADDRESS,
-  iconClass: 'bullet-list',
+  return __class;
 });
-export default __class;

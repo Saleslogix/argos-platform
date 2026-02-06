@@ -125,7 +125,7 @@ module.exports = function gruntDeps(grunt) {
         return {
           folderName: path.dirname(node.name)
             .replace(/\\/gi, '/') // force unix path seperator
-            .replace(/\/src/gi, '/src-out'), // replace src with src-out since our dependencies were scanned in ES6
+            .replace(/\/src/gi, '/src'), // keep src as-is since we no longer transpile
           fileName: path.basename(node.name)
         };
       });
