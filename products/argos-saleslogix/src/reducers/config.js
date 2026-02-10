@@ -14,8 +14,8 @@
  */
 
 define('crm/reducers/config', [
-  '../actions/config'
-], function(configActions) {
+  '../actions/config',
+], (configActions) => {
   const { SET_CONFIG, SET_ENDPOINT } = configActions;
 
   // TODO: Refactor the settings passed into the app to use these instead.
@@ -50,6 +50,6 @@ define('crm/reducers/config', [
   }
 
   return {
-    config
+    config,
   };
 });

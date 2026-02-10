@@ -21,8 +21,8 @@ define('crm/Integrations/BOE/Views/Account/NewDashboardWidget', [
   '../../DashboardWidget',
   'argos/I18n',
   'crm/Format',
-  'crm/Aggregate'
-], function(declare, lang, convert, RelatedViewManager, DashboardWidget, getResource, format, aggregate) {
+  'crm/Aggregate',
+], (declare, lang, convert, RelatedViewManager, DashboardWidget, getResource, format, aggregate) => {
   const resource = getResource('newDashboardWidget');
 
   const __class = declare('crm.Integrations.BOE.Views.Account.NewDashboardWidget', [DashboardWidget], {

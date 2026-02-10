@@ -20,8 +20,8 @@ define('crm/Views/Lead/Detail', [
   '../../Format',
   '../../Models/Names',
   'argos/Detail',
-  'argos/I18n'
-], function(declare, string, action, format, MODEL_NAMES, Detail, getResource) {
+  'argos/I18n',
+], (declare, string, action, format, MODEL_NAMES, Detail, getResource) => {
   const resource = getResource('leadDetail');
 
   const __class = declare('crm.Views.Lead.Detail', [Detail], {

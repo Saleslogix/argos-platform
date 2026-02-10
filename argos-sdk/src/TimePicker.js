@@ -21,8 +21,8 @@ define('argos/TimePicker', [
   'dijit/_WidgetBase',
   './_Templated',
   './Dropdown',
-  './I18n'
-], function(declare, _WidgetBase, _Templated, Dropdown, getResource) {
+  './I18n',
+], (declare, _WidgetBase, _Templated, Dropdown, getResource) => {
   const resource = getResource('timePicker');
 
   /**

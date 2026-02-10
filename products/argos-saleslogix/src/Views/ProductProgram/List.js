@@ -16,8 +16,8 @@
 define('crm/Views/ProductProgram/List', [
   'dojo/_base/declare',
   'argos/List',
-  'argos/I18n'
-], function(declare, List, getResource) {
+  'argos/I18n',
+], (declare, List, getResource) => {
   const resource = getResource('productProgramList');
 
   const __class = declare('crm.Views.ProductProgram.List', [List], {

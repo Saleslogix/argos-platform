@@ -20,8 +20,8 @@ define('argos/ErrorManager', [
   'dojo/_base/lang',
   'dojo/_base/connect',
   './Utility',
-  './I18n'
-], function(lang, connect, utility, getResource) {
+  './I18n',
+], (lang, connect, utility, getResource) => {
   const resource = getResource('errorManager');
   let errors = [];
 

@@ -17,8 +17,8 @@ define('crm/Views/ExchangeRateLookup', [
   'dojo/_base/declare',
   'argos/List',
   'argos/_LegacySDataListMixin',
-  'argos/I18n'
-], function(declare, List, _LegacySDataListMixin, getResource) {
+  'argos/I18n',
+], (declare, List, _LegacySDataListMixin, getResource) => {
   const resource = getResource('exchangeRateLookup');
 
   const __class = declare('crm.Views.ExchangeRateLookup', [List, _LegacySDataListMixin], {

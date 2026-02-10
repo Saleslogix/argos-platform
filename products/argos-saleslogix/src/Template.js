@@ -18,8 +18,8 @@
  */
 define('crm/Template', [
   'dojo/_base/lang',
-  'argos/Format'
-], function(lang) {
+  'argos/Format',
+], (lang) => {
   /**
    * @class
    * @alias module:crm/Template

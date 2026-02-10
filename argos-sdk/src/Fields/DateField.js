@@ -25,8 +25,8 @@ define('argos/Fields/DateField', [
   './EditorField',
   '../DateTimePicker',
   '../RelativeDateTimePicker',
-  '../I18n'
-], function(declare, event, string, format, FieldManager, EditorField, DateTimePicker, RelativeDateTimePicker, getResource) {
+  '../I18n',
+], (declare, event, string, format, FieldManager, EditorField, DateTimePicker, RelativeDateTimePicker, getResource) => {
   const resource = getResource('dateField');
   const dtFormatResource = getResource('dateFieldDateTimeFormat');
 

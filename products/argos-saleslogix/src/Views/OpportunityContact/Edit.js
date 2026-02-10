@@ -17,8 +17,8 @@ define('crm/Views/OpportunityContact/Edit', [
   'dojo/_base/declare',
   '../../Format',
   'argos/Edit',
-  'argos/I18n'
-], function(declare, format, Edit, getResource) {
+  'argos/I18n',
+], (declare, format, Edit, getResource) => {
   const resource = getResource('opportunityContactEdit');
 
   const __class = declare('crm.Views.OpportunityContact.Edit', [Edit], {

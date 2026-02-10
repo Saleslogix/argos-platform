@@ -25,8 +25,8 @@ define('crm/Integrations/BOE/Promote', [
   'dijit/_Widget',
   'argos/_Templated',
   './Models/Names',
-  'argos/I18n'
-], function(declare, lang, string, when, Adapter, BusyIndicator, Deferred, Dropdown, _Widget, _Templated, MODEL_NAMES, getResource) {
+  'argos/I18n',
+], (declare, lang, string, when, Adapter, BusyIndicator, Deferred, Dropdown, _Widget, _Templated, MODEL_NAMES, getResource) => {
   const resource = getResource('promote');
 
   const __class = declare('crm.Integrations.BOE.Promote', [_Widget, _Templated], {

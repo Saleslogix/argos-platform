@@ -19,8 +19,8 @@
 define('argos/DraggableList', [
   'dojo/_base/declare',
   './_ListBase',
-  './_DraggableBase'
-], function(declare, _ListBase, _DraggableBase) {
+  './_DraggableBase',
+], (declare, _ListBase, _DraggableBase) => {
   /**
    * @class
    * @alias module:argos/DraggableList

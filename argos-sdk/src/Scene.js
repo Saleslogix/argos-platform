@@ -21,7 +21,7 @@
   * @class
   * @alias module:argos/Scene
   */
-define('argos/Scene', [], function() {
+define('argos/Scene', [], () => {
   class Scene {
     constructor(store) {
       this.viewset = [];

@@ -24,7 +24,7 @@ define('crm/Integrations/BOE/Views/Account/SalesDashboardWidget', [
   'crm/Format',
   'crm/Aggregate',
   'crm/Integrations/BOE/Aggregate',
-], function(declare, lang, string, convert, RelatedViewManager, DashboardWidget, getResource, format, aggregate, icboeaggregate) {
+], (declare, lang, string, convert, RelatedViewManager, DashboardWidget, getResource, format, aggregate, icboeaggregate) => {
   const resource = getResource('salesDashboardWidget');
 
   const __class = declare('crm.Integrations.BOE.Views.Account.SalesDashboardWidget', [DashboardWidget], {
@@ -266,7 +266,7 @@ define('crm/Integrations/BOE/Views/Account/SalesDashboardWidget', [
           convert.toIsoStringFromDate(today.toDate()),
           pastWeekStart.format('YYYY-MM-DDT00:00:00[Z]'),
           today.format('YYYY-MM-DDT23:59:59[Z]'),
-        ]
+        ],
       );
       return query;
     },

@@ -17,8 +17,8 @@ define('crm/Fields/AddressField', [
   'dojo/_base/declare',
   'argos/Fields/EditorField',
   'argos/FieldManager',
-  'argos/I18n'
-], function(declare, EditorField, FieldManager, getResource) {
+  'argos/I18n',
+], (declare, EditorField, FieldManager, getResource) => {
   const resource = getResource('addressField');
 
   const control = declare('crm.Fields.AddressField', [EditorField], {

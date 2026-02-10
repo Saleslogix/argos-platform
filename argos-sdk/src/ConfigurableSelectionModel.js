@@ -18,8 +18,8 @@
  */
 define('argos/ConfigurableSelectionModel', [
   'dojo/_base/declare',
-  './SelectionModel'
-], function(declare, SelectionModel) {
+  './SelectionModel',
+], (declare, SelectionModel) => {
   /**
    * @class
    * @alias module:argos/ConfigurableSelectionModel

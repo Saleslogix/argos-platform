@@ -22,8 +22,8 @@ define('crm/Views/Contact/List', [
   '../_MetricListMixin',
   '../_RightDrawerListMixin',
   'argos/I18n',
-  '../../Models/Names'
-], function(declare, action, format, List, _GroupListMixin, _MetricListMixin, _RightDrawerListMixin, getResource, MODEL_NAMES) {
+  '../../Models/Names',
+], (declare, action, format, List, _GroupListMixin, _MetricListMixin, _RightDrawerListMixin, getResource, MODEL_NAMES) => {
   const resource = getResource('contactList');
 
   const __class = declare('crm.Views.Contact.List', [List, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin], {

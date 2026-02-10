@@ -18,8 +18,8 @@
  */
 define('crm/Utility', [
   'dojo/_base/lang',
-  'argos/Utility'
-], function(lang, Utility) {
+  'argos/Utility',
+], (lang, Utility) => {
   const commonutil = ICRMCommonSDK.utility;
   /**
    * @class

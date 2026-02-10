@@ -20,8 +20,8 @@ define('argos/Views/Signature', [
   'dojo/_base/declare',
   '../Format',
   '../View',
-  '../I18n'
-], function(declare, format, View, getResource) {
+  '../I18n',
+], (declare, format, View, getResource) => {
   const resource = getResource('signature');
 
   /**
@@ -274,7 +274,7 @@ define('argos/Views/Signature', [
 
       this.canvasNodeHeight = Math.min(
         Math.floor(this.canvasNodeWidth * 0.5),
-        $(window).height() - $('.toolbar').get(0).offsetHeight
+        $(window).height() - $('.toolbar').get(0).offsetHeight,
       );
 
       this.signatureNode.width = this.canvasNodeWidth;
@@ -292,7 +292,7 @@ define('argos/Views/Signature', [
 
       const newScale = Math.min(
         this.canvasNodeWidth / oldWidth,
-        this.canvasNodeHeight / oldHeight
+        this.canvasNodeHeight / oldHeight,
       );
 
       this.signature = this.rescale(newScale);

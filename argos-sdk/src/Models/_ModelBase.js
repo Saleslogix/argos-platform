@@ -21,8 +21,8 @@ define('argos/Models/_ModelBase', [
   'dojo/Evented',
   'dojo/Stateful',
   '../Utility',
-  '../_CustomizationMixin'
-], function(declare, Evented, Stateful, utility, _CustomizationMixin) {
+  '../_CustomizationMixin',
+], (declare, Evented, Stateful, utility, _CustomizationMixin) => {
   /**
    * @class
    * @alias module:argos/Models/_ModelBase
@@ -67,7 +67,7 @@ define('argos/Models/_ModelBase', [
     _appSetter: function _appSetter(value) {
       this.app = value;
     },
-  
+
     /**
      * Initializes the model with options.
      * @param options

@@ -19,8 +19,8 @@
 define('argos/RelatedViewManager', [
   'dojo/_base/declare',
   'dojo/_base/lang',
-  './_RelatedViewWidgetBase'
-], function(declare, lang, RelatedViewWidget) {
+  './_RelatedViewWidgetBase',
+], (declare, lang, RelatedViewWidget) => {
   const _widgetTypes = {};
 
   /**

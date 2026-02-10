@@ -20,8 +20,8 @@ define('crm/Integrations/BOE/Views/Account/ActivityDashboardWidget', [
   'argos/Convert',
   'argos/RelatedViewManager',
   '../../DashboardWidget',
-  'argos/I18n'
-], function(declare, lang, string, convert, RelatedViewManager, DashboardWidget, getResource) {
+  'argos/I18n',
+], (declare, lang, string, convert, RelatedViewManager, DashboardWidget, getResource) => {
   const resource = getResource('activityDashboardWidget');
 
   const __class = declare('crm.Integrations.BOE.Views.Account.ActivityDashboardWidget', [DashboardWidget], {
@@ -93,7 +93,7 @@ define('crm/Integrations/BOE/Views/Account/ActivityDashboardWidget', [
           convert.toIsoStringFromDate(today.toDate()),
           pastWeekStart.format('YYYY-MM-DDT00:00:00[Z]'),
           today.format('YYYY-MM-DDT23:59:59[Z]'),
-        ]
+        ],
       );
       return queries;
     },

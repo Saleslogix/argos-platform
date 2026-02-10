@@ -21,8 +21,8 @@ define('crm/Views/TicketActivity/Edit', [
   'argos/ErrorManager',
   'argos/Edit',
   'argos/I18n',
-  '../../Models/Names'
-], function(declare, lang, template, validator, ErrorManager, Edit, getResource, MODEL_NAMES) {
+  '../../Models/Names',
+], (declare, lang, template, validator, ErrorManager, Edit, getResource, MODEL_NAMES) => {
   const resource = getResource('ticketActivityEdit');
   const dtFormatResource = getResource('ticketActivityEditDateTimeFormat');
 

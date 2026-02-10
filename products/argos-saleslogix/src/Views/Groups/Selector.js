@@ -17,8 +17,8 @@ define('crm/Views/Groups/Selector', [
   'dojo/_base/declare',
   'argos/List',
   'argos/Store/SData',
-  'argos/I18n'
-], function(declare, List, SDataStore, getResource) {
+  'argos/I18n',
+], (declare, List, SDataStore, getResource) => {
   const resource = getResource('groupsSelector');
 
   const __class = declare('crm.Views.Groups.Selector', [List], {

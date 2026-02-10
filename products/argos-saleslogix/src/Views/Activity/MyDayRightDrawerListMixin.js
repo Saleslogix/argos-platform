@@ -17,8 +17,8 @@ define('crm/Views/Activity/MyDayRightDrawerListMixin', [
   'dojo/_base/declare',
   'dojo/_base/lang',
   '../_RightDrawerBaseMixin',
-  'argos/I18n'
-], function(declare, lang, _RightDrawerBaseMixin, getResource) {
+  'argos/I18n',
+], (declare, lang, _RightDrawerBaseMixin, getResource) => {
   const resource = getResource('activityMyDayRightDrawerList');
 
   const __class = declare('crm.Views.Activity.MyDayRightDrawerListMixin', [_RightDrawerBaseMixin], {

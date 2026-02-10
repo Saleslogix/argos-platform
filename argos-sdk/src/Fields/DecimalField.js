@@ -20,8 +20,8 @@ define('argos/Fields/DecimalField', [
   'dojo/_base/declare',
   './TextField',
   '../FieldManager',
-  '../Utility'
-], function(declare, TextField, FieldManager, Utility) {
+  '../Utility',
+], (declare, TextField, FieldManager, Utility) => {
   /**
    * @class
    * @alias module:argos/Fields/DecimalField

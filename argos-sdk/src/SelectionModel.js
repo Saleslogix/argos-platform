@@ -19,8 +19,8 @@
 define('argos/SelectionModel', [
   'dojo/_base/lang',
   'dojo/_base/declare',
-  './I18n'
-], function(lang, declare, getResource) {
+  './I18n',
+], (lang, declare, getResource) => {
   const resource = getResource('selectionModel');
 
   /**

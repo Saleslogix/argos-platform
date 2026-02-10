@@ -21,8 +21,8 @@ define('crm/Integrations/BOE/Models/Quote/SData', [
   'argos/Models/Manager',
   'argos/ErrorManager',
   'argos/Models/Types',
-  '../Names'
-], function(declare, lang, Base, _SDataModelBase, Manager, ErrorManager, MODEL_TYPES, MODEL_NAMES) {
+  '../Names',
+], (declare, lang, Base, _SDataModelBase, Manager, ErrorManager, MODEL_TYPES, MODEL_NAMES) => {
   const __class = declare('crm.Integrations.BOE.Models.Quotes.SData', [Base, _SDataModelBase], {
     id: 'quote_sdata_model',
     createQueryModels: function createQueryModels() {

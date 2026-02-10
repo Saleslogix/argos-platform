@@ -14,8 +14,8 @@
  */
 
 define('crm/reducers/speedsearch', [
-  '../actions/speedsearch'
-], function(speedsearchActions) {
+  '../actions/speedsearch',
+], (speedsearchActions) => {
   const { SET_SEARCHTERM } = speedsearchActions;
 
   const initialUserState = {
@@ -35,6 +35,6 @@ define('crm/reducers/speedsearch', [
   }
 
   return {
-    speedsearch
+    speedsearch,
   };
 });

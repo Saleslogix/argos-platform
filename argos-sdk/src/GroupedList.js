@@ -20,8 +20,8 @@ define('argos/GroupedList', [
   'dojo/_base/declare',
   'dojo/string',
   './List',
-  './Utility'
-], function(declare, string, List, Utility) {
+  './Utility',
+], (declare, string, List, Utility) => {
   /**
    * @class
    * @alias module:argos/GroupedList

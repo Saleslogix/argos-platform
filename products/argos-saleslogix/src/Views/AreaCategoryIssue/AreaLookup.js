@@ -18,8 +18,8 @@ define('crm/Views/AreaCategoryIssue/AreaLookup', [
   'argos/List',
   'argos/I18n',
   '../../Models/Names',
-  'crm/Format'
-], function(declare, List, getResource, MODEL_NAMES, format) {
+  'crm/Format',
+], (declare, List, getResource, MODEL_NAMES, format) => {
   const resource = getResource('areaCategoryIssue_AreaLookup');
 
   const __class = declare('crm.Views.AreaCategoryIssue.AreaLookup', [List], {

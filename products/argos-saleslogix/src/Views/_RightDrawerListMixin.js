@@ -23,8 +23,8 @@ define('crm/Views/_RightDrawerListMixin', [
   '../GroupUtility',
   './_RightDrawerBaseMixin',
   'argos/Fields/LookupField',
-  'argos/I18n'
-], function(declare, lang, aspect, GroupUtility, _RightDrawerBaseMixin, LookupField, getResource) {
+  'argos/I18n',
+], (declare, lang, aspect, GroupUtility, _RightDrawerBaseMixin, LookupField, getResource) => {
   const resource = getResource('rightDrawerListMixin');
 
   /**

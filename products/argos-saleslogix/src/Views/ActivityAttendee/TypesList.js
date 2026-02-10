@@ -17,8 +17,8 @@ define('crm/Views/ActivityAttendee/TypesList', [
   'dojo/_base/declare',
   'argos/List',
   'dojo/store/Memory',
-  'argos/I18n'
-], function(declare, List, MemoryStore, getResource) {
+  'argos/I18n',
+], (declare, List, MemoryStore, getResource) => {
   const resource = getResource('activityAttendeeTypesList');
 
   const __class = declare('crm.Views.ActivityAttendee.TypesList', [List], {

@@ -19,8 +19,8 @@ define('crm/Views/Address/Edit', [
   '../../Format',
   '../../Validator',
   'argos/Edit',
-  'argos/I18n'
-], function(declare, string, format, validator, Edit, getResource) {
+  'argos/I18n',
+], (declare, string, format, validator, Edit, getResource) => {
   const resource = getResource('addressEdit');
 
   const __class = declare('crm.Views.Address.Edit', [Edit], {
@@ -96,7 +96,7 @@ define('crm/Views/Address/Edit', [
         name: 'Description',
         property: 'Description',
         picklist: this.formatDependentPicklist.bindDelegate(
-          this, 'Address Description (${0})', true
+          this, 'Address Description (${0})', true,
         ),
         requireSelection: false,
         title: this.descriptionTitleText,

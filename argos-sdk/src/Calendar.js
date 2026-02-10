@@ -22,8 +22,8 @@ define('argos/Calendar', [
   'dijit/_WidgetBase',
   './_Templated',
   './Dropdown',
-  './I18n'
-], function(declare, _ActionMixin, _WidgetBase, _Templated, Dropdown, getResource) {
+  './I18n',
+], (declare, _ActionMixin, _WidgetBase, _Templated, Dropdown, getResource) => {
   const resource = getResource('calendar');
 
   /**
@@ -314,7 +314,7 @@ define('argos/Calendar', [
           {
             value: `${i}`,
             key: `${i}`,
-          }
+          },
         );
       }
       return items;

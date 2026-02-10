@@ -21,8 +21,8 @@ define('crm/Models/History/SData', [
   'argos/Models/Manager',
   'argos/Models/Types',
   '../Names',
-  'argos/ErrorManager'
-], function(declare, Deferred, Base, _SDataModelBase, Manager, MODEL_TYPES, MODEL_NAMES, ErrorManager) {
+  'argos/ErrorManager',
+], (declare, Deferred, Base, _SDataModelBase, Manager, MODEL_TYPES, MODEL_NAMES, ErrorManager) => {
   const __class = declare('crm.Models.History.SData', [Base, _SDataModelBase], {
     id: 'history_sdata_model',
     createQueryModels: function createQueryModels() {

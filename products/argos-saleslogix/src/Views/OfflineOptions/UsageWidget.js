@@ -24,8 +24,8 @@ define('crm/Views/OfflineOptions/UsageWidget', [
   'argos/Dropdown',
   'argos/Dialogs/BusyIndicator',
   'argos/ErrorManager',
-  'argos/I18n'
-], function(declare, aspect, format, utility, offlineManager, RelatedViewManager, _RelatedViewWidgetBase, Dropdown, BusyIndicator, ErrorManager, getResource) {
+  'argos/I18n',
+], (declare, aspect, format, utility, offlineManager, RelatedViewManager, _RelatedViewWidgetBase, Dropdown, BusyIndicator, ErrorManager, getResource) => {
   const resource = getResource('offlineUsageWidget');
 
   const __class = declare('crm.Views.OfflineOptions.UsageWidget', [_RelatedViewWidgetBase], {

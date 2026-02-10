@@ -18,8 +18,8 @@
 */
 define('crm/Integrations/BOE/Aggregate', [
   'dojo/_base/lang',
-  '../../Aggregate'
-], function(lang, crmAggergate) {
+  '../../Aggregate',
+], (lang, crmAggergate) => {
   /**
    * @class
    * @alias module:/crm/Integrations/BOE/Aggregate

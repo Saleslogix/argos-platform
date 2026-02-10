@@ -19,8 +19,8 @@
 define('crm/Views/_MetricListMixin', [
   'dojo/_base/declare',
   './MetricWidget',
-  '../GroupUtility'
-], function(declare, MetricWidget, GroupUtility) {
+  '../GroupUtility',
+], (declare, MetricWidget, GroupUtility) => {
   /**
    * @class
    * @alias module:crm/Views/_MetricListMixin

@@ -22,8 +22,8 @@ define('crm/Views/Attachment/List', [
   '../_RightDrawerListMixin',
   'argos/I18n',
   'dojo/string',
-  '../../Format'
-], function(declare, utility, List, _LegacySDataListMixin, convert, _RightDrawerListMixin, getResource, string, format) {
+  '../../Format',
+], (declare, utility, List, _LegacySDataListMixin, convert, _RightDrawerListMixin, getResource, string, format) => {
   const resource = getResource('attachmentList');
   const hashTagResource = getResource('attachmentListHashTags');
   const dtFormatResource = getResource('attachmentListDateTimeFormat');

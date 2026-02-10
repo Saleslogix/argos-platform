@@ -18,8 +18,8 @@
  */
 define('argos/Groups/_GroupBySection', [
   'dojo/_base/declare',
-  'dojo/_base/lang'
-], function(declare, lang) {
+  'dojo/_base/lang',
+], (declare, lang) => {
   /**
    * @class
    * @alias module:argos/Groups/_GroupBySection

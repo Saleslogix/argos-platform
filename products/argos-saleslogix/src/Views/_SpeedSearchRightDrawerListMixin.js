@@ -20,8 +20,8 @@ define('crm/Views/_SpeedSearchRightDrawerListMixin', [
   'dojo/_base/declare',
   'dojo/_base/lang',
   './_RightDrawerBaseMixin',
-  'argos/I18n'
-], function(declare, lang, _RightDrawerBaseMixin, getResource) {
+  'argos/I18n',
+], (declare, lang, _RightDrawerBaseMixin, getResource) => {
   const resource = getResource('speedSearchRightDrawerListMixin');
 
   /**

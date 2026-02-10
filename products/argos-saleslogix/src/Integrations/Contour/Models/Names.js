@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-define('crm/Integrations/Contour/Models/Names', [], function() {
+define('crm/Integrations/Contour/Models/Names', [], () => {
   return {
     ACCOUNT: 'Account',
     ACTIVITY: 'Activity',

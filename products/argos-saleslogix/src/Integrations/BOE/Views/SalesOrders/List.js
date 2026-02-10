@@ -25,8 +25,8 @@ define('crm/Integrations/BOE/Views/SalesOrders/List', [
   '../../Models/Names',
   'argos/Models/Types',
   'argos/I18n',
-  '../../Utility'
-], function(declare, lang, List, format, action, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin, MODEL_NAMES, MODEL_TYPES, getResource, utility) {
+  '../../Utility',
+], (declare, lang, List, format, action, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin, MODEL_NAMES, MODEL_TYPES, getResource, utility) => {
   const resource = getResource('salesOrdersList');
 
   const __class = declare('crm.Integrations.BOE.Views.SalesOrders.List', [List, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin], {

@@ -16,8 +16,8 @@
 define('crm/Views/OpportunityProduct/List', [
   'dojo/_base/declare',
   'argos/List',
-  'argos/I18n'
-], function(declare, List, getResource) {
+  'argos/I18n',
+], (declare, List, getResource) => {
   const resource = getResource('opportunityProductList');
 
   const __class = declare('crm.Views.OpportunityProduct.List', [List], {

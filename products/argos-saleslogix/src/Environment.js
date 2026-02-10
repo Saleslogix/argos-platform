@@ -18,8 +18,8 @@
 */
 define('crm/Environment', [
   'dojo/_base/lang',
-  'dojo/_base/sniff'
-], function(lang) {
+  'dojo/_base/sniff',
+], (lang) => {
   /**
    * @class
    * @alias module:crm/Environment

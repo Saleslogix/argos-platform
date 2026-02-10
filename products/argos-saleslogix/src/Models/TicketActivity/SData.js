@@ -19,8 +19,8 @@ define('crm/Models/TicketActivity/SData', [
   'argos/Models/_SDataModelBase',
   'argos/Models/Manager',
   'argos/Models/Types',
-  '../Names'
-], function(declare, Base, _SDataModelBase, Manager, MODEL_TYPE, MODEL_NAMES) {
+  '../Names',
+], (declare, Base, _SDataModelBase, Manager, MODEL_TYPE, MODEL_NAMES) => {
   const __class = declare('crm.Models.TicketActivity.SData', [Base, _SDataModelBase], {
     id: 'ticket_activity_sdata_model',
     createQueryModels: function createQueryModels() {

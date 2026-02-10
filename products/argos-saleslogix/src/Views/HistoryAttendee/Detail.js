@@ -17,8 +17,8 @@ define('crm/Views/HistoryAttendee/Detail', [
   'dojo/_base/declare',
   'argos/Detail',
   'argos/I18n',
-  '../../Models/Names'
-], function(declare, Detail, getResource, MODEL_NAMES) {
+  '../../Models/Names',
+], (declare, Detail, getResource, MODEL_NAMES) => {
   const resource = getResource('historyAttendeeDetail');
 
   const __class = declare('crm.Views.HistoryAttendee.Detail', [Detail], {

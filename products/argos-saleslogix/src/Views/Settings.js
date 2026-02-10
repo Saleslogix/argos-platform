@@ -17,8 +17,8 @@ define('crm/Views/Settings', [
   'dojo/_base/declare',
   'dojo/_base/connect',
   'argos/List',
-  'argos/I18n'
-], function(declare, connect, List, getResource) {
+  'argos/I18n',
+], (declare, connect, List, getResource) => {
   const resource = getResource('settings');
 
   const __class = declare('crm.Views.Settings', [List], {

@@ -18,8 +18,8 @@ define('crm/Views/OpportunityProduct/Edit', [
   '../../Validator',
   'argos/Edit',
   'argos/Utility',
-  'argos/I18n'
-], function(declare, validator, Edit, Utility, getResource) {
+  'argos/I18n',
+], (declare, validator, Edit, Utility, getResource) => {
   const resource = getResource('opportunityProductEdit');
 
   const __class = declare('crm.Views.OpportunityProduct.Edit', [Edit], {

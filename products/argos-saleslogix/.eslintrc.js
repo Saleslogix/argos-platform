@@ -3,14 +3,9 @@ module.exports = {
     es6: true,
     browser: true,
   },
-  parser: 'babel-eslint',
   parserOptions: {
-    ecmaVersion: 6,
-    sourceType: 'module',
-    ecmaFeatures: {
-      modules: true,
-      jsx: true,
-    },
+    ecmaVersion: 2020,
+    sourceType: 'script',
   },
   globals: {
     Sage: false,
@@ -479,7 +474,8 @@ module.exports = {
 
     // disallow importing from the same path more than once
     // http://eslint.org/docs/rules/no-duplicate-imports
-    'no-duplicate-imports': 'error',
+    // Disabled: project uses AMD define(), not ES6 imports
+    'no-duplicate-imports': 'off',
 
     // disallow symbol constructor
     // http://eslint.org/docs/rules/no-new-symbol
@@ -586,6 +582,7 @@ module.exports = {
      */
 
     // babel inserts `'use strict';` for us
+    // AMD modules don't need strict mode declarations
     strict: ['error', 'never'],
 
     /**

@@ -19,8 +19,8 @@ define('crm/Integrations/Contour/Views/PxSearch/LocationPicker', [
   'dojo/string',
   'argos/List',
   'argos/I18n',
-  '../../Models/Names'
-], function(declare, lang, string, List, getResource, MODEL_NAMES) {
+  '../../Models/Names',
+], (declare, lang, string, List, getResource, MODEL_NAMES) => {
   const resource = getResource('locPicker');
 
   const __class = declare('crm.Integrations.Contour.Views.PxSearch.LocationPicker', [List], {

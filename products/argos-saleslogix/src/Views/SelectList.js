@@ -16,8 +16,8 @@
 define('crm/Views/SelectList', [
   'dojo/_base/declare',
   'dojo/store/Memory',
-  'argos/List'
-], function(declare, Memory, List) {
+  'argos/List',
+], (declare, Memory, List) => {
   const __class = declare('crm.Views.SelectList', [List], {
     // Templates
     itemTemplate: new Simplate([

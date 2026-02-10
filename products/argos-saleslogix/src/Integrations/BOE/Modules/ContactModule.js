@@ -21,8 +21,8 @@ define('crm/Integrations/BOE/Modules/ContactModule', [
   '../Views/Quotes/List',
   '../Views/SalesOrders/List',
   '../Views/SyncResults/List',
-  'argos/I18n'
-], function(declare, lang, _Module, ErpContactAssociationsList, QuotesList, SalesOrdersList, SyncResultsList, getResource) {
+  'argos/I18n',
+], (declare, lang, _Module, ErpContactAssociationsList, QuotesList, SalesOrdersList, SyncResultsList, getResource) => {
   const resource = getResource('contactModule');
 
   const __class = declare('crm.Integrations.BOE.Modules.ContactModule', [_Module], {

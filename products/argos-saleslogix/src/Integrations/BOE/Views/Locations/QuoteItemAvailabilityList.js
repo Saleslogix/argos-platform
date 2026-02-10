@@ -18,8 +18,8 @@ define('crm/Integrations/BOE/Views/Locations/QuoteItemAvailabilityList', [
   'dojo/_base/lang',
   './PricingAvailabilityList',
   '../../PricingAvailabilityService',
-  '../../Models/Names'
-], function(declare, lang, List, PricingAvailabilityService, MODEL_NAMES) {
+  '../../Models/Names',
+], (declare, lang, List, PricingAvailabilityService, MODEL_NAMES) => {
   const __class = declare('crm.Integrations.BOE.Views.Locations.QuoteItemAvailabilityList', [List], {
     // View Properties
     id: 'locations_quoteItemAvailabilityList',

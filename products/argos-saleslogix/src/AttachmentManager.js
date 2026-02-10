@@ -21,8 +21,8 @@ define('crm/AttachmentManager', [
   'dojo/_base/lang',
   'dojo/_base/declare',
   'argos/Convert',
-  './Utility'
-], function(FileManager, lang, declare, convert, utility) {
+  './Utility',
+], (FileManager, lang, declare, convert, utility) => {
   /**
    * @class
    * @alias module:crm/AttachmentManager
@@ -84,7 +84,7 @@ define('crm/AttachmentManager', [
         this._attachmentTemplate = template;
         this.uploadFiles();
       },
-      this.onRequestTemplateFailure
+      this.onRequestTemplateFailure,
       );
     },
     getAttachmentUrl: function getAttachmentUrl(attachmentId) {
@@ -312,7 +312,7 @@ define('crm/AttachmentManager', [
             }
           }
         },
-        this.onRequestDataFailure
+        this.onRequestDataFailure,
         );
       }
     },

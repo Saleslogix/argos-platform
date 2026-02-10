@@ -15,7 +15,7 @@
 
 // Polyfill for nodelist support on IE
 // https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach
-define('crm/polyfills/nodelist', [], function() {
+define('crm/polyfills/nodelist', [], () => {
   function nodelist() {
     if (window.NodeList && !NodeList.prototype.forEach) {
       NodeList.prototype.forEach = function (callback, argument) { // eslint-disable-line
@@ -28,6 +28,6 @@ define('crm/polyfills/nodelist', [], function() {
   }
 
   return {
-    nodelist
+    nodelist,
   };
 });

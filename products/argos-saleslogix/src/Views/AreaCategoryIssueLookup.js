@@ -17,8 +17,8 @@ define('crm/Views/AreaCategoryIssueLookup', [
   'dojo/_base/declare',
   'argos/List',
   'argos/_LegacySDataListMixin',
-  'argos/I18n'
-], function(declare, List, _LegacySDataListMixin, getResource) {
+  'argos/I18n',
+], (declare, List, _LegacySDataListMixin, getResource) => {
   const resource = getResource('areaCategoryIssueLookup');
 
   const __class = declare('crm.Views.AreaCategoryIssueLookup', [List, _LegacySDataListMixin], {

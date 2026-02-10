@@ -21,8 +21,8 @@ define('crm/Views/Contact/Detail', [
   '../../Models/Names',
   'argos/Detail',
   'argos/I18n',
-  'dojo/string'
-], function(declare, action, format, template, MODEL_NAMES, Detail, getResource, string) {
+  'dojo/string',
+], (declare, action, format, template, MODEL_NAMES, Detail, getResource, string) => {
   const resource = getResource('contactDetail');
 
   const __class = declare('crm.Views.Contact.Detail', [Detail], {

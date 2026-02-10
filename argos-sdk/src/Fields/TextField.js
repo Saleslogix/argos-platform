@@ -20,8 +20,8 @@ define('argos/Fields/TextField', [
   'dojo/_base/declare',
   'dojo/_base/event',
   './_Field',
-  '../FieldManager'
-], function(declare, event, _Field, FieldManager) {
+  '../FieldManager',
+], (declare, event, _Field, FieldManager) => {
   /**
    * @class
    * @alias module:argos/Fields/TextField

@@ -18,8 +18,8 @@ define('crm/Integrations/BOE/Views/ERPBillToAccounts/Edit', [
   'dojo/_base/lang',
   'argos/Edit',
   '../../Models/Names',
-  'argos/I18n'
-], function(declare, lang, Edit, MODEL_NAMES, getResource) {
+  'argos/I18n',
+], (declare, lang, Edit, MODEL_NAMES, getResource) => {
   const resource = getResource('erpBillToAccountsEdit');
 
   const __class = declare('crm.Integrations.BOE.Views.ERPBillToAccounts.Edit', [Edit], {

@@ -16,8 +16,8 @@
 define('crm/Views/Attachment/MyAttachmentList', [
   'dojo/_base/declare',
   './List',
-  'argos/I18n'
-], function(declare, AttachmentList, getResource) {
+  'argos/I18n',
+], (declare, AttachmentList, getResource) => {
   const resource = getResource('attachmentMyList');
 
   const __class = declare('crm.Views.Attachment.MyAttachmentList', [AttachmentList], {

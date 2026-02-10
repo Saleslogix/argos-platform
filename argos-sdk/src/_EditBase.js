@@ -40,8 +40,8 @@ define('argos/_EditBase', [
   './Fields/SignatureField',
   './Fields/TextAreaField',
   './Fields/TextField',
-  './Fields/RadioField'
-], function(declare, lang, connect, when, utility, ErrorManager, FieldManager, View, getResource) {
+  './Fields/RadioField',
+], (declare, lang, connect, when, utility, ErrorManager, FieldManager, View, getResource) => {
   const resource = getResource('editBase');
 
   const __class = declare('argos._EditBase', [View], /** @lends module:argos/_EditBase */{
@@ -757,7 +757,7 @@ define('argos/_EditBase', [
 
         when(getResults,
           this._onGetComplete.bind(this),
-          this._onGetError.bind(this, getOptions)
+          this._onGetError.bind(this, getOptions),
         );
 
         return getResults;
@@ -990,7 +990,7 @@ define('argos/_EditBase', [
       } else if (store) {
         when(store.add(entry, addOptions),
           this.onAddComplete.bind(this, entry),
-          this.onAddError.bind(this, addOptions)
+          this.onAddError.bind(this, addOptions),
         );
       }
     },
@@ -1045,7 +1045,7 @@ define('argos/_EditBase', [
       } else if (store) {
         when(store.put(entry, putOptions),
           this.onPutComplete.bind(this, entry),
-          this.onPutError.bind(this, putOptions)
+          this.onPutError.bind(this, putOptions),
         );
       }
     },

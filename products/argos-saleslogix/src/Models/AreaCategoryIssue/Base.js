@@ -16,8 +16,8 @@
 define('crm/Models/AreaCategoryIssue/Base', [
   'dojo/_base/declare',
   'argos/Models/_ModelBase',
-  '../Names'
-], function(declare, _ModelBase, MODEL_NAMES) {
+  '../Names',
+], (declare, _ModelBase, MODEL_NAMES) => {
   const __class = declare('crm.Models.AreaCategoryIssue.Base', [_ModelBase], {
     resourceKind: 'areaCategoryIssues',
     entityName: 'AreaCategoryIssue',

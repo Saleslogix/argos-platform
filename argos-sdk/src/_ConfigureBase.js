@@ -20,8 +20,8 @@
 define('argos/_ConfigureBase', [
   'dojo/_base/declare',
   './DraggableList',
-  './I18n'
-], function(declare, DraggableList, getResource) {
+  './I18n',
+], (declare, DraggableList, getResource) => {
   const resource = getResource('configureBase');
   const editResource = getResource('editBase');
 

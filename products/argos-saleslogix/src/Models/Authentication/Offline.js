@@ -20,8 +20,8 @@ define('crm/Models/Authentication/Offline', [
   'argos/Models/Types',
   'dojo/Deferred',
   'argos/Convert',
-  'argos/I18n'
-], function(declare, _OfflineModelBase, Manager, MODEL_TYPES, Deferred, convert, getResource) {
+  'argos/I18n',
+], (declare, _OfflineModelBase, Manager, MODEL_TYPES, Deferred, convert, getResource) => {
   const resource = getResource('autenticationModel');
 
   const __class = declare('crm.Models.Autentication.Offline', [_OfflineModelBase], {

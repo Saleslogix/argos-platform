@@ -22,8 +22,8 @@ define('argos/Fields/_Field', [
   'dojo/string',
   'dijit/_WidgetBase',
   '../_ActionMixin',
-  '../_Templated'
-], function(declare, lang, string, _WidgetBase, _ActionMixin, _Templated) {
+  '../_Templated',
+], (declare, lang, string, _WidgetBase, _ActionMixin, _Templated) => {
   /**
    * @class
    * @alias module:argos/Fields/_Field

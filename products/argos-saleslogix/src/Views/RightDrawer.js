@@ -16,8 +16,8 @@
 define('crm/Views/RightDrawer', [
   'dojo/_base/declare',
   'dojo/store/Memory',
-  'argos/GroupedList'
-], function(declare, Memory, GroupedList) {
+  'argos/GroupedList',
+], (declare, Memory, GroupedList) => {
   const __class = declare('crm.Views.RightDrawer', [GroupedList], {
     // Templates
     cls: ' contextualContent',

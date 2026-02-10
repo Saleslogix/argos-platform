@@ -22,8 +22,8 @@ define('crm/Integrations/BOE/Models/UnitOfMeasure/SData', [
   'argos/Models/Types',
   '../Names',
   'dojo/Deferred',
-  'dojo/when'
-], function(declare, lang, Base, _SDataModelBase, Manager, MODEL_TYPES, MODEL_NAMES, Deferred, when) {
+  'dojo/when',
+], (declare, lang, Base, _SDataModelBase, Manager, MODEL_TYPES, MODEL_NAMES, Deferred, when) => {
   const __class = declare('crm.Integrations.BOE.Models.UnitOfMeasure.SData', [Base, _SDataModelBase], {
     id: 'unitofmeasure_sdata_model',
     createQueryModels: function createQueryModels() {

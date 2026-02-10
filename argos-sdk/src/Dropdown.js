@@ -19,8 +19,8 @@
 define('argos/Dropdown', [
   'dojo/_base/declare',
   'dijit/_WidgetBase',
-  './_Templated'
-], function(declare, _WidgetBase, _Templated) {
+  './_Templated',
+], (declare, _WidgetBase, _Templated) => {
   /**
    * @class
    * @alias module:argos/Dropdown

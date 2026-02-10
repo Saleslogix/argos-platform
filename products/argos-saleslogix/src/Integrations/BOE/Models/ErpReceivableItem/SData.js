@@ -20,8 +20,8 @@ define('crm/Integrations/BOE/Models/ErpReceivableItem/SData', [
   'argos/Models/_SDataModelBase',
   'argos/Models/Manager',
   'argos/Models/Types',
-  '../Names'
-], function(declare, lang, Base, _SDataModelBase, Manager, MODEL_TYPES, MODEL_NAMES) {
+  '../Names',
+], (declare, lang, Base, _SDataModelBase, Manager, MODEL_TYPES, MODEL_NAMES) => {
   const __class = declare('crm.Integrations.BOE.Models.ErpReceivableItem.SData', [Base, _SDataModelBase], {
     id: 'erpreceivableitem_sdata_model',
     createQueryModels: function createQueryModels() {

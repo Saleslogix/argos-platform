@@ -19,8 +19,8 @@
 define('crm/Recurrence', [
   'dojo/_base/lang',
   'dojo/string',
-  'argos/I18n'
-], function(lang, string, getResource) {
+  'argos/I18n',
+], (lang, string, getResource) => {
   const resource = getResource('recurrence');
   const dtFormatResource = getResource('recurrenceDateTimeFormat');
 
@@ -214,7 +214,7 @@ define('crm/Recurrence', [
           this.simplifiedOptions[recurOption].RecurPeriodSpec = this.getRecurPeriodSpec(
             opt.RecurPeriod,
             startDate,
-            opt.weekdays
+            opt.weekdays,
           );
         }
       }

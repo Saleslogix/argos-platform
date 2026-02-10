@@ -28,8 +28,8 @@ define('crm/Views/_GroupListMixin', [
   'dojo/Deferred',
   '../Action',
   '../Models/Activity/ActivityTypeText',
-  'argos/I18n'
-], function(declare, json, utility, _ListBase, GroupUtility, when, lang, SDataStore, Deferred, action, ActivityTypeText, getResource) {
+  'argos/I18n',
+], (declare, json, utility, _ListBase, GroupUtility, when, lang, SDataStore, Deferred, action, ActivityTypeText, getResource) => {
   const resource = getResource('groupListMixin');
 
   /**

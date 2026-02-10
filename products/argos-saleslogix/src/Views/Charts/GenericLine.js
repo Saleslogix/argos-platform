@@ -21,8 +21,8 @@ define('crm/Views/Charts/GenericLine', [
   'dojo/_base/array',
   'dojo/dom-geometry',
   'argos/View',
-  './_ChartMixin'
-], function(declare, array, domGeo, View, _ChartMixin) {
+  './_ChartMixin',
+], (declare, array, domGeo, View, _ChartMixin) => {
   /**
    * @class
    * @alias module:crm/Views/Charts/GenericLine

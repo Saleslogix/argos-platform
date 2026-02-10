@@ -18,8 +18,8 @@
  */
 define('argos/_PullToRefreshMixin', [
   'dojo/_base/declare',
-  './I18n'
-], function(declare, getResource) {
+  './I18n',
+], (declare, getResource) => {
   const resource = getResource('pullToRefreshMixin');
 
   /**

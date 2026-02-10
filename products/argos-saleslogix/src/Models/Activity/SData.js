@@ -23,8 +23,8 @@ define('crm/Models/Activity/SData', [
   'argos/Models/Manager',
   'argos/Models/Types',
   '../Names',
-  './ActivityTypePicklists'
-], function(declare, Base, _SDataModelBase, all, Deferred, ErrorManager, Manager, MODEL_TYPES, MODEL_NAMES, ActivityTypePicklists) {
+  './ActivityTypePicklists',
+], (declare, Base, _SDataModelBase, all, Deferred, ErrorManager, Manager, MODEL_TYPES, MODEL_NAMES, ActivityTypePicklists) => {
   const { getPicklistByActivityType } = ActivityTypePicklists;
 
   const __class = declare('crm.Models.Activity.SData', [Base, _SDataModelBase], {

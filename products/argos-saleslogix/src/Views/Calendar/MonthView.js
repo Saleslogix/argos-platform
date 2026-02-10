@@ -22,8 +22,8 @@ define('crm/Views/Calendar/MonthView', [
   'argos/List',
   'argos/_LegacySDataListMixin',
   'argos/I18n',
-  '../../Models/Activity/ActivityTypeIcon'
-], function(declare, string, format, ErrorManager, convert, List, _LegacySDataListMixin, getResource, activityTypeIcons) {
+  '../../Models/Activity/ActivityTypeIcon',
+], (declare, string, format, ErrorManager, convert, List, _LegacySDataListMixin, getResource, activityTypeIcons) => {
   const resource = getResource('calendarMonthView');
   const dtFormatResource = getResource('calendarMonthViewDateTimeFormat');
 
@@ -435,7 +435,7 @@ define('crm/Views/Calendar/MonthView', [
           convert.toIsoStringFromDate(endDate.toDate()),
           startDate.format('YYYY-MM-DDT00:00:00[Z]'),
           endDate.format('YYYY-MM-DDT23:59:59[Z]'),
-        ]
+        ],
       );
     },
     getEventQuery: function getEventQuery() {
@@ -450,7 +450,7 @@ define('crm/Views/Calendar/MonthView', [
         ].join(''), [App.context.user && App.context.user.$key,
           convert.toIsoStringFromDate(startDate.toDate()),
           convert.toIsoStringFromDate(endDate.toDate()),
-        ]
+        ],
       );
     },
     processFeed: function processFeed(feed) {
@@ -650,7 +650,7 @@ define('crm/Views/Calendar/MonthView', [
           convert.toIsoStringFromDate(this.currentDate.clone()
             .endOf('day')
             .toDate()),
-        ]
+        ],
       );
     },
     onRequestSelectedDateActivityDataSuccess: function onRequestSelectedDateActivityDataSuccess(feed) {

@@ -21,8 +21,8 @@ define('crm/Integrations/BOE/Modules/ShipmentModule', [
   '../Views/ERPShipments/List',
   '../Views/ERPShipmentItems/List',
   '../Models/ErpShipment/Offline',
-  '../Models/ErpShipment/SData'
-], function(declare, lang, _Module, ShipmentsDetail, ShipmentsList, ShipmentItemsList) {
+  '../Models/ErpShipment/SData',
+], (declare, lang, _Module, ShipmentsDetail, ShipmentsList, ShipmentItemsList) => {
   const __class = declare('crm.Integrations.BOE.Modules.ShipmentModule', [_Module], {
     defaultViews: ['erpshipments_list'],
     init: function init() {

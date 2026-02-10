@@ -18,8 +18,8 @@ define('crm/Views/Lead/Edit', [
   '../../Format',
   '../../Validator',
   'argos/Edit',
-  'argos/I18n'
-], function(declare, format, validator, Edit, getResource) {
+  'argos/I18n',
+], (declare, format, validator, Edit, getResource) => {
   const resource = getResource('leadEdit');
 
   const __class = declare('crm.Views.Lead.Edit', [Edit], {

@@ -14,10 +14,11 @@
  */
 
 define('crm/polyfills/index', [
-  './nodelist'
-], function(nodelist) {
+  './nodelist',
+], (nodelist) => {
   const p = Object.assign({},
-    nodelist
+    nodelist,
   );
 
-  p.nodelist();});
+  p.nodelist();
+});

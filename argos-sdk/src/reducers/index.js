@@ -18,8 +18,8 @@
  */
 define('argos/reducers/index', [
   '../actions/index',
-  '../actions/connection'
-], function(indexActions, connectionActions) {
+  '../actions/connection',
+], (indexActions, connectionActions) => {
   const { SET_MAX_VIEWPORTS, INSERT_HISTORY } = indexActions;
   const { SET_CONNECTION_STATE } = connectionActions;
 
@@ -100,6 +100,6 @@ define('argos/reducers/index', [
   }
 
   return {
-    sdk
+    sdk,
   };
 });

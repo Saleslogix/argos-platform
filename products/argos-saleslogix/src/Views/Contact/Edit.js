@@ -20,8 +20,8 @@ define('crm/Views/Contact/Edit', [
   'crm/Validator',
   'argos/Edit',
   'argos/Utility',
-  'argos/I18n'
-], function(declare, format, template, validator, Edit, utility, getResource) {
+  'argos/I18n',
+], (declare, format, template, validator, Edit, utility, getResource) => {
   const resource = getResource('contactEdit');
 
   const __class = declare('crm.Views.Contact.Edit', [Edit], {

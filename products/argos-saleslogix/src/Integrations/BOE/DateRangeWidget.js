@@ -16,8 +16,8 @@ define('crm/Integrations/BOE/DateRangeWidget', [
   'dojo/_base/declare',
   'dojo/_base/lang',
   'dijit/_Widget',
-  'argos/_Templated'
-], function(declare, lang, _Widget, _Templated) {
+  'argos/_Templated',
+], (declare, lang, _Widget, _Templated) => {
   const __class = declare('crm.Integrations.BOE.DateRangeWidget', [_Widget, _Templated], {
     widgetTemplate: new Simplate([
       '<div class="range-widget">',

@@ -17,8 +17,8 @@
  * @module crm/Aggregate
  */
 define('crm/Aggregate', [
-  'dojo/_base/lang'
-], function(lang) {
+  'dojo/_base/lang',
+], (lang) => {
   /**
    * @class
    * @alias module:crm/Aggregate

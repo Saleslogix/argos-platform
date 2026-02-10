@@ -21,8 +21,8 @@ define('argos/SearchWidget', [
   'dojo/_base/lang',
   'dijit/_WidgetBase',
   './_Templated',
-  './I18n'
-], function(declare, lang, _WidgetBase, _Templated, getResource) {
+  './I18n',
+], (declare, lang, _WidgetBase, _Templated, getResource) => {
   const resource = getResource('searchWidget');
 
   /**

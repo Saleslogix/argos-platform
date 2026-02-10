@@ -29,8 +29,8 @@ define('crm/Integrations/BOE/Modules/BillToModule', [
   '../Views/ERPShipTos/List',
   '../Views/SyncResults/List',
   '../Models/ErpBillTo/Offline',
-  '../Models/ErpBillTo/SData'
-], function(declare, lang, _Module, AccountList, BillToDetail, BillToEdit, BillToList, InvoiceList, QuoteList, ReceivableList, ReturnList, SalesOrderList, ShipToList, SyncResultsList) {
+  '../Models/ErpBillTo/SData',
+], (declare, lang, _Module, AccountList, BillToDetail, BillToEdit, BillToList, InvoiceList, QuoteList, ReceivableList, ReturnList, SalesOrderList, ShipToList, SyncResultsList) => {
   const __class = declare('crm.Integrations.BOE.Modules.BillToModule', [_Module], {
     init: function init() {
       App.picklistService.registerPicklistToView('SyncStatus', 'erpbillto_detail');

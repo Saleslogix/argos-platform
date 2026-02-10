@@ -21,13 +21,13 @@ define('crm/Views/Activity/MyDayOffline', [
   '../../Models/Names',
   'argos/Models/Types',
   'argos/Convert',
-  'argos/I18n'
-], function(declare, OfflineList, MyDayMetricListMixin, MyDayRightDrawerListMixin, MODEL_NAMES, MODEL_TYPES, convert, getResource) {
+  'argos/I18n',
+], (declare, OfflineList, MyDayMetricListMixin, MyDayRightDrawerListMixin, MODEL_NAMES, MODEL_TYPES, convert, getResource) => {
   const resource = getResource('activityMyDayOffline');
 
   return declare('crm.Views.Activity.MyDayOffline', [OfflineList, MyDayMetricListMixin, MyDayRightDrawerListMixin], {
     id: 'myday_offline_list',
-  
+
     entityName: 'Activity',
     titleText: resource.titleText,
     modelName: MODEL_NAMES.ACTIVITY,
@@ -61,7 +61,7 @@ define('crm/Views/Activity/MyDayOffline', [
       }
       return this.filters;
     },
-  
+
     getCurrentFilter: function getCurrentFilter() {
       const filters = this.getFilters();
       return filters[this._currentFilterName];
@@ -82,7 +82,7 @@ define('crm/Views/Activity/MyDayOffline', [
           return true;
         }
       };
-  
+
       return queryOptions;
     },
     isToday: function isToday(entry) {

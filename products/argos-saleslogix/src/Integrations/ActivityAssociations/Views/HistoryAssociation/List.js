@@ -17,8 +17,8 @@ define('crm/Integrations/ActivityAssociations/Views/HistoryAssociation/List', [
   'dojo/_base/declare',
   'argos/List',
   '../../Models/Names',
-  'argos/I18n'
-], function(declare, List, MODEL_NAMES, getResource) {
+  'argos/I18n',
+], (declare, List, MODEL_NAMES, getResource) => {
   const resource = getResource('historyAssociationList');
 
   const __class = declare('crm.Integrations.ActivityAssociations.Views.HistoryAssociation.List', [List], {

@@ -20,8 +20,8 @@ define('crm/Views/OpportunityProduct/Detail', [
   '../../Format',
   'argos/Detail',
   'argos/_LegacySDataDetailMixin',
-  'argos/I18n'
-], function(declare, string, connect, format, Detail, _LegacySDataDetailMixin, getResource) {
+  'argos/I18n',
+], (declare, string, connect, format, Detail, _LegacySDataDetailMixin, getResource) => {
   const resource = getResource('opportunityProductDetail');
 
   const __class = declare('crm.Views.OpportunityProduct.Detail', [Detail, _LegacySDataDetailMixin], {

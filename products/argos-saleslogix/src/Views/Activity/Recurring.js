@@ -20,8 +20,8 @@ define('crm/Views/Activity/Recurring', [
   'argos/Edit',
   '../../Recurrence',
   'argos/I18n',
-  'dojo/string'
-], function(declare, format, validator, Edit, recur, getResource, string) {
+  'dojo/string',
+], (declare, format, validator, Edit, recur, getResource, string) => {
   const resource = getResource('activityRecurring');
   const dtFormatResource = getResource('activityEditDateTimeFormat');
 
@@ -239,7 +239,7 @@ define('crm/Views/Activity/Recurring', [
           value,
           this.fields.StartDate.getValue(),
           this.fields.Interval.getValue(),
-          this.fields.RecurPeriod.getValue()
+          this.fields.RecurPeriod.getValue(),
         );
 
         if (iterations !== parseInt(this.fields.RecurIterations.getValue(), 10)) {
@@ -391,7 +391,7 @@ define('crm/Views/Activity/Recurring', [
         parseInt(this.fields.RecurPeriod.getValue(), 10),
         this.fields.StartDate.getValue(),
         weekdays,
-        parseInt(this.fields.Interval.getValue(), 10)
+        parseInt(this.fields.Interval.getValue(), 10),
       ));
 
       this.entry.Weekdays = weekdays;

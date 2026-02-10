@@ -39,8 +39,8 @@ define('crm/Integrations/BOE/Modules/AccountModule', [
   '../Views/Account/NewDashboardWidget',
   '../Views/Account/OpenDashboardWidget',
   '../Views/Account/ActivityDashboardWidget',
-  'argos/I18n'
-], function(declare, lang, _Module, AccountDetailView, BusyIndicator, BillToList, ERPContactAssociationsList, ERPInvoicesList, ERPReceivablesList, ERPShipmentsList, ERPShipToList, Promote, QuotesList, ReturnsList, SalesOrdersList, SyncResultsList, AccountPersonList, Utility, format, getResource) {
+  'argos/I18n',
+], (declare, lang, _Module, AccountDetailView, BusyIndicator, BillToList, ERPContactAssociationsList, ERPInvoicesList, ERPReceivablesList, ERPShipmentsList, ERPShipToList, Promote, QuotesList, ReturnsList, SalesOrdersList, SyncResultsList, AccountPersonList, Utility, format, getResource) => {
   const resource = getResource('accountModule');
 
   const __class = declare('crm.Integrations.BOE.Modules.AccountModule', [_Module], {

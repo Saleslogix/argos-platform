@@ -19,8 +19,8 @@
 define('argos/Fields/HiddenField', [
   'dojo/_base/declare',
   './TextField',
-  '../FieldManager'
-], function(declare, TextField, FieldManager) {
+  '../FieldManager',
+], (declare, TextField, FieldManager) => {
   /**
    * @class
    * @alias module:argos/Fields/HiddenField

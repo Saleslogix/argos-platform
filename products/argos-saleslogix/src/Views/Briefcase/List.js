@@ -22,8 +22,8 @@ define('crm/Views/Briefcase/List', [
   'argos/Offline/Manager',
   '../Offline/Detail',
   'argos/Offline/_ListOfflineMixin',
-  'argos/I18n'
-], function(declare, _ListBase, lang, format, MODEL_TYPES, OfflineManager, OfflineDetail, _ListOfflineMixin, getResource) {
+  'argos/I18n',
+], (declare, _ListBase, lang, format, MODEL_TYPES, OfflineManager, OfflineDetail, _ListOfflineMixin, getResource) => {
   const resource = getResource('briefcaseList');
 
   return declare('crm.Views.Briefcase', [_ListBase, _ListOfflineMixin], {
@@ -90,18 +90,18 @@ define('crm/Views/Briefcase/List', [
     },
     navigateToOnlineDetailView: function navigateToDetailView(entry, additionalOptions) {
       const view = this.app.getView(entry.viewId);
-  
+
       let options = {
         descriptor: entry.description, // keep for backwards compat
         title: entry.description,
         key: entry.entityId,
         fromContext: this,
       };
-  
+
       if (additionalOptions) {
         options = lang.mixin(options, additionalOptions);
       }
-  
+
       if (view) {
         view.show(options);
       }
@@ -123,7 +123,7 @@ define('crm/Views/Briefcase/List', [
       if (additionalOptions) {
         options = lang.mixin(options, additionalOptions);
       }
-  
+
       if (view) {
         view.show(options);
       }
@@ -131,11 +131,11 @@ define('crm/Views/Briefcase/List', [
     getDetailView: function getDetailView(entityName) {
       const viewId = `${this.detailView}_${entityName}`;
       let view = this.app.getView(viewId);
-  
+
       if (view) {
         return view;
       }
-  
+
       this.app.registerView(new OfflineDetail({ id: viewId }));
       view = this.app.getView(viewId);
       return view;

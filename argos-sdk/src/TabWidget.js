@@ -18,8 +18,8 @@
  */
 define('argos/TabWidget', [
   'dojo/_base/declare',
-  './_Templated'
-], function(declare, _Templated) {
+  './_Templated',
+], (declare, _Templated) => {
   /**
    * @class
    * @alias module:argos/TabWidget

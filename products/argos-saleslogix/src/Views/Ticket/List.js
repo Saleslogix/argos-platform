@@ -22,8 +22,8 @@ define('crm/Views/Ticket/List', [
   '../_RightDrawerListMixin',
   'argos/I18n',
   '../../Models/Names',
-  'crm/Format'
-], function(declare, action, List, _GroupListMixin, _MetricListMixin, _RightDrawerListMixin, getResource, MODEL_NAMES, format) {
+  'crm/Format',
+], (declare, action, List, _GroupListMixin, _MetricListMixin, _RightDrawerListMixin, getResource, MODEL_NAMES, format) => {
   const resource = getResource('ticketList');
 
   const __class = declare('crm.Views.Ticket.List', [List, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin], {

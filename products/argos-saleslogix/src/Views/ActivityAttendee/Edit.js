@@ -17,8 +17,8 @@ define('crm/Views/ActivityAttendee/Edit', [
   'dojo/_base/declare',
   'argos/Edit',
   'argos/I18n',
-  '../../Models/Names'
-], function(declare, Edit, getResource, MODEL_NAMES) {
+  '../../Models/Names',
+], (declare, Edit, getResource, MODEL_NAMES) => {
   const resource = getResource('activityAttendeeEdit');
 
   const __class = declare('crm.Views.ActivityAttendee.Edit', [Edit], {

@@ -22,8 +22,8 @@ define('argos/Store/SData', [
   'dojo/_base/Deferred',
   'dojo/store/util/QueryResults',
   '../Convert',
-  '../Utility'
-], function(declare, lang, Deferred, QueryResults, convert, utility) {
+  '../Utility',
+], (declare, lang, Deferred, QueryResults, convert, utility) => {
   /**
    * @class
    * @alias module:argos/Store/SData

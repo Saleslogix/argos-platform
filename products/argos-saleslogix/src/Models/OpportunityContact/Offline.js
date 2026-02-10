@@ -19,8 +19,8 @@ define('crm/Models/OpportunityContact/Offline', [
   'argos/Models/_OfflineModelBase',
   'argos/Models/Manager',
   'argos/Models/Types',
-  '../Names'
-], function(declare, Base, _OfflineModelBase, Manager, MODEL_TYPE, MODEL_NAMES) {
+  '../Names',
+], (declare, Base, _OfflineModelBase, Manager, MODEL_TYPE, MODEL_NAMES) => {
   const __class = declare('crm.Models.OpportunityContact.Offline', [Base, _OfflineModelBase], {
     id: 'opportunity_contact_offline_model',
   });

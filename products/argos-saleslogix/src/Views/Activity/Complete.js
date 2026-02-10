@@ -24,8 +24,8 @@ define('crm/Views/Activity/Complete', [
   'argos/Edit',
   '../../Models/Names',
   'argos/Models/Types',
-  'argos/I18n'
-], function(declare, connect, string, environment, validator, ActivityTypePicklistsActivity, utility, Edit, MODEL_NAMES, MODEL_TYPES, getResource) {
+  'argos/I18n',
+], (declare, connect, string, environment, validator, ActivityTypePicklistsActivity, utility, Edit, MODEL_NAMES, MODEL_TYPES, getResource) => {
   const { getPicklistByActivityType } = ActivityTypePicklistsActivity;
 
   const resource = getResource('activityComplete');

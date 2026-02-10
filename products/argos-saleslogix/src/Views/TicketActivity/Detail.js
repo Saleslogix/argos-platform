@@ -19,8 +19,8 @@ define('crm/Views/TicketActivity/Detail', [
   '../../Template',
   'argos/Detail',
   'argos/I18n',
-  '../../Models/Names'
-], function(declare, format, template, Detail, getResource, MODEL_NAMES) {
+  '../../Models/Names',
+], (declare, format, template, Detail, getResource, MODEL_NAMES) => {
   const resource = getResource('ticketActivityDetail');
 
   const __class = declare('crm.Views.TicketActivity.Detail', [Detail], {

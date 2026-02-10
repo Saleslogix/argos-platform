@@ -19,8 +19,8 @@
 define('argos/_RelatedViewWidgetListMixin', [
   'dojo/_base/declare',
   'dojo/_base/lang',
-  './RelatedViewManager'
-], function(declare, lang, RelatedViewManager) {
+  './RelatedViewManager',
+], (declare, lang, RelatedViewManager) => {
   /**
    * @class
    * @mixin

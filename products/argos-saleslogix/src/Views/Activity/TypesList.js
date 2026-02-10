@@ -18,8 +18,8 @@ define('crm/Views/Activity/TypesList', [
   'argos/List',
   'dojo/store/Memory',
   'argos/I18n',
-  '../../Models/Activity/ActivityTypeIcon'
-], function(declare, List, MemoryStore, getResource, activityTypeIcons) {
+  '../../Models/Activity/ActivityTypeIcon',
+], (declare, List, MemoryStore, getResource, activityTypeIcons) => {
   const resource = getResource('activityTypesList');
 
   const __class = declare('crm.Views.Activity.TypesList', [List], {

@@ -17,8 +17,8 @@ define('crm/Integrations/BOE/Modules/HelpModule', [
   'dojo/_base/declare',
   'dojo/_base/lang',
   './_Module',
-  'argos/I18n'
-], function(declare, lang, _Module, getResource) {
+  'argos/I18n',
+], (declare, lang, _Module, getResource) => {
   const resource = getResource('helpModule');
 
   const __class = declare('crm.Integrations.BOE.Modules.HelpModule', [_Module], {

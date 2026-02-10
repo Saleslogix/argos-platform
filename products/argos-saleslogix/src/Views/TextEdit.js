@@ -16,8 +16,8 @@
 define('crm/Views/TextEdit', [
   'dojo/_base/declare',
   'argos/Edit',
-  'argos/I18n'
-], function(declare, Edit, getResource) {
+  'argos/I18n',
+], (declare, Edit, getResource) => {
   const resource = getResource('textEdit');
 
   const __class = declare('crm.Views.TextEdit', [Edit], {

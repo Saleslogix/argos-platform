@@ -29,8 +29,8 @@ define('argos/Application', [
   './reducers/index',
   './actions/connection',
   './Scene',
-  './SohoIcons'
-], function(util, ModelManager, Toast, Modal, BusyIndicator, connect, ErrorManager, getResource, indexReducers, connectionActions, Scene, SohoIcons) {
+  './SohoIcons',
+], (util, ModelManager, Toast, Modal, BusyIndicator, connect, ErrorManager, getResource, indexReducers, connectionActions, Scene, SohoIcons) => {
   const { sdk } = indexReducers;
   const { setConnectionState } = connectionActions;
   const { render } = SohoIcons;

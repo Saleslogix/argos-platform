@@ -25,7 +25,7 @@ define('crm/Integrations/Contour/Views/PxSearch/AccountPxSearch', [
   'argos/_LegacySDataListMixin',
   'argos/I18n',
   'argos/ErrorManager',
-], function(declare, lang, string, action, SearchWidget, utility, List, format, _LegacyListBase, getResource, ErrorManager) {
+], (declare, lang, string, action, SearchWidget, utility, List, format, _LegacyListBase, getResource, ErrorManager) => {
   const resource = getResource('acctPxSearch');
 
   const __class = declare('crm.Integrations.Contour.Views.PxSearch.AccountPxSearch', [List, _LegacyListBase], {
@@ -75,7 +75,7 @@ define('crm/Integrations/Contour/Views/PxSearch/AccountPxSearch', [
       const conv = App.isCurrentRegionMetric() ? 1.609344 : 1;
       return conv * Math.sqrt(
         Math.pow((69.1 * (gLat - this.lat)), 2) +
-        Math.pow((53.0 * (gLon - this.lon)), 2)
+        Math.pow((53.0 * (gLon - this.lon)), 2),
       );
     },
     joinFields: function joinFields(sep, fields) {

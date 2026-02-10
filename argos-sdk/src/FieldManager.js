@@ -17,8 +17,8 @@
  * @module argos/FieldManager
  */
 define('argos/FieldManager', [
-  'dojo/_base/lang'
-], function(lang) {
+  'dojo/_base/lang',
+], (lang) => {
   const store = {};
 
   /**

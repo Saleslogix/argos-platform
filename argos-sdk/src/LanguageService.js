@@ -17,8 +17,8 @@
  * @module argos/LanguageService
  */
 define('argos/LanguageService', [
-  'dojo/_base/declare'
-], function(declare) {
+  'dojo/_base/declare',
+], (declare) => {
   /**
    * @class
    * @alias module:argos/LanguageService

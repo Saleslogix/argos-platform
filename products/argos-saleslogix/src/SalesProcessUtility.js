@@ -20,8 +20,8 @@ define('crm/SalesProcessUtility', [
   'dojo/_base/lang',
   'dojo/when',
   'dojo/_base/Deferred',
-  'argos/Store/SData'
-], function(lang, when, Deferred, SData) {
+  'argos/Store/SData',
+], (lang, when, Deferred, SData) => {
   /**
    * @class
    * @alias module:crm/SalesProcessUtility

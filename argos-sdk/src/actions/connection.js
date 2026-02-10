@@ -18,7 +18,7 @@
  */
 
 // action Types
-define('argos/actions/connection', [], function() {
+define('argos/actions/connection', [], () => {
   const SET_CONNECTION_STATE = 'SET_CONNECTION_STATE';
 
   function setConnectionState(online) {
@@ -32,6 +32,6 @@ define('argos/actions/connection', [], function() {
 
   return {
     SET_CONNECTION_STATE,
-    setConnectionState
+    setConnectionState,
   };
 });

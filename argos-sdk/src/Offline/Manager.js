@@ -19,8 +19,8 @@
 define('argos/Offline/Manager', [
   'dojo/Deferred',
   'dojo/promise/all',
-  '../Models/Types'
-], function(Deferred, all, MODEL_TYPES) {
+  '../Models/Types',
+], (Deferred, all, MODEL_TYPES) => {
   /**
    * @class
    * @alias module:argos/Offline/Manager

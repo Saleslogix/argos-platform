@@ -20,8 +20,8 @@ define('argos/Groups/GroupByValueSection', [
   'dojo/_base/declare',
   '../Utility',
   './_GroupBySection',
-  '../I18n'
-], function(declare, Utility, _GroupBySection, getResource) {
+  '../I18n',
+], (declare, Utility, _GroupBySection, getResource) => {
   const resource = getResource('groupByValueSection');
 
   /**

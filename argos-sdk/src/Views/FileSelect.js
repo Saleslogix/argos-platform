@@ -20,8 +20,8 @@ define('argos/Views/FileSelect', [
   'dojo/_base/declare',
   '../I18n',
   '../View',
-  '../Fields/TextField'
-], function(declare, getResource, View) {
+  '../Fields/TextField',
+], (declare, getResource, View) => {
   const resource = getResource('fileSelect');
 
   /**

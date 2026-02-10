@@ -27,8 +27,8 @@ define('argos/_DetailBase', [
   './View',
   './TabWidget',
   './I18n',
-  'dojo/string'
-], function(declare, lang, when, connect, format, utility, ErrorManager, View, TabWidget, getResource, string) {
+  'dojo/string',
+], (declare, lang, when, connect, format, utility, ErrorManager, View, TabWidget, getResource, string) => {
   const resource = getResource('detailBase');
 
   /**
@@ -1031,7 +1031,7 @@ define('argos/_DetailBase', [
 
         when(getResults,
           this._onGetComplete.bind(this),
-          this._onGetError.bind(this, getOptions)
+          this._onGetError.bind(this, getOptions),
         );
 
         return getResults;
@@ -1174,7 +1174,7 @@ define('argos/_DetailBase', [
         if (store) {
           store.remove(entry).then(
             this._onRemoveSuccess.bind(this),
-            this._onRemoveError.bind(this)
+            this._onRemoveError.bind(this),
           );
         }
       }

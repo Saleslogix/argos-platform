@@ -22,7 +22,7 @@
  * @enum {string}
  * @alias module:argos/Models/Types
  */
-define('argos/Models/Types', [], function() {
+define('argos/Models/Types', [], () => {
   return {
     SDATA: 'sdata',
     OFFLINE: 'offline',

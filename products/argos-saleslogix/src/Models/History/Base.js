@@ -17,8 +17,8 @@ define('crm/Models/History/Base', [
   'dojo/_base/declare',
   'argos/Models/_ModelBase',
   '../Names',
-  'argos/I18n'
-], function(declare, _ModelBase, MODEL_NAMES, getResource) {
+  'argos/I18n',
+], (declare, _ModelBase, MODEL_NAMES, getResource) => {
   const resource = getResource('historyModel');
 
   const __class = declare('crm.Models.History.Base', [_ModelBase], {

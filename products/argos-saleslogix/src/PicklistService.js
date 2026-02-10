@@ -19,8 +19,8 @@
 define('crm/PicklistService', [
   'dojo/_base/lang',
   'argos/ErrorManager',
-  'argos/Store/SData'
-], function(lang, ErrorManager, SData) {
+  'argos/Store/SData',
+], (lang, ErrorManager, SData) => {
   const PickListService = ICRMServicesSDK.PickListService;
   const picklistFormat = ICRMCommonSDK.format.picklist;
 
@@ -183,14 +183,14 @@ define('crm/PicklistService', [
           name,
           this.onPicklistSuccess(resolve, language, name),
           this.onPicklistError(reject, name),
-          { pickListServiceOptions, language, useCache }
+          { pickListServiceOptions, language, useCache },
         );
 
         if (first && first.options) {
           const request = this.service.setUpRequest(
             new Sage.SData.Client.SDataResourceCollectionRequest(App.getService(false))
               .setContractName(this.contractName),
-            first.options
+            first.options,
           );
           request.read(first.handlers);
         }

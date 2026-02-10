@@ -18,8 +18,8 @@
  */
 define('argos/_Templated', [
   'dojo/_base/declare',
-  'dijit/_TemplatedMixin'
-], function(declare, _TemplatedMixin) {
+  'dijit/_TemplatedMixin',
+], (declare, _TemplatedMixin) => {
   /**
    * @class
    * @alias module:argos/_Templated

@@ -20,8 +20,8 @@ define('crm/Format', [
   'dojo/_base/lang',
   'dojo/string',
   'argos/Format',
-  'argos/I18n'
-], function(lang, string, format, getResource) {
+  'argos/I18n',
+], (lang, string, format, getResource) => {
   const f = ICRMCommonSDK.format;
   const resource = getResource('crmFormat');
 
@@ -91,7 +91,7 @@ define('crm/Format', [
       picklistOptions = { // Override for picklistOptions on storage and display modes
         storage: f.PicklistStorageType.CODE,
         display: f.PicklistDataDisplayType.TEXT,
-      }
+      },
     ) => {
       let name = picklistName;
       if (!name) {

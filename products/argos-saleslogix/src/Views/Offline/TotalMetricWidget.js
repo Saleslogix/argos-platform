@@ -15,8 +15,8 @@
 
 define('crm/Views/Offline/TotalMetricWidget', [
   '../MetricWidget',
-  'dojo/_base/declare'
-], function(MetricWidget, declare) {
+  'dojo/_base/declare',
+], (MetricWidget, declare) => {
   return declare('crm.Views.Offline.TotalMetricWidget', [MetricWidget], {
     navToReportView: function navToReportView() {},
     _buildQueryOptions: function _buildQueryOptions() {

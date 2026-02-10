@@ -32,8 +32,8 @@ define('crm/Integrations/BOE/Modules/ShipToAccountModule', [
   '../Views/ERPBillToAccounts/List',
   '../Views/ERPShipTos/List',
   '../Models/ErpShipToAccount/Offline',
-  '../Models/ErpShipToAccount/SData'
-], function(declare, lang, _Module, ShipToAccountList, ShipToAccountDetail, ShipToAccountEdit, AccountList, QuotesList, SalesOrdersList, InvoicesList, ShipmentsList, ReceivablesList, ReturnsList, ContactAssociationsList, SalesPersonList, BillToList, ShipToList) {
+  '../Models/ErpShipToAccount/SData',
+], (declare, lang, _Module, ShipToAccountList, ShipToAccountDetail, ShipToAccountEdit, AccountList, QuotesList, SalesOrdersList, InvoicesList, ShipmentsList, ReceivablesList, ReturnsList, ContactAssociationsList, SalesPersonList, BillToList, ShipToList) => {
   const __class = declare('crm.Integrations.BOE.Modules.ShipToAccountModule', [_Module], {
     init: function init() {
     },

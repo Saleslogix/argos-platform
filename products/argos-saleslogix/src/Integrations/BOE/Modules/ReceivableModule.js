@@ -21,8 +21,8 @@ define('crm/Integrations/BOE/Modules/ReceivableModule', [
   '../Views/ERPReceivables/List',
   '../Views/ERPReceivableItems/List',
   '../Models/ErpReceivable/Offline',
-  '../Models/ErpReceivable/SData'
-], function(declare, lang, _Module, ERPReceivablesDetail, ERPReceivablesList, ERPReceivableItemsList) {
+  '../Models/ErpReceivable/SData',
+], (declare, lang, _Module, ERPReceivablesDetail, ERPReceivablesList, ERPReceivableItemsList) => {
   const __class = declare('crm.Integrations.BOE.Modules.ReceivableModule', [_Module], {
     defaultViews: ['erpreceivables_list'],
     init: function init() {

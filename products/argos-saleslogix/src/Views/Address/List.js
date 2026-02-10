@@ -17,8 +17,8 @@ define('crm/Views/Address/List', [
   'dojo/_base/declare',
   '../../Format',
   'argos/List',
-  'argos/I18n'
-], function(declare, format, List, getResource) {
+  'argos/I18n',
+], (declare, format, List, getResource) => {
   const resource = getResource('addressList');
 
   const __class = declare('crm.Views.Address.List', [List], {

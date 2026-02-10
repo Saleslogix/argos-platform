@@ -21,8 +21,8 @@ define('argos/DateTimePicker', [
   'dijit/_WidgetBase',
   './_Templated',
   './Calendar',
-  './TimePicker'
-], function(declare, _WidgetBase, _Templated, Calendar, TimePicker) {
+  './TimePicker',
+], (declare, _WidgetBase, _Templated, Calendar, TimePicker) => {
   /**
    * @class
    * @alias module:argos/DateTimePicker

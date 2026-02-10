@@ -17,8 +17,8 @@ define('crm/Models/Opportunity/Base', [
   'dojo/_base/declare',
   'argos/Models/_ModelBase',
   '../Names',
-  'argos/I18n'
-], function(declare, _ModelBase, MODEL_NAMES, getResource) {
+  'argos/I18n',
+], (declare, _ModelBase, MODEL_NAMES, getResource) => {
   const resource = getResource('opportunityModel');
   const accountResource = getResource('accountModel');
   const activityResource = getResource('activityModel');

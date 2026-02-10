@@ -20,8 +20,8 @@ define('crm/GroupUtility', [
   'dojo/_base/lang',
   './Format',
   'argos/Format',
-  'argos/I18n'
-], function(lang, format, sdkFormat, getResource) {
+  'argos/I18n',
+], (lang, format, sdkFormat, getResource) => {
   const dtFormatResource = getResource('groupUtilityDateTimeFormat');
 
   function _createGroupRequest(o) {

@@ -17,8 +17,8 @@ define('crm/Integrations/ActivityAssociations/Models/ActivityAssociation/Base', 
   'dojo/_base/declare',
   'argos/Models/_ModelBase',
   '../Names',
-  'argos/I18n'
-], function(declare, _ModelBase, MODEL_NAMES, getResource) {
+  'argos/I18n',
+], (declare, _ModelBase, MODEL_NAMES, getResource) => {
   const resource = getResource('activityAssociationModel'); // eslint-disable-line
 
   const __class = declare('crm.Integrations.ActivityAssociations.Models.ActivityAssociation.Base', [_ModelBase], {

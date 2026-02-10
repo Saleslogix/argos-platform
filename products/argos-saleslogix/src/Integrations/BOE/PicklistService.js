@@ -16,8 +16,8 @@
 define('crm/Integrations/BOE/PicklistService', [
   'dojo/_base/lang',
   'argos/ErrorManager',
-  'argos/Store/SData'
-], function(lang, ErrorManager, SData) {
+  'argos/Store/SData',
+], (lang, ErrorManager, SData) => {
   const __class = lang.setObject('crm.Integrations.BOE.PicklistService', {
     _picklists: {},
     _viewMapping: {},

@@ -19,8 +19,8 @@ define('crm/Integrations/ActivityAssociations/Models/ActivityAssociation/Offline
   'argos/Models/_OfflineModelBase',
   'argos/Models/Manager',
   'argos/Models/Types',
-  '../Names'
-], function(declare, Base, _OfflineModelBase, Manager, MODEL_TYPES, MODEL_NAMES) {
+  '../Names',
+], (declare, Base, _OfflineModelBase, Manager, MODEL_TYPES, MODEL_NAMES) => {
   const __class = declare('crm.Integrations.ActivityAssociations.Models.ActivityAssociation.Offline', [Base, _OfflineModelBase], {
     id: 'activity_association_offline_model',
   });

@@ -23,8 +23,8 @@ define('argos/ApplicationModule', [
   './CultureInfo',
   './Application',
   './Models/RecentlyViewed/Offline',
-  './Models/Briefcase/Offline'
-], function(declare, ConfigureQuickActions, LinkView, initCulture) {
+  './Models/Briefcase/Offline',
+], (declare, ConfigureQuickActions, LinkView, initCulture) => {
   /**
    * @class
    * @alias module:argos/ApplicationModule

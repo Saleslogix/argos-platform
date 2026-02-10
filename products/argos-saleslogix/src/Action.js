@@ -20,8 +20,8 @@ define('crm/Action', [
   'dojo/_base/lang',
   'dojo/string',
   'argos/Utility',
-  'argos/I18n'
-], function(lang, string, utility, getResource) {
+  'argos/I18n',
+], (lang, string, utility, getResource) => {
   const resource = getResource('action');
 
   /**

@@ -16,8 +16,8 @@
 define('crm/Views/Login', [
   'dojo/_base/declare',
   'argos/Edit',
-  'argos/I18n'
-], function(declare, Edit, getResource) {
+  'argos/I18n',
+], (declare, Edit, getResource) => {
   const resource = getResource('login');
 
   const __class = declare('crm.Views.Login', [Edit], {

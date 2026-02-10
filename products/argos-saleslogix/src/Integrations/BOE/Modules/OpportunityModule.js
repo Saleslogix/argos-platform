@@ -20,8 +20,8 @@ define('crm/Integrations/BOE/Modules/OpportunityModule', [
   '../Views/Quotes/List',
   '../Views/SalesOrders/List',
   '../PricingAvailabilityService',
-  'argos/I18n'
-], function(declare, lang, _Module, QuotesList, SalesOrdersList, PricingAvailabilityService, getResource) {
+  'argos/I18n',
+], (declare, lang, _Module, QuotesList, SalesOrdersList, PricingAvailabilityService, getResource) => {
   const resource = getResource('opportunityModule');
 
   const __class = declare('crm.Integrations.BOE.Modules.OpportunityModule', [_Module], {

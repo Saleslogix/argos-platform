@@ -18,8 +18,8 @@ define('crm/Views/Event/Edit', [
   '../../Format',
   '../../Validator',
   'argos/Edit',
-  'argos/I18n'
-], function(declare, format, validator, Edit, getResource) {
+  'argos/I18n',
+], (declare, format, validator, Edit, getResource) => {
   const resource = getResource('eventEdit');
   const dtFormatResource = getResource('eventEditDateTimeFormat');
 

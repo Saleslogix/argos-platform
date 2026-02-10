@@ -21,8 +21,8 @@ define('argos/Offline/_DetailOfflineMixin', [
   './Manager',
   '../Dialogs/BusyIndicator',
   '../ErrorManager',
-  '../I18n'
-], function(declare, OfflineManager, BusyIndicator, ErrorManager, getResource) {
+  '../I18n',
+], (declare, OfflineManager, BusyIndicator, ErrorManager, getResource) => {
   const resource = getResource('_detailOfflineMixin');
 
 
@@ -33,7 +33,7 @@ define('argos/Offline/_DetailOfflineMixin', [
    */
 
   return declare('argos.Offline._DetailOfflineMixin', null, /** @lends module:argos/Offline/_DetailOfflineMixin.prototype */{
-  
+
     createToolLayout: function createToolLayout() {
       if (this.tools) {
         return this.tools;
@@ -53,7 +53,7 @@ define('argos/Offline/_DetailOfflineMixin', [
     briefCaseEntity: function briefCaseEntity(action, selection) { // eslint-disable-line
       // Start busy indicator modal
       const busyIndicator = this.createBusyModal();
-  
+
       // Start briefcasing
       const entityName = this.modelName;
       const entityId = this.entry.$key; // thie should be resolved from the model or adapter.

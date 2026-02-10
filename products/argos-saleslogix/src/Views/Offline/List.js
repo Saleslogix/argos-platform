@@ -20,8 +20,8 @@ define('crm/Views/Offline/List', [
   'dojo/_base/lang',
   'argos/Models/Types',
   './Detail',
-  'argos/I18n'
-], function(declare, _ListBase, format, lang, MODEL_TYPES, OfflineDetail, getResource) {
+  'argos/I18n',
+], (declare, _ListBase, format, lang, MODEL_TYPES, OfflineDetail, getResource) => {
   const resource = getResource('offlineList');
 
   return declare('crm.Views.Offline.List', [_ListBase], {
@@ -93,7 +93,7 @@ define('crm/Views/Offline/List', [
       if (this.offlineContext && this.offlineContext.queryExpression) {
         queryOptions.filter = this.offlineContext.queryExpression;
       }
-  
+
       return queryOptions;
     },
     _hasValidOptions: function _hasValidOptions(options) {
@@ -118,12 +118,12 @@ define('crm/Views/Offline/List', [
     getEntityView: function getEntityView() {
       const newViewId = `${this.id}_${this.offlineContext.viewId}`;
       const view = App.getView(this.offlineContext.viewId);
-  
+
       if (this._entityView) {
         this._entityView.destroy();
         this._entityView = null;
       }
-  
+
       if (view) {
         const ViewCtor = view.constructor;
         this._entityView = new ViewCtor({ id: newViewId });
@@ -159,7 +159,7 @@ define('crm/Views/Offline/List', [
       if (additionalOptions) {
         options = lang.mixin(options, additionalOptions);
       }
-  
+
       // Ensure we have a valid offline detail view and the
       // entity has a detail view that it can use for layout.
       const modelDetailView = this._model.detailViewId;
@@ -171,15 +171,15 @@ define('crm/Views/Offline/List', [
     getDetailView: function getDetailView() {
       const viewId = `${this.detailView}_${this._model.entityName}`;
       let view = this.app.getView(viewId);
-  
+
       if (view) {
         return view;
       }
-  
+
       this.app.registerView(new OfflineDetail({ id: viewId }));
       view = this.app.getView(viewId);
       return view;
     },
-  
+
   });
 });

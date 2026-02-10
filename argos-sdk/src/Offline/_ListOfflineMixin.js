@@ -21,8 +21,8 @@ define('argos/Offline/_ListOfflineMixin', [
   './Manager',
   '../Dialogs/BusyIndicator',
   '../ErrorManager',
-  '../I18n'
-], function(declare, OfflineManager, BusyIndicator, ErrorManager, getResource) {
+  '../I18n',
+], (declare, OfflineManager, BusyIndicator, ErrorManager, getResource) => {
   const resource = getResource('_listOfflineMixin');
 
 

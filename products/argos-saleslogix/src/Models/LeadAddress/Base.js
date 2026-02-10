@@ -17,8 +17,8 @@ define('crm/Models/LeadAddress/Base', [
   'dojo/_base/declare',
   'argos/Models/_ModelBase',
   '../Names',
-  'argos/I18n'
-], function(declare, _ModelBase, MODEL_NAMES, getResource) {
+  'argos/I18n',
+], (declare, _ModelBase, MODEL_NAMES, getResource) => {
   const resource = getResource('leadAddressModel');
 
   const __class = declare('crm.Models.LeadAddress.Base', [_ModelBase], {

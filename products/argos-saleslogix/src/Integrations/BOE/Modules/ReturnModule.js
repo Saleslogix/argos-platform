@@ -18,8 +18,8 @@ define('crm/Integrations/BOE/Modules/ReturnModule', [
   'dojo/_base/lang',
   './_Module',
   '../Models/Return/Offline',
-  '../Models/Return/SData'
-], function(declare, lang, _Module) {
+  '../Models/Return/SData',
+], (declare, lang, _Module) => {
   const __class = declare('crm.Integrations.BOE.Modules.ReturnModule', [_Module], {
     init: function init() {
     },

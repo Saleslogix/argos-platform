@@ -21,8 +21,8 @@ define('argos/_SDataEditMixin', [
   'dojo/_base/lang',
   './Convert',
   './_SDataDetailMixin',
-  './Models/Types'
-], function(declare, lang, convert, _SDataDetailMixin, MODEL_TYPES) {
+  './Models/Types',
+], (declare, lang, convert, _SDataDetailMixin, MODEL_TYPES) => {
   /**
    * @class
    * @alias module:argos/_SDataEditMixin

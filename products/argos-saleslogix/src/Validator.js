@@ -18,8 +18,8 @@
  */
 define('crm/Validator', [
   'dojo/_base/lang',
-  'argos/I18n'
-], function(lang, getResource) {
+  'argos/I18n',
+], (lang, getResource) => {
   const resource = getResource('validators');
 
   /**

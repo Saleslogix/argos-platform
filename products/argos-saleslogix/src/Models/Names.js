@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-define('crm/Models/Names', [], function() {
+define('crm/Models/Names', [], () => {
   return {
     ACCOUNT: 'Account',
     AUTHENTICATION: 'Authentication',

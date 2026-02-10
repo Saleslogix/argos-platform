@@ -25,8 +25,8 @@ define('crm/Views/Activity/MyList', [
   '../../Models/Names',
   '../../Models/Activity/ActivityTypeText',
   'argos/I18n',
-  'dojo/string'
-], function(declare, environment, ActivityList, convert, ErrorManager, action, format, _ListOfflineMixin, MODEL_NAMES, ActivityTypeText, getResource, string) {
+  'dojo/string',
+], (declare, environment, ActivityList, convert, ErrorManager, action, format, _ListOfflineMixin, MODEL_NAMES, ActivityTypeText, getResource, string) => {
   const resource = getResource('activityMyList');
   const hashTagResource = getResource('activityMyListHashTags');
 

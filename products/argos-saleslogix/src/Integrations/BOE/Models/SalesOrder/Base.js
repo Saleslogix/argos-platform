@@ -18,8 +18,8 @@ define('crm/Integrations/BOE/Models/SalesOrder/Base', [
   'dojo/_base/lang',
   'argos/Models/_ModelBase',
   '../Names',
-  'argos/I18n'
-], function(declare, lang, _ModelBase, MODEL_NAMES, getResource) {
+  'argos/I18n',
+], (declare, lang, _ModelBase, MODEL_NAMES, getResource) => {
   const resource = getResource('salesOrderModel');
   const accountResource = getResource('accountModel');
   const contactResource = getResource('contactModel');

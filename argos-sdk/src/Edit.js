@@ -20,8 +20,8 @@ define('argos/Edit', [
   'dojo/_base/declare',
   './_EditBase',
   './_SDataEditMixin',
-  './_RelatedViewWidgetEditMixin'
-], function(declare, _EditBase, _SDataEditMixin, _RelatedWidgetEditMixin) {
+  './_RelatedViewWidgetEditMixin',
+], (declare, _EditBase, _SDataEditMixin, _RelatedWidgetEditMixin) => {
   /**
    * @class
    * @alias module:argos/Edit

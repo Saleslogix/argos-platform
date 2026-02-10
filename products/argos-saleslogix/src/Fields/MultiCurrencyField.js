@@ -16,8 +16,8 @@
 define('crm/Fields/MultiCurrencyField', [
   'dojo/_base/declare',
   'argos/Fields/DecimalField',
-  'argos/FieldManager'
-], function(declare, DecimalField, FieldManager) {
+  'argos/FieldManager',
+], (declare, DecimalField, FieldManager) => {
   const control = declare('crm.Fields.MultiCurrencyField', [DecimalField], {
     attributeMap: {
       inputValue: {

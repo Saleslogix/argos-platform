@@ -20,8 +20,8 @@ define('crm/Integrations/BOE/Views/ERPShipments/Detail', [
   'argos/Detail',
   '../../Models/Names',
   '../../Utility',
-  'argos/I18n'
-], function(declare, lang, format, Detail, MODEL_NAMES, utility, getResource) {
+  'argos/I18n',
+], (declare, lang, format, Detail, MODEL_NAMES, utility, getResource) => {
   const resource = getResource('erpShipmentsDetail');
 
   const __class = declare('crm.Integrations.BOE.Views.ERPShipments.Detail', [Detail], {

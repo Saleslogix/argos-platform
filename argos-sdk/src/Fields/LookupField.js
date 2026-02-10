@@ -23,8 +23,8 @@ define('argos/Fields/LookupField', [
   '../Utility',
   './_Field',
   '../FieldManager',
-  '../I18n'
-], function(declare, lang, string, utility, _Field, FieldManager, getResource) {
+  '../I18n',
+], (declare, lang, string, utility, _Field, FieldManager, getResource) => {
   const resource = getResource('lookupField');
   const modalResource = getResource('modal');
 

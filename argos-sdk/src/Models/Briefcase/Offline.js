@@ -21,8 +21,8 @@ define('argos/Models/Briefcase/Offline', [
   '../_OfflineModelBase',
   '../Manager',
   '../Types',
-  '../../I18n'
-], function(declare, _OfflineModelBase, Manager, MODEL_TYPES, getResource) {
+  '../../I18n',
+], (declare, _OfflineModelBase, Manager, MODEL_TYPES, getResource) => {
   const resource = getResource('briefcaseModel');
 
   /**

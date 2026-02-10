@@ -23,8 +23,8 @@ define('crm/Integrations/BOE/Views/SalesOrders/Detail', [
   'argos/I18n',
   '../../PricingAvailabilityService',
   '../../Promote',
-  '../../Utility'
-], function(declare, lang, format, Detail, BusyIndicator, MODEL_NAMES, getResource, PricingAvailabilityService, Promote, utility) {
+  '../../Utility',
+], (declare, lang, format, Detail, BusyIndicator, MODEL_NAMES, getResource, PricingAvailabilityService, Promote, utility) => {
   const resource = getResource('salesOrdersDetail');
 
   const __class = declare('crm.Integrations.BOE.Views.SalesOrders.Detail', [Detail], {

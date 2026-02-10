@@ -21,8 +21,8 @@ define('argos/Detail', [
   './_DetailBase',
   './_SDataDetailMixin',
   './_RelatedViewWidgetDetailMixin',
-  './Offline/_DetailOfflineMixin'
-], function(declare, _DetailBase, _SDataDetailMixin, _RelatedWidgetDetailMixin, _DetailOfflineMixin) {
+  './Offline/_DetailOfflineMixin',
+], (declare, _DetailBase, _SDataDetailMixin, _RelatedWidgetDetailMixin, _DetailOfflineMixin) => {
   /**
    * @class
    * @classdesc Extends _DetailBase and mixes in _SDataDetailMixin to provide backwards compatibility to consumers.

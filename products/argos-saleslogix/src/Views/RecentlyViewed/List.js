@@ -23,8 +23,8 @@ define('crm/Views/RecentlyViewed/List', [
   '../../Format',
   'argos/Models/Types',
   '../Offline/Detail',
-  'argos/I18n'
-], function(declare, _ListBase, _RightDrawerListMixin, _MetricListMixin, TotalMetricWidget, lang, format, MODEL_TYPES, OfflineDetail, getResource) {
+  'argos/I18n',
+], (declare, _ListBase, _RightDrawerListMixin, _MetricListMixin, TotalMetricWidget, lang, format, MODEL_TYPES, OfflineDetail, getResource) => {
   const resource = getResource('recentlyViewedList');
   const accountResource = getResource('accountModel');
   const contactResource = getResource('contactModel');
@@ -46,7 +46,7 @@ define('crm/Views/RecentlyViewed/List', [
     titleText: resource.titleText,
     metricWidgetCtor: TotalMetricWidget,
     pageSize: 1000,
-  
+
     itemTemplate: new Simplate([
       '<p class="micro-text">{%: $$.getOfflineDate($) %}</p>',
     ]),
@@ -85,7 +85,7 @@ define('crm/Views/RecentlyViewed/List', [
         if (App.preferences && App.preferences.recentlyViewedEntityFilters) {
           return filters.some(filter => entity.entityName === filter.name);
         }
-  
+
         return true;
       };
       return queryOptions;
@@ -111,18 +111,18 @@ define('crm/Views/RecentlyViewed/List', [
     },
     navigateToOnlineDetailView: function navigateToDetailView(entry, additionalOptions) {
       const view = this.app.getView(entry.viewId);
-  
+
       let options = {
         descriptor: entry.description, // keep for backwards compat
         title: entry.description,
         key: entry.entityId,
         fromContext: this,
       };
-  
+
       if (additionalOptions) {
         options = lang.mixin(options, additionalOptions);
       }
-  
+
       if (view) {
         view.show(options);
       }
@@ -144,7 +144,7 @@ define('crm/Views/RecentlyViewed/List', [
       if (additionalOptions) {
         options = lang.mixin(options, additionalOptions);
       }
-  
+
       if (view) {
         view.show(options);
       }
@@ -152,15 +152,15 @@ define('crm/Views/RecentlyViewed/List', [
     getDetailView: function getDetailView(entityName) {
       const viewId = `${this.detailView}_${entityName}`;
       let view = this.app.getView(viewId);
-  
+
       if (view) {
         return view;
       }
-  
+
       this.app.registerView(new OfflineDetail({ id: viewId }));
-  
+
       view = this.app.getView(viewId);
-  
+
       return view;
     },
     getActiveEntityFilters: function getActiveEntityFilters() {
@@ -174,7 +174,7 @@ define('crm/Views/RecentlyViewed/List', [
         })
         .filter(f => f && f.enabled);
     },
-  
+
     // Localization
     entityText: {
       Contact: contactResource.entityDisplayNamePlural,

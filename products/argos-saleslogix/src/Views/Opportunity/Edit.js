@@ -19,8 +19,8 @@ define('crm/Views/Opportunity/Edit', [
   '../../Template',
   'argos/Utility',
   'argos/Edit',
-  'argos/I18n'
-], function(declare, validator, template, utility, Edit, getResource) {
+  'argos/I18n',
+], (declare, validator, template, utility, Edit, getResource) => {
   const resource = getResource('opportunityEdit');
   const dtFormatResource = getResource('opportunityEditDateTimeFormat');
 

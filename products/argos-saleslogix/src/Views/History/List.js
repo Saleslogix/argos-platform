@@ -23,8 +23,8 @@ define('crm/Views/History/List', [
   '../_MetricListMixin',
   'argos/I18n',
   '../../Models/Activity/ActivityTypeIcon',
-  '../../Models/Names'
-], function(declare, format, convert, action, List, _RightDrawerListMixin, _MetricListMixin, getResource, activityTypeIcons, MODEL_NAMES) {
+  '../../Models/Names',
+], (declare, format, convert, action, List, _RightDrawerListMixin, _MetricListMixin, getResource, activityTypeIcons, MODEL_NAMES) => {
   const resource = getResource('historyList');
   const activityTypeResource = getResource('activityTypeText');
   const hashTagResource = getResource('historyListHashTags');

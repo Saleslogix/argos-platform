@@ -24,8 +24,8 @@ define('crm/Integrations/BOE/Modules/SalesOrderItemModule', [
   '../Views/UnitsOfMeasure/List',
   '../Views/Locations/List',
   '../Models/SalesOrderItem/Offline',
-  '../Models/SalesOrderItem/SData'
-], function(declare, lang, _Module, LocationPricingAvailabilityList, SalesOrderList, SalesOrderItemDetail, SalesOrderItemEdit, UnitOfMeasureList, SlxLocationList) {
+  '../Models/SalesOrderItem/SData',
+], (declare, lang, _Module, LocationPricingAvailabilityList, SalesOrderList, SalesOrderItemDetail, SalesOrderItemEdit, UnitOfMeasureList, SlxLocationList) => {
   const __class = declare('crm.Integrations.BOE.Modules.SalesOrderItemModule', [_Module], {
     init: function init() {
     },

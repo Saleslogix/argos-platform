@@ -19,8 +19,8 @@ define('crm/Integrations/BOE/Views/UnitsOfMeasure/List', [
   'argos/List',
   'crm/Format',
   '../../Models/Names',
-  'argos/I18n'
-], function(declare, lang, List, format, MODEL_NAMES, getResource) {
+  'argos/I18n',
+], (declare, lang, List, format, MODEL_NAMES, getResource) => {
   const resource = getResource('unitsOfMeasureList');
 
   const __class = declare('crm.Integrations.BOE.Views.UnitsOfMeasure.List', [List], {

@@ -22,8 +22,8 @@ define('crm/Integrations/ActivityAssociations/ApplicationModule', [
   './Models/ActivityAssociation/Offline',
   './Models/ActivityAssociation/SData',
   './Models/HistoryAssociation/Offline',
-  './Models/HistoryAssociation/SData'
-], function(declare, ApplicationModule, getResource, ActivityAssociationList, HistoryAssociationList) {
+  './Models/HistoryAssociation/SData',
+], (declare, ApplicationModule, getResource, ActivityAssociationList, HistoryAssociationList) => {
   const resource = getResource('activityAssociationModule');
 
   const __class = declare('crm.Integrations.ActivityAssociations.ApplicationModule', [ApplicationModule], {

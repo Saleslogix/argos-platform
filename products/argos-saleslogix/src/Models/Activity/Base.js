@@ -19,8 +19,8 @@ define('crm/Models/Activity/Base', [
   '../Names',
   './ActivityTypeText',
   './ActivityTypeIcon',
-  'argos/I18n'
-], function(declare, _ModelBase, MODEL_NAMES, ACTIVITY_TYPE_TEXT, ACTIVITY_TYPE_ICON, getResource) {
+  'argos/I18n',
+], (declare, _ModelBase, MODEL_NAMES, ACTIVITY_TYPE_TEXT, ACTIVITY_TYPE_ICON, getResource) => {
   const resource = getResource('activityModel');
   const attendeeResource = getResource('activityAttendeeModel');
   const accountResource = getResource('accountModel');

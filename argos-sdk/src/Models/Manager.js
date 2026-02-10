@@ -17,8 +17,8 @@
  * @module argos/Models/Manager
  */
 define('argos/Models/Manager', [
-  'dojo/_base/lang'
-], function(lang) {
+  'dojo/_base/lang',
+], (lang) => {
   const store = new Map();
 
   /**

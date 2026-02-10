@@ -18,8 +18,8 @@ define('crm/Integrations/BOE/Views/Locations/List', [
   'dojo/_base/lang',
   'argos/List',
   '../../Models/Names',
-  'argos/I18n'
-], function(declare, lang, List, MODEL_NAMES, getResource) {
+  'argos/I18n',
+], (declare, lang, List, MODEL_NAMES, getResource) => {
   const resource = getResource('locationsList');
 
   const __class = declare('crm.Integrations.BOE.Views.Locations.List', [List], {

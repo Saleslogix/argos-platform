@@ -16,8 +16,8 @@
 define('crm/Views/User/CalendarAccessList', [
   'dojo/_base/declare',
   'argos/List',
-  'argos/I18n'
-], function(declare, List, getResource) {
+  'argos/I18n',
+], (declare, List, getResource) => {
   const resource = getResource('userCalendarAccessList');
 
   const __class = declare('crm.Views.User.CalendarAccessList', [List], {

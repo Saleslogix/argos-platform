@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-define('crm/Integrations/ActivityAssociations/Models/Names', [], function() {
+define('crm/Integrations/ActivityAssociations/Models/Names', [], () => {
   return {
     ACTIVITYASSOCIATION: 'ActivityAssociation',
     HISTORYASSOCIATION: 'HistoryAssociation',

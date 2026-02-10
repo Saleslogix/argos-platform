@@ -18,8 +18,8 @@ define('crm/Integrations/ActivityAssociations/Views/ActivityAssociation/List', [
   'dojo/_base/connect',
   'argos/List',
   '../../Models/Names',
-  'argos/I18n'
-], function(declare, connect, List, MODEL_NAMES, getResource) {
+  'argos/I18n',
+], (declare, connect, List, MODEL_NAMES, getResource) => {
   const resource = getResource('activityAssociationList');
 
   const __class = declare('crm.Integrations.ActivityAssociations.Views.ActivityAssociation.List', [List], {

@@ -20,7 +20,7 @@
  * Renders a div with all the soho svg icons into the given domnode.
  * @param {DOMNode} element
  */
-define('argos/SohoIcons', [], function() {
+define('argos/SohoIcons', [], () => {
   function render(element = 'body') {
     $(element).prepend(`
       <div class="svg-icons"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="svg-icons"><symbol id="icon-activities" viewBox="0 0 18 18"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.5 4.75C4.5 5.44036 3.94036 6 3.25 6C2.55964 6 2 5.44036 2 4.75C2 4.05964 2.55964 3.5 3.25 3.5C3.94036 3.5 4.5 4.05964 4.5 4.75ZM3.25 10C3.94036 10 4.5 9.44036 4.5 8.75C4.5 8.05964 3.94036 7.5 3.25 7.5C2.55964 7.5 2 8.05964 2 8.75C2 9.44036 2.55964 10 3.25 10ZM3.25 14C3.94036 14 4.5 13.4404 4.5 12.75C4.5 12.0596 3.94036 11.5 3.25 11.5C2.55964 11.5 2 12.0596 2 12.75C2 13.4404 2.55964 14 3.25 14ZM6 5.5H16V4H6V5.5ZM16 9.5H6V8H16V9.5ZM6 13.5H16V12H6V13.5Z" fill="currentColor" stroke="none"></path></symbol>
@@ -820,6 +820,6 @@ define('argos/SohoIcons', [], function() {
   }
 
   return {
-    render
+    render,
   };
 });

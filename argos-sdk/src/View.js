@@ -25,8 +25,8 @@ define('argos/View', [
   './_Templated',
   './Models/Adapter',
   './I18n',
-  './actions/index'
-], function(declare, lang, _WidgetBase, _ActionMixin, _CustomizationMixin, _Templated, Adapter, getResource, indexActions) {
+  './actions/index',
+], (declare, lang, _WidgetBase, _ActionMixin, _CustomizationMixin, _Templated, Adapter, getResource, indexActions) => {
   const { insertHistory } = indexActions;
 
   const resource = getResource('view');

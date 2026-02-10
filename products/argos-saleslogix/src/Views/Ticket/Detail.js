@@ -18,8 +18,8 @@ define('crm/Views/Ticket/Detail', [
   '../../Format',
   '../../Models/Names',
   'argos/Detail',
-  'argos/I18n'
-], function(declare, format, MODEL_NAMES, Detail, getResource) {
+  'argos/I18n',
+], (declare, format, MODEL_NAMES, Detail, getResource) => {
   const resource = getResource('ticketDetail');
 
   const __class = declare('crm.Views.Ticket.Detail', [Detail], {

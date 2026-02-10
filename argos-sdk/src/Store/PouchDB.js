@@ -20,38 +20,38 @@ define('argos/Store/PouchDB', [
   'dojo/_base/declare',
   'dojo/_base/lang',
   'dojo/_base/Deferred',
-  'dojo/store/util/QueryResults'
-], function(declare, lang, Deferred, QueryResults) {
+  'dojo/store/util/QueryResults',
+], (declare, lang, Deferred, QueryResults) => {
   /**
    * @class
    * @alias module:argos/Store/PouchDB
    */
 
   return declare('argos.Store.PouchDB', null, /** @lends module:argos/Store/PouchDB.prototype */ {
-  
+
     // interface properties
     /**
      * @property {String} idProperty Name of the property to use as the identifier
      */
     idProperty: '_id',
-  
+
     /**
      * @property {Array} data Array of objects. If the store has a collection of cached objects,
      * it can make this available in this property.
      */
     data: null,
-  
+
     /**
      * @property {String} databaseName Name of the local PouchDB database
      */
     databaseName: 'argos',
-  
+
     // Additional properties for metadata fetching
     revisionProperty: '_rev',
-  
+
     // Private
     _db: null,
-  
+
     /**
      * @constructs
      */
@@ -71,7 +71,7 @@ define('argos/Store/PouchDB', [
           deferred.reject(err);
         }
       });
-  
+
       return deferred.promise;
     },
     /**
@@ -89,20 +89,20 @@ define('argos/Store/PouchDB', [
     query: function query(q, queryOptions = {}) {
       const deferred = new Deferred();
       deferred.total = -1;
-  
+
       // The dojo store interface says query should accept start, count, and sort properties on the queryOptions object
       // We want to allow queryOptions to include PouchDB options, ensure they don't trample each other (PouchDB wins).
       if (queryOptions.start && !queryOptions.skip) {
         queryOptions.skip = queryOptions.start;
       }
-  
+
       if (queryOptions.count && !queryOptions.limit) {
         queryOptions.limit = queryOptions.count;
       }
-  
+
       // Query is sorted by key on CouchDB, queryOptions.descending can be set to true.
       // There is no queryOptions.sort array like a dojo store would expect.
-  
+
       this._db.query(q, queryOptions, (err, response) => {
         if (!err) {
           deferred.total = response.total_rows;
@@ -111,7 +111,7 @@ define('argos/Store/PouchDB', [
           deferred.reject(err);
         }
       });
-  
+
       return QueryResults(deferred.promise);// eslint-disable-line
     },
     /**
@@ -133,13 +133,13 @@ define('argos/Store/PouchDB', [
           deferred.resolve(response);
         }
       }
-  
+
       if (putOptions && putOptions.overwrite) {
         this._db.put(object, putOptions.id || this.getIdentity(object), callback);
       } else {
         this._db.post(object, callback);
       }
-  
+
       return deferred.promise;
     },
     /**
@@ -198,7 +198,7 @@ define('argos/Store/PouchDB', [
           revision: this.getRevision(object),
         };
       }
-  
+
       return null;
     },
     /**

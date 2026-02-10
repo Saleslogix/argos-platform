@@ -28,8 +28,8 @@ define('crm/Integrations/BOE/Modules/BillToAccountModule', [
   '../Views/Returns/List',
   '../Views/SalesOrders/List',
   '../Models/ErpBillToAccount/Offline',
-  '../Models/ErpBillToAccount/SData'
-], function(declare, lang, _Module, AccountList, BillToAccountList, BillToAccountEdit, BillToAccountDetail, BillTosList, InvoicesList, QuotesList, ReceivablesList, ReturnsList, SalesOrdersList) {
+  '../Models/ErpBillToAccount/SData',
+], (declare, lang, _Module, AccountList, BillToAccountList, BillToAccountEdit, BillToAccountDetail, BillTosList, InvoicesList, QuotesList, ReceivablesList, ReturnsList, SalesOrdersList) => {
   const __class = declare('crm.Integrations.BOE.Modules.BillToAccountModule', [_Module], {
     init: function init() {
     },

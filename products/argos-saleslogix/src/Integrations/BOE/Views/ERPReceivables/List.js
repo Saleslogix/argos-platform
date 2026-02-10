@@ -23,8 +23,8 @@ define('crm/Integrations/BOE/Views/ERPReceivables/List', [
   'crm/Views/_GroupListMixin',
   '../../Models/Names',
   'argos/I18n',
-  '../../Utility'
-], function(declare, lang, List, format, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin, MODEL_NAMES, getResource, utility) {
+  '../../Utility',
+], (declare, lang, List, format, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin, MODEL_NAMES, getResource, utility) => {
   const resource = getResource('erpReceivablesList');
 
   const __class = declare('crm.Integrations.BOE.Views.ERPReceivables.List', [List, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin], {

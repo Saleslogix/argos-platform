@@ -16,8 +16,8 @@
 define('crm/SpeedSearchWidget', [
   'dojo/_base/declare',
   'argos/SearchWidget',
-  'argos/I18n'
-], function(declare, SearchWidget, getResource) {
+  'argos/I18n',
+], (declare, SearchWidget, getResource) => {
   const resource = getResource('speedSearchWidget');
 
   const __class = declare('crm.SpeedSearchWidget', [SearchWidget], {

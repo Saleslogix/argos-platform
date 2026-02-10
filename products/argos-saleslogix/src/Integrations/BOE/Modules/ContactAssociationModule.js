@@ -18,8 +18,8 @@ define('crm/Integrations/BOE/Modules/ContactAssociationModule', [
   'dojo/_base/lang',
   './_Module',
   '../Models/ErpContactAssociation/Offline',
-  '../Models/ErpContactAssociation/SData'
-], function(declare, lang, _Module) {
+  '../Models/ErpContactAssociation/SData',
+], (declare, lang, _Module) => {
   const __class = declare('crm.Integrations.BOE.Modules.ContactAssociationModule', [_Module], {
     init: function init() {
     },

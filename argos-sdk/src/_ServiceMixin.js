@@ -17,8 +17,8 @@
  * @module argos/_ServiceMixin
  */
 define('argos/_ServiceMixin', [
-  'dojo/_base/declare'
-], function(declare) {
+  'dojo/_base/declare',
+], (declare) => {
   /**
    * @class
    * @mixin

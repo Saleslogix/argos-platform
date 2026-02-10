@@ -19,8 +19,8 @@ define('crm/Integrations/BOE/DashboardWidget', [
   'argos/RelatedViewManager',
   '../../Views/MetricWidget',
   './DateRangeWidget',
-  './_DashboardWidgetBase'
-], function(declare, lang, RelatedViewManager, MetricWidget, DateRangeWidget, _DashboardWidgetBase) {
+  './_DashboardWidgetBase',
+], (declare, lang, RelatedViewManager, MetricWidget, DateRangeWidget, _DashboardWidgetBase) => {
   const __class = declare('crm.Integrations.BOE.DashboardWidget', [_DashboardWidgetBase], {
     buildView: function buildView(entry) {
       this.destroyWidgets();

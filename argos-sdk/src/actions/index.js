@@ -18,7 +18,7 @@
  */
 
 // action Types
-define('argos/actions/index', [], function() {
+define('argos/actions/index', [], () => {
   const SET_MAX_VIEWPORTS = 'SET_MAX_VIEWPORTS';
 
   const INSERT_HISTORY = 'INSERT_HISTORY';
@@ -45,6 +45,6 @@ define('argos/actions/index', [], function() {
     SET_MAX_VIEWPORTS,
     INSERT_HISTORY,
     setMaxViewPorts,
-    insertHistory
+    insertHistory,
   };
 });

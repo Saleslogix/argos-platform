@@ -23,8 +23,8 @@ define('argos/RelativeDateTimePicker', [
   './_ActionMixin',
   './_CustomizationMixin',
   './DateTimePicker',
-  './I18n'
-], function(declare, _WidgetBase, _Templated, _ActionMixin, _CustomizationMixin, DateTimePicker, getResource) {
+  './I18n',
+], (declare, _WidgetBase, _Templated, _ActionMixin, _CustomizationMixin, DateTimePicker, getResource) => {
   const resource = getResource('relativeDateTimePicker');
   const dtFormatResource = getResource('relativeDateTimePickerDateTimeFormat');
 

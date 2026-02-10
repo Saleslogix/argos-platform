@@ -14,7 +14,7 @@
  */
 
 // action Types
-define('crm/actions/config', [], function() {
+define('crm/actions/config', [], () => {
   const SET_CONFIG = 'SET_CONFIG';
 
   const SET_ENDPOINT = 'SET_ENDPOINT';
@@ -41,6 +41,6 @@ define('crm/actions/config', [], function() {
     SET_CONFIG,
     SET_ENDPOINT,
     setConfig,
-    setEndPoint
+    setEndPoint,
   };
 });

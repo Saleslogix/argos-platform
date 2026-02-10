@@ -16,8 +16,8 @@
 define('crm/DefaultMetrics', [
   'dojo/_base/declare',
   'argos/_CustomizationMixin',
-  'argos/I18n'
-], function(declare, _CustomizationMixin, getResource) {
+  'argos/I18n',
+], (declare, _CustomizationMixin, getResource) => {
   const resource = getResource('defaultMetrics');
 
   const __class = declare('crm.DefaultMetrics', [_CustomizationMixin], {

@@ -20,8 +20,8 @@ define('crm/Views/Activity/MyDayMetricWidget', [
   'dojo/when',
   'dojo/Deferred',
   'argos/Models/Types',
-  'dojo/store/util/QueryResults'
-], function(MetricWidget, declare, lang, when, Deferred, MODEL_TYPES, QueryResults) {
+  'dojo/store/util/QueryResults',
+], (MetricWidget, declare, lang, when, Deferred, MODEL_TYPES, QueryResults) => {
   return declare('crm.Views.Activity.MyDayMetricWidget', [MetricWidget], {
     navToReportView: function navToReportView() {},
     activityType: '',
@@ -43,7 +43,7 @@ define('crm/Views/Activity/MyDayMetricWidget', [
             }
             return true;
           }
-  
+
           return false;
         },
       };

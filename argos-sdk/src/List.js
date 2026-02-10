@@ -20,8 +20,8 @@ define('argos/List', [
   'dojo/_base/declare',
   './_ListBase',
   './_SDataListMixin',
-  './_RelatedViewWidgetListMixin'
-], function(declare, _ListBase, _SDataListMixin, _RelatedWidgetListMixin) {
+  './_RelatedViewWidgetListMixin',
+], (declare, _ListBase, _SDataListMixin, _RelatedWidgetListMixin) => {
   /**
    * @class
    * @alias module:argos/List

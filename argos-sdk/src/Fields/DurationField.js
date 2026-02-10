@@ -22,8 +22,8 @@ define('argos/Fields/DurationField', [
   '../Format',
   './LookupField',
   '../FieldManager',
-  '../I18n'
-], function(declare, string, format, LookupField, FieldManager, getResource) {
+  '../I18n',
+], (declare, string, format, LookupField, FieldManager, getResource) => {
   const resource = getResource('durationField');
 
   /**
@@ -173,11 +173,11 @@ define('argos/Fields/DurationField', [
       const numberDecimalSeparator = Soho.Locale.currentLocale.data.numbers.decimal;
 
       this.autoCompletePhraseRE = new RegExp(
-        string.substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+)\\s*?)(.+)', [numberDecimalSeparator])
+        string.substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+)\\s*?)(.+)', [numberDecimalSeparator]),
       );
 
       this.autoCompleteValueRE = new RegExp(
-        string.substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+))', [numberDecimalSeparator])
+        string.substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+))', [numberDecimalSeparator]),
       );
     },
     /**

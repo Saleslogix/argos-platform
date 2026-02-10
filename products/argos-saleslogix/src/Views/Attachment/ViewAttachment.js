@@ -22,8 +22,8 @@ define('crm/Views/Attachment/ViewAttachment', [
   'argos/Detail',
   'argos/_LegacySDataDetailMixin',
   'argos/I18n',
-  'argos/ErrorManager'
-], function(declare, domGeo, AttachmentManager, Utility, has, Detail, _LegacySDataDetailMixin, getResource, ErrorManager) {
+  'argos/ErrorManager',
+], (declare, domGeo, AttachmentManager, Utility, has, Detail, _LegacySDataDetailMixin, getResource, ErrorManager) => {
   const resource = getResource('attachmentView');
   const dtFormatResource = getResource('attachmentViewDateTimeFormat');
 

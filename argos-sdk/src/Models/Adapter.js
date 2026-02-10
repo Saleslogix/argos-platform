@@ -18,8 +18,8 @@
  */
 define('argos/Models/Adapter', [
   './Manager',
-  './Types'
-], function(Manager, MODEL_TYPES) {
+  './Types',
+], (Manager, MODEL_TYPES) => {
   /**
    * @class
    * @alias module:argos/Models/Adapter
@@ -34,7 +34,7 @@ define('argos/Models/Adapter', [
       } else {
         Ctor = Manager.get(entityName, MODEL_TYPES.OFFLINE);
       }
-  
+
       return typeof Ctor === 'function' ? new Ctor() : false;
     },
   };

@@ -15,8 +15,8 @@
 
 define('crm/Views/FooterToolbar', [
   'dojo/_base/declare',
-  'argos/MainToolbar'
-], function(declare, MainToolbar) {
+  'argos/MainToolbar',
+], (declare, MainToolbar) => {
   const __class = declare('crm.Views.FooterToolbar', [MainToolbar], {
     // Localization
     copyrightText: '',

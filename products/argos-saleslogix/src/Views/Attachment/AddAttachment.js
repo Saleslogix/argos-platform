@@ -19,8 +19,8 @@ define('crm/Views/Attachment/AddAttachment', [
   'argos/Views/FileSelect',
   '../../AttachmentManager',
   '../../Environment',
-  'argos/I18n'
-], function(declare, sdkFormat, FileSelect, AttachmentManager, Environment, getResource) {
+  'argos/I18n',
+], (declare, sdkFormat, FileSelect, AttachmentManager, Environment, getResource) => {
   const resource = getResource('attachmentAdd');
 
   const __class = declare('crm.Views.Attachment.AddAttachment', [FileSelect], {

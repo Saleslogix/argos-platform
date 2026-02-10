@@ -17,8 +17,8 @@ define('crm/Views/Help', [
   'dojo/_base/declare',
   'argos/_DetailBase',
   'argos/ErrorManager',
-  'argos/I18n'
-], function(declare, _DetailBase, ErrorManager, getResource) {
+  'argos/I18n',
+], (declare, _DetailBase, ErrorManager, getResource) => {
   const resource = getResource('help');
 
   const __class = declare('crm.Views.Help', [_DetailBase], {

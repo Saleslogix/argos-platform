@@ -19,8 +19,8 @@ define('crm/Views/ErrorLog/Detail', [
   'crm/Format',
   'argos/ErrorManager',
   'argos/Detail',
-  'argos/I18n'
-], function(declare, json, format, ErrorManager, Detail, getResource) {
+  'argos/I18n',
+], (declare, json, format, ErrorManager, Detail, getResource) => {
   const resource = getResource('errorLogDetail');
   const dtFormatResource = getResource('errorLogDetailDateTimeFormat');
 

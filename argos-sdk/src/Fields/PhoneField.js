@@ -22,8 +22,8 @@ define('argos/Fields/PhoneField', [
   '../FieldManager',
   './TextField',
   '../Format',
-  'dojo/_base/sniff'
-], function(declare, has, FieldManager, TextField, format) {
+  'dojo/_base/sniff',
+], (declare, has, FieldManager, TextField, format) => {
   /**
    * @class
    * @alias module:argos/Fields/PhoneField

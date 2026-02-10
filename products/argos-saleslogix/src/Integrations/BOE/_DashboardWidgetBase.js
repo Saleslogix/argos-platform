@@ -27,8 +27,8 @@ define('crm/Integrations/BOE/_DashboardWidgetBase', [
   'argos/Store/SData',
   './Utility',
   'argos/I18n',
-  'dojo/string'
-], function(declare, lang, when, all, Deferred, crmFormat, crmAggregate, convert, RelatedViewManager, _RelatedViewWidgetBase, SData, Utility, getResource, string) {
+  'dojo/string',
+], (declare, lang, when, all, Deferred, crmFormat, crmAggregate, convert, RelatedViewManager, _RelatedViewWidgetBase, SData, Utility, getResource, string) => {
   const resource = getResource('dashboardWidgetBase');
 
   const __class = declare('crm.Integrations.BOE._DashboardWidgetBase', [_RelatedViewWidgetBase], {

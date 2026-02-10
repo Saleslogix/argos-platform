@@ -25,8 +25,8 @@ define('crm/Integrations/BOE/Views/SalesOrders/Edit', [
   'crm/Models/Names',
   'argos/Dialogs/BusyIndicator',
   'argos/I18n',
-  '../../Utility'
-], function(declare, lang, string, utility, Edit, Adapter, validator, MODEL_NAMES, CRM_MODEL_NAMES, BusyIndicator, getResource, Utility) {
+  '../../Utility',
+], (declare, lang, string, utility, Edit, Adapter, validator, MODEL_NAMES, CRM_MODEL_NAMES, BusyIndicator, getResource, Utility) => {
   const resource = getResource('salesOrderEdit');
   const contactResource = getResource('contactModel');
   const dtFormatResource = getResource('salesOrderEditDateTimeFormat');
@@ -279,7 +279,7 @@ define('crm/Integrations/BOE/Views/SalesOrders/Edit', [
           ['LogicalId', 'AcctEntityExtId'],
           ['ErpLogicalId', 'ErpAccountingEntityId'],
           this,
-          entry
+          entry,
         ).then(() => {
           this.hideBusy();
         });
@@ -582,7 +582,7 @@ define('crm/Integrations/BOE/Views/SalesOrders/Edit', [
           valueTextProperty: 'Address.FullAddress',
           view: 'salesorder_billTo_related',
           where: this.formatDependentQuery.bindDelegate(
-            this, 'ErpBillToAccounts.Account.Id eq "${0}"'
+            this, 'ErpBillToAccounts.Account.Id eq "${0}"',
           ),
         }, {
           dependsOn: 'Account',
@@ -594,7 +594,7 @@ define('crm/Integrations/BOE/Views/SalesOrders/Edit', [
           valueTextProperty: 'Address.FullAddress',
           view: 'salesorder_shipTo_related',
           where: this.formatDependentQuery.bindDelegate(
-            this, 'ErpShipToAccounts.Account.Id eq "${0}"'
+            this, 'ErpShipToAccounts.Account.Id eq "${0}"',
           ),
         }, {
           dependsOn: 'ErpLogicalId',

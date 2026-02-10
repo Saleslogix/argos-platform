@@ -25,8 +25,8 @@ define('crm/Integrations/BOE/Views/Quotes/Edit', [
   'crm/Validator',
   'crm/Models/Names',
   '../../Models/Names',
-  '../../Utility'
-], function(declare, lang, string, utility, Edit, getResource, Adapter, BusyIndicator, validator, CRM_MODEL_NAMES, MODEL_NAMES, Utility) {
+  '../../Utility',
+], (declare, lang, string, utility, Edit, getResource, Adapter, BusyIndicator, validator, CRM_MODEL_NAMES, MODEL_NAMES, Utility) => {
   const resource = getResource('quoteEdit');
   const contactResource = getResource('contactModel');
   const dtFormatResource = getResource('quoteEditDateTimeFormat');
@@ -315,7 +315,7 @@ define('crm/Integrations/BOE/Views/Quotes/Edit', [
           ['LogicalId', 'AcctEntityExtId'],
           ['ErpLogicalId', 'ErpAccountingEntityId'],
           this,
-          entry
+          entry,
         ).then(() => {
           this.hideBusy();
         });
@@ -648,7 +648,7 @@ define('crm/Integrations/BOE/Views/Quotes/Edit', [
           valueTextProperty: 'Address.FullAddress',
           view: 'quote_billTos_related',
           where: this.formatDependentQuery.bindDelegate(
-            this, 'ErpBillToAccounts.Account.Id eq "${0}"'
+            this, 'ErpBillToAccounts.Account.Id eq "${0}"',
           ),
         }, {
           dependsOn: 'Account',
@@ -666,7 +666,7 @@ define('crm/Integrations/BOE/Views/Quotes/Edit', [
           valueTextProperty: 'Address.FullAddress',
           view: 'quote_shipTos_related',
           where: this.formatDependentQuery.bindDelegate(
-            this, 'ErpShipToAccounts.Account.Id eq "${0}"'
+            this, 'ErpShipToAccounts.Account.Id eq "${0}"',
           ),
         }, {
           dependsOn: 'ErpLogicalId',

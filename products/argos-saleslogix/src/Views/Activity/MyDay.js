@@ -20,8 +20,8 @@ define('crm/Views/Activity/MyDay', [
   '../../Models/Names',
   './MyList',
   './MyDayOffline',
-  'argos/I18n'
-], function(declare, _RightDrawerListMixin, _MetricListMixin, MODEL_NAMES, MyList, MyDayOffline, getResource) {
+  'argos/I18n',
+], (declare, _RightDrawerListMixin, _MetricListMixin, MODEL_NAMES, MyList, MyDayOffline, getResource) => {
   const resource = getResource('activityMyDay');
 
   const __class = declare('crm.Views.Activity.MyDay', [MyList, _RightDrawerListMixin, _MetricListMixin], {

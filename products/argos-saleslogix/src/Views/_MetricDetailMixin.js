@@ -18,8 +18,8 @@
  */
 define('crm/Views/_MetricDetailMixin', [
   'dojo/_base/declare',
-  './MetricWidget'
-], function(declare, MetricWidget) {
+  './MetricWidget',
+], (declare, MetricWidget) => {
   /**
    * @class
    * @alias module:crm/Views/_MetricDetailMixin

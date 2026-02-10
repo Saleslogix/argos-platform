@@ -19,8 +19,8 @@ define('crm/Integrations/BOE/Views/SyncResults/List', [
   'argos/List',
   'crm/Format',
   '../../Models/Names',
-  'argos/I18n'
-], function(declare, lang, List, format, MODEL_NAMES, getResource) {
+  'argos/I18n',
+], (declare, lang, List, format, MODEL_NAMES, getResource) => {
   const resource = getResource('syncResultsList');
   const dtFormatResource = getResource('syncResultsListDateTimeFormat');
 

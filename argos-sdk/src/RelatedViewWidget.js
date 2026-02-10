@@ -26,8 +26,8 @@ define('argos/RelatedViewWidget', [
   './_CustomizationMixin',
   './_ActionMixin',
   './_RelatedViewWidgetBase',
-  './I18n'
-], function(declare, lang, string, when, connect, SDataStore, _CustomizationMixin, _ActionMixin, _RelatedViewWidgetBase, getResource) {
+  './I18n',
+], (declare, lang, string, when, connect, SDataStore, _CustomizationMixin, _ActionMixin, _RelatedViewWidgetBase, getResource) => {
   const resource = getResource('relatedViewWidget');
 
   /**

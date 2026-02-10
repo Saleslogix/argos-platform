@@ -16,8 +16,8 @@
 define('crm/Views/Event/List', [
   'dojo/_base/declare',
   'argos/List',
-  'argos/I18n'
-], function(declare, List, getResource) {
+  'argos/I18n',
+], (declare, List, getResource) => {
   const resource = getResource('eventList');
   const dtFormatResource = getResource('eventListDateTimeFormat');
 

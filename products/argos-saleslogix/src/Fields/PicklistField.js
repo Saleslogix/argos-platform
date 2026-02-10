@@ -17,8 +17,8 @@ define('crm/Fields/PicklistField', [
   'dojo/_base/declare',
   'argos/Fields/LookupField',
   '../Views/PickList',
-  'argos/FieldManager'
-], function(declare, LookupField, PickList, FieldManager) {
+  'argos/FieldManager',
+], (declare, LookupField, PickList, FieldManager) => {
   const viewsByName = {};
   let viewsByNameCount = 0;
 

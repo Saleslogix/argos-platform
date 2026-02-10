@@ -20,8 +20,8 @@ define('crm/Integrations/BOE/Views/Returns/List', [
   'crm/Views/_RightDrawerListMixin',
   'crm/Views/_MetricListMixin',
   'crm/Views/_GroupListMixin',
-  'argos/I18n'
-], function(declare, lang, List, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin, getResource) {
+  'argos/I18n',
+], (declare, lang, List, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin, getResource) => {
   const resource = getResource('returnsList');
 
   const __class = declare('crm.Integrations.BOE.Views.Returns.List', [List, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin], {

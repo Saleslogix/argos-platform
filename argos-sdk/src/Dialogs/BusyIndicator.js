@@ -20,8 +20,8 @@ define('argos/Dialogs/BusyIndicator', [
   'dojo/_base/declare',
   'dijit/_WidgetBase',
   '../_Templated',
-  '../I18n'
-], function(declare, _WidgetBase, _Templated, getResource) {
+  '../I18n',
+], (declare, _WidgetBase, _Templated, getResource) => {
   const resource = getResource('busyIndicator');
 
   /**

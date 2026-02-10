@@ -14,7 +14,7 @@
  */
 
 // action Types
-define('crm/actions/user', [], function() {
+define('crm/actions/user', [], () => {
   const SET_USER = 'SET_USER';
 
   function setUser(entry) {
@@ -28,6 +28,6 @@ define('crm/actions/user', [], function() {
 
   return {
     SET_USER,
-    setUser
+    setUser,
   };
 });

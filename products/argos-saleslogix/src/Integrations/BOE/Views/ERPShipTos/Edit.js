@@ -21,8 +21,8 @@ define('crm/Integrations/BOE/Views/ERPShipTos/Edit', [
   '../../Models/Names',
   'crm/Format',
   'crm/Validator',
-  'argos/I18n'
-], function(declare, lang, connect, Edit, MODEL_NAMES, format, validator, getResource) {
+  'argos/I18n',
+], (declare, lang, connect, Edit, MODEL_NAMES, format, validator, getResource) => {
   const resource = getResource('erpShipTosEdit');
 
   const __class = declare('crm.Integrations.BOE.Views.ERPShipTos.Edit', [Edit], {

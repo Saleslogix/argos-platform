@@ -20,8 +20,8 @@ define('crm/Models/Activity/Offline', [
   'argos/Models/Manager',
   'argos/Models/Types',
   '../Names',
-  'dojo/Deferred'
-], function(declare, Base, _OfflineModelBase, Manager, MODEL_TYPES, MODEL_NAMES, Deferred) {
+  'dojo/Deferred',
+], (declare, Base, _OfflineModelBase, Manager, MODEL_TYPES, MODEL_NAMES, Deferred) => {
   const __class = declare('crm.Models.Activity.Offline', [Base, _OfflineModelBase], {
     id: 'activity_offline_model',
     onActivityCompleted: function onActivityCompleted(entry) {

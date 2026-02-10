@@ -18,8 +18,8 @@ define('crm/Views/OpportunityContact/List', [
   'argos/List',
   'argos/I18n',
   'crm/Format',
-  '../../Models/Names'
-], function(declare, List, getResource, format, MODEL_NAMES) {
+  '../../Models/Names',
+], (declare, List, getResource, format, MODEL_NAMES) => {
   const resource = getResource('opportunityContactList');
 
   const __class = declare('crm.Views.OpportunityContact.List', [List], {

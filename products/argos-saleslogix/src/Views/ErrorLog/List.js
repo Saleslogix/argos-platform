@@ -19,8 +19,8 @@ define('crm/Views/ErrorLog/List', [
   'argos/Convert',
   'argos/ErrorManager',
   'argos/_ListBase',
-  'argos/I18n'
-], function(declare, Memory, convert, ErrorManager, List, getResource) {
+  'argos/I18n',
+], (declare, Memory, convert, ErrorManager, List, getResource) => {
   const resource = getResource('errorLogList');
   const dtFormatResource = getResource('errorLogListDateTimeFormat');
 

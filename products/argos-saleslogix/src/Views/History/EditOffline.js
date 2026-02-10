@@ -18,8 +18,8 @@ define('crm/Views/History/EditOffline', [
   'argos/_EditBase',
   'argos/Models/Types',
   'argos/I18n',
-  '../../Models/Names'
-], function(declare, _EditBase, MODEL_TYPES, getResource, MODEL_NAMES) {
+  '../../Models/Names',
+], (declare, _EditBase, MODEL_TYPES, getResource, MODEL_NAMES) => {
   const resource = getResource('historyEditOffline');
 
   const __class = declare('crm.Views.History.EditOffline', [_EditBase], {

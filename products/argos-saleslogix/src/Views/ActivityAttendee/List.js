@@ -21,8 +21,8 @@ define('crm/Views/ActivityAttendee/List', [
   '../../Action',
   'argos/I18n',
   'crm/Format',
-  '../../Models/Activity/ActivityTypeText'
-], function(declare, connect, List, MODEL_NAMES, action, getResource, format, ActivityTypeText) {
+  '../../Models/Activity/ActivityTypeText',
+], (declare, connect, List, MODEL_NAMES, action, getResource, format, ActivityTypeText) => {
   const resource = getResource('activityAttendeeList');
 
   const __class = declare('crm.Views.ActivityAttendee.List', [List], {

@@ -20,8 +20,8 @@ define('crm/Views/Offline/Detail', [
   'argos/Models/Types',
   'dojo/_base/lang',
   'argos/I18n',
-  'dojo/string'
-], function(declare, _DetailBase, format, _RelatedWidgetDetailMixin, MODEL_TYPES, lang, getResource, string) {
+  'dojo/string',
+], (declare, _DetailBase, format, _RelatedWidgetDetailMixin, MODEL_TYPES, lang, getResource, string) => {
   const resource = getResource('offlineDetail');
 
   return declare('crm.Views.Offline.Detail', [_DetailBase, _RelatedWidgetDetailMixin], {
@@ -78,11 +78,11 @@ define('crm/Views/Offline/Detail', [
       this.refreshRequired = true;
       lang.mixin(this.offlineContext, options.offlineContext);
       this._model = App.ModelManager.getModel(this.offlineContext.entityName, MODEL_TYPES.OFFLINE);
-  
+
       if (!this.offlineContext.viewId) {
         this.offlineContext.viewId = (this._model.detailViewId) ? this._model.detailViewId : `${this._model.entityName.toLowerCase()}_detail`;
       }
-  
+
       this._entityView = this.getEntityView();
     },
     onTransitionTo: function onTransitionTo() {
@@ -92,12 +92,12 @@ define('crm/Views/Offline/Detail', [
     getEntityView: function getEntityView() {
       const newViewId = `${this.id}_${this.offlineContext.viewId}`;
       const view = App.getView(this.offlineContext.viewId);
-  
+
       if (this._entityView) {
         this._entityView.destroy();
         this._entityView = null;
       }
-  
+
       if (view) {
         const ViewCtor = view.constructor;
         this._entityView = new ViewCtor({ id: newViewId });
@@ -134,15 +134,15 @@ define('crm/Views/Offline/Detail', [
         original.layout = null;
         original.refreshRequired = true;
       }
-  
+
       layout = layout.filter(({ enableOffline }) => {
         if (typeof enableOffline === 'undefined' || enableOffline === null) {
           return true;
         }
-  
+
         return enableOffline;
       });
-  
+
       this.disableSections(layout);
       this.applyRelatedSections(layout);
       return layout;
@@ -185,7 +185,7 @@ define('crm/Views/Offline/Detail', [
           } else {
             viewId = `${rel.relatedEntity.toLowerCase()}_related`;
           }
-  
+
           const item = {
             name: rel.name,
             entityName: rel.relatedEntity,
@@ -193,7 +193,7 @@ define('crm/Views/Offline/Detail', [
             view: viewId,
             relationship: rel,
           };
-  
+
           this._relatedItems[item.name] = item;
           section.children.push(item);
         }
@@ -251,7 +251,7 @@ define('crm/Views/Offline/Detail', [
       const rel = this._navigationOptions[slot];
       const relViewId = params.view;
       const relView = App.getView(relViewId);
-  
+
       if (relView) {
         const model = relView.getModel();
         if (model) {
@@ -267,7 +267,7 @@ define('crm/Views/Offline/Detail', [
             },
           };
           const view = this.getRelatedDetailView(model.entityName);
-  
+
           if (view) {
             view.show(options);
           }
@@ -277,16 +277,16 @@ define('crm/Views/Offline/Detail', [
     getRelatedDetailView: function getRelatedDetailView(entityName) {
       const viewId = `offline_detail_${entityName}`;
       let view = this.app.getView(viewId);
-  
+
       if (view) {
         return view;
       }
-  
+
       this.app.registerView(new this.constructor({ id: viewId }));
       view = this.app.getView(viewId);
       return view;
     },
-  
+
     hasAction: function hasAction(actionName) {
       const currentHasAction = this.inherited(hasAction, arguments);
       return currentHasAction || typeof this._entityView[actionName] === 'function';
@@ -297,12 +297,12 @@ define('crm/Views/Offline/Detail', [
       const currentActions = [
         'activateRelatedList',
       ];
-  
+
       // Apply the current view actions in our current context
       if (currentActions.includes(actionName)) {
         return this.inherited(invokeAction, arguments);
       }
-  
+
       // Switch context to the _entityView, so data-actions in those views will have the correct "this"
       return this._entityView[actionName].apply(this._entityView, [parameters, evt, el]);
     },

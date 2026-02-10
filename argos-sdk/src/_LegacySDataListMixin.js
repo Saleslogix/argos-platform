@@ -19,8 +19,8 @@
 define('argos/_LegacySDataListMixin', [
   'dojo/_base/declare',
   './ErrorManager',
-  'dojo/string'
-], function(declare, ErrorManager, string) {
+  'dojo/string',
+], (declare, ErrorManager, string) => {
   /**
    * @class
    * @alias module:argos/_LegacySDataListMixin

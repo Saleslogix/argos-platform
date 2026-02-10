@@ -17,8 +17,8 @@
  * @module crm/Views/_RightDrawerBaseMixin
  */
 define('crm/Views/_RightDrawerBaseMixin', [
-  'dojo/_base/declare'
-], function(declare) {
+  'dojo/_base/declare',
+], (declare) => {
   /**
    * @class
    * @alias module:crm/Views/_RightDrawerBaseMixin

@@ -16,8 +16,8 @@
 define('crm/reducers/index', [
   './config',
   './user',
-  './speedsearch'
-], function(_config, _user, _speedsearch) {
+  './speedsearch',
+], (_config, _user, _speedsearch) => {
   const { config } = _config;
   const { user } = _user;
   const { speedsearch } = _speedsearch;
@@ -29,6 +29,6 @@ define('crm/reducers/index', [
   });
 
   return {
-    app
+    app,
   };
 });

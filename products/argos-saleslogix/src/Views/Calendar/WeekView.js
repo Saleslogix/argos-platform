@@ -21,8 +21,8 @@ define('crm/Views/Calendar/WeekView', [
   'argos/List',
   'argos/_LegacySDataListMixin',
   'argos/I18n',
-  '../../Models/Activity/ActivityTypeIcon'
-], function(declare, string, ErrorManager, convert, List, _LegacySDataListMixin, getResource, activityTypeIcons) {
+  '../../Models/Activity/ActivityTypeIcon',
+], (declare, string, ErrorManager, convert, List, _LegacySDataListMixin, getResource, activityTypeIcons) => {
   const resource = getResource('calendarWeekView');
   const dtFormatResource = getResource('calendarWeekViewDateTimeFormat');
 
@@ -287,7 +287,7 @@ define('crm/Views/Calendar/WeekView', [
           convert.toIsoStringFromDate(this.weekEndDate.toDate()),
           this.weekStartDate.format('YYYY-MM-DDT00:00:00[Z]'),
           this.weekEndDate.format('YYYY-MM-DDT23:59:59[Z]'),
-        ]
+        ],
       );
     },
     setWeekTitle: function setWeekTitle() {
@@ -393,7 +393,7 @@ define('crm/Views/Calendar/WeekView', [
         date.getUTCDate(),
         date.getUTCHours(),
         date.getUTCMinutes(),
-        date.getUTCSeconds()
+        date.getUTCSeconds(),
       );
     },
     requestEventData: function requestEventData() {
@@ -438,7 +438,7 @@ define('crm/Views/Calendar/WeekView', [
         ].join(''), [App.context.user && App.context.user.$key,
           startDate.format('YYYY-MM-DDT00:00:00[Z]'),
           endDate.format('YYYY-MM-DDT23:59:59[Z]'),
-        ]
+        ],
       );
     },
     hideEventList: function hideEventList() {

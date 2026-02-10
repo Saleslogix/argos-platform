@@ -32,8 +32,8 @@ define('crm/Integrations/BOE/Modules/QuoteModule', [
   '../Views/ERPShipTos/List',
   '../Views/SyncResults/List',
   '../Models/Quote/Offline',
-  '../Models/Quote/SData'
-], function(declare, lang, _Module, AttachmentList, BackOfficeList, BackOfficeAccountingEntityList, BillToList, CarrierList, LocationList, QuotePersonsList, QuoteLinesDetail, QuoteLinesList, QuotesDetail, QuotesEdit, QuotesList, ShipToList, SyncResultsList) {
+  '../Models/Quote/SData',
+], (declare, lang, _Module, AttachmentList, BackOfficeList, BackOfficeAccountingEntityList, BillToList, CarrierList, LocationList, QuotePersonsList, QuoteLinesDetail, QuoteLinesList, QuotesDetail, QuotesEdit, QuotesList, ShipToList, SyncResultsList) => {
   const __class = declare('crm.Integrations.BOE.Modules.QuoteModule', [_Module], {
     defaultViews: ['quote_list'],
     init: function init() {

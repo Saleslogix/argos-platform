@@ -18,8 +18,8 @@ define('crm/Integrations/BOE/Modules/ProductModule', [
   'dojo/_base/lang',
   './_Module',
   '../Models/Product/Offline',
-  '../Models/Product/SData'
-], function(declare, lang, _Module) {
+  '../Models/Product/SData',
+], (declare, lang, _Module) => {
   const __class = declare('crm.Integrations.BOE.Modules.ProductModule', [_Module], {
     init: function init() {
     },

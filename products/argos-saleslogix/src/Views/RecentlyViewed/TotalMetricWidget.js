@@ -20,8 +20,8 @@ define('crm/Views/RecentlyViewed/TotalMetricWidget', [
   'dojo/when',
   'argos/Models/Types',
   'dojo/Deferred',
-  'dojo/store/util/QueryResults'
-], function(MetricWidget, declare, lang, when, MODEL_TYPES, Deferred, QueryResults) {
+  'dojo/store/util/QueryResults',
+], (MetricWidget, declare, lang, when, MODEL_TYPES, Deferred, QueryResults) => {
   return declare('crm.Views.RecentlyViewed.TotalMetricWidget', [MetricWidget], {
     navToReportView: function navToReportView() {},
     _buildQueryOptions: function _buildQueryOptions() {
@@ -33,7 +33,7 @@ define('crm/Views/RecentlyViewed/TotalMetricWidget', [
           if (filters) {
             return filters.some(filter => entity.entityName === filter.name && filter.enabled);
           }
-  
+
           // User has no entity filter preferences (from right drawer)
           return true;
         },

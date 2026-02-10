@@ -16,8 +16,8 @@
 define('crm/Views/UpdateToolbar', [
   'dojo/_base/declare',
   'argos/MainToolbar',
-  'argos/I18n'
-], function(declare, MainToolbar, getResource) {
+  'argos/I18n',
+], (declare, MainToolbar, getResource) => {
   const resource = getResource('updateToolbar');
 
   const __class = declare('crm.Views.UpdateToolbar', [MainToolbar], {

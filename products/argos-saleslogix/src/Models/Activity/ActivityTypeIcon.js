@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-define('crm/Models/Activity/ActivityTypeIcon', [], function() {
+define('crm/Models/Activity/ActivityTypeIcon', [], () => {
   return {
     atToDo: 'bullet-list',
     atPhoneCall: 'phone',

@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 define('argos/I18n', [
-  'dojo/_base/lang'
-], function(lang) {
+  'dojo/_base/lang',
+], (lang) => {
   /**
    * Gets the localization dictionary for a given id.
    * @param {String} id
@@ -34,11 +34,11 @@ define('argos/I18n', [
         },
       });
     }
-  
+
     const defaultAttributes = defaultLocaleContext.getEntitySync(id).attributes;
     const currentAttributes = localeContext.getEntitySync(id).attributes;
     const regionalattributes = regionalContext.getEntitySync(id).attributes;
-  
+
     lang.mixin(defaultAttributes, currentAttributes);
     return lang.mixin(defaultAttributes, regionalattributes);
   }

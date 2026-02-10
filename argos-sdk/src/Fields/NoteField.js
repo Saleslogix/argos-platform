@@ -19,8 +19,8 @@
 define('argos/Fields/NoteField', [
   'dojo/_base/declare',
   './TextAreaField',
-  '../FieldManager'
-], function(declare, TextAreaField, FieldManager) {
+  '../FieldManager',
+], (declare, TextAreaField, FieldManager) => {
   /**
    * @class
    * @alias module:argos/Fields/NoteField

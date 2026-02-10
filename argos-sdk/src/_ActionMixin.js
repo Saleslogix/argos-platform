@@ -37,7 +37,7 @@
  * and then it mixes it all the `data-` attributes from the node into the params object.
  *
  */
-define('argos/_ActionMixin', [], function() {
+define('argos/_ActionMixin', [], () => {
   class _ActionMixin {
     constructor() {
       this.actionsFrom = 'click';

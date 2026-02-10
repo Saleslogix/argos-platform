@@ -23,8 +23,8 @@ define('crm/Views/Account/List', [
   '../_RightDrawerListMixin',
   '../../Models/Names',
   '../../Models/Activity/ActivityTypeText',
-  'argos/I18n'
-], function(declare, action, utility, List, _GroupListMixin, _MetricListMixin, _RightDrawerListMixin, MODEL_NAMES, ActivityTypeText, getResource) {
+  'argos/I18n',
+], (declare, action, utility, List, _GroupListMixin, _MetricListMixin, _RightDrawerListMixin, MODEL_NAMES, ActivityTypeText, getResource) => {
   const resource = getResource('accountList');
 
   const __class = declare('crm.Views.Account.List', [List, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin], {

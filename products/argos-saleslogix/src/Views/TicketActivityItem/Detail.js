@@ -17,8 +17,8 @@ define('crm/Views/TicketActivityItem/Detail', [
   'dojo/_base/declare',
   '../../Format',
   'argos/Detail',
-  'argos/I18n'
-], function(declare, format, Detail, getResource) {
+  'argos/I18n',
+], (declare, format, Detail, getResource) => {
   const resource = getResource('ticketActivityItemDetail');
 
   const __class = declare('crm.Views.TicketActivityItem.Detail', [Detail], {

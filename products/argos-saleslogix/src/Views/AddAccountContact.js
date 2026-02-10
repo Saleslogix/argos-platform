@@ -22,8 +22,8 @@ define('crm/Views/AddAccountContact', [
   '../Template',
   'argos/Utility',
   'argos/Edit',
-  'argos/I18n'
-], function(declare, lang, string, format, validator, template, utility, Edit, getResource) {
+  'argos/I18n',
+], (declare, lang, string, format, validator, template, utility, Edit, getResource) => {
   const resource = getResource('addAccountContact');
 
   const __class = declare('crm.Views.AddAccountContact', [Edit], {
@@ -266,7 +266,7 @@ define('crm/Views/AddAccountContact', [
           type: 'picklist',
           requireSelection: false,
           picklist: this.formatDependentPicklist.bindDelegate(
-            this, 'Account ${0}', true
+            this, 'Account ${0}', true,
           ),
           title: this.accountSubTypeTitleText,
           dependsOn: 'Type',

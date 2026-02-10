@@ -14,8 +14,8 @@
  */
 
 define('crm/Models/Activity/ActivityTypeText', [
-  'argos/I18n'
-], function(getResource) {
+  'argos/I18n',
+], (getResource) => {
   const resource = getResource('activityTypeText');
 
   return {

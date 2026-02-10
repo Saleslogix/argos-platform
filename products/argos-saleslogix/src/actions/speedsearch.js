@@ -14,7 +14,7 @@
  */
 
 // action Types
-define('crm/actions/speedsearch', [], function() {
+define('crm/actions/speedsearch', [], () => {
   const SET_SEARCHTERM = 'SET_SEARCHTERM';
 
   function setSearchTerm(searchTerm) {
@@ -28,6 +28,6 @@ define('crm/actions/speedsearch', [], function() {
 
   return {
     SET_SEARCHTERM,
-    setSearchTerm
+    setSearchTerm,
   };
 });

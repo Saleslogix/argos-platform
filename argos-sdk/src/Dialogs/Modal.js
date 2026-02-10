@@ -21,8 +21,8 @@ define('argos/Dialogs/Modal', [
   'dojo/Deferred',
   'dijit/_WidgetBase',
   '../_Templated',
-  '../I18n'
-], function(declare, Deferred, _WidgetBase, _Templated, getResource) {
+  '../I18n',
+], (declare, Deferred, _WidgetBase, _Templated, getResource) => {
   const resource = getResource('modal');
 
   /**

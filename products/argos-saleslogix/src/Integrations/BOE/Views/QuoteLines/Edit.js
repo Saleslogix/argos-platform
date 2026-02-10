@@ -23,8 +23,8 @@ define('crm/Integrations/BOE/Views/QuoteLines/Edit', [
   '../../PricingAvailabilityService',
   'crm/Validator',
   '../../Models/Names',
-  'argos/Models/Types'
-], function(declare, lang, string, utility, Edit, getResource, PricingAvailabilityService, validator, MODEL_NAMES, MODEL_TYPES) {
+  'argos/Models/Types',
+], (declare, lang, string, utility, Edit, getResource, PricingAvailabilityService, validator, MODEL_NAMES, MODEL_TYPES) => {
   const resource = getResource('quoteItemEdit');
 
   const __class = declare('crm.Integrations.BOE.Views.QuoteLines.Edit', [Edit], {
@@ -226,7 +226,7 @@ define('crm/Integrations/BOE/Views/QuoteLines/Edit', [
         field.currentSelection,
         this.fields.Quantity.getValue(),
         this.fields.SlxLocation.getValue(),
-        this.fields.UnitOfMeasure.getValue()
+        this.fields.UnitOfMeasure.getValue(),
       );
     },
     onQuantityChange: function onQuantityChange(value) {
@@ -240,7 +240,7 @@ define('crm/Integrations/BOE/Views/QuoteLines/Edit', [
           this.fields.Product.getValue(),
           this.fields.Quantity.getValue(),
           this.fields.SlxLocation.getValue(),
-          this.fields.UnitOfMeasure.getValue()
+          this.fields.UnitOfMeasure.getValue(),
         );
       }
     },

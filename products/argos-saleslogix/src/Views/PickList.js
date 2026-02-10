@@ -15,8 +15,8 @@
 
 define('crm/Views/PickList', [
   'dojo/_base/declare',
-  'argos/List'
-], function(declare, List) {
+  'argos/List',
+], (declare, List) => {
   const __class = declare('crm.Views.PickList', [List], {
     // Templates
     itemTemplate: new Simplate([

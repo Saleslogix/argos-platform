@@ -28,8 +28,8 @@ define('argos/Models/_OfflineModelBase', [
   './_ModelBase',
   'dojo/store/util/QueryResults',
   './Types',
-  '../Convert'
-], function(declare, lang, PouchDBStore, Deferred, all, when, utility, _CustomizationMixin, _ModelBase, QueryResults, MODEL_TYPES, convert) {
+  '../Convert',
+], (declare, lang, PouchDBStore, Deferred, all, when, utility, _CustomizationMixin, _ModelBase, QueryResults, MODEL_TYPES, convert) => {
   const databaseName = 'crm-offline';
   const _store = new PouchDBStore(databaseName);
 

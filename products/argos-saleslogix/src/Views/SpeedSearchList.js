@@ -22,8 +22,8 @@ define('crm/Views/SpeedSearchList', [
   'argos/_LegacySDataListMixin',
   './_SpeedSearchRightDrawerListMixin',
   '../actions/speedsearch',
-  'argos/I18n'
-], function(declare, lang, string, SpeedSearchWidget, List, _LegacySDataListMixin, _SpeedSearchRightDrawerListMixin, speedsearchActions, getResource) {
+  'argos/I18n',
+], (declare, lang, string, SpeedSearchWidget, List, _LegacySDataListMixin, _SpeedSearchRightDrawerListMixin, speedsearchActions, getResource) => {
   const { setSearchTerm } = speedsearchActions;
 
   const resource = getResource('speedSearchList');

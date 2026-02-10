@@ -18,8 +18,8 @@ define('crm/Views/History/RelatedView', [
   'argos/RelatedViewWidget',
   'argos/I18n',
   'dojo/string',
-  '../../Format'
-], function(declare, RelatedViewWidget, getResource, string, format) {
+  '../../Format',
+], (declare, RelatedViewWidget, getResource, string, format) => {
   const resource = getResource('historyRelated');
 
   const __class = declare('crm.Views.History.RelatedView', [RelatedViewWidget], {

@@ -17,8 +17,8 @@
  * @module argos/_CustomizationMixin
  */
 define('argos/_CustomizationMixin', [
-  'dojo/_base/declare'
-], function(declare) {
+  'dojo/_base/declare',
+], (declare) => {
   const customization = ICRMCustomizationSDK;
 
 

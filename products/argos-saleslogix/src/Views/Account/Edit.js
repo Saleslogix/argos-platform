@@ -20,8 +20,8 @@ define('crm/Views/Account/Edit', [
   '../../Format',
   '../../Template',
   'argos/Edit',
-  'argos/I18n'
-], function(declare, string, validator, format, template, Edit, getResource) {
+  'argos/I18n',
+], (declare, string, validator, format, template, Edit, getResource) => {
   const resource = getResource('accountEdit');
 
   const __class = declare('crm.Views.Account.Edit', [Edit], {
@@ -141,7 +141,7 @@ define('crm/Views/Account/Edit', [
         name: 'SubType',
         property: 'SubType',
         picklist: this.formatDependentPicklist.bindDelegate(
-          this, 'Account ${0}', true
+          this, 'Account ${0}', true,
         ),
         requireSelection: false,
         title: this.accountSubTypeTitleText,

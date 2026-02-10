@@ -17,8 +17,8 @@
  * @module argos/Convert
  */
 define('argos/Convert', [
-  'dojo/_base/lang'
-], function(lang) {
+  'dojo/_base/lang',
+], (lang) => {
   const convert = ICRMCommonSDK.convert;
 
   /**

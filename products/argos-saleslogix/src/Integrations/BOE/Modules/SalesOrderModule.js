@@ -36,8 +36,8 @@ define('crm/Integrations/BOE/Modules/SalesOrderModule', [
   '../Models/SalesOrder/Offline',
   '../Models/SalesOrder/SData',
   '../Models/ErpSalesOrderPerson/Offline',
-  '../Models/ErpSalesOrderPerson/SData'
-], function(declare, lang, _Module, AttachmentList, BackOfficeList, BackOfficeAccountingEntityList, BillToList, CarrierList, InvoiceItemsList, LocationList, ProductList, SalesOrderList, SalesOrderDetail, SalesOrderEdit, SalesOrderItemList, SalesPersonList, ShipToList, ShipmentItemsList, SyncResultsList) {
+  '../Models/ErpSalesOrderPerson/SData',
+], (declare, lang, _Module, AttachmentList, BackOfficeList, BackOfficeAccountingEntityList, BillToList, CarrierList, InvoiceItemsList, LocationList, ProductList, SalesOrderList, SalesOrderDetail, SalesOrderEdit, SalesOrderItemList, SalesPersonList, ShipToList, ShipmentItemsList, SyncResultsList) => {
   const __class = declare('crm.Integrations.BOE.Modules.SalesOrderModule', [_Module], {
     defaultViews: ['salesorder_list'],
     init: function init() {

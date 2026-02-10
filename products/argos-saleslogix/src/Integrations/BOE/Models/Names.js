@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-define('crm/Integrations/BOE/Models/Names', [], function() {
+define('crm/Integrations/BOE/Models/Names', [], () => {
   return {
     BACKOFFICE: 'BackOffice',
     BACKOFFICEACCOUNTINGENTITY: 'BackOfficeAcctEntity',

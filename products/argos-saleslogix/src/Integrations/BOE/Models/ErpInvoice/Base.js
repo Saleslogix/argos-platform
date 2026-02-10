@@ -18,8 +18,8 @@ define('crm/Integrations/BOE/Models/ErpInvoice/Base', [
   'dojo/_base/lang',
   'argos/Models/_ModelBase',
   '../Names',
-  'argos/I18n'
-], function(declare, lang, _ModelBase, MODEL_NAMES, getResource) {
+  'argos/I18n',
+], (declare, lang, _ModelBase, MODEL_NAMES, getResource) => {
   const resource = getResource('erpInvoiceModel');
   const accountResource = getResource('accountModel');
   const billToResource = getResource('erpBillToModel');

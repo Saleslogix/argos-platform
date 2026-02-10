@@ -19,8 +19,8 @@
 define('argos/Fields/SelectField', [
   'dojo/_base/declare',
   './LookupField',
-  '../FieldManager'
-], function(declare, LookupField, FieldManager) {
+  '../FieldManager',
+], (declare, LookupField, FieldManager) => {
   /**
    * @class
    * @alias module:argos/Fields/SelectField

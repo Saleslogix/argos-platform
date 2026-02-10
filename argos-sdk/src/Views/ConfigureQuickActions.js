@@ -20,8 +20,8 @@ define('argos/Views/ConfigureQuickActions', [
   'dojo/_base/declare',
   'dojo/store/Memory',
   '../_ConfigureBase',
-  '../I18n'
-], function(declare, Memory, _ConfigureBase, getResource) {
+  '../I18n',
+], (declare, Memory, _ConfigureBase, getResource) => {
   const resource = getResource('configureQuickActions');
 
   /**

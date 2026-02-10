@@ -17,8 +17,8 @@
  * @module argos/Utility
  */
 define('argos/Utility', [
-  'dojo/_base/lang'
-], function(lang) {
+  'dojo/_base/lang',
+], (lang) => {
   const util = ICRMCommonSDK.utility;
 
   /**

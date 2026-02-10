@@ -19,8 +19,8 @@ define('crm/Integrations/BOE/Modules/ReceivableLineModule', [
   './_Module',
   '../Views/ERPReceivableItems/Detail',
   '../Models/ErpReceivableItem/Offline',
-  '../Models/ErpReceivableItem/SData'
-], function(declare, lang, _Module, ERPReceivableItemsDetail) {
+  '../Models/ErpReceivableItem/SData',
+], (declare, lang, _Module, ERPReceivableItemsDetail) => {
   const __class = declare('crm.Integrations.BOE.Modules.ReceivableLineModule', [_Module], {
     init: function init() {
     },

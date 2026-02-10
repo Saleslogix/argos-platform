@@ -17,8 +17,8 @@ define('crm/Views/NameEdit', [
   'dojo/_base/declare',
   '../Validator',
   'argos/Edit',
-  'argos/I18n'
-], function(declare, validator, Edit, getResource) {
+  'argos/I18n',
+], (declare, validator, Edit, getResource) => {
   const resource = getResource('nameEdit');
 
   const __class = declare('crm.Views.NameEdit', [Edit], {

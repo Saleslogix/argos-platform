@@ -20,8 +20,8 @@ define('crm/Integrations/BOE/Utility', [
   'dojo/_base/lang',
   'argos/Models/Adapter',
   './Models/Names',
-  '../../Format'
-], function(lang, Adapter, MODEL_NAMES, format) {
+  '../../Format',
+], (lang, Adapter, MODEL_NAMES, format) => {
   /**
    * @class
    * @alias module:crm/Integrations/BOE/Utility

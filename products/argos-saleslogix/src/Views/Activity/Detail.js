@@ -27,8 +27,8 @@ define('crm/Views/Activity/Detail', [
   '../../Recurrence',
   '../../Utility',
   '../../Models/Names',
-  '../../Models/Activity/ActivityTypePicklists'
-], function(declare, string, platformUtility, convert, Detail, getResource, Deferred, template, format, environment, recur, utility, MODEL_NAMES, ActivityTypePicklistsActivity) {
+  '../../Models/Activity/ActivityTypePicklists',
+], (declare, string, platformUtility, convert, Detail, getResource, Deferred, template, format, environment, recur, utility, MODEL_NAMES, ActivityTypePicklistsActivity) => {
   const { getPicklistByActivityType } = ActivityTypePicklistsActivity;
 
   const resource = getResource('activityDetail');

@@ -57,8 +57,8 @@ define('crm/Integrations/BOE/ApplicationModule', [
   './Models/OperatingCompany/SData',
   './Models/UnitOfMeasure/Offline',
   './Models/UnitOfMeasure/SData',
-  'argos/TabWidget'
-], function(declare, lang, getResource, Application, ApplicationModule, AccountAssociationModule, AccountModule, BillToAccountModule, BillToModule, ContactModule, ContactAssociationModule, HelpModule, InvoiceLineModule, InvoiceModule, OpportunityModule, PayFromModule, ProductModule, QuoteModule, QuotePersonModule, QuoteLineModule, ReceivableLineModule, ReceivableModule, ReturnLineModule, ReturnModule, SalesOrderItemModule, SalesOrderModule, ShipmentLineModule, ShipmentModule, ShipToAccountModule, ShipToModule, RecentlyViewedList) {
+  'argos/TabWidget',
+], (declare, lang, getResource, Application, ApplicationModule, AccountAssociationModule, AccountModule, BillToAccountModule, BillToModule, ContactModule, ContactAssociationModule, HelpModule, InvoiceLineModule, InvoiceModule, OpportunityModule, PayFromModule, ProductModule, QuoteModule, QuotePersonModule, QuoteLineModule, ReceivableLineModule, ReceivableModule, ReturnLineModule, ReturnModule, SalesOrderItemModule, SalesOrderModule, ShipmentLineModule, ShipmentModule, ShipToAccountModule, ShipToModule, RecentlyViewedList) => {
   // const resource = getResource('icboeApplicationModule');
 
   const __class = declare('crm.Integrations.BOE.ApplicationModule', [ApplicationModule], {

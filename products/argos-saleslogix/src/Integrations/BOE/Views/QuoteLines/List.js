@@ -24,8 +24,8 @@ define('crm/Integrations/BOE/Views/QuoteLines/List', [
   '../../Models/Names',
   'argos/I18n',
   '../../Utility',
-  '../Locations/QuoteItemAvailabilityList'
-], function(declare, lang, List, action, format, _RightDrawerListMixin, _MetricListMixin, MODEL_NAMES, getResource, utility, QuoteItemAvailabilityList) {
+  '../Locations/QuoteItemAvailabilityList',
+], (declare, lang, List, action, format, _RightDrawerListMixin, _MetricListMixin, MODEL_NAMES, getResource, utility, QuoteItemAvailabilityList) => {
   const resource = getResource('quoteItemsList');
 
   const __class = declare('crm.Integrations.BOE.Views.QuoteLines.List', [List, _RightDrawerListMixin, _MetricListMixin], {

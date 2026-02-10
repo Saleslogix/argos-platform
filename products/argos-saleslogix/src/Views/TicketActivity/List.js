@@ -18,8 +18,8 @@ define('crm/Views/TicketActivity/List', [
   'argos/List',
   'argos/I18n',
   'crm/Format',
-  '../../Models/Names'
-], function(declare, List, getResource, format, MODEL_NAMES) {
+  '../../Models/Names',
+], (declare, List, getResource, format, MODEL_NAMES) => {
   const resource = getResource('ticketActivityList');
   const dtFormatResource = getResource('ticketActivityListDateTimeFormat');
 

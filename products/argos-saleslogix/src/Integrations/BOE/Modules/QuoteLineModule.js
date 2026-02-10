@@ -23,8 +23,8 @@ define('crm/Integrations/BOE/Modules/QuoteLineModule', [
   '../Views/Quotes/List',
   '../Views/UnitsOfMeasure/List',
   '../Models/QuoteItem/Offline',
-  '../Models/QuoteItem/SData'
-], function(declare, lang, _Module, ProductList, LocationPricingAvailabilityList, QuoteLineEdit, QuoteList, UnitOfMeasureList) {
+  '../Models/QuoteItem/SData',
+], (declare, lang, _Module, ProductList, LocationPricingAvailabilityList, QuoteLineEdit, QuoteList, UnitOfMeasureList) => {
   const __class = declare('crm.Integrations.BOE.Modules.QuoteLineModule', [_Module], {
     init: function init() {
     },

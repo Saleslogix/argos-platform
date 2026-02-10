@@ -20,8 +20,8 @@ define('crm/Integrations/BOE/Views/ERPInvoiceItems/List', [
   'crm/Views/_MetricListMixin',
   'crm/Views/_RightDrawerListMixin',
   '../../Models/Names',
-  'argos/I18n'
-], function(declare, lang, List, _MetricListMixin, _RightDrawerListMixin, MODEL_NAMES, getResource) {
+  'argos/I18n',
+], (declare, lang, List, _MetricListMixin, _RightDrawerListMixin, MODEL_NAMES, getResource) => {
   const resource = getResource('erpInvoiceItemsList');
 
   const __class = declare('crm.Integrations.BOE.Views.ERPInvoiceItems.List', [List, _RightDrawerListMixin, _MetricListMixin], {

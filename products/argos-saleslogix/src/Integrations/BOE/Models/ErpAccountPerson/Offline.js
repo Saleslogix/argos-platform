@@ -19,8 +19,8 @@ define('crm/Integrations/BOE/Models/ErpAccountPerson/Offline', [
   'argos/Models/_OfflineModelBase',
   'argos/Models/Manager',
   'argos/Models/Types',
-  '../Names'
-], function(declare, Base, _OfflineModelBase, Manager, MODEL_TYPES, MODEL_NAMES) {
+  '../Names',
+], (declare, Base, _OfflineModelBase, Manager, MODEL_TYPES, MODEL_NAMES) => {
   const __class = declare('crm.Integrations.BOE.Models.ErpAccountPerson.Offline', [Base, _OfflineModelBase], {
     id: 'erpaccountperson_offline_model',
   });

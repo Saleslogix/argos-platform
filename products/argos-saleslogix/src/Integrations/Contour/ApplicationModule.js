@@ -23,8 +23,8 @@ define('crm/Integrations/Contour/ApplicationModule', [
   './Views/PxSearch/LocationPicker',
   'argos/I18n',
   './Models/Place/Offline',
-  './Models/Place/SData'
-], function(declare, lang, string, Application, ApplicationModule, AccountPxSearch, LocationPicker, getResource) {
+  './Models/Place/SData',
+], (declare, lang, string, Application, ApplicationModule, AccountPxSearch, LocationPicker, getResource) => {
   const resource = getResource('proxAppModule');
 
   const __class = declare('crm.Integrations.Contour.ApplicationModule', [ApplicationModule], {

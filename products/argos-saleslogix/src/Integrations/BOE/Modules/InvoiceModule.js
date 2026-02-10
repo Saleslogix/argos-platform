@@ -27,8 +27,8 @@ define('crm/Integrations/BOE/Modules/InvoiceModule', [
   '../Models/ErpInvoiceItem/Offline',
   '../Models/ErpInvoiceItem/SData',
   '../Models/ErpInvoicePerson/Offline',
-  '../Models/ErpInvoicePerson/SData'
-], function(declare, lang, _Module, ERPInvoiceDetail, ERPInvoiceList, ERPInvoiceItemDetail, ERPInvoiceItemList, ERPReceivablesList) {
+  '../Models/ErpInvoicePerson/SData',
+], (declare, lang, _Module, ERPInvoiceDetail, ERPInvoiceList, ERPInvoiceItemDetail, ERPInvoiceItemList, ERPReceivablesList) => {
   const __class = declare('crm.Integrations.BOE.Modules.InvoiceModule', [_Module], {
     defaultViews: ['invoice_list'],
     init: function init() {

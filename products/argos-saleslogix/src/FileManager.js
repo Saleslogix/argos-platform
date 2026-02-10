@@ -19,8 +19,8 @@
 define('crm/FileManager', [
   'dojo/_base/lang',
   'dojo/_base/declare',
-  'argos/I18n'
-], function(lang, declare, getResource) {
+  'argos/I18n',
+], (lang, declare, getResource) => {
   const resource = getResource('fileManager');
 
   const __class = declare('crm.FileManager', null, /** @lends module:crm/FileManager.prototype */{

@@ -19,8 +19,8 @@ define('crm/Views/Opportunity/Detail', [
   'argos/Detail',
   '../../Format',
   '../../Models/Names',
-  'argos/I18n'
-], function(declare, string, Detail, format, MODEL_NAMES, getResource) {
+  'argos/I18n',
+], (declare, string, Detail, format, MODEL_NAMES, getResource) => {
   const resource = getResource('opportunityDetail');
   const dtFormatResource = getResource('opportunityDetailDateTimeFormat');
 

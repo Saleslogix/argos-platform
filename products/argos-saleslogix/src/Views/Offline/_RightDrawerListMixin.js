@@ -19,8 +19,8 @@
 define('crm/Views/Offline/_RightDrawerListMixin', [
   'dojo/_base/declare',
   'dojo/_base/lang',
-  '../_RightDrawerBaseMixin'
-], function(declare, lang, _RightDrawerBaseMixin) {
+  '../_RightDrawerBaseMixin',
+], (declare, lang, _RightDrawerBaseMixin) => {
   const mixinName = 'crm.Views.Offline._RightDrawerListMixin';
 
   /**

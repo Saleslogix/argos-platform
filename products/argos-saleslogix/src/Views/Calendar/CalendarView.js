@@ -24,8 +24,8 @@ define('crm/Views/Calendar/CalendarView', [
   'argos/List',
   '../../Utility',
   'argos/I18n',
-  '../../Models/Activity/ActivityTypeIcon'
-], function(convert, declare, lang, on, string, when, Calendar, List, Utility, getResource, activityTypeIcons) {
+  '../../Models/Activity/ActivityTypeIcon',
+], (convert, declare, lang, on, string, when, Calendar, List, Utility, getResource, activityTypeIcons) => {
   const resource = getResource('calendarView');
   const dtFormatResource = getResource('calendarViewDateTimeFormat');
 
@@ -382,7 +382,7 @@ define('crm/Views/Calendar/CalendarView', [
           convert.toIsoStringFromDate(endDate.toDate()),
           startDate.format('YYYY-MM-DDT00:00:00[Z]'),
           endDate.format('YYYY-MM-DDT23:59:59[Z]'),
-        ]
+        ],
       );
     },
     formatQueryEvent: function formatQueryEvent(value) {

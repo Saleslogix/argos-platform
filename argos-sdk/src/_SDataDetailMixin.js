@@ -23,8 +23,8 @@ define('argos/_SDataDetailMixin', [
   'dojo/string',
   './Utility',
   './Store/SData',
-  './Models/Types'
-], function(declare, lang, string, utility, SData, MODEL_TYPES) {
+  './Models/Types',
+], (declare, lang, string, utility, SData, MODEL_TYPES) => {
   /**
    * @class
    * @mixin

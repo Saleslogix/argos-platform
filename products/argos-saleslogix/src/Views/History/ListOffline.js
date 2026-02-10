@@ -19,8 +19,8 @@ define('crm/Views/History/ListOffline', [
   'argos/Models/Types',
   'argos/I18n',
   '../../Models/Names',
-  '../../Format'
-], function(declare, _ListBase, MODEL_TYPES, getResource, MODEL_NAMES, format) {
+  '../../Format',
+], (declare, _ListBase, MODEL_TYPES, getResource, MODEL_NAMES, format) => {
   const resource = getResource('historyListOffline');
   const dateResource = getResource('historyListOfflineFormat');
 

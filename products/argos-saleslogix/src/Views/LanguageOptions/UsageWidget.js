@@ -21,8 +21,8 @@ define('crm/Views/LanguageOptions/UsageWidget', [
   'argos/_RelatedViewWidgetBase',
   'argos/Dropdown',
   'argos/I18n',
-  'argos/LanguageService'
-], function(declare, aspect, string, RelatedViewManager, _RelatedViewWidgetBase, Dropdown, getResource, LanguageService) {
+  'argos/LanguageService',
+], (declare, aspect, string, RelatedViewManager, _RelatedViewWidgetBase, Dropdown, getResource, LanguageService) => {
   const resource = getResource('languageUsageWidget');
 
   const __class = declare('crm.Views.LanguageOptions.UsageWidget', [_RelatedViewWidgetBase], {

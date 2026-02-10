@@ -20,8 +20,8 @@ define('crm/Views/LeftDrawer', [
   '../SpeedSearchWidget',
   'dojo/string',
   'argos/GroupedList',
-  'argos/I18n'
-], function(declare, lang, Memory, SpeedSearchWidget, string, GroupedList, getResource) {
+  'argos/I18n',
+], (declare, lang, Memory, SpeedSearchWidget, string, GroupedList, getResource) => {
   const resource = getResource('leftDrawer');
 
   const __class = declare('crm.Views.LeftDrawer', [GroupedList], {

@@ -24,8 +24,8 @@ define('crm/Views/Charts/_ChartMixin', [
   'dojo/has',
   'argos/_PullToRefreshMixin',
   'argos/Utility',
-  'argos/I18n'
-], function(declare, lang, domGeo, domAttr, has, _PullToRefreshMixin, Utility, getResource) {
+  'argos/I18n',
+], (declare, lang, domGeo, domAttr, has, _PullToRefreshMixin, Utility, getResource) => {
   const resource = getResource('chartMixin');
 
   lang.setObject('Chart.defaults.global', {

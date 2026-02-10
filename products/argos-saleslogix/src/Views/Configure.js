@@ -17,8 +17,8 @@ define('crm/Views/Configure', [
   'dojo/_base/declare',
   'dojo/store/Memory',
   'argos/_ConfigureBase',
-  'argos/I18n'
-], function(declare, Memory, _ConfigureBase, getResource) {
+  'argos/I18n',
+], (declare, Memory, _ConfigureBase, getResource) => {
   const resource = getResource('configure');
 
   const __class = declare('crm.Views.Configure', [_ConfigureBase], {

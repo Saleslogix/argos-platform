@@ -25,8 +25,8 @@ define('crm/Views/Activity/Edit', [
   'argos/Format',
   'argos/I18n',
   '../../Models/Names',
-  '../../Models/Activity/ActivityTypePicklists'
-], function(declare, connect, string, environment, validator, utility, Edit, recur, format, getResource, MODEL_NAMES, ActivityTypePicklistsActivity) {
+  '../../Models/Activity/ActivityTypePicklists',
+], (declare, connect, string, environment, validator, utility, Edit, recur, format, getResource, MODEL_NAMES, ActivityTypePicklistsActivity) => {
   const { getPicklistByActivityType } = ActivityTypePicklistsActivity;
 
   const resource = getResource('activityEdit');
@@ -477,7 +477,7 @@ define('crm/Views/Activity/Edit', [
         this.recurrence.RecurPeriod,
         this.recurrence.StartDate,
         this.recurrence.RecurPeriodSpec - this.recurrence.RecurPeriodSpec % 65536, // weekdays
-        this.recurrence.RecurPeriodSpec % 65536 // interval
+        this.recurrence.RecurPeriodSpec % 65536, // interval
       );
       this.resetRecurrence(this.recurrence);
 
@@ -1217,7 +1217,7 @@ define('crm/Views/Activity/Edit', [
         valueTextProperty: 'ContactName',
         view: 'contact_related',
         where: this.formatDependentQuery.bindDelegate(
-          this, 'Account.Id eq "${0}"', 'AccountId'
+          this, 'Account.Id eq "${0}"', 'AccountId',
         ),
       }, {
         dependsOn: 'Account',
@@ -1236,7 +1236,7 @@ define('crm/Views/Activity/Edit', [
         valueTextProperty: 'OpportunityName',
         view: 'opportunity_related',
         where: this.formatDependentQuery.bindDelegate(
-          this, 'Account.Id eq "${0}"', 'AccountId'
+          this, 'Account.Id eq "${0}"', 'AccountId',
         ),
       }, {
         dependsOn: 'Account',
@@ -1255,7 +1255,7 @@ define('crm/Views/Activity/Edit', [
         valueTextProperty: 'TicketNumber',
         view: 'ticket_related',
         where: this.formatDependentQuery.bindDelegate(
-          this, 'Account.Id eq "${0}"', 'AccountId'
+          this, 'Account.Id eq "${0}"', 'AccountId',
         ),
       }, {
         label: this.leadText,

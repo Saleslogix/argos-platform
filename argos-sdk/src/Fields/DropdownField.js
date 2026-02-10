@@ -20,8 +20,8 @@ define('argos/Fields/DropdownField', [
   'dojo/_base/declare',
   '../Dropdown',
   '../FieldManager',
-  './_Field'
-], function(declare, Dropdown, FieldManager, _Field) {
+  './_Field',
+], (declare, Dropdown, FieldManager, _Field) => {
   /**
    * @class
    * @alias module:argos/Fields/DropdownField

@@ -17,8 +17,8 @@ define('crm/Views/RelatedContextWidget', [
   'dojo/_base/declare',
   'dojo/aspect',
   'argos/RelatedViewManager',
-  'argos/_RelatedViewWidgetBase'
-], function(declare, aspect, RelatedViewManager, _RelatedViewWidgetBase) {
+  'argos/_RelatedViewWidgetBase',
+], (declare, aspect, RelatedViewManager, _RelatedViewWidgetBase) => {
   const __class = declare('crm.Views.RelatedContextWidget', [_RelatedViewWidgetBase], {
 
     cls: 'related-context-widget',

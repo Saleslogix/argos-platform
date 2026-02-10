@@ -20,8 +20,8 @@ define('crm/Views/HistoryAttendee/List', [
   '../../Action',
   'argos/I18n',
   'crm/Format',
-  '../../Models/Activity/ActivityTypeText'
-], function(declare, List, MODEL_NAMES, action, getResource, format, ActivityTypeText) {
+  '../../Models/Activity/ActivityTypeText',
+], (declare, List, MODEL_NAMES, action, getResource, format, ActivityTypeText) => {
   const resource = getResource('historyAttendeeList');
 
   const __class = declare('crm.Views.HistoryAttendee.List', [List], {

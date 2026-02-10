@@ -20,8 +20,8 @@ define('argos/Fields/EditorField', [
   'dojo/_base/declare',
   'dojo/_base/event',
   './_Field',
-  '../I18n'
-], function(declare, event, _Field, getResource) {
+  '../I18n',
+], (declare, event, _Field, getResource) => {
   const resource = getResource('dateField');
 
   /**

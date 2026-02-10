@@ -16,8 +16,8 @@
 define('crm/Views/TicketActivity/RateLookup', [
   'dojo/_base/declare',
   'argos/List',
-  'argos/I18n'
-], function(declare, List, getResource) {
+  'argos/I18n',
+], (declare, List, getResource) => {
   const resource = getResource('ticketActivityRateLookup');
 
   const __class = declare('crm.Views.TicketActivity.RateLookup', [List], {

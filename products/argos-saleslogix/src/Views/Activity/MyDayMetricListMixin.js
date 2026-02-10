@@ -17,8 +17,8 @@ define('crm/Views/Activity/MyDayMetricListMixin', [
   'dojo/_base/declare',
   'dojo/_base/lang',
   './MyDayMetricWidget',
-  '../_MetricListMixin'
-], function(declare, lang, MyDayMetricWidget, _MetricListMixin) {
+  '../_MetricListMixin',
+], (declare, lang, MyDayMetricWidget, _MetricListMixin) => {
   const __class = declare('crm.Views.Activity.MyDayMetricListMixin', [_MetricListMixin], {
 
     metricWidgetCtor: MyDayMetricWidget,

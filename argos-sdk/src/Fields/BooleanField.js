@@ -19,8 +19,8 @@
 define('argos/Fields/BooleanField', [
   'dojo/_base/declare',
   './_Field',
-  '../FieldManager'
-], function(declare, Field, FieldManager) {
+  '../FieldManager',
+], (declare, Field, FieldManager) => {
   /**
    * @class
    * @alias module:argos/Fields/BooleanField

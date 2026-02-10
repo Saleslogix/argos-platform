@@ -23,8 +23,8 @@ define('crm/Integrations/BOE/Views/Quotes/Detail', [
   'argos/I18n',
   '../../PricingAvailabilityService',
   '../../Promote',
-  '../../Utility'
-], function(declare, lang, format, Detail, BusyIndicator, MODEL_NAMES, getResource, PricingAvailabilityService, Promote, utility) {
+  '../../Utility',
+], (declare, lang, format, Detail, BusyIndicator, MODEL_NAMES, getResource, PricingAvailabilityService, Promote, utility) => {
   const resource = getResource('quoteDetail');
 
   const __class = declare('crm.Integrations.BOE.Views.Quotes.Detail', [Detail], {
@@ -134,7 +134,7 @@ define('crm/Integrations/BOE/Views/Quotes/Detail', [
             },
             scope: this,
           });
-        }
+        },
       );
 
       return promise;

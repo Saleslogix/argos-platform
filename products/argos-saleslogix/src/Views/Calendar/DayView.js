@@ -21,8 +21,8 @@ define('crm/Views/Calendar/DayView', [
   'argos/List',
   'argos/_LegacySDataListMixin',
   'argos/I18n',
-  '../../Models/Activity/ActivityTypeIcon'
-], function(declare, string, ErrorManager, convert, List, _LegacySDataListMixin, getResource, activityTypeIcons) {
+  '../../Models/Activity/ActivityTypeIcon',
+], (declare, string, ErrorManager, convert, List, _LegacySDataListMixin, getResource, activityTypeIcons) => {
   const resource = getResource('calendarDayView');
   const dtFormatResource = getResource('calendarDayViewDateTimeFormat');
 
@@ -278,7 +278,7 @@ define('crm/Views/Calendar/DayView', [
           App.context.user && App.context.user.$key,
           convert.toIsoStringFromDate(this.currentDate.clone().startOf('day').toDate()),
           convert.toIsoStringFromDate(this.currentDate.clone().endOf('day').toDate()),
-        ]
+        ],
       );
     },
     activateEventMore: function activateEventMore() {
@@ -428,7 +428,7 @@ define('crm/Views/Calendar/DayView', [
           convert.toIsoStringFromDate(endDate),
           this.currentDate.format('YYYY-MM-DDT00:00:00[Z]'),
           this.currentDate.format('YYYY-MM-DDT23:59:59[Z]'),
-        ]
+        ],
       );
     },
     selectEntry: function selectEntry(params) {

@@ -21,8 +21,8 @@ define('argos/Fields/SignatureField', [
   '../Format',
   './EditorField',
   '../FieldManager',
-  '../I18n'
-], function(declare, format, EditorField, FieldManager, getResource) {
+  '../I18n',
+], (declare, format, EditorField, FieldManager, getResource) => {
   const resource = getResource('signatureField');
 
   /**

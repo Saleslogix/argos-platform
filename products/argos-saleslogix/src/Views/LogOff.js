@@ -16,8 +16,8 @@
 define('crm/Views/LogOff', [
   'dojo/_base/declare',
   'argos/View',
-  'argos/I18n'
-], function(declare, View, getResource) {
+  'argos/I18n',
+], (declare, View, getResource) => {
   const resource = getResource('logOff');
 
   const __class = declare('crm.Views.LogOff', [View], {

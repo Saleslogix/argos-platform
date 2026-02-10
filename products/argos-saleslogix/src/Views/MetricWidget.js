@@ -26,8 +26,8 @@ define('crm/Views/MetricWidget', [
   'argos/Store/SData',
   'argos/I18n',
   'crm/Format',
-  'crm/Aggregate'
-], function(declare, lang, Deferred, when, _Widget, _Templated, SDataStore, getResource, format, aggregate) {
+  'crm/Aggregate',
+], (declare, lang, Deferred, when, _Widget, _Templated, SDataStore, getResource, format, aggregate) => {
   const resource = getResource('metricWidget');
 
   /**

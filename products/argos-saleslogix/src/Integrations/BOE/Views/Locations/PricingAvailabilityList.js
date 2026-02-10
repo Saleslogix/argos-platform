@@ -19,8 +19,8 @@ define('crm/Integrations/BOE/Views/Locations/PricingAvailabilityList', [
   'argos/List',
   'crm/Format',
   'argos/Convert',
-  'argos/I18n'
-], function(declare, lang, List, format, convert, getResource) {
+  'argos/I18n',
+], (declare, lang, List, format, convert, getResource) => {
   const resource = getResource('locationsPricingAvailabilityList');
 
   const __class = declare('crm.Integrations.BOE.Views.Locations.PricingAvailabilityList', [List], {

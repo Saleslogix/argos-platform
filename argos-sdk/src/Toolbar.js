@@ -21,8 +21,8 @@ define('argos/Toolbar', [
   'dojo/_base/lang',
   'dijit/_WidgetBase',
   './_ActionMixin',
-  './_Templated'
-], function(declare, lang, _WidgetBase, _ActionMixin, _Templated) {
+  './_Templated',
+], (declare, lang, _WidgetBase, _ActionMixin, _Templated) => {
   /**
    * @class
    * @alias module:argos/Toolbar

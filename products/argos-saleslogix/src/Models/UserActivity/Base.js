@@ -17,8 +17,8 @@ define('crm/Models/UserActivity/Base', [
   'dojo/_base/declare',
   '../Activity/Base',
   '../Names',
-  'argos/I18n'
-], function(declare, ActivityBase, MODEL_NAMES, getResource) {
+  'argos/I18n',
+], (declare, ActivityBase, MODEL_NAMES, getResource) => {
   const resource = getResource('userActivityModel');
 
   const __class = declare('crm.Models.UserActivity.Base', [ActivityBase], {

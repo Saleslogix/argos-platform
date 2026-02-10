@@ -18,8 +18,8 @@
  */
 define('argos/_DraggableBase', [
   'dojo/_base/declare',
-  'dojo/dom-geometry'
-], function(declare, domGeom) {
+  'dojo/dom-geometry',
+], (declare, domGeom) => {
   /**
    * @class
    * @alias module:argos/_DraggableBase

@@ -25,8 +25,8 @@ define('argos/Models/_SDataModelBase', [
   'dojo/string',
   '../Utility',
   './_ModelBase',
-  './Types'
-], function(declare, SDataStore, Deferred, all, when, string, utility, _ModelBase, MODEL_TYPES) {
+  './Types',
+], (declare, SDataStore, Deferred, all, when, string, utility, _ModelBase, MODEL_TYPES) => {
   /**
    * @class
    * @alias module:argos/Models/SDataModelBase

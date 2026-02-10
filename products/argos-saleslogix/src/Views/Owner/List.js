@@ -16,8 +16,8 @@
 define('crm/Views/Owner/List', [
   'dojo/_base/declare',
   'argos/List',
-  'argos/I18n'
-], function(declare, List, getResource) {
+  'argos/I18n',
+], (declare, List, getResource) => {
   const resource = getResource('ownerList');
 
   const __class = declare('crm.Views.Owner.List', [List], {

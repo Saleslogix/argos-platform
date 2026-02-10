@@ -14,8 +14,8 @@
  */
 
 define('crm/reducers/user', [
-  '../actions/user'
-], function(userActions) {
+  '../actions/user',
+], (userActions) => {
   const { SET_USER } = userActions;
 
   const initialUserState = null;
@@ -31,6 +31,6 @@ define('crm/reducers/user', [
   }
 
   return {
-    user
+    user,
   };
 });

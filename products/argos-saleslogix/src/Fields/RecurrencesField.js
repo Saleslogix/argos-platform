@@ -17,8 +17,8 @@ define('crm/Fields/RecurrencesField', [
   'dojo/_base/declare',
   'argos/Fields/EditorField',
   'argos/FieldManager',
-  'argos/I18n'
-], function(declare, EditorField, FieldManager, getResource) {
+  'argos/I18n',
+], (declare, EditorField, FieldManager, getResource) => {
   const resource = getResource('recurrencesField');
 
   const control = declare('crm.Fields.RecurrencesField', [EditorField], {

@@ -16,8 +16,8 @@
 define('crm/Integrations/BOE/Modules/ReturnLineModule', [
   'dojo/_base/declare',
   'dojo/_base/lang',
-  './_Module'
-], function(declare, lang, _Module) {
+  './_Module',
+], (declare, lang, _Module) => {
   const __class = declare('crm.Integrations.BOE.Modules.ReturnLineModule', [_Module], {
     init: function init() {
     },

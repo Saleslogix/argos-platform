@@ -21,7 +21,7 @@
  * @class
  * @alias module:argos/Dialogs/Toast
  */
-define('argos/Dialogs/Toast', [], function() {
+define('argos/Dialogs/Toast', [], () => {
   class Toast {
     constructor(options) {
       this.containerNode = options && options.containerNode;

@@ -29,8 +29,8 @@ define('crm/Views/Activity/List', [
   'argos/I18n',
   '../../Models/Activity/ActivityTypeIcon',
   '../../Models/Activity/ActivityTypePicklists',
-  'dojo/string'
-], function(declare, connect, _RightDrawerListMixin, List, convert, action, format, environment, util, ErrorManager, MODEL_NAMES, MODEL_TYPES, getResource, activityTypeIcons, ActivityTypePicklistsActivity, string) {
+  'dojo/string',
+], (declare, connect, _RightDrawerListMixin, List, convert, action, format, environment, util, ErrorManager, MODEL_NAMES, MODEL_TYPES, getResource, activityTypeIcons, ActivityTypePicklistsActivity, string) => {
   const { getPicklistByActivityType } = ActivityTypePicklistsActivity;
 
   const resource = getResource('activityList');

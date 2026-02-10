@@ -20,8 +20,8 @@ define('crm/Views/History/Edit', [
   '../../Validator',
   'argos/Utility',
   'argos/Edit',
-  'argos/I18n'
-], function(declare, string, environment, validator, utility, Edit, getResource) {
+  'argos/I18n',
+], (declare, string, environment, validator, utility, Edit, getResource) => {
   const resource = getResource('historyEdit');
   const dtFormatResource = getResource('historyEditDateTimeFormat');
 
@@ -615,7 +615,7 @@ define('crm/Views/History/Edit', [
           valueTextProperty: 'ContactName',
           view: 'contact_related',
           where: this.formatDependentQuery.bindDelegate(
-            this, 'Account.Id eq "${0}"', 'AccountId'
+            this, 'Account.Id eq "${0}"', 'AccountId',
           ),
         }, {
           dependsOn: 'Account',
@@ -630,7 +630,7 @@ define('crm/Views/History/Edit', [
           valueTextProperty: 'OpportunityName',
           view: 'opportunity_related',
           where: this.formatDependentQuery.bindDelegate(
-            this, 'Account.Id eq "${0}"', 'AccountId'
+            this, 'Account.Id eq "${0}"', 'AccountId',
           ),
         }, {
           dependsOn: 'Account',
@@ -645,7 +645,7 @@ define('crm/Views/History/Edit', [
           valueTextProperty: 'TicketNumber',
           view: 'ticket_related',
           where: this.formatDependentQuery.bindDelegate(
-            this, 'Account.Id eq "${0}"', 'AccountId'
+            this, 'Account.Id eq "${0}"', 'AccountId',
           ),
         }, {
           label: this.leadText,

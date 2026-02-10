@@ -19,8 +19,8 @@
 define('argos/MainToolbar', [
   'dojo/_base/declare',
   './Toolbar',
-  './I18n'
-], function(declare, Toolbar, getResource) {
+  './I18n',
+], (declare, Toolbar, getResource) => {
   const resource = getResource('mainToolbar');
 
   /**

@@ -15,8 +15,8 @@
 
 define('crm/Integrations/BOE/Modules/_Module', [
   'dojo/_base/declare',
-  'dojo/_base/lang'
-], function(declare, lang) {
+  'dojo/_base/lang',
+], (declare, lang) => {
   const __class = declare('crm.Integrations.BOE.Modules._Module', null, {
     applicationModule: null,
     defaultViews: null,

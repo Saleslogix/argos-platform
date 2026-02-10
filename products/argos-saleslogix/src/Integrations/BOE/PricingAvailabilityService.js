@@ -16,8 +16,8 @@
 define('crm/Integrations/BOE/PricingAvailabilityService', [
   'dojo/_base/lang',
   'argos/Dialogs/BusyIndicator',
-  'argos/I18n'
-], function(lang, BusyIndicator, getResource) {
+  'argos/I18n',
+], (lang, BusyIndicator, getResource) => {
   const resource = getResource('pricingAvailabilityService');
 
   const __class = lang.setObject('crm.Integrations.BOE.PricingAvailabilityService', {

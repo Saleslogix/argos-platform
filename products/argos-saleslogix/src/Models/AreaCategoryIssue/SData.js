@@ -19,8 +19,8 @@ define('crm/Models/AreaCategoryIssue/SData', [
   'argos/Models/_SDataModelBase',
   'argos/Models/Manager',
   'argos/Models/Types',
-  '../Names'
-], function(declare, Base, _SDataModelBase, Manager, MODEL_TYPES, MODEL_NAMES) {
+  '../Names',
+], (declare, Base, _SDataModelBase, Manager, MODEL_TYPES, MODEL_NAMES) => {
   function assignKeyDescriptor(values) {
     return values
       .filter(v => typeof v === 'string' && v.length > 0)

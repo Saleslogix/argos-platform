@@ -20,8 +20,8 @@ define('crm/Views/RelatedEditWidget', [
   'dojo/_base/connect',
   'argos/RelatedViewManager',
   'argos/_RelatedViewWidgetBase',
-  'argos/Edit'
-], function(declare, event, on, connect, RelatedViewManager, _RelatedViewWidgetBase, Edit) {
+  'argos/Edit',
+], (declare, event, on, connect, RelatedViewManager, _RelatedViewWidgetBase, Edit) => {
   const __class = declare('crm.Views.RelatedEditWidget', [_RelatedViewWidgetBase], {
     cls: 'related-edit-widget',
     owner: null,

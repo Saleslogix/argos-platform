@@ -18,8 +18,8 @@
   */
 define('argos/Format', [
   'dojo/_base/lang',
-  './I18n'
-], function(lang, getResource) {
+  './I18n',
+], (lang, getResource) => {
   const format = ICRMCommonSDK.format;
   const resource = getResource('format');
   const dtFormatResource = getResource('formatDateTimeFormat');

@@ -28,8 +28,8 @@ define('argos/_ListBase', [
   './ConfigurableSelectionModel',
   './_PullToRefreshMixin',
   './I18n',
-  'argos/Convert'
-], function(declare, lang, connect, string, Utility, ErrorManager, View, SearchWidget, ConfigurableSelectionModel, _PullToRefreshMixin, getResource, convert) {
+  'argos/Convert',
+], (declare, lang, connect, string, Utility, ErrorManager, View, SearchWidget, ConfigurableSelectionModel, _PullToRefreshMixin, getResource, convert) => {
   const resource = getResource('listBase');
   const resourceSDK = getResource('sdkApplication');
 
@@ -624,7 +624,7 @@ define('argos/_ListBase', [
         this._selectionConnects.push(
           this.connect(this._selectionModel, 'onSelect', this._onSelectionModelSelect),
           this.connect(this._selectionModel, 'onDeselect', this._onSelectionModelDeselect),
-          this.connect(this._selectionModel, 'onClear', this._onSelectionModelClear)
+          this.connect(this._selectionModel, 'onClear', this._onSelectionModelClear),
         );
       }
     },

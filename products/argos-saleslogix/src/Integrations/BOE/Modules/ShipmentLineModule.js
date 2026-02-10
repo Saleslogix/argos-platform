@@ -19,8 +19,8 @@ define('crm/Integrations/BOE/Modules/ShipmentLineModule', [
   './_Module',
   '../Views/ERPShipmentItems/Detail',
   '../Models/ErpShipmentItem/Offline',
-  '../Models/ErpShipmentItem/SData'
-], function(declare, lang, _Module, ShipmentItemsDetail) {
+  '../Models/ErpShipmentItem/SData',
+], (declare, lang, _Module, ShipmentItemsDetail) => {
   const __class = declare('crm.Integrations.BOE.Modules.ShipmentLineModule', [_Module], {
     init: function init() {
     },

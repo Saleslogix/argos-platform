@@ -17,8 +17,8 @@ define('crm/Integrations/BOE/Modules/QuotePersonModule', [
   'dojo/_base/declare',
   'dojo/_base/lang',
   './_Module',
-  '../Models/QuotePerson/SData'
-], function(declare, lang, _Module) {
+  '../Models/QuotePerson/SData',
+], (declare, lang, _Module) => {
   const __class = declare('crm.Integrations.BOE.Modules.QuotePersonModule', [_Module], {
     init: function init() {
     },

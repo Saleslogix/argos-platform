@@ -20,8 +20,8 @@ define('crm/Views/Ticket/Edit', [
   '../../Validator',
   'argos/ErrorManager',
   'argos/Edit',
-  'argos/I18n'
-], function(declare, lang, format, validator, ErrorManager, Edit, getResource) {
+  'argos/I18n',
+], (declare, lang, format, validator, ErrorManager, Edit, getResource) => {
   const resource = getResource('ticketEdit');
 
   const __class = declare('crm.Views.Ticket.Edit', [Edit], {

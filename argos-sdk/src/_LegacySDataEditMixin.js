@@ -23,8 +23,8 @@ define('argos/_LegacySDataEditMixin', [
   'dojo/_base/connect',
   './ErrorManager',
   './Convert',
-  './_SDataDetailMixin'
-], function(declare, lang, string, connect, ErrorManager, convert, _SDataDetailMixin) {
+  './_SDataDetailMixin',
+], (declare, lang, string, connect, ErrorManager, convert, _SDataDetailMixin) => {
   /**
    * @class
    * @alias module:argos/_LegacySDataEditMixin

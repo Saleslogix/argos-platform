@@ -18,8 +18,8 @@
  */
 define('argos/Views/Link', [
   'dojo/_base/declare',
-  '../View'
-], function(declare, View) {
+  '../View',
+], (declare, View) => {
   /**
    * @class
    * @alias module:argos/Views/Link

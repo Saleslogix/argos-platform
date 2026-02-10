@@ -18,8 +18,8 @@ define('crm/Views/OfflineOptions/Edit', [
   'argos/_EditBase',
   'argos/_RelatedViewWidgetEditMixin',
   'dojo/Deferred',
-  'argos/I18n'
-], function(declare, _EditBase, _RelatedWidgetEditMixin, Deferred, getResource) {
+  'argos/I18n',
+], (declare, _EditBase, _RelatedWidgetEditMixin, Deferred, getResource) => {
   const resource = getResource('offlineOptionsEdit');
 
   const __class = declare('crm.Views.OfflineOptions.Edit', [_EditBase, _RelatedWidgetEditMixin], {
