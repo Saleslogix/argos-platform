@@ -31,9 +31,10 @@ define('crm/Integrations/BOE/Modules/QuoteModule', [
   '../Views/Quotes/List',
   '../Views/ERPShipTos/List',
   '../Views/SyncResults/List',
+  '../../../Views/WorkflowInstances/List',
   '../Models/Quote/Offline',
   '../Models/Quote/SData',
-], (declare, lang, _Module, AttachmentList, BackOfficeList, BackOfficeAccountingEntityList, BillToList, CarrierList, LocationList, QuotePersonsList, QuoteLinesDetail, QuoteLinesList, QuotesDetail, QuotesEdit, QuotesList, ShipToList, SyncResultsList) => {
+], (declare, lang, _Module, AttachmentList, BackOfficeList, BackOfficeAccountingEntityList, BillToList, CarrierList, LocationList, QuotePersonsList, QuoteLinesDetail, QuoteLinesList, QuotesDetail, QuotesEdit, QuotesList, ShipToList, SyncResultsList, WorkflowInstancesList) => {
   const __class = declare('crm.Integrations.BOE.Modules.QuoteModule', [_Module], {
     defaultViews: ['quote_list'],
     init: function init() {
@@ -162,6 +163,10 @@ define('crm/Integrations/BOE/Modules/QuoteModule', [
       am.registerView(new QuoteLinesDetail());
 
       am.registerView(new QuotesList());
+      am.registerView(new WorkflowInstancesList({
+        id: 'quote_workflow_instances_related',
+        expose: false,
+      }));
     },
     loadCustomizations: function loadCustomizations() {
       const am = this.applicationModule;

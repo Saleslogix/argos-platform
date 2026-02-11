@@ -58,6 +58,8 @@
   entityText: "Account"
   addTicketText: "Add Ticket"
   customerJourney360Text: "Journey 360"
+  relatedWorkflowInstancesText: "Workflow Instances"
+  relatedWorkflowInstancesTitleText: "Account Workflow Instances"
 >
 
 <accountEdit ""
@@ -557,6 +559,8 @@
   viewAddressText: "View address"
   moreDetailsText: "More Details"
   entityText: "Contact"
+  relatedWorkflowInstancesText: "Workflow Instances"
+  relatedWorkflowInstancesTitleText: "Contact Workflow Instances"
 >
 
 <contactEdit ""
@@ -781,6 +785,8 @@
   calledText: "Called ${0}"
   emailedText: "Emailed ${0}"
   entityText: "Lead"
+  relatedWorkflowInstancesText: "Workflow Instances"
+  relatedWorkflowInstancesTitleText: "Lead Workflow Instances"
 >
 
 <leadEdit ""
@@ -870,6 +876,8 @@
   multiCurrencyDateText: "rate date"
   multiCurrencyLockedText: "rate locked"
   entityText: "Opportunity"
+  relatedWorkflowInstancesText: "Workflow Instances"
+  relatedWorkflowInstancesTitleText: "Opportunity Workflow Instances"
 >
 
 <opportunityEdit ""
@@ -1061,6 +1069,8 @@
   relatedTicketActivitiesText: "Ticket Activities"
   loadingText: "Loading"
   entityText: "Ticket"
+  relatedWorkflowInstancesText: "Workflow Instances"
+  relatedWorkflowInstancesTitleText: "Ticket Workflow Instances"
 >
 
 <ticketEdit ""

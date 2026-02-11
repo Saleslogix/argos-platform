@@ -33,11 +33,12 @@ define('crm/Integrations/BOE/Modules/SalesOrderModule', [
   '../Views/ERPShipTos/List',
   '../Views/ERPShipmentItems/List',
   '../Views/SyncResults/List',
+  '../../../Views/WorkflowInstances/List',
   '../Models/SalesOrder/Offline',
   '../Models/SalesOrder/SData',
   '../Models/ErpSalesOrderPerson/Offline',
   '../Models/ErpSalesOrderPerson/SData',
-], (declare, lang, _Module, AttachmentList, BackOfficeList, BackOfficeAccountingEntityList, BillToList, CarrierList, InvoiceItemsList, LocationList, ProductList, SalesOrderList, SalesOrderDetail, SalesOrderEdit, SalesOrderItemList, SalesPersonList, ShipToList, ShipmentItemsList, SyncResultsList) => {
+], (declare, lang, _Module, AttachmentList, BackOfficeList, BackOfficeAccountingEntityList, BillToList, CarrierList, InvoiceItemsList, LocationList, ProductList, SalesOrderList, SalesOrderDetail, SalesOrderEdit, SalesOrderItemList, SalesPersonList, ShipToList, ShipmentItemsList, SyncResultsList, WorkflowInstancesList) => {
   const __class = declare('crm.Integrations.BOE.Modules.SalesOrderModule', [_Module], {
     defaultViews: ['salesorder_list'],
     init: function init() {
@@ -176,6 +177,10 @@ define('crm/Integrations/BOE/Modules/SalesOrderModule', [
         defaultSearchTerm: function defaultSearchTerm() {
           return '';
         },
+      }));
+      am.registerView(new WorkflowInstancesList({
+        id: 'salesorder_workflow_instances_related',
+        expose: false,
       }));
     },
     loadCustomizations: function loadCustomizations() {

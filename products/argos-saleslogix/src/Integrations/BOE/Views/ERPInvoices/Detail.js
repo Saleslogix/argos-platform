@@ -50,6 +50,8 @@ define('crm/Integrations/BOE/Views/ERPInvoices/Detail', [
     salesPersonsText: resource.salesPersonsText,
     entityText: resource.entityText,
     documentDateText: resource.documentDateText,
+    relatedWorkflowInstancesText: resource.relatedWorkflowInstancesText,
+    relatedWorkflowInstancesTitleText: resource.relatedWorkflowInstancesTitleText,
 
 
     // View Properties
@@ -201,6 +203,14 @@ define('crm/Integrations/BOE/Views/ERPInvoices/Detail', [
           label: this.receivablesText,
           where: this.formatRelatedQuery.bindDelegate(this, 'ErpInvoice.Id eq "${0}"'),
           view: 'invoice_receivables_related',
+        }, {
+          name: 'WorkflowInstances',
+          label: this.relatedWorkflowInstancesText,
+          where: function() { // eslint-disable-line
+            return this.formatRelatedQuery(this.entry, 'EntityId eq "${0}" and EntityType eq "ERPInvoice"');
+          },
+          view: 'invoice_workflow_instances_related',
+          title: this.relatedWorkflowInstancesTitleText,
         },
         ],
       }]);

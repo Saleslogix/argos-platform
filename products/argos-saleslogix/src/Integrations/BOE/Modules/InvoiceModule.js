@@ -22,13 +22,14 @@ define('crm/Integrations/BOE/Modules/InvoiceModule', [
   '../Views/ERPInvoiceItems/Detail',
   '../Views/ERPInvoiceItems/List',
   '../Views/ERPReceivables/List',
+  '../../../Views/WorkflowInstances/List',
   '../Models/ErpInvoice/Offline',
   '../Models/ErpInvoice/SData',
   '../Models/ErpInvoiceItem/Offline',
   '../Models/ErpInvoiceItem/SData',
   '../Models/ErpInvoicePerson/Offline',
   '../Models/ErpInvoicePerson/SData',
-], (declare, lang, _Module, ERPInvoiceDetail, ERPInvoiceList, ERPInvoiceItemDetail, ERPInvoiceItemList, ERPReceivablesList) => {
+], (declare, lang, _Module, ERPInvoiceDetail, ERPInvoiceList, ERPInvoiceItemDetail, ERPInvoiceItemList, ERPReceivablesList, WorkflowInstancesList) => {
   const __class = declare('crm.Integrations.BOE.Modules.InvoiceModule', [_Module], {
     defaultViews: ['invoice_list'],
     init: function init() {
@@ -48,6 +49,10 @@ define('crm/Integrations/BOE/Modules/InvoiceModule', [
         id: 'invoice_receivables_related',
         groupsEnabled: false,
         hasSettings: false,
+        expose: false,
+      }));
+      am.registerView(new WorkflowInstancesList({
+        id: 'invoice_workflow_instances_related',
         expose: false,
       }));
     },

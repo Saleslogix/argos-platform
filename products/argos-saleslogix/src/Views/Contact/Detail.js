@@ -61,6 +61,8 @@ define('crm/Views/Contact/Detail', [
     sendEmailText: resource.sendEmailText,
     viewAddressText: resource.viewAddressText,
     entityText: resource.entityText,
+    relatedWorkflowInstancesText: resource.relatedWorkflowInstancesText,
+    relatedWorkflowInstancesTitleText: resource.relatedWorkflowInstancesTitleText,
 
     // View Properties
     id: 'contact_detail',
@@ -280,6 +282,14 @@ define('crm/Views/Contact/Detail', [
           where: this.formatRelatedQuery.bindDelegate(this, 'contactId eq "${0}"'), // must be lower case because of feed
           view: 'contact_attachment_related',
           title: this.relatedAttachmentTitleText,
+        }, {
+          name: 'WorkflowInstances',
+          label: this.relatedWorkflowInstancesText,
+          where: function() { // eslint-disable-line
+            return this.formatRelatedQuery(this.entry, 'EntityId eq "${0}" and EntityType eq "Contact"');
+          },
+          view: 'contact_workflow_instances_related',
+          title: this.relatedWorkflowInstancesTitleText,
         }],
       }]);
     },

@@ -53,6 +53,8 @@ define('crm/Views/Ticket/Detail', [
     relatedTicketActivitiesText: resource.relatedTicketActivitiesText,
     loadingText: resource.loadingText,
     entityText: resource.entityText,
+    relatedWorkflowInstancesText: resource.relatedWorkflowInstancesText,
+    relatedWorkflowInstancesTitleText: resource.relatedWorkflowInstancesTitleText,
 
     // View Properties
     id: 'ticket_detail',
@@ -186,6 +188,14 @@ define('crm/Views/Ticket/Detail', [
           where: this.formatRelatedQuery.bindDelegate(this, 'ticketId eq "${0}"'), // must be lower case because of feed
           view: 'ticket_attachment_related',
           title: this.relatedAttachmentTitleText,
+        }, {
+          name: 'WorkflowInstances',
+          label: this.relatedWorkflowInstancesText,
+          where: function() { // eslint-disable-line
+            return this.formatRelatedQuery(this.entry, 'EntityId eq "${0}" and EntityType eq "Ticket"');
+          },
+          view: 'ticket_workflow_instances_related',
+          title: this.relatedWorkflowInstancesTitleText,
         }],
       }]);
     },
