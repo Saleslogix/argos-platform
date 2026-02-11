@@ -85,6 +85,8 @@ define('crm/Integrations/BOE/Views/SalesOrders/Detail', [
     erpStatusText: resource.erpStatusText,
     refreshPricingText: resource.refreshPricingText,
     pricingUnavailableText: resource.pricingUnavailableText,
+    relatedWorkflowInstancesText: resource.relatedWorkflowInstancesText,
+    relatedWorkflowInstancesTitleText: resource.relatedWorkflowInstancesTitleText,
 
     // View Properties
     id: 'salesorder_detail',
@@ -659,6 +661,14 @@ define('crm/Integrations/BOE/Views/SalesOrders/Detail', [
             return `SalesOrder.Id eq "${entry.$key}"`;
           },
           view: 'salesorder_salesperson_related',
+        }, {
+          name: 'WorkflowInstances',
+          label: this.relatedWorkflowInstancesText,
+          where: function where(entry) {
+            return `EntityId eq "${entry.$key}" and EntityType eq "SalesOrder"`;
+          },
+          view: 'salesorder_workflow_instances_related',
+          title: this.relatedWorkflowInstancesTitleText,
         }],
       }]);
     },

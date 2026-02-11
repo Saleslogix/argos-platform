@@ -61,6 +61,8 @@ define('crm/Views/Account/Detail', [
     entityText: resource.entityText,
     addTicketText: resource.addTicketText,
     customerJourney360Text: resource.customerJourney360Text,
+    relatedWorkflowInstancesText: resource.relatedWorkflowInstancesText,
+    relatedWorkflowInstancesTitleText: resource.relatedWorkflowInstancesTitleText,
 
     // View Properties
     id: 'account_detail',
@@ -263,6 +265,14 @@ define('crm/Views/Account/Detail', [
           where: this.formatRelatedQuery.bindDelegate(this, 'accountId eq "${0}"'), // must be lower case because of feed
           view: 'account_attachment_related',
           title: this.relatedAttachmentTitleText,
+        }, {
+          name: 'WorkflowInstances',
+          label: this.relatedWorkflowInstancesText,
+          where: function() { // eslint-disable-line
+            return this.formatRelatedQuery(this.entry, 'EntityId eq "${0}" and EntityType eq "Account"');
+          },
+          view: 'account_workflow_instances_related',
+          title: this.relatedWorkflowInstancesTitleText,
         }],
       }]);
     },

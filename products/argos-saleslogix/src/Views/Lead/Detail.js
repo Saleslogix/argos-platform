@@ -60,6 +60,8 @@ define('crm/Views/Lead/Detail', [
     calledText: resource.calledText,
     emailedText: resource.emailedText,
     entityText: resource.entityText,
+    relatedWorkflowInstancesText: resource.relatedWorkflowInstancesText,
+    relatedWorkflowInstancesTitleText: resource.relatedWorkflowInstancesTitleText,
 
     // View Properties
     id: 'lead_detail',
@@ -271,6 +273,14 @@ define('crm/Views/Lead/Detail', [
           where: this.formatRelatedQuery.bindDelegate(this, 'leadId eq "${0}"'), // must be lower case because of feed
           view: 'lead_attachment_related',
           title: this.relatedAttachmentTitleText,
+        }, {
+          name: 'WorkflowInstances',
+          label: this.relatedWorkflowInstancesText,
+          where: function() { // eslint-disable-line
+            return this.formatRelatedQuery(this.entry, 'EntityId eq "${0}" and EntityType eq "Lead"');
+          },
+          view: 'lead_workflow_instances_related',
+          title: this.relatedWorkflowInstancesTitleText,
         }],
       }]);
     },

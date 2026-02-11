@@ -88,6 +88,8 @@ define('crm/Integrations/BOE/Views/Quotes/Detail', [
     erpStatusDateText: resource.erpStatusDateText,
     refreshPricingText: resource.refreshPricingText,
     pricingUnavailableText: resource.pricingUnavailableText,
+    relatedWorkflowInstancesText: resource.relatedWorkflowInstancesText,
+    relatedWorkflowInstancesTitleText: resource.relatedWorkflowInstancesTitleText,
 
     resourceKind: 'quotes',
     modelName: MODEL_NAMES.QUOTE,
@@ -673,6 +675,14 @@ define('crm/Integrations/BOE/Views/Quotes/Detail', [
             return `EntityType eq "Quote" and EntityId eq "${entry.$key}"`;
           },
           view: 'quote_syncresult_related',
+        }, {
+          name: 'WorkflowInstances',
+          label: this.relatedWorkflowInstancesText,
+          where: function where(entry) {
+            return `EntityId eq "${entry.$key}" and EntityType eq "Quote"`;
+          },
+          view: 'quote_workflow_instances_related',
+          title: this.relatedWorkflowInstancesTitleText,
         }],
       }]);
     },

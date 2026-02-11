@@ -63,6 +63,8 @@ define('crm/Views/Opportunity/Detail', [
     exchangeRateDateFormatText: dtFormatResource.exchangeRateDateFormatText,
     exchangeRateDateFormatText24: dtFormatResource.exchangeRateDateFormatText24,
     entityText: resource.entityText,
+    relatedWorkflowInstancesText: resource.relatedWorkflowInstancesText,
+    relatedWorkflowInstancesTitleText: resource.relatedWorkflowInstancesTitleText,
 
     // View Properties
     id: 'opportunity_detail',
@@ -252,6 +254,14 @@ define('crm/Views/Opportunity/Detail', [
           where: this.formatRelatedQuery.bindDelegate(this, 'opportunityId eq "${0}"'), // must be lower case because of feed
           view: 'opportunity_attachment_related',
           title: this.relatedAttachmentTitleText,
+        }, {
+          name: 'WorkflowInstances',
+          label: this.relatedWorkflowInstancesText,
+          where: function() { // eslint-disable-line
+            return this.formatRelatedQuery(this.entry, 'EntityId eq "${0}" and EntityType eq "Opportunity"');
+          },
+          view: 'opportunity_workflow_instances_related',
+          title: this.relatedWorkflowInstancesTitleText,
         }],
       };
 

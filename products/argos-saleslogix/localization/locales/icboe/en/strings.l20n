@@ -257,6 +257,8 @@
   erpStatusDateText: "erp status date"
   refreshPricingText: "Refresh Pricing"
   pricingUnavailableText: "This quote is currently closed and pricing is not available."
+  relatedWorkflowInstancesText: "Workflow Instances"
+  relatedWorkflowInstancesTitleText: "Quote Workflow Instances"
 
 >
 
@@ -514,6 +516,8 @@
   shipToText: "Ship-To"
   salesPersonsText: "Sales Persons"
   entityText: "Invoice"
+  relatedWorkflowInstancesText: "Workflow Instances"
+  relatedWorkflowInstancesTitleText: "Invoice Workflow Instances"
 >
 
 <erpInvoicesList ""
@@ -903,6 +907,8 @@
   erpStatusDateText: "erp status date"
   refreshPricingText: "Refresh Pricing"
   pricingUnavailableText: "This sales order is currently closed and pricing is not available."
+  relatedWorkflowInstancesText: "Workflow Instances"
+  relatedWorkflowInstancesTitleText: "Sales Order Workflow Instances"
 >
 
 <salesOrdersList ""
