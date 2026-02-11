@@ -60,6 +60,7 @@ define('crm/Views/Account/Detail', [
     calledText: resource.calledText,
     entityText: resource.entityText,
     addTicketText: resource.addTicketText,
+    customerJourney360Text: resource.customerJourney360Text,
 
     // View Properties
     id: 'account_detail',
@@ -208,6 +209,20 @@ define('crm/Views/Account/Detail', [
           property: 'Owner.OwnerDescription',
           label: this.ownerText,
         }],
+      }, {
+        name: 'CustomerJourneysSection',
+        children: [
+          {
+            name: 'customerJourneyRoot',
+            list: false,
+            relatedView: {
+              widgetType: 'customerJourney360Widget',
+              id: 'customerJourney360Widget',
+              cls: 'customer-journey-360-widget',
+            },
+          },
+        ],
+        title: this.customerJourney360Text,
       }, {
         title: this.relatedItemsText,
         list: true,
