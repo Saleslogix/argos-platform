@@ -5,13 +5,80 @@ define('crm/Views/Journey/CustomerJourney360Widget', [
   'argos/I18n',
 ], (_declare, _RelatedViewWidgetBase, RelatedViewManager, getResource) => {
   const resource = getResource('customerJourney360Widget');
+
+  const formatDate = (dateStr) => {
+    return dateStr ? new Date(dateStr).toLocaleDateString() : '';
+  };
+
   const __class = _declare(
     'crm.Views.Journey.CustomerJourney360Widget',
     [_RelatedViewWidgetBase],
     {
       relatedContentTemplate: new Simplate([
-        '<div data-dojo-attach-point="root" class="customer-journey-root"></div>',
+        '<div data-dojo-attach-point="root" data-dojo-attach-event="onclick:_onClick" class="customer-journey-root"></div>',
       ]),
+      containerTemplate: new Simplate([
+        '<div class="customer-journey-container">',
+        '{% for (var i = 0; i < $.length; i++) { %}',
+        '{%= $$.journeyTemplate.apply($[i], $$) %}',
+        '{% } %}',
+        '</div>',
+      ]),
+      journeyTemplate: new Simplate([
+        '<div class="customer-journey">',
+        '<h3>',
+        '{%: $.name %} ',
+        '<span class="customer-journey-display-name">({%: $.entityDisplayName %})</span> ',
+        '<span class="customer-journey-entity-badge">{%: ($.entityType || "").replace(/^I/, "") %}</span>',
+        '</h3>',
+        '{% if ($.stages) { %}',
+        '{% for (var i = 0; i < $.stages.length; i++) { %}',
+        '{%= $$.stageTemplate.apply($.stages[i], $$) %}',
+        '{% } %}',
+        '{% } %}',
+        '</div>',
+      ]),
+      stageTemplate: new Simplate([
+        '<div class="customer-journey-stage{% if ($.completed) { %} completed{% } %}{% if ($.isActive) { %} active{% } %}">',
+        '<span class="stage-status"></span>',
+        '<h4>{%: $.name %}</h4>',
+        '<span class="stage-meta">({%: $$.resource.actualText %}: {%: $.actualDaysInStage %} | {%: $$.resource.expectedText %}: {%: $.expectedDaysInStage %})</span>',
+        '{% var startDate = $$.formatDate($.startDate); %}',
+        '{% var completedDate = $$.formatDate($.completedDate); %}',
+        '{% if (startDate || completedDate) { %}',
+        '<span class="stage-dates">',
+        '{% if (startDate) { %}{%: $$.resource.startText %}: {%: startDate %}{% } %}',
+        '{% if (startDate && completedDate) { %} | {% } %}',
+        '{% if (completedDate) { %}{%: $$.resource.completedText %}: {%: completedDate %}{% } %}',
+        '</span>',
+        '{% } %}',
+        '{% if ($.steps && $.steps.length) { %}',
+        '<span class="expand-toggle">{%: $$.resource.showStepsText %}</span>',
+        '<div class="customer-journey-steps">',
+        '{% for (var j = 0; j < $.steps.length; j++) { %}',
+        '{%= $$.stepTemplate.apply($.steps[j], $$) %}',
+        '{% } %}',
+        '</div>',
+        '{% } %}',
+        '</div>',
+      ]),
+      stepTemplate: new Simplate([
+        '<div class="customer-journey-step{% if ($.completed) { %} completed{% } %}">',
+        '<span class="step-status-dot"></span>',
+        '<span>{%: $.name %}</span>',
+        '{% var stepStart = $$.formatDate($.startDate); %}',
+        '{% var stepCompleted = $$.formatDate($.completedDate); %}',
+        '{% if (stepStart || stepCompleted) { %}',
+        '<span class="stage-dates">',
+        '{% if (stepStart) { %}{%: $$.resource.startText %}: {%: stepStart %}{% } %}',
+        '{% if (stepStart && stepCompleted) { %} | {% } %}',
+        '{% if (stepCompleted) { %}{%: $$.resource.completedText %}: {%: stepCompleted %}{% } %}',
+        '</span>',
+        '{% } %}',
+        '</div>',
+      ]),
+      resource,
+      formatDate,
       onLoad: function onLoad() {
         const root = this.root;
         const request = new Sage.SData.Client.SDataServiceOperationRequest(
@@ -46,7 +113,7 @@ define('crm/Views/Journey/CustomerJourney360Widget', [
                 }
               });
 
-              this.renderData(root, data);
+              root.innerHTML = this.containerTemplate.apply(data, this);
             } catch (error) {
               console.error('Error parsing JSON:', error); // eslint-disable-line
             }
@@ -56,120 +123,19 @@ define('crm/Views/Journey/CustomerJourney360Widget', [
           },
         });
       },
-      renderData: function renderData(root, data) {
-        root.innerHTML = '';
-        const container = document.createElement('div');
-        container.classList.add('customer-journey-container');
-        root.appendChild(container);
-        data.forEach((journey) => {
-          const journeyElement = document.createElement('div');
-          journeyElement.classList.add('customer-journey');
-
-          const heading = document.createElement('h3');
-          const nameText = document.createTextNode(`${journey.name} `);
-          heading.appendChild(nameText);
-
-          const displayNameSpan = document.createElement('span');
-          displayNameSpan.className = 'customer-journey-display-name';
-          displayNameSpan.textContent = `(${journey.entityDisplayName})`;
-          heading.appendChild(displayNameSpan);
-          heading.appendChild(document.createTextNode(' '));
-
-          const entityBadge = document.createElement('span');
-          entityBadge.className = 'customer-journey-entity-badge';
-          entityBadge.textContent = (journey.entityType || '').replace(/^I/, '');
-          heading.appendChild(entityBadge);
-
-          journeyElement.appendChild(heading);
-
-          if (journey.stages) {
-            journey.stages.forEach((stage) => {
-              const stageElement = document.createElement('div');
-              stageElement.classList.add('customer-journey-stage');
-              if (stage.completed) stageElement.classList.add('completed');
-              if (stage.isActive) stageElement.classList.add('active');
-              // Status dot
-              const statusDot = document.createElement('span');
-              statusDot.className = 'stage-status';
-              stageElement.appendChild(statusDot);
-              // Stage name
-              const stageTitle = document.createElement('h4');
-              stageTitle.textContent = stage.name;
-              stageElement.appendChild(stageTitle);
-              // Meta info
-              const meta = document.createElement('span');
-              meta.className = 'stage-meta';
-              meta.textContent = `(${resource.actualText}: ${stage.actualDaysInStage} | ${resource.expectedText}: ${stage.expectedDaysInStage})`;
-              stageElement.appendChild(meta);
-              // Dates
-              const startDate = stage.startDate
-                ? new Date(stage.startDate).toLocaleDateString()
-                : '';
-              const completedDate = stage.completedDate
-                ? new Date(stage.completedDate).toLocaleDateString()
-                : '';
-              if (startDate || completedDate) {
-                const dates = document.createElement('span');
-                dates.className = 'stage-dates';
-                dates.textContent = `${startDate ? `${resource.startText}: ${startDate}` : ''}${
-                  startDate && completedDate ? ' | ' : ''
-                }${completedDate ? `${resource.completedText}: ${completedDate}` : ''}`;
-                stageElement.appendChild(dates);
-              }
-              // Expand/collapse steps
-              if (stage.steps && stage.steps.length) {
-                const expandToggle = document.createElement('span');
-                expandToggle.className = 'expand-toggle';
-                expandToggle.textContent = resource.showStepsText;
-                const stepsDiv = document.createElement('div');
-                stepsDiv.className = 'customer-journey-steps';
-                expandToggle.onclick = () => {
-                  const isExpanded = stageElement.classList.contains('expanded');
-                  if (isExpanded) {
-                    stageElement.classList.remove('expanded');
-                    expandToggle.textContent = resource.showStepsText;
-                  } else {
-                    stageElement.classList.add('expanded');
-                    expandToggle.textContent = resource.hideStepsText;
-                  }
-                };
-                stageElement.appendChild(expandToggle);
-                stage.steps.forEach((step) => {
-                  const stepDiv = document.createElement('div');
-                  stepDiv.className = 'customer-journey-step';
-                  if (step.completed) stepDiv.classList.add('completed');
-                  // Step status dot
-                  const stepDot = document.createElement('span');
-                  stepDot.className = 'step-status-dot';
-                  stepDiv.appendChild(stepDot);
-                  // Step name
-                  const stepName = document.createElement('span');
-                  stepName.textContent = step.name;
-                  stepDiv.appendChild(stepName);
-                  // Step dates
-                  const stepStart = step.startDate
-                    ? new Date(step.startDate).toLocaleDateString()
-                    : '';
-                  const stepCompleted = step.completedDate
-                    ? new Date(step.completedDate).toLocaleDateString()
-                    : '';
-                  if (stepStart || stepCompleted) {
-                    const stepDates = document.createElement('span');
-                    stepDates.className = 'stage-dates';
-                    stepDates.textContent = `${stepStart ? `${resource.startText}: ${stepStart}` : ''}${
-                      stepStart && stepCompleted ? ' | ' : ''
-                    }${stepCompleted ? `${resource.completedText}: ${stepCompleted}` : ''}`;
-                    stepDiv.appendChild(stepDates);
-                  }
-                  stepsDiv.appendChild(stepDiv);
-                });
-                stageElement.appendChild(stepsDiv);
-              }
-              journeyElement.appendChild(stageElement);
-            });
-          }
-          container.appendChild(journeyElement);
-        });
+      _onClick: function _onClick(evt) {
+        const toggle = evt.target.closest('.expand-toggle');
+        if (!toggle) return;
+        const stageElement = toggle.closest('.customer-journey-stage');
+        if (!stageElement) return;
+        const isExpanded = stageElement.classList.contains('expanded');
+        if (isExpanded) {
+          stageElement.classList.remove('expanded');
+          toggle.textContent = resource.showStepsText;
+        } else {
+          stageElement.classList.add('expanded');
+          toggle.textContent = resource.hideStepsText;
+        }
       },
     },
   );
