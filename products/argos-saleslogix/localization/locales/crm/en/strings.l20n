@@ -57,6 +57,7 @@
   calledText: "Called ${0}"
   entityText: "Account"
   addTicketText: "Add Ticket"
+  customerJourney360Text: "Journey 360"
 >
 
 <accountEdit ""
@@ -1714,4 +1715,13 @@
 
 <chartMixin ""
   loadingText: "Loading"
+>
+
+<customerJourney360Widget ""
+  actualText: "Actual"
+  expectedText: "Expected"
+  startText: "Start"
+  completedText: "Completed"
+  showStepsText: "Show Steps"
+  hideStepsText: "Hide Steps"
 >

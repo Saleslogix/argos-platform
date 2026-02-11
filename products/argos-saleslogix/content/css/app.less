@@ -1408,3 +1408,221 @@ span.range-value {
         text-align: center;
     }
 }
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #1e1e1e;
+    --text-color: #ffffff;
+
+    /* Copied a few settings from vars.css for the kanban widget */
+    --body-color-primary-font: #EFEFF0;
+    --ids-color-palette-azure-80: @color-azure;
+    --slx-customer-journey-map-gradient-color: var(--ids-color-palette-azure-80);
+    --slx-customer-journey-map-gradient-mix-color: #fff;
+  }
+
+  html {
+    color-scheme: dark;
+    background-color: var(--background-color);
+  }
+}
+
+/* Customer Journey Styles */
+.customer-journey-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 12px;
+}
+
+.customer-journey {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 20px 18px 16px 18px;
+  margin: 0;
+  transition: box-shadow 0.2s;
+}
+
+@media (prefers-color-scheme: dark) {
+  .customer-journey {
+    background: #232323;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  }
+}
+
+.customer-journey h3 {
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: 0.01em;
+}
+
+@media (prefers-color-scheme: dark) {
+  .customer-journey h3 {
+    color: #fff;
+  }
+}
+
+.customer-journey-stage {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  margin-left: 0;
+  padding-left: 8px;
+}
+
+.customer-journey-stage:last-child {
+  margin-bottom: 0;
+}
+
+.customer-journey-stage .stage-status {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 4px;
+  border: 2px solid #bdbdbd;
+  background: #fff;
+  transition: background 0.2s, border 0.2s;
+}
+
+.customer-journey-stage.completed .stage-status {
+  background: #4caf50;
+  border-color: #4caf50;
+}
+
+.customer-journey-stage h4 {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0 0 2px 0;
+  color: #181818;
+}
+
+@media (prefers-color-scheme: dark) {
+  .customer-journey-stage h4 {
+    color: #f0f0f0;
+  }
+}
+
+.customer-journey-stage.completed h4 {
+  color: #888;
+}
+
+.customer-journey-stage .stage-meta {
+  font-size: 13px;
+  color: #666;
+  margin-left: 6px;
+}
+
+.customer-journey-entity-badge {
+  display: inline-block;
+  background: #e0e7ef;
+  color: #2a3b5c;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 2px 8px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+@media (prefers-color-scheme: dark) {
+  .customer-journey-entity-badge {
+    background: #2a3b5c;
+    color: #e0e7ef;
+  }
+}
+
+.customer-journey-stage.active {
+  border-left: 4px solid #1976d2;
+}
+
+.customer-journey-stage .stage-status {
+  position: relative;
+}
+
+.customer-journey-stage.completed .stage-status::after {
+  content: '\2713';
+  color: #fff;
+  font-size: 10px;
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.customer-journey-stage .stage-dates {
+  font-size: 12px;
+  color: #888;
+  margin-left: 10px;
+}
+
+.customer-journey-steps {
+  margin-left: 28px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  padding-left: 8px;
+  border-left: 2px solid #e0e0e0;
+  display: none;
+}
+
+.customer-journey-stage.expanded .customer-journey-steps {
+  display: block;
+}
+
+.customer-journey-step {
+  font-size: 13px;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #222;
+}
+
+@media (prefers-color-scheme: dark) {
+  .customer-journey-step {
+    color: #e0e7ef;
+  }
+}
+
+.customer-journey-step.completed {
+  color: #4caf50;
+  text-decoration: line-through;
+}
+
+.customer-journey-step .step-status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #bdbdbd;
+  display: inline-block;
+}
+
+.customer-journey-step.completed .step-status-dot {
+  background: #4caf50;
+}
+
+.customer-journey-display-name {
+  font-weight: 400;
+  color: #888;
+}
+
+li.related-view-detail-content:has(.customer-journey-root) {
+  list-style: none;
+}
+
+.customer-journey-stage .expand-toggle {
+  margin-left: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #1976d2;
+  user-select: none;
+}
