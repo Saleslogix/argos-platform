@@ -1626,3 +1626,54 @@ li.related-view-detail-content:has(.customer-journey-root) {
   color: #1976d2;
   user-select: none;
 }
+
+/* Contact List Card Image */
+.contact-card {
+  display: flex;
+  align-items: flex-start;
+}
+
+.contact-card__photo {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin-right: 12px;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.contact-card__photo-placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin-right: 12px;
+  flex-shrink: 0;
+  background: #b0b0b0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > span {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1;
+    user-select: none;
+  }
+}
+
+.contact-card__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.row > div[data-property="ContactImage"] {
+  > span.data {
+    margin-bottom: 1rem;
+  }
+
+  > label:empty {
+    display: none;
+    visibility: hidden;
+  }
+}

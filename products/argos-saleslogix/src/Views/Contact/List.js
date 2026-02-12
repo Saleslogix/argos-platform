@@ -16,14 +16,15 @@
 define('crm/Views/Contact/List', [
   'dojo/_base/declare',
   'crm/Action',
-  'argos/Format',
+  '../../Format',
   'argos/List',
   '../_GroupListMixin',
   '../_MetricListMixin',
   '../_RightDrawerListMixin',
   'argos/I18n',
   '../../Models/Names',
-], (declare, action, format, List, _GroupListMixin, _MetricListMixin, _RightDrawerListMixin, getResource, MODEL_NAMES) => {
+  '../../GroupUtility',
+], (declare, action, format, List, _GroupListMixin, _MetricListMixin, _RightDrawerListMixin, getResource, MODEL_NAMES, GroupUtility) => {
   const resource = getResource('contactList');
 
   const __class = declare('crm.Views.Contact.List', [List, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin], {
@@ -31,7 +32,18 @@ define('crm/Views/Contact/List', [
     // Template
     // Card Layout
     itemIconClass: 'user',
+    _contactImageFieldKey: null,
+    _nameLFFieldKey: null,
     itemTemplate: new Simplate([
+      '<div class="contact-card">',
+      '{% if ($.ContactImage) { %}',
+      '<img src="{%: $.ContactImage %}" alt="{%: $.NameLF %}" class="contact-card__photo" />',
+      '{% } else { %}',
+      '<div class="contact-card__photo-placeholder">',
+      '<span>{%: $$.getContactInitials($) %}</span>',
+      '</div>',
+      '{% } %}',
+      '<div class="contact-card__content">',
       '<p class="micro-text">{% if($.Title) { %} {%: $.Title %} | {% } %} {%: $.AccountName %}</p>',
       '<p class="micro-text">{%: $.WebAddress %}</p>',
       '{% if ($.WorkPhone) { %}',
@@ -49,6 +61,8 @@ define('crm/Views/Contact/List', [
       '<span class="hyperlink" data-action="sendEmail" data-key="{%: $.$key %}">{%: $.Email %}</span>',
       '</p>',
       '{% } %}',
+      '</div>',
+      '</div>',
     ]),
 
     // Localization
@@ -81,6 +95,89 @@ define('crm/Views/Contact/List', [
     modelName: MODEL_NAMES.CONTACT,
     groupsEnabled: true,
     enableActions: true,
+    /**
+     * Extracts initials from a contact entry's NameLF field.
+     * @param {Object} entry The contact data entry.
+     * @param {String} [entry.NameLF] Name in "Last, First" format.
+     * @return {String} Uppercase initials (e.g. "JS"), or empty string if NameLF is missing.
+     */
+    getContactInitials: function getContactInitials(entry) {
+      return format.nameLFToInitials(entry && entry.NameLF);
+    },
+    /**
+     * Searches the raw (unfiltered) group layout for a field by propertyPath.
+     * Returns the layout item or null.
+     */
+    _findRawGroupLayoutItem: function _findRawGroupLayoutItem(propertyPath) {
+      const group = this._currentGroup;
+      if (!group || !group.layout) {
+        return null;
+      }
+      return group.layout.find(item => item.propertyPath === propertyPath) || null;
+    },
+    /**
+     * Returns the contact image value from a group entry, using the cached field key.
+     */
+    getGroupContactImage: function getGroupContactImage(entry) {
+      return this._contactImageFieldKey ? entry[this._contactImageFieldKey] : null;
+    },
+    /**
+     * Returns initials from a group entry's NameLF field, using the cached field key.
+     */
+    getGroupContactInitials: function getGroupContactInitials(entry) {
+      const nameLF = this._nameLFFieldKey ? entry[this._nameLFFieldKey] : null;
+      return format.nameLFToInitials(nameLF);
+    },
+    /**
+     * Overrides the group mixin's getItemTemplate.
+     * - Resolves ContactImage/NameLF field keys from the raw group layout
+     * - Injects those fields into selectColumns so they are fetched
+     * - Wraps the base group template with the contact card image if ContactImage is available
+     */
+    getItemTemplate: function getItemTemplate() {
+      // Resolve field keys from the raw group layout (includes visible:false items)
+      const contactImageItem = this._findRawGroupLayoutItem('ContactImage');
+      const nameLFItem = this._findRawGroupLayoutItem('NameLF');
+
+      this._contactImageFieldKey = contactImageItem ? GroupUtility.getFieldNameByLayout(contactImageItem) : null;
+      this._nameLFFieldKey = nameLFItem ? GroupUtility.getFieldNameByLayout(nameLFItem) : null;
+
+      // Inject into selectColumns so the group query fetches these fields.
+      // getItemTemplate is called by _onApplyGroup after selectColumns is set
+      // but before querySelect is assigned and requestData fires.
+      if (this._contactImageFieldKey && this.selectColumns && this.selectColumns.indexOf(this._contactImageFieldKey) === -1) {
+        this.selectColumns.push(this._contactImageFieldKey);
+      }
+      if (this._nameLFFieldKey && this.selectColumns && this.selectColumns.indexOf(this._nameLFFieldKey) === -1) {
+        this.selectColumns.push(this._nameLFFieldKey);
+      }
+
+      // Get the base group template from the mixin
+      const baseTemplate = this.inherited(getItemTemplate, arguments);
+
+      if (!this._contactImageFieldKey) {
+        // ContactImage not in this group's layout — use the standard group template
+        return baseTemplate;
+      }
+
+      // Store the base template so the wrapped Simplate can reference it via $$.groupContentTemplate
+      this.groupContentTemplate = baseTemplate;
+
+      return new Simplate([
+        '<div class="contact-card">',
+        '{% if ($$.getGroupContactImage($)) { %}',
+        '<img src="{%: $$.getGroupContactImage($) %}" alt="" class="contact-card__photo" />',
+        '{% } else { %}',
+        '<div class="contact-card__photo-placeholder">',
+        '<span>{%: $$.getGroupContactInitials($) %}</span>',
+        '</div>',
+        '{% } %}',
+        '<div class="contact-card__content">',
+        '{%! $$.groupContentTemplate %}',
+        '</div>',
+        '</div>',
+      ]);
+    },
     callWork: function callWork(params) {
       this.invokeActionItemBy((theAction) => {
         return theAction.id === 'callWork';

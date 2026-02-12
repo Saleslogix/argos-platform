@@ -184,6 +184,20 @@ define('crm/Format', [
      * @returns {String}
      */
     resolveFirstLast: f.resolveFirstLast,
+    /**
+     * Extracts uppercase initials from a "Last, First" formatted name string.
+     * @param {String} nameLF Name in "Last, First" format (e.g. "Hogan, Lee").
+     * @return {String} Uppercase initials (e.g. "LH"), or empty string if input is falsy.
+     */
+    nameLFToInitials: function nameLFToInitials(nameLF) {
+      if (!nameLF) {
+        return '';
+      }
+      const parts = nameLF.split(', ');
+      const last = parts[0] || '';
+      const first = parts[1] || '';
+      return (first.charAt(0) + last.charAt(0)).toUpperCase();
+    },
     fixedLocale: function fixedLocale(val, d) {
       return f.fixedLocale(val, d, Soho.Locale.currentLocale.data.numbers.group,
         Soho.Locale.currentLocale.data.numbers.decimal);

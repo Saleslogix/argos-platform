@@ -199,6 +199,17 @@ define('crm/Views/Contact/Detail', [
         title: this.detailsText,
         name: 'DetailsSection',
         children: [{
+          name: 'ContactImage',
+          property: 'ContactImage',
+          label: '',
+          renderer: function renderContactImage(value) {
+            if (value) {
+              return `<img src="${format.encode(value)}" alt="${format.encode(this.entry.NameLF || '')}" class="contact-card__photo" />`;
+            }
+            const initials = format.nameLFToInitials((this.entry && this.entry.NameLF) || '');
+            return `<div class="contact-card__photo-placeholder"><span>${format.encode(initials)}</span></div>`;
+          },
+        }, {
           name: 'NameLF',
           property: 'NameLF',
           label: this.nameText,
