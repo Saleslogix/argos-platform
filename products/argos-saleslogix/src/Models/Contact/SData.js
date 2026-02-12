@@ -30,6 +30,7 @@ define('crm/Models/Contact/SData', [
         querySelect: [
           'AccountName',
           'NameLF',
+          'ContactImage',
           'WorkPhone',
           'Mobile',
           'Email',
@@ -45,6 +46,7 @@ define('crm/Models/Contact/SData', [
           'AccountManager/UserInfo/FirstName',
           'AccountManager/UserInfo/LastName',
           'AccountName',
+          'ContactImage',
           'Address/*',
           'CuisinePreference',
           'CreateDate',

@@ -716,10 +716,16 @@ li.relatedviewitem {
     }
 }
 
-.widget-header > .btn-icon {
-    line-height: normal;
-    .icon {
-        vertical-align: top;
+.widget-header {
+    > .btn-icon {
+        line-height: normal;
+        .icon {
+            vertical-align: top;
+        }
+    }
+
+    .btn-actions {
+        margin-left: auto !important; /* force ignores space-between in parent flex container */
     }
 }
 
