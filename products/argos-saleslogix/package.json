@@ -27,7 +27,7 @@
     "grunt-contrib-less": "^2.1.0",
     "grunt-shell": "^3.0.1",
     "http-proxy": "^1.18.1",
-    "jsdoc": "^3.6.7",
+    "jsdoc": "^4.0.5",
     "playwright": "^1.11.1",
     "serve-index": "^1.9.1"
   },
