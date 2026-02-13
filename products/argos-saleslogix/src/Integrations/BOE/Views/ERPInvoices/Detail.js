@@ -198,11 +198,17 @@ define('crm/Integrations/BOE/Views/ERPInvoices/Detail', [
           label: this.invoiceItemsText,
           where: this.formatRelatedQuery.bindDelegate(this, 'ErpInvoice.Id eq "${0}"'),
           view: 'invoice_items_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'ERPReceivable',
           label: this.receivablesText,
           where: this.formatRelatedQuery.bindDelegate(this, 'ErpInvoice.Id eq "${0}"'),
           view: 'invoice_receivables_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'WorkflowInstances',
           label: this.relatedWorkflowInstancesText,
@@ -211,6 +217,9 @@ define('crm/Integrations/BOE/Views/ERPInvoices/Detail', [
           },
           view: 'invoice_workflow_instances_related',
           title: this.relatedWorkflowInstancesTitleText,
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         },
         ],
       }]);

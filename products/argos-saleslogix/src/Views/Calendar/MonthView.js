@@ -264,7 +264,7 @@ define('crm/Views/Calendar/MonthView', [
       'Timeless',
       'Recurring',
     ],
-    activityTypeIcon: activityTypeIcons.default,
+    activityTypeIcon: activityTypeIcons,
 
     resourceKind: 'activities',
 

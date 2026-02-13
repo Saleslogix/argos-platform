@@ -149,6 +149,9 @@ define('crm/Integrations/BOE/Views/ERPShipToAccounts/Detail', [
               return `ShipTo.ErpShipToAccounts.Id eq "${entry.$key}" and (Status eq "${this.openCode}" or Status eq "${this.newCode}")`;
             },
             view: 'erpshiptoaccount_quotes_related',
+            options: {
+              orderBy: 'CreateDate desc',
+            },
           }, {
             name: 'SalesOrders',
             label: this.salesOrdersText,
@@ -156,6 +159,9 @@ define('crm/Integrations/BOE/Views/ERPShipToAccounts/Detail', [
               return `ErpShipTo.ErpShipToAccounts.Id eq "${entry.$key}" and (Status eq "${this.openCode}" or Status eq "${this.approvedCode}" or Status eq "${this.workingCode}" or Status eq "${this.partialShipCode}")`;
             },
             view: 'erpshiptoaccount_salesorders_related',
+            options: {
+              orderBy: 'CreateDate desc',
+            },
           },
           // {
           // name: 'OpenInvoices',
@@ -172,6 +178,9 @@ define('crm/Integrations/BOE/Views/ERPShipToAccounts/Detail', [
               return `ErpShipTo.ErpShipToAccounts.Id eq "${entry.$key}" and (ErpStatus eq "${this.openCode}" or ErpStatus eq "${this.partialShipCode}" or ErpStatus eq "${this.releasedCode}" or ErpStatus eq "${this.allocatedCode}" or ErpStatus eq "${this.stagedCode}" or ErpStatus eq "${this.loadedCode}")`;
             },
             view: 'erpshiptoaccount_shipments_related',
+            options: {
+              orderBy: 'CreateDate desc',
+            },
           },
           // {
           // name: 'Receivables',
@@ -188,6 +197,9 @@ define('crm/Integrations/BOE/Views/ERPShipToAccounts/Detail', [
               return `ErpShipTo.ErpShipToAccounts.Id eq "${entry.$key}"`;
             },
             view: 'erpshiptoaccount_returns_related',
+            options: {
+              orderBy: 'CreateDate desc',
+            },
           }, {
             name: 'ContactAssociations',
             label: this.contactAssociationText,
@@ -195,6 +207,9 @@ define('crm/Integrations/BOE/Views/ERPShipToAccounts/Detail', [
               return `Account.ErpShipToAccounts.Id eq "${entry.$key}"`;
             },
             view: 'erpshiptoaccount_contactassociations_related',
+            options: {
+              orderBy: 'CreateDate desc',
+            },
           },
           // , {
           // name: 'Bill-To',

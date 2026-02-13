@@ -74,7 +74,7 @@ define('crm/Views/Activity/TypesList', [
     unscheduledView: 'activity_complete',
 
     allowSelection: true, // adds list-show-selectors class to listview for displaying icons
-    activityTypeIcon: activityTypeIcons.default,
+    activityTypeIcon: activityTypeIcons,
     activateEntry: function activateEntry(params) {
       if (params.key) {
         let view = App.getView((params.key === 'event') ? this.eventEditView : this.editView);

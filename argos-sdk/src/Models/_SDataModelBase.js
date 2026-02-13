@@ -63,7 +63,8 @@ define('argos/Models/_SDataModelBase', [
       if (options) {
         if (options.select) tempOptions.select = options.select;
         if (options.include) tempOptions.include = options.include;
-        if (options.orderBy) tempOptions.orderBy = options.orderBy;
+        if (options.orderBy) tempOptions.sort = options.orderBy;
+        if (options.sort) tempOptions.sort = options.sort;
         if (options.contractName) tempOptions.contractName = options.contractName;
         if (options.resourceKind) tempOptions.resourceKind = options.resourceKind;
         if (options.resourceProperty) tempOptions.resourceProperty = options.resourceProperty;

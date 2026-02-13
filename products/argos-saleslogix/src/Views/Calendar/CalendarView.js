@@ -54,7 +54,7 @@ define('crm/Views/Calendar/CalendarView', [
     string,
     Utility,
     trimTo: 16,
-    activityTypeIcon: activityTypeIcons.default,
+    activityTypeIcon: activityTypeIcons,
 
     // Templates
     widgetTemplate: new Simplate([

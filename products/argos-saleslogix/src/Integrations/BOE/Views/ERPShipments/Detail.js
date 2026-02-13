@@ -197,6 +197,9 @@ define('crm/Integrations/BOE/Views/ERPShipments/Detail', [
             return `ErpShipment.Id eq "${entry.$key}"`;
           },
           view: 'shipment_lines_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }],
       }]);
     },

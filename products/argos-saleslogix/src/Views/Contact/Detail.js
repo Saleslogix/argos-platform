@@ -272,27 +272,42 @@ define('crm/Views/Contact/Detail', [
           label: this.relatedOpportunitiesText,
           view: 'opportunity_related',
           where: this.formatRelatedQuery.bindDelegate(this, 'Contacts.Contact.Id eq "${0}"'),
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'TicketRelated',
           label: this.relatedTicketsText,
           view: 'ticket_related',
           where: this.formatRelatedQuery.bindDelegate(this, 'Contact.Id eq "${0}"'),
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'HistoryRelated',
           label: this.relatedHistoriesText,
           where: this.formatRelatedQuery.bindDelegate(this, 'ContactId eq "${0}" and Type ne "atDatabaseChange"'),
           view: 'history_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'AddressesRelated',
           label: this.relatedAddressesText,
           where: this.formatRelatedQuery.bindDelegate(this, 'EntityId eq "${0}"', 'Address.EntityId'),
           view: 'address_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'AttachmentRelated',
           label: this.relatedAttachmentText,
           where: this.formatRelatedQuery.bindDelegate(this, 'contactId eq "${0}"'), // must be lower case because of feed
           view: 'contact_attachment_related',
           title: this.relatedAttachmentTitleText,
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'WorkflowInstances',
           label: this.relatedWorkflowInstancesText,
@@ -301,6 +316,9 @@ define('crm/Views/Contact/Detail', [
           },
           view: 'contact_workflow_instances_related',
           title: this.relatedWorkflowInstancesTitleText,
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }],
       }]);
     },

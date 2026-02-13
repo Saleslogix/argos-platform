@@ -316,7 +316,7 @@ define('crm/Views/Activity/List', [
       return this._getItemIconClass(type);
     },
     _getItemIconClass: function _getItemIconClass(type) {
-      return activityTypeIcons.default[type];
+      return activityTypeIcons[type];
     },
     createActionLayout: function createActionLayout() {
       return this.actions || (this.actions = [{

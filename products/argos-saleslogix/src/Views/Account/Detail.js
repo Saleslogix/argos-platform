@@ -239,32 +239,50 @@ define('crm/Views/Account/Detail', [
           label: this.relatedContactsText,
           where: this.formatRelatedQuery.bindDelegate(this, 'Account.id eq "${0}"'),
           view: 'contact_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'OpportunityRelated',
           label: this.relatedOpportunitiesText,
           where: this.formatRelatedQuery.bindDelegate(this, 'Account.id eq "${0}"'),
           view: 'opportunity_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'TicketRelated',
           label: this.relatedTicketsText,
           where: this.formatRelatedQuery.bindDelegate(this, 'Account.id eq "${0}"'),
           view: 'ticket_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'HistoryRelated',
           label: this.relatedHistoriesText,
           where: this.formatRelatedQuery.bindDelegate(this, 'AccountId eq "${0}" and Type ne "atDatabaseChange"'),
           view: 'history_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'AddressesRelated',
           label: this.relatedAddressesText,
           where: this.formatRelatedQuery.bindDelegate(this, 'EntityId eq "${0}"', 'Address.EntityId'),
           view: 'address_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'AttachmentRelated',
           label: this.relatedAttachmentText,
           where: this.formatRelatedQuery.bindDelegate(this, 'accountId eq "${0}"'), // must be lower case because of feed
           view: 'account_attachment_related',
           title: this.relatedAttachmentTitleText,
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'WorkflowInstances',
           label: this.relatedWorkflowInstancesText,
@@ -273,6 +291,9 @@ define('crm/Views/Account/Detail', [
           },
           view: 'account_workflow_instances_related',
           title: this.relatedWorkflowInstancesTitleText,
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }],
       }]);
     },

@@ -190,12 +190,18 @@ define('crm/Views/History/Detail', [
           where: this.formatRelatedQuery.bindDelegate(this, 'HistoryId eq "${0}"'),
           view: 'history_attendee_related',
           title: this.relatedAttendeeTitleText,
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'AttachmentRelated',
           label: this.relatedAttachmentText,
           where: this.formatRelatedQuery.bindDelegate(this, 'historyId eq "${0}"'),
           view: 'history_attachment_related',
           title: this.relatedAttachmentTitleText,
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }],
       }]);
     },
