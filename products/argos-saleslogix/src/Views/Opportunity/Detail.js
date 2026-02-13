@@ -230,6 +230,9 @@ define('crm/Views/Opportunity/Detail', [
           label: this.relatedProductsText,
           view: 'opportunityproduct_related',
           where: this.formatRelatedQuery.bindDelegate(this, 'Opportunity.Id eq "${0}"'),
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'ActivityRelated',
           label: this.relatedActivitiesText,
@@ -240,6 +243,7 @@ define('crm/Views/Opportunity/Detail', [
           label: this.relatedContactsText,
           options: {
             prefilter: this.formatAccountRelatedQuery.bindDelegate(this, 'Account.Id eq "${0}"'),
+            orderBy: 'CreateDate desc',
           },
           view: 'opportunitycontact_related',
           where: this.formatRelatedQuery.bindDelegate(this, 'Opportunity.Id eq "${0}"'),
@@ -248,12 +252,18 @@ define('crm/Views/Opportunity/Detail', [
           label: this.relatedHistoriesText,
           where: this.formatRelatedQuery.bindDelegate(this, 'OpportunityId eq "${0}" and Type ne "atDatabaseChange"'),
           view: 'history_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'AttachmentRelated',
           label: this.relatedAttachmentText,
           where: this.formatRelatedQuery.bindDelegate(this, 'opportunityId eq "${0}"'), // must be lower case because of feed
           view: 'opportunity_attachment_related',
           title: this.relatedAttachmentTitleText,
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'WorkflowInstances',
           label: this.relatedWorkflowInstancesText,
@@ -262,6 +272,9 @@ define('crm/Views/Opportunity/Detail', [
           },
           view: 'opportunity_workflow_instances_related',
           title: this.relatedWorkflowInstancesTitleText,
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }],
       };
 

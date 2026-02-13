@@ -212,7 +212,7 @@ define('crm/Views/Calendar/WeekView', [
       'Description',
       'Type',
     ],
-    activityTypeIcon: activityTypeIcons.default,
+    activityTypeIcon: activityTypeIcons,
 
     contractName: 'system',
     pageSize: 105, // gives 15 activities per day

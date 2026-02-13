@@ -127,6 +127,9 @@ define('crm/Integrations/BOE/Views/ERPBillTos/Detail', [
             return `ErpBillToAccounts.ErpBillTo.Id eq "${entry.$key}"`;
           },
           view: 'billto_accounts_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'ShipTos',
           label: this.shipToText,
@@ -134,6 +137,9 @@ define('crm/Integrations/BOE/Views/ERPBillTos/Detail', [
             return `ErpBillToShipTos.ErpShipTo.Id eq "${entry.$key}"`;
           },
           view: 'billto_shiptos_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'Quotes',
           label: this.quotesText,
@@ -141,6 +147,9 @@ define('crm/Integrations/BOE/Views/ERPBillTos/Detail', [
             return `BillTo.Id eq "${entry.$key}"`;
           },
           view: 'billto_quotes_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'SalesOrders',
           label: this.salesOrdersText,
@@ -148,6 +157,9 @@ define('crm/Integrations/BOE/Views/ERPBillTos/Detail', [
             return `ErpBillTo.Id eq "${entry.$key}"`;
           },
           view: 'billto_orders_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'Receivables',
           label: this.receivablesText,
@@ -155,6 +167,9 @@ define('crm/Integrations/BOE/Views/ERPBillTos/Detail', [
             return `ErpBillTo.Id eq "${entry.$key}"`;
           },
           view: 'billto_receivables_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'Invoices',
           label: this.invoicesText,
@@ -162,6 +177,9 @@ define('crm/Integrations/BOE/Views/ERPBillTos/Detail', [
             return `ErpBillTo.Id eq "${entry.$key}"`;
           },
           view: 'billto_invoices_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'Returns',
           label: this.returnsText,
@@ -169,6 +187,9 @@ define('crm/Integrations/BOE/Views/ERPBillTos/Detail', [
             return `ErpBillTo.Id eq "${entry.$key}"`;
           },
           view: 'billto_returns_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'SyncHistory',
           label: this.syncHistoryText,
@@ -176,6 +197,9 @@ define('crm/Integrations/BOE/Views/ERPBillTos/Detail', [
             return `EntityType eq "ERPBillTo" and EntityId eq "${entry.$key}"`;
           },
           view: 'billto_synchistory_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }],
       }]);
     },

@@ -113,7 +113,7 @@ define('crm/Views/History/List', [
       personal: 'Type eq "atPersonal"',
       email: 'Type eq "atEMail"',
     },
-    activityTypeIcon: activityTypeIcons.default,
+    activityTypeIcon: activityTypeIcons,
     allowSelection: true,
     enableActions: true,
     modelName: MODEL_NAMES.HISTORY,

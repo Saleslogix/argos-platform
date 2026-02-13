@@ -188,6 +188,9 @@ define('crm/Views/Ticket/Detail', [
           where: this.formatRelatedQuery.bindDelegate(this, 'ticketId eq "${0}"'), // must be lower case because of feed
           view: 'ticket_attachment_related',
           title: this.relatedAttachmentTitleText,
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'WorkflowInstances',
           label: this.relatedWorkflowInstancesText,
@@ -196,6 +199,9 @@ define('crm/Views/Ticket/Detail', [
           },
           view: 'ticket_workflow_instances_related',
           title: this.relatedWorkflowInstancesTitleText,
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }],
       }]);
     },

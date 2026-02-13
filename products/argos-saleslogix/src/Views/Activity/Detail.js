@@ -445,12 +445,18 @@ define('crm/Views/Activity/Detail', [
           where: this.formatRelatedQuery.bindDelegate(this, 'Activity.Id eq "${0}"', 'activityId'), // must be lower case because of feed
           view: 'activity_attendee_related',
           title: this.relatedAttendeeTitleText,
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'AttachmentRelated',
           label: this.relatedAttachmentText,
           where: this.formatRelatedQuery.bindDelegate(this, 'activityId eq "${0}"', 'activityId'), // must be lower case because of feed
           view: 'activity_attachment_related',
           title: this.relatedAttachmentTitleText,
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }],
       }]);
     },

@@ -626,6 +626,9 @@ define('crm/Integrations/BOE/Views/SalesOrders/Detail', [
             return `SalesOrder.Id eq "${entry.$key}"`;
           },
           view: 'salesorder_items_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'ERPInvoiceItemsRelated',
           label: this.invoiceItemsText,
@@ -633,6 +636,9 @@ define('crm/Integrations/BOE/Views/SalesOrders/Detail', [
             return `SalesOrder.Id eq "${entry.$key}"`;
           },
           view: 'salesorder_invoice_items_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'ERPShipmentItemsRelated',
           label: this.shipmentItemsText,
@@ -640,6 +646,9 @@ define('crm/Integrations/BOE/Views/SalesOrders/Detail', [
             return `SalesOrder.Id eq "${entry.$key}"`;
           },
           view: 'salesorder_shipment_items_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'Attachments',
           label: this.attachmentsText,
@@ -647,6 +656,9 @@ define('crm/Integrations/BOE/Views/SalesOrders/Detail', [
             return `salesOrderId eq "${entry.$key}"`;
           },
           view: 'salesorder_attachments_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'SyncHistory',
           label: this.syncHistoryText,
@@ -654,6 +666,9 @@ define('crm/Integrations/BOE/Views/SalesOrders/Detail', [
             return `EntityType eq "SalesOrder" and EntityId eq "${entry.$key}"`;
           },
           view: 'order_syncresult_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'SalesPersons',
           label: this.salesPersonsText,
@@ -661,6 +676,9 @@ define('crm/Integrations/BOE/Views/SalesOrders/Detail', [
             return `SalesOrder.Id eq "${entry.$key}"`;
           },
           view: 'salesorder_salesperson_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'WorkflowInstances',
           label: this.relatedWorkflowInstancesText,
@@ -669,6 +687,9 @@ define('crm/Integrations/BOE/Views/SalesOrders/Detail', [
           },
           view: 'salesorder_workflow_instances_related',
           title: this.relatedWorkflowInstancesTitleText,
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }],
       }]);
     },

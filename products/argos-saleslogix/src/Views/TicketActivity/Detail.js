@@ -183,6 +183,9 @@ define('crm/Views/TicketActivity/Detail', [
           label: this.relatedTicketActivityItemText,
           where: this.formatRelatedQuery.bindDelegate(this, 'TicketActivity.Id eq "${0}"'),
           view: 'ticketactivityitem_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }],
       }]);
     },

@@ -267,12 +267,18 @@ define('crm/Views/Lead/Detail', [
           label: this.relatedHistoriesText,
           where: this.formatRelatedQuery.bindDelegate(this, 'LeadId eq "${0}" and Type ne "atDatabaseChange"'),
           view: 'history_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'AttachmentRelated',
           label: this.relatedAttachmentText,
           where: this.formatRelatedQuery.bindDelegate(this, 'leadId eq "${0}"'), // must be lower case because of feed
           view: 'lead_attachment_related',
           title: this.relatedAttachmentTitleText,
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'WorkflowInstances',
           label: this.relatedWorkflowInstancesText,
@@ -281,6 +287,9 @@ define('crm/Views/Lead/Detail', [
           },
           view: 'lead_workflow_instances_related',
           title: this.relatedWorkflowInstancesTitleText,
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }],
       }]);
     },

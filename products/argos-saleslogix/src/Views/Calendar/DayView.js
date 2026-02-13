@@ -194,7 +194,7 @@ define('crm/Views/Calendar/DayView', [
       'Description',
       'Type',
     ],
-    activityTypeIcon: activityTypeIcons.default,
+    activityTypeIcon: activityTypeIcons,
     resourceKind: 'activities',
     pageSize: 1000,
     expose: false,

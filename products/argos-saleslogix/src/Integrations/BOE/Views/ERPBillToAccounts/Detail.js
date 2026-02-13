@@ -126,6 +126,9 @@ define('crm/Integrations/BOE/Views/ERPBillToAccounts/Detail', [
             return `ErpBillToAccounts.Id eq "${entry.$key}"`;
           },
           view: 'billtoaccount_accounts_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'OpenQuotesList',
           label: this.openQuotesText,
@@ -133,6 +136,9 @@ define('crm/Integrations/BOE/Views/ERPBillToAccounts/Detail', [
             return `BillTo.ErpBillToAccounts.Id eq "${entry.$key}" and (Status eq "${this.openCode}" or Status eq "${this.newCode}")`;
           },
           view: 'billtoaccount_openquotes_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'SalesOrders',
           label: this.salesOrdersText,
@@ -140,6 +146,9 @@ define('crm/Integrations/BOE/Views/ERPBillToAccounts/Detail', [
             return `ErpBillTo.ErpBillToAccounts.Id eq "${entry.$key}" and (Status eq "${this.openCode}" or Status eq "${this.approvedCode}" or Status eq "${this.workingCode}" or Status eq "${this.partialShipCode}")`;
           },
           view: 'billtoaccount_salesorders_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'OpenInvoices',
           label: this.invoicesText,
@@ -147,6 +156,9 @@ define('crm/Integrations/BOE/Views/ERPBillToAccounts/Detail', [
             return `ErpBillTo.ErpBillToAccounts.Id eq "${entry.$key}" and (ErpStatus eq "${this.openCode}" or ErpStatus eq "${this.partialPaidCode}" or ErpStatus eq "${this.disputeCode}")`;
           },
           view: 'billtoaccount_openinvoices_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'Receivables',
           label: this.receivablesText,
@@ -154,6 +166,9 @@ define('crm/Integrations/BOE/Views/ERPBillToAccounts/Detail', [
             return `ErpBillTo.ErpBillToAccounts.Id eq "${entry.$key}"`;
           },
           view: 'billtoaccount_receivables_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'Returns',
           label: this.returnsText,
@@ -161,6 +176,9 @@ define('crm/Integrations/BOE/Views/ERPBillToAccounts/Detail', [
             return `ErpBillTo.ErpBillToAccounts.Id eq "${entry.$key}"`;
           },
           view: 'billtoaccount_returns_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }],
       }]);
     },

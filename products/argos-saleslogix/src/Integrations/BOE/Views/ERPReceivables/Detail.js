@@ -180,6 +180,9 @@ define('crm/Integrations/BOE/Views/ERPReceivables/Detail', [
             return `ErpReceivable.Id eq "${entry.$key}"`;
           },
           view: 'erpreceivable_items_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }],
       }]);
     },

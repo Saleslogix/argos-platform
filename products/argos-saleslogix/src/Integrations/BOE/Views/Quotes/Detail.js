@@ -654,6 +654,9 @@ define('crm/Integrations/BOE/Views/Quotes/Detail', [
             return `Quote.$key eq "${entry.$key}"`;
           },
           view: 'quote_lines_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'Attachments',
           label: this.attachmentsText,
@@ -661,6 +664,9 @@ define('crm/Integrations/BOE/Views/Quotes/Detail', [
             return `quoteId eq "${entry.$key}"`;
           },
           view: 'quote_attachments_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'QuotePersons',
           label: this.salesPersonsText,
@@ -668,6 +674,9 @@ define('crm/Integrations/BOE/Views/Quotes/Detail', [
             return `Quote.Id eq "${entry.$key}"`;
           },
           view: 'quotepersons_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'SyncHistory',
           label: this.syncHistoryText,
@@ -675,6 +684,9 @@ define('crm/Integrations/BOE/Views/Quotes/Detail', [
             return `EntityType eq "Quote" and EntityId eq "${entry.$key}"`;
           },
           view: 'quote_syncresult_related',
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }, {
           name: 'WorkflowInstances',
           label: this.relatedWorkflowInstancesText,
@@ -683,6 +695,9 @@ define('crm/Integrations/BOE/Views/Quotes/Detail', [
           },
           view: 'quote_workflow_instances_related',
           title: this.relatedWorkflowInstancesTitleText,
+          options: {
+            orderBy: 'CreateDate desc',
+          },
         }],
       }]);
     },
