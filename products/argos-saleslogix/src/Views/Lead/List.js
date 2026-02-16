@@ -26,6 +26,7 @@ define('crm/Views/Lead/List', [
   '../../Models/Names',
 ], (declare, action, format, utility, List, _GroupListMixin, _MetricListMixin, _RightDrawerListMixin, getResource, MODEL_NAMES) => {
   const resource = getResource('leadList');
+  const hashTagResource = getResource('leadListHashTags');
 
   const __class = declare('crm.Views.Lead.List', [List, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin], {
     // Templates
@@ -95,6 +96,12 @@ define('crm/Views/Lead/List', [
     phoneAbbreviationText: resource.phoneAbbreviationText,
     mobileAbbreviationText: resource.mobileAbbreviationText,
     tollFreeAbbreviationText: resource.tollFreeAbbreviationText,
+    hashTagQueriesText: {
+      'my-leads': hashTagResource.myLeadsHash,
+      'new-this-week': hashTagResource.newThisWeekHash,
+      'has-email': hashTagResource.withEmailHash,
+      'has-phone': hashTagResource.withPhoneHash,
+    },
 
     // View Properties
     detailView: 'lead_detail',
@@ -113,6 +120,18 @@ define('crm/Views/Lead/List', [
     modelName: MODEL_NAMES.LEAD,
     resourceKind: 'leads',
     entityName: 'Lead',
+    hashTagQueries: {
+      'my-leads': function myLeads() {
+        return `Owner.Id eq "${App.context.user.$key}"`;
+      },
+      'new-this-week': function newThisWeek() {
+        const now = moment();
+        const weekStart = now.clone().startOf('week');
+        return `CreateDate gt @${weekStart.format('YYYY-MM-DDTHH:mm:ss')}Z@`;
+      },
+      'has-email': 'Email ne null',
+      'has-phone': 'WorkPhone ne null',
+    },
     groupsEnabled: true,
     allowSelection: true,
     enableActions: true,

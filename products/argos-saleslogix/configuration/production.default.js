@@ -126,7 +126,7 @@ define('configuration/production.default', [
      */
     speedSearch: {
       includeStemming: true,
-      includePhonic: true,
+      includePhonic: false,
       includeThesaurus: false,
       useFrequentFilter: false,
       searchType: 1,

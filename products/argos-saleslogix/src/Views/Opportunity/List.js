@@ -25,6 +25,7 @@ define('crm/Views/Opportunity/List', [
   '../../Models/Names',
 ], (declare, action, format, List, _GroupListMixin, _MetricListMixin, _RightDrawerListMixin, getResource, MODEL_NAMES) => {
   const resource = getResource('opportunityList');
+  const hashTagResource = getResource('opportunityListHashTags');
 
   const __class = declare('crm.Views.Opportunity.List', [List, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin], {
     // Templates
@@ -76,6 +77,13 @@ define('crm/Views/Opportunity/List', [
     actualCloseText: resource.actualCloseText,
     estimatedCloseText: resource.estimatedCloseText,
     quickEditActionText: resource.quickEditActionText,
+    hashTagQueriesText: {
+      open: hashTagResource.openHash,
+      'closed-won': hashTagResource.closedWonHash,
+      'closed-lost': hashTagResource.closedLostHash,
+      'my-opportunities': hashTagResource.myOpportunitiesHash,
+      'closing-soon': hashTagResource.closingSoonHash,
+    },
 
     // View Properties
     id: 'opportunity_list',
@@ -88,6 +96,19 @@ define('crm/Views/Opportunity/List', [
     modelName: MODEL_NAMES.OPPORTUNITY,
     resourceKind: 'opportunities',
     entityName: 'Opportunity',
+    hashTagQueries: {
+      open: 'Status eq "Open"',
+      'closed-won': 'Status eq "Closed - Won"',
+      'closed-lost': 'Status eq "Closed - Lost"',
+      'my-opportunities': function myOpportunities() {
+        return `AccountManager.Id eq "${App.context.user.$key}"`;
+      },
+      'closing-soon': function closingSoon() {
+        const now = moment();
+        const twoWeeks = now.clone().add(14, 'days');
+        return `Status eq "Open" and EstimatedClose lt @${twoWeeks.format('YYYY-MM-DDTHH:mm:ss')}Z@`;
+      },
+    },
     groupsEnabled: true,
     allowSelection: true,
     enableActions: true,
