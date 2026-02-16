@@ -25,6 +25,7 @@ define('crm/Views/Ticket/List', [
   'crm/Format',
 ], (declare, action, List, _GroupListMixin, _MetricListMixin, _RightDrawerListMixin, getResource, MODEL_NAMES, format) => {
   const resource = getResource('ticketList');
+  const hashTagResource = getResource('ticketListHashTags');
 
   const __class = declare('crm.Views.Ticket.List', [List, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin], {
     format,
@@ -78,6 +79,13 @@ define('crm/Views/Ticket/List', [
     createdOnText: resource.createdOnText,
     modifiedText: resource.modifiedText,
     neededByText: resource.neededByText,
+    hashTagQueriesText: {
+      open: hashTagResource.openHash,
+      urgent: hashTagResource.urgentHash,
+      'my-tickets': hashTagResource.myTicketsHash,
+      'new-this-week': hashTagResource.newThisWeekHash,
+      'needed-soon': hashTagResource.neededSoonHash,
+    },
 
     // View Properties
     detailView: 'ticket_detail',
@@ -90,6 +98,23 @@ define('crm/Views/Ticket/List', [
     modelName: MODEL_NAMES.TICKET,
     resourceKind: 'tickets',
     entityName: 'Ticket',
+    hashTagQueries: {
+      open: 'StatusCode eq "k6UJ9A000001"',
+      urgent: 'Urgency/Description eq "High"',
+      'my-tickets': function myTickets() {
+        return `AssignedTo.Id eq "${App.context.user.$key}"`;
+      },
+      'new-this-week': function newThisWeek() {
+        const now = moment();
+        const weekStart = now.clone().startOf('week');
+        return `CreateDate gt @${weekStart.format('YYYY-MM-DDTHH:mm:ss')}Z@`;
+      },
+      'needed-soon': function neededSoon() {
+        const now = moment();
+        const oneWeek = now.clone().add(7, 'days');
+        return `NeededByDate lt @${oneWeek.format('YYYY-MM-DDTHH:mm:ss')}Z@`;
+      },
+    },
     groupsEnabled: true,
     allowSelection: true,
     enableActions: true,

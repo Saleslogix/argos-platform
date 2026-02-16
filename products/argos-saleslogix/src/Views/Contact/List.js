@@ -26,6 +26,7 @@ define('crm/Views/Contact/List', [
   '../../GroupUtility',
 ], (declare, action, format, List, _GroupListMixin, _MetricListMixin, _RightDrawerListMixin, getResource, MODEL_NAMES, GroupUtility) => {
   const resource = getResource('contactList');
+  const hashTagResource = getResource('contactListHashTags');
 
   const __class = declare('crm.Views.Contact.List', [List, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin], {
     format,
@@ -81,6 +82,12 @@ define('crm/Views/Contact/List', [
     addAttachmentActionText: resource.addAttachmentActionText,
     phoneAbbreviationText: resource.phoneAbbreviationText,
     mobileAbbreviationText: resource.mobileAbbreviationText,
+    hashTagQueriesText: {
+      'my-contacts': hashTagResource.myContactsHash,
+      'has-email': hashTagResource.withEmailHash,
+      'has-phone': hashTagResource.withPhoneHash,
+      'new-this-week': hashTagResource.newThisWeekHash,
+    },
 
     // View Properties
     detailView: 'contact_detail',
@@ -92,6 +99,18 @@ define('crm/Views/Contact/List', [
     querySelect: [],
     resourceKind: 'contacts',
     entityName: 'Contact',
+    hashTagQueries: {
+      'my-contacts': function myContacts() {
+        return `AccountManager.Id eq "${App.context.user.$key}"`;
+      },
+      'has-email': 'Email ne null',
+      'has-phone': 'WorkPhone ne null',
+      'new-this-week': function newThisWeek() {
+        const now = moment();
+        const weekStart = now.clone().startOf('week');
+        return `CreateDate gt @${weekStart.format('YYYY-MM-DDTHH:mm:ss')}Z@`;
+      },
+    },
     modelName: MODEL_NAMES.CONTACT,
     groupsEnabled: true,
     enableActions: true,

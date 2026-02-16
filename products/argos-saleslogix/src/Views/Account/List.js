@@ -26,6 +26,7 @@ define('crm/Views/Account/List', [
   'argos/I18n',
 ], (declare, action, utility, List, _GroupListMixin, _MetricListMixin, _RightDrawerListMixin, MODEL_NAMES, ActivityTypeText, getResource) => {
   const resource = getResource('accountList');
+  const hashTagResource = getResource('accountListHashTags');
 
   const __class = declare('crm.Views.Account.List', [List, _RightDrawerListMixin, _MetricListMixin, _GroupListMixin], {
     // Templates
@@ -69,6 +70,12 @@ define('crm/Views/Account/List', [
     phoneAbbreviationText: resource.phoneAbbreviationText,
     faxAbbreviationText: resource.faxAbbreviationText,
     offlineText: resource.offlineText,
+    hashTagQueriesText: {
+      active: hashTagResource.activeHash,
+      inactive: hashTagResource.inactiveHash,
+      'my-accounts': hashTagResource.myAccountsHash,
+      'new-this-week': hashTagResource.newThisWeekHash,
+    },
 
     // View Properties
     detailView: 'account_detail',
@@ -78,6 +85,18 @@ define('crm/Views/Account/List', [
     insertView: 'account_edit',
     insertSecurity: 'Entities/Account/Add',
     entityName: 'Account',
+    hashTagQueries: {
+      active: 'Status eq "Active"',
+      inactive: 'Status eq "Inactive"',
+      'my-accounts': function myAccounts() {
+        return `AccountManager.Id eq "${App.context.user.$key}"`;
+      },
+      'new-this-week': function newThisWeek() {
+        const now = moment();
+        const weekStart = now.clone().startOf('week');
+        return `CreateDate gt @${weekStart.format('YYYY-MM-DDTHH:mm:ss')}Z@`;
+      },
+    },
     allowSelection: true,
     enableActions: true,
     offlineIds: null,

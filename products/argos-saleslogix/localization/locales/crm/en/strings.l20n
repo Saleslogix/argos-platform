@@ -1704,6 +1704,43 @@
   hashTagBinaryText: "#binary"
 >
 
+<accountListHashTags ""
+  activeHash: "#active"
+  inactiveHash: "#inactive"
+  myAccountsHash: "#my-accounts"
+  newThisWeekHash: "#new-this-week"
+>
+
+<contactListHashTags ""
+  myContactsHash: "#my-contacts"
+  withEmailHash: "#has-email"
+  withPhoneHash: "#has-phone"
+  newThisWeekHash: "#new-this-week"
+>
+
+<opportunityListHashTags ""
+  openHash: "#open"
+  closedWonHash: "#closed-won"
+  closedLostHash: "#closed-lost"
+  myOpportunitiesHash: "#my-opportunities"
+  closingSoonHash: "#closing-soon"
+>
+
+<leadListHashTags ""
+  myLeadsHash: "#my-leads"
+  newThisWeekHash: "#new-this-week"
+  withEmailHash: "#has-email"
+  withPhoneHash: "#has-phone"
+>
+
+<ticketListHashTags ""
+  openHash: "#open"
+  urgentHash: "#urgent"
+  myTicketsHash: "#my-tickets"
+  newThisWeekHash: "#new-this-week"
+  neededSoonHash: "#needed-soon"
+>
+
 <historyListHashTags ""
   myHistoryHash: "#my-history"
   noteHash: "#note"
