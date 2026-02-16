@@ -55,6 +55,7 @@ define('crm/Integrations/BOE/Views/UnitsOfMeasure/List', [
       const q = this.escapeSearchQuery(searchQuery.toUpperCase());
       return `upper(Name) like "${q}%"`;
     },
+    containsSearchFields: ['Name'],
   });
 
   lang.setObject('icboe.Views.UnitsOfMeasure.List', __class);

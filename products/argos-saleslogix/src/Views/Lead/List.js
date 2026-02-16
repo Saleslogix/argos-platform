@@ -209,6 +209,7 @@ define('crm/Views/Lead/List', [
       const q = this.escapeSearchQuery(searchQuery.toUpperCase());
       return `(LastNameUpper like "${q}%" or upper(FirstName) like "${q}%" or CompanyUpper like "${q}%" or upper(LeadNameLastFirst) like "%${q}%")`;
     },
+    containsSearchFields: ['LastNameUpper', 'FirstName', 'CompanyUpper', 'LeadNameLastFirst'],
   });
 
   return __class;

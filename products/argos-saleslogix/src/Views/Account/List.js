@@ -146,6 +146,7 @@ define('crm/Views/Account/List', [
       const q = this.escapeSearchQuery(searchQuery.toUpperCase());
       return `AccountNameUpper like "${q}%"`;
     },
+    containsSearchFields: ['AccountNameUpper'],
   });
 
   return __class;

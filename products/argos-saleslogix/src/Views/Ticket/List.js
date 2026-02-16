@@ -166,6 +166,7 @@ define('crm/Views/Ticket/List', [
       const q = this.escapeSearchQuery(searchQuery.toUpperCase());
       return `TicketNumber like "${q}%" or AlternateKeySuffix like "${q}%" or upper(Subject) like "${q}%" or Account.AccountNameUpper like "${q}%"`;
     },
+    containsSearchFields: ['TicketNumber', 'AlternateKeySuffix', 'Subject', 'Account.AccountNameUpper'],
   });
 
   return __class;

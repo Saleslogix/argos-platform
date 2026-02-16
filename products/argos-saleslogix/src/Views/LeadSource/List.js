@@ -43,6 +43,7 @@ define('crm/Views/LeadSource/List', [
       const q = this.escapeSearchQuery(searchQuery.toUpperCase());
       return `upper(Description) like "${q}%"`;
     },
+    containsSearchFields: ['Description'],
   });
 
   return __class;

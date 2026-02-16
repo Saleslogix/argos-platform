@@ -67,6 +67,7 @@ define('crm/Views/OpportunityProduct/List', [
       const q = this.escapeSearchQuery(searchQuery.toUpperCase());
       return `(upper(Product.Name) like "${q}%" or upper(Product.Family) like "${q}%")`;
     },
+    containsSearchFields: ['Product.Name', 'Product.Family'],
   });
 
   return __class;

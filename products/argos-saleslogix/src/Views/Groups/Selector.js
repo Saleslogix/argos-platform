@@ -83,6 +83,7 @@ define('crm/Views/Groups/Selector', [
       const q = this.escapeSearchQuery(searchQuery.toUpperCase());
       return `name like "${q}%"`;
     },
+    containsSearchFields: ['name'],
   });
 
   return __class;

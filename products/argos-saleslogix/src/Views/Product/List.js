@@ -50,6 +50,7 @@ define('crm/Views/Product/List', [
       const q = this.escapeSearchQuery(searchQuery.toUpperCase());
       return `(upper(Name) like "${q}%" or upper(Family) like "${q}%")`;
     },
+    containsSearchFields: ['Name', 'Family'],
   });
 
   return __class;

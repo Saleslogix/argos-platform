@@ -737,9 +737,12 @@ define('argos/_ListBase', [
       this.inherited(startup, arguments);
 
       if (this.searchWidget) {
+        const containsQuery = this._buildContainsSearchQuery();
         this.searchWidget.configure({
           hashTagQueries: this._createCustomizedLayout(this.createHashTagQueryLayout(), 'hashTagQueries'),
           formatSearchQuery: this.formatSearchQuery.bind(this),
+          containsEnabled: !!containsQuery,
+          formatContainsSearchQuery: containsQuery,
         });
       }
     },
@@ -1417,6 +1420,47 @@ define('argos/_ListBase', [
      */
     formatSearchQuery: function formatSearchQuery(/* searchQuery*/) {
       return false;
+    },
+    /**
+     * @property {String[]}
+     * Array of SData field names to use for contains search.
+     * When provided, the SDK auto-generates a contains where clause using these fields.
+     * Views can alternatively override formatContainsSearchQuery for full control.
+     * @template
+     */
+    containsSearchFields: null,
+    /**
+     * Called to transform a textual query into a "contains" SData query expression.
+     * Views may override this for custom contains logic. If not overridden,
+     * the SDK will auto-generate from containsSearchFields.
+     *
+     * @param {String} searchQuery User inputted text from the search widget.
+     * @return {String/Boolean} An SData query compatible search expression.
+     * @template
+     */
+    formatContainsSearchQuery: null,
+    /**
+     * Builds the contains search query function to pass to the SearchWidget.
+     * Uses the view's formatContainsSearchQuery if provided, otherwise
+     * auto-generates from containsSearchFields.
+     * @return {Function|null}
+     * @private
+     */
+    _buildContainsSearchQuery: function _buildContainsSearchQuery() {
+      if (this.formatContainsSearchQuery) {
+        return this.formatContainsSearchQuery.bind(this);
+      }
+
+      if (this.containsSearchFields && this.containsSearchFields.length) {
+        return (searchQuery) => {
+          const q = this.escapeSearchQuery(searchQuery.toUpperCase());
+          return this.containsSearchFields
+            .map(field => `upper(${field}) like "%${q}%"`)
+            .join(' or ');
+        };
+      }
+
+      return null;
     },
     /**
      * Replaces a single `"` with two `""` for proper SData query expressions.
