@@ -265,10 +265,10 @@ define('crm/Views/Lead/Detail', [
         }, {
           name: 'HistoryRelated',
           label: this.relatedHistoriesText,
-          where: this.formatRelatedQuery.bindDelegate(this, 'LeadId eq "${0}" and Type ne "atDatabaseChange"'),
-          view: 'history_related',
+          where: this.formatRelatedQuery.bindDelegate(this, '(EntityId eq "${0}" and EntityType eq "Lead") and History.Type ne "atDatabaseChange"'),
+          view: 'history_association_related',
           options: {
-            orderBy: 'CreateDate desc',
+            orderBy: 'History.CreateDate desc',
           },
         }, {
           name: 'AttachmentRelated',

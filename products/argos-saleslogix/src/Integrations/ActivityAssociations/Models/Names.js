@@ -16,6 +16,6 @@
 define('crm/Integrations/ActivityAssociations/Models/Names', [], () => {
   return {
     ACTIVITYASSOCIATION: 'ActivityAssociation',
-    HISTORYASSOCIATION: 'HistoryAssociation',
+    HISTORYASSOCIATION: 'HistoryAssociationIntegration',
   };
 });
