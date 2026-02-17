@@ -175,6 +175,7 @@ define('crm/Views/Opportunity/List', [
       const q = this.escapeSearchQuery(searchQuery.toUpperCase());
       return `(upper(Description) like "${q}%" or Account.AccountNameUpper like "${q}%")`;
     },
+    containsSearchFields: ['Description', 'Account.AccountNameUpper'],
     groupFieldFormatter: {
       CloseProbability: {
         name: 'CloseProbability',

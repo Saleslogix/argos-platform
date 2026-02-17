@@ -76,6 +76,7 @@ define('crm/Views/TicketActivity/List', [
       const q = this.escapeSearchQuery(searchQuery.toUpperCase());
       return `ActivityDescription like "${q}%"`;
     },
+    containsSearchFields: ['ActivityDescription'],
   });
 
   return __class;

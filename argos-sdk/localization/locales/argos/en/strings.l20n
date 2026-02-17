@@ -218,6 +218,7 @@
 
 <searchWidget ""
  searchText: "Search"
+ containsText: "Contains"
 >
 
 <selectionModel ""

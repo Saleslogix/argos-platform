@@ -47,6 +47,7 @@ define('crm/Views/ProductProgram/List', [
       const q = this.escapeSearchQuery(searchQuery.toUpperCase());
       return `(upper(Program) like "${q}%")`;
     },
+    containsSearchFields: ['Program'],
   });
 
   return __class;

@@ -77,6 +77,7 @@ define('crm/Integrations/BOE/Views/SyncResults/List', [
       const q = this.escapeSearchQuery(searchQuery.toUpperCase());
       return `upper(HttpStatus) like "${q}%"`;
     },
+    containsSearchFields: ['HttpStatus'],
   });
 
   lang.setObject('icboe.Views.SyncResults.List', __class);

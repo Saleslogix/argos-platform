@@ -105,6 +105,7 @@ define('crm/Views/PickList', [
       const q = this.escapeSearchQuery(searchQuery.toUpperCase());
       return `upper(text) like "${q}%"`;
     },
+    containsSearchFields: ['text'],
   });
 
   return __class;

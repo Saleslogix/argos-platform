@@ -55,6 +55,7 @@ define('crm/Integrations/BOE/Views/Locations/List', [
       const q = this.escapeSearchQuery(searchQuery.toUpperCase());
       return `upper(Description) like "${q}%" or upper(ErpLogicalId) like "${q}%"`;
     },
+    containsSearchFields: ['Description', 'ErpLogicalId'],
   });
 
   lang.setObject('icboe.Views.Locations.List', __class);

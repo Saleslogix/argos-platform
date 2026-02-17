@@ -153,6 +153,7 @@ define('crm/Views/OpportunityContact/List', [
       const q = this.escapeSearchQuery(searchQuery.toUpperCase());
       return `(upper(Contact.NameLF) like "${q}%")`;
     },
+    containsSearchFields: ['Contact.NameLF'],
   });
 
   return __class;

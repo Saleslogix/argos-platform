@@ -47,6 +47,7 @@ define('crm/Views/Address/List', [
       const q = this.escapeSearchQuery(searchQuery.toUpperCase());
       return `(upper(Description) like "${q}%" or upper(City) like "${q}%")`;
     },
+    containsSearchFields: ['Description', 'City'],
     // Disable Add/Insert on toolbar
     createToolLayout: function createToolLayout() {
       return this.tools || (this.tools = {

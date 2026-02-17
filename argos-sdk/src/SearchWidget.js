@@ -76,12 +76,18 @@ define('argos/SearchWidget', [
      * @memberof argos.SearchWidget
      */
     widgetTemplate: new Simplate([`
-      <span class="searchfield-wrapper">
-        <input type="text" title="{%= $.searchText %}" placeholder="{%= $.searchText %}" name="query" class="searchfield" autocorrect="off" autocapitalize="off" data-dojo-attach-point="queryNode" data-dojo-attach-event="onkeypress:_onKeyPress" data-options="{collapsible: false}" />
-        <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-search"></use>
-        </svg>
-      </span>
+      <div class="search-widget-container">
+        <span class="searchfield-wrapper">
+          <input type="text" title="{%= $.searchText %}" placeholder="{%= $.searchText %}" name="query" class="searchfield" autocorrect="off" autocapitalize="off" data-dojo-attach-point="queryNode" data-dojo-attach-event="onkeypress:_onKeyPress" data-options="{collapsible: false}" />
+          <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-search"></use>
+          </svg>
+        </span>
+        <div class="switch contains-toggle" style="display:none" data-dojo-attach-point="containsToggleNode">
+          <input type="checkbox" class="switch" id="contains-toggle-{%= $.id %}" data-dojo-attach-point="containsCheckNode" data-dojo-attach-event="onclick:_onContainsToggle" />
+          <label for="contains-toggle-{%= $.id %}">{%= $.containsText %}</label>
+        </div>
+      </div>
       `,
     ]),
 
@@ -90,6 +96,11 @@ define('argos/SearchWidget', [
      * @property {String}
      */
     searchText: resource.searchText,
+    /**
+     * Text for the contains toggle button tooltip.
+     * @property {String}
+     */
+    containsText: resource.containsText || 'Contains',
 
     /**
      * @property {RegExp}
@@ -109,6 +120,30 @@ define('argos/SearchWidget', [
      * Array of hash tag definitions
      */
     hashTagQueries: null,
+    /**
+     * @property {Boolean}
+     * Whether the contains search toggle is available for this view.
+     * Views opt in by providing containsSearchFields or formatContainsSearchQuery.
+     */
+    containsEnabled: false,
+    /**
+     * @property {Boolean}
+     * Whether contains mode is currently active. Persisted via App.preferences.
+     */
+    containsActive: false,
+    /**
+     * @property {Function}
+     * Optional function provided by the view to format a contains search query.
+     */
+    formatContainsSearchQuery: null,
+    /**
+     * Dojo attach point for the contains toggle wrapper div
+     */
+    containsToggleNode: null,
+    /**
+     * Dojo attach point for the contains checkbox input
+     */
+    containsCheckNode: null,
     /**
      * Dojo attach point to the search input
      */
@@ -180,6 +215,9 @@ define('argos/SearchWidget', [
       }
 
       if (hashQueries.length < 1) {
+        if (this.containsActive && this.formatContainsSearchQuery) {
+          return this.formatContainsSearchQuery(query);
+        }
         return this.formatSearchQuery(query);
       }
 
@@ -188,7 +226,10 @@ define('argos/SearchWidget', [
       additionalSearch = additionalSearch.replace(/^\s+|\s+$/g, '');
 
       if (additionalSearch) {
-        newQuery += ` and (${this.formatSearchQuery(additionalSearch)})`;
+        const additionalQuery = (this.containsActive && this.formatContainsSearchQuery)
+          ? this.formatContainsSearchQuery(additionalSearch)
+          : this.formatSearchQuery(additionalSearch);
+        newQuery += ` and (${additionalQuery})`;
       }
 
       return newQuery;
@@ -200,6 +241,14 @@ define('argos/SearchWidget', [
     configure: function configure(options) {
       // todo: for now, we simply mixin the options
       lang.mixin(this, options);
+
+      // Update toggle visibility whenever contains config changes
+      this._updateContainsUI();
+
+      if (this.containsEnabled) {
+        this._loadContainsPreference();
+        this._updateContainsUI();
+      }
     },
     /**
      * Expands the passed expression if it is a function.
@@ -243,6 +292,7 @@ define('argos/SearchWidget', [
      * Gets the current search expression as a formatted query.
      * * Gathers the inputted search text
      * * Determines if its a custom expression, hash tag, or normal search
+     * * Routes to contains search when containsActive is true
      */
     getFormattedSearchQuery: function getFormattedSearchQuery() {
       const searchQuery = this.getSearchExpression();
@@ -259,7 +309,11 @@ define('argos/SearchWidget', [
           formattedQuery = this.hashTagSearch(searchQuery);
           break;
         default:
-          formattedQuery = this.formatSearchQuery(searchQuery);
+          if (this.containsActive && this.formatContainsSearchQuery) {
+            formattedQuery = this.formatContainsSearchQuery(searchQuery);
+          } else {
+            formattedQuery = this.formatSearchQuery(searchQuery);
+          }
       }
 
       if (lang.trim(searchQuery) === '') {
@@ -284,6 +338,49 @@ define('argos/SearchWidget', [
       if (this.queryNode) {
         this.queryNode.disabled = false;
         $(this.domNode).removeClass('disabled');
+      }
+    },
+    /**
+     * Handles the contains toggle checkbox click.
+     * Reads the checkbox state, updates containsActive, and persists preference.
+     */
+    _onContainsToggle: function _onContainsToggle() {
+      this.containsActive = this.containsCheckNode.checked;
+      this._persistContainsPreference();
+    },
+    /**
+     * Updates the contains toggle UI to reflect the current state.
+     */
+    _updateContainsUI: function _updateContainsUI() {
+      if (this.containsToggleNode) {
+        if (this.containsEnabled) {
+          $(this.containsToggleNode).show();
+        } else {
+          $(this.containsToggleNode).hide();
+        }
+      }
+      if (this.containsCheckNode) {
+        this.containsCheckNode.checked = this.containsActive;
+      }
+    },
+    /**
+     * Persists the contains toggle state to App.preferences.
+     */
+    _persistContainsPreference: function _persistContainsPreference() {
+      const viewId = this.owner && this.owner.id;
+      if (viewId && typeof App !== 'undefined' && App.preferences) {
+        App.preferences.containsSearch = App.preferences.containsSearch || {};
+        App.preferences.containsSearch[viewId] = this.containsActive;
+        App.persistPreferences();
+      }
+    },
+    /**
+     * Loads the persisted contains toggle state from App.preferences.
+     */
+    _loadContainsPreference: function _loadContainsPreference() {
+      const viewId = this.owner && this.owner.id;
+      if (viewId && typeof App !== 'undefined' && App.preferences && App.preferences.containsSearch) {
+        this.containsActive = !!App.preferences.containsSearch[viewId];
       }
     },
   });
