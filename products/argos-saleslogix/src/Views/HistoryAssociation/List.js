@@ -150,7 +150,6 @@ define('crm/Views/HistoryAssociation/List', [
       }]);
     },
     hasContactOrLead: function hasContactOrLead(theAction, selection) {
-      console.dir(selection);
       return (selection.data.EntityType === 'Contact' || selection.data.EntityType === 'Lead');
     },
     navigateToContactOrLead: function navigateToContactOrLead(theAction, selection) {
