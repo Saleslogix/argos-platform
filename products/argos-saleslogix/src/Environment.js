@@ -72,6 +72,7 @@ define('crm/Environment', [
       'activity_related',
       'ticketactivity_related',
       'history_related',
+      'history_association_related',
       'history_list',
     ],
     detailViewsToRefreshOnUpdate: [

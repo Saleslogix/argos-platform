@@ -120,6 +120,7 @@ define('crm/ApplicationModule', [
   './Views/HistoryAttendee/List',
   './Views/HistoryAttendee/Detail',
   './Views/History/RelatedView',
+  './Views/HistoryAssociation/List',
   './Views/User/CalendarAccessList',
   './Views/User/List',
   './Views/Attachment/ViewAttachment',
@@ -174,6 +175,7 @@ define('crm/ApplicationModule', [
   './Models/Address/SData',
   './Models/History/Offline',
   './Models/History/SData',
+  './Models/HistoryAssociation/SData',
   './Models/HistoryAttendee/Offline',
   './Models/HistoryAttendee/SData',
   './Models/Ticket/Offline',
@@ -182,7 +184,28 @@ define('crm/ApplicationModule', [
   './Models/TicketActivity/SData',
   './Models/Authentication/Offline',
 // eslint-disable-next-line no-unused-vars
-], (declare, lang, ApplicationModule, Calendar, RelatedViewManager, RelatedViewWidget, List, Signature, SearchWidget, FileSelect, AddAccountContact, AreaCategoryIssueLookup, AreaLookup, CategoryLookup, IssueLookup, ExchangeRateLookup, MainToolbar, UpdateToolbar, LeftDrawer, RightDrawer, OfflineDetail, OfflineList, Login, LogOff, Settings, Configure, Help, NameEdit, PickList, SelectList, SpeedSearchList, TextEdit, AccountList, AccountDetail, AccountEdit, AddressList, AddressEdit, ActivityAttendeeList, ActivityAttendeeDetail, ActivityAttendeeEdit, ActivityAttendeeTypesList, ActivityList, MyDayList, MyActivityList, ActivityDetail, ActivityEdit, ActivityComplete, ActivityTypesList, ActivityRecurring, CalendarView, DayView, MonthView, WeekView, GenericBar, GenericLine, GenericPie, CompetitorList, ContactList, ContactDetail, ContactEdit, ContractList, ErrorLogList, ErrorLogDetail, EventList, EventDetail, EventEdit, GroupsSelector, LeadList, LeadDetail, LeadEdit, LeadSourceList, OpportunityList, OpportunityDetail, OpportunityEdit, OpportunityQuickEdit, OpportunityContactList, OpportunityContactDetail, OpportunityContactEdit, OpportunityProductList, OpportunityProductDetail, OpportunityProductEdit, OwnerList, ProductList, ProductProgramList, TicketList, TicketDetail, TicketEdit, TicketUrgencyLookup, TicketActivityList, TicketActivityDetail, TicketActivityEdit, TicketActivityRateLookup, TicketActivityItemList, TicketActivityItemDetail, HistoryList, HistoryListOffline, HistoryDetail, HistoryEdit, HistoryEditOffline, HistoryAttendeeList, HistoryAttendeeDetail, HistoryRelatedView, CalendarAccessList, UserList, ViewAttachment, AttachmentList, AddAttachment, MyAttachmentList, WorkflowInstancesList, RecentlyViewedList, BriefcaseList, OfflineOptionsEdit, LanguageOptionsEdit, CustomerJourney360Widget, getResource, MODEL_NAMES, MODEL_TYPES, OfflineOptionsUsageWidget, LanguageOptionsUsageWidget, AddressField, MultiCurrencyField, NameField, PicklistField, RecurrencesField, RelatedContextWidget, RelatedEditWidget, Action, Format, Template, Validator, Environment, Utility, AccountModelOffline, AccountModelSData, ActivityAttendeeModelOffline, ActivityAttendeeModelSData, ActivityModelOffline, ActivityModelSData, AreaCategoryIssueModelSData, ContactModelOffline, ContactModelSData, IntegrationModelSData, LeadModelOffline, LeadModelSData, LeadAddressModelOffline, LeadAddressModelSData, OpportunityModelOffline, OpportunityModelSData, OpportunityContactModelOffline, OpportunityContactModelSData, UserActivityModelOffline, UserActivityModelSData, AddressModelOffline, AddressModelSData, HistoryModelOffline, HistoryModelSData, HistoryAttendeeModelOffline, HistoryAttendeeModelSData, TicketModelOffline, TicketModelSData, TicketActivityModelOffline, TicketActivityModelSData, AuthenticationModelOffline) => {
+], (declare, lang, ApplicationModule, Calendar, RelatedViewManager, RelatedViewWidget, List,
+  Signature, SearchWidget, FileSelect, AddAccountContact, AreaCategoryIssueLookup, AreaLookup,
+  CategoryLookup, IssueLookup, ExchangeRateLookup, MainToolbar, UpdateToolbar, LeftDrawer,
+  RightDrawer, OfflineDetail, OfflineList, Login, LogOff, Settings, Configure, Help, NameEdit,
+  PickList, SelectList, SpeedSearchList, TextEdit, AccountList, AccountDetail, AccountEdit,
+  AddressList, AddressEdit, ActivityAttendeeList, ActivityAttendeeDetail, ActivityAttendeeEdit,
+  ActivityAttendeeTypesList, ActivityList, MyDayList, MyActivityList, ActivityDetail,
+  ActivityEdit, ActivityComplete, ActivityTypesList, ActivityRecurring, CalendarView,
+  DayView, MonthView, WeekView, GenericBar, GenericLine, GenericPie, CompetitorList,
+  ContactList, ContactDetail, ContactEdit, ContractList, ErrorLogList, ErrorLogDetail,
+  EventList, EventDetail, EventEdit, GroupsSelector, LeadList, LeadDetail, LeadEdit,
+  LeadSourceList, OpportunityList, OpportunityDetail, OpportunityEdit, OpportunityQuickEdit,
+  OpportunityContactList, OpportunityContactDetail, OpportunityContactEdit,
+  OpportunityProductList, OpportunityProductDetail, OpportunityProductEdit,
+  OwnerList, ProductList, ProductProgramList, TicketList, TicketDetail, TicketEdit,
+  TicketUrgencyLookup, TicketActivityList, TicketActivityDetail, TicketActivityEdit,
+  TicketActivityRateLookup, TicketActivityItemList, TicketActivityItemDetail, HistoryList,
+  HistoryListOffline, HistoryDetail, HistoryEdit, HistoryEditOffline, HistoryAttendeeList,
+  HistoryAttendeeDetail, HistoryRelatedView, HistoryAssociationList, CalendarAccessList, UserList, ViewAttachment,
+  AttachmentList, AddAttachment, MyAttachmentList, WorkflowInstancesList, RecentlyViewedList,
+  BriefcaseList, OfflineOptionsEdit, LanguageOptionsEdit, CustomerJourney360Widget,
+  getResource, MODEL_NAMES, MODEL_TYPES) => {
   const resource = getResource('applicationModule');
 
   /**
@@ -489,6 +512,14 @@ define('crm/ApplicationModule', [
       this.registerView(new HistoryEditOffline());
       this.registerView(new HistoryList({
         id: 'history_related',
+        expose: false,
+        groupsEnabled: false,
+        defaultSearchTerm: () => {
+          return '';
+        },
+      }));
+      this.registerView(new HistoryAssociationList({
+        id: 'history_association_related',
         expose: false,
         groupsEnabled: false,
         defaultSearchTerm: () => {

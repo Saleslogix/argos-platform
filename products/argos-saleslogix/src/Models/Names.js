@@ -31,6 +31,7 @@ define('crm/Models/Names', [], () => {
     USERACTIVITY: 'UserActivity',
     ADDRESS: 'Address',
     HISTORY: 'History',
+    HISTORY_ASSOCIATION: 'HistoryAssociation',
     AREACATEGORYISSUE: 'AreaCategoryIssue',
   };
 });

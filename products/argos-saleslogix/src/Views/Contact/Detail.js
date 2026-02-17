@@ -286,10 +286,10 @@ define('crm/Views/Contact/Detail', [
         }, {
           name: 'HistoryRelated',
           label: this.relatedHistoriesText,
-          where: this.formatRelatedQuery.bindDelegate(this, 'ContactId eq "${0}" and Type ne "atDatabaseChange"'),
-          view: 'history_related',
+          where: this.formatRelatedQuery.bindDelegate(this, '(EntityId eq "${0}" and EntityType eq "Contact") and History.Type ne "atDatabaseChange"'),
+          view: 'history_association_related',
           options: {
-            orderBy: 'CreateDate desc',
+            orderBy: 'History.CreateDate desc',
           },
         }, {
           name: 'AddressesRelated',

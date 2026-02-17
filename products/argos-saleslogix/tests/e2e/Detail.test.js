@@ -42,7 +42,7 @@ describe('Detail', () => {
       // Values are fetched when we click the related tab, so wait for the history response to come back from sdata
       await page.waitForResponse(/history/);
 
-      const notesCountSelector = '#account_detail li[data-view="history_related"] .badge';
+      const notesCountSelector = '#account_detail li[data-view="history_association_related"] .badge';
       let notesCountHandle = await page.waitForSelector(notesCountSelector);
       const firstCountText = await notesCountHandle.innerText();
       const firstCount = Number(firstCountText);

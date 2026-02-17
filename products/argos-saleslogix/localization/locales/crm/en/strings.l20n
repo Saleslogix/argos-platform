@@ -1583,6 +1583,11 @@
   entityDisplayNamePlural : "History"
 >
 
+<historyAssociationModel ""
+  entityDisplayName: "History Association"
+  entityDisplayNamePlural : "History Associations"
+>
+
 <offlineDetail ""
   titleText: "Offline Detail"
   offlineText: "Offline"

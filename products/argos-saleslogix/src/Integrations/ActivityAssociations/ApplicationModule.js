@@ -40,7 +40,7 @@ define('crm/Integrations/ActivityAssociations/ApplicationModule', [
         expose: false,
       }));
       this.registerView(new HistoryAssociationList({
-        id: 'history_association_related',
+        id: 'history_association_related_integration',
         expose: false,
       }));
     },
@@ -76,7 +76,7 @@ define('crm/Integrations/ActivityAssociations/ApplicationModule', [
           where: (entry) => {
             return `HistoryId eq "${entry.$key}"`;
           },
-          view: 'history_association_related',
+          view: 'history_association_related_integration',
           title: resource.relatedHistoryAssociationTitleText,
         },
       });
