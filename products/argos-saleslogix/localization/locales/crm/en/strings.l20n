@@ -1353,12 +1353,26 @@
   credentialsClearedText: "Saved credentials cleared successfully."
   titleText: "Settings"
   offlineOptionsText: "Offline Options"
+  speedSearchOptionsText: "SpeedSearch Options"
   use24HourClockText: "Using 24-hour Clock"
   use12HourClockText: "Using 12-hour Clock"
   confirm24HourClockMessage: "Changing the clock to 24-hour format will require an application restart. Continue?"
   confirm12HourClockMessage: "Changing the clock to 12-hour format will require an application restart. Continue?"
   confirmClearLocalStorageMessage: "Clearing local storage will require the application to restart. Are you sure?"
   languageSettingText: "Language Settings"
+>
+
+<speedSearchOptions ""
+  titleText: "SpeedSearch Options"
+  searchMethodText: "Search Method"
+  searchTypeAndText: "Match on All Words (AND)"
+  searchTypeOrText: "Match on Any Words (OR)"
+  searchTypeExactPhraseText: "Match Exact Phrase"
+  searchTypeBooleanText: "Boolean (AND, OR, NOT)"
+  searchTypeNaturalText: "Natural Language"
+  rootText: "Root"
+  thesaurusText: "Thesaurus"
+  soundsLikeText: "Sounds Like"
 >
 
 <speedSearchList ""

@@ -53,6 +53,7 @@ define('crm/Views/Settings', [
     credentialsClearedText: resource.credentialsClearedText,
     titleText: resource.titleText,
     offlineOptionsText: resource.offlineOptionsText,
+    speedSearchOptionsText: resource.speedSearchOptionsText,
     use24HourClockText: resource.use24HourClockText,
     use12HourClockText: resource.use12HourClockText,
     confirm24HourClockMessage: resource.confirm24HourClockMessage,
@@ -74,6 +75,7 @@ define('crm/Views/Settings', [
       'clearLocalStorage',
       'viewErrorLogs',
       'viewOfflineOptions',
+      'viewSpeedSearchOptions',
       'use24HourClock',
       'viewLanguageOptions',
     ],
@@ -94,6 +96,10 @@ define('crm/Views/Settings', [
         viewOfflineOptions: {
           title: this.offlineOptionsText,
           cls: 'bullet-list',
+        },
+        viewSpeedSearchOptions: {
+          title: this.speedSearchOptionsText,
+          cls: 'search-results-history',
         },
         use24HourClock: {
           title: (App.is24HourClock()) ? this.use24HourClockText : this.use12HourClockText,
@@ -142,6 +148,12 @@ define('crm/Views/Settings', [
     },
     viewOfflineOptions: function viewOfflineOptions() {
       const view = App.getView('offline_options_edit');
+      if (view) {
+        view.show();
+      }
+    },
+    viewSpeedSearchOptions: function viewSpeedSearchOptions() {
+      const view = App.getView('speedsearch_options_edit');
       if (view) {
         view.show();
       }

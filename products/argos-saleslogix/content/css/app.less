@@ -996,9 +996,24 @@ td.entry-table-description {
     height: 32px;
 }
 
-#left_drawer .search-widget > .table-layout > div {
-    padding: 5px;
+#left_drawer {
+    .search-widget > .table-layout > div {
+        padding: 5px;
+    }
+
+    .searchfield {
+        color: @text-color;
+    }
 }
+
+:is(.theme-new-dark, .theme-classic-dark) {
+    #left_drawer {
+        .searchfield {
+            color: inherit;
+        }
+    }
+}
+
 .legend {
     position: absolute;
     .pie-legend, .doughnut-legend {

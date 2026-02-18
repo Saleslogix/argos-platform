@@ -49,7 +49,14 @@ define('configuration/development.default', [
       includePhonic: false,
       includeThesaurus: false,
       useFrequentFilter: false,
-      searchType: 1,
+      
+      // searchType values:
+      // 0 - Match on all words (AND)
+      // 1 - Match on any words (OR)
+      // 2 - Match the exact phrase
+      // 3 - Boolean (AND, OR, NOT)
+      // 4- Naturual language
+      searchType: 0,
     }
   };
 });
