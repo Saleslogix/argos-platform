@@ -142,6 +142,20 @@
 .list .searchfield-wrapper {
   flex-grow: 1;
 }
+.search-widget-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.search-widget-container .searchfield-wrapper {
+  flex-grow: 1;
+}
+.contains-toggle {
+  flex-shrink: 0;
+  margin-left: 8px;
+  white-space: nowrap;
+  align-self: end;
+}
 /* grouped list */
 .group-content > h2 {
   box-sizing: border-box;
@@ -614,6 +628,10 @@ li.relatedviewitem a {
 }
 .widget-header > .btn-icon .icon {
   vertical-align: top;
+}
+.widget-header .btn-actions {
+  margin-left: auto !important;
+  /* force ignores space-between in parent flex container */
 }
 .application-menu-header {
   display: flex;

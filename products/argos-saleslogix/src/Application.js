@@ -67,10 +67,10 @@ define('crm/Application', [
       this.rememberNavigationState = true;
       this.speedSearch = {
         includeStemming: true,
-        includePhonic: true,
+        includePhonic: false,
         includeThesaurus: false,
         useFrequentFilter: false,
-        searchType: 1,
+        searchType: 0,
       };
       this.enableCaching = true;
       this.userDetailsQuerySelect = ['UserName', 'UserInfo/UserName', 'UserInfo/FirstName', 'UserInfo/LastName', 'DefaultOwner/OwnerDescription'];
@@ -241,6 +241,7 @@ define('crm/Application', [
     initPreferences() {
       super.initPreferences();
       this._saveDefaultPreferences();
+      this._loadSpeedSearchPreferences();
     }
 
     isMingleEnabled() {
@@ -699,6 +700,23 @@ define('crm/Application', [
           order: views.slice(0),
         },
       };
+    }
+    _loadSpeedSearchPreferences() {
+      if (this.preferences && this.preferences.speedSearch) {
+        const prefs = this.preferences.speedSearch;
+        if (prefs.searchType !== undefined) {
+          this.speedSearch.searchType = prefs.searchType;
+        }
+        if (prefs.includeStemming !== undefined) {
+          this.speedSearch.includeStemming = prefs.includeStemming;
+        }
+        if (prefs.includeThesaurus !== undefined) {
+          this.speedSearch.includeThesaurus = prefs.includeThesaurus;
+        }
+        if (prefs.includePhonic !== undefined) {
+          this.speedSearch.includePhonic = prefs.includePhonic;
+        }
+      }
     }
     getMetricsByResourceKind(resourceKind) {
       let results = [];

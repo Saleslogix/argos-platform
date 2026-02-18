@@ -131,6 +131,7 @@ define('crm/ApplicationModule', [
   './Views/RecentlyViewed/List',
   './Views/Briefcase/List',
   './Views/OfflineOptions/Edit',
+  './Views/SpeedSearchOptions',
   './Views/LanguageOptions/Edit',
   './Views/Journey/CustomerJourney360Widget',
   'argos/I18n',
@@ -204,7 +205,7 @@ define('crm/ApplicationModule', [
   HistoryListOffline, HistoryDetail, HistoryEdit, HistoryEditOffline, HistoryAttendeeList,
   HistoryAttendeeDetail, HistoryRelatedView, HistoryAssociationList, CalendarAccessList, UserList, ViewAttachment,
   AttachmentList, AddAttachment, MyAttachmentList, WorkflowInstancesList, RecentlyViewedList,
-  BriefcaseList, OfflineOptionsEdit, LanguageOptionsEdit, CustomerJourney360Widget,
+  BriefcaseList, OfflineOptionsEdit, SpeedSearchOptions, LanguageOptionsEdit, CustomerJourney360Widget,
   getResource, MODEL_NAMES, MODEL_TYPES) => {
   const resource = getResource('applicationModule');
 
@@ -641,6 +642,9 @@ define('crm/ApplicationModule', [
         expose: false,
       }));
       this.registerView(new OfflineOptionsEdit({
+        expose: false,
+      }));
+      this.registerView(new SpeedSearchOptions({
         expose: false,
       }));
       this.registerView(new LanguageOptionsEdit({
