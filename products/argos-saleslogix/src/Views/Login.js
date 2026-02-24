@@ -199,6 +199,45 @@ define('crm/Views/Login', [
           alert(this.passwordExpiredText);// eslint-disable-line
         },
       }, {
+        name: 'MfaRequired',
+        test: function testMfaRequired(error) {
+          const xhr = error && error.xhr;
+          if (!xhr || !xhr.responseText) {
+            return false;
+          }
+
+          try {
+            const json = JSON.parse(xhr.responseText);
+            const diagnoses = json.$diagnoses || json.diagnoses;
+            if (!Array.isArray(diagnoses)) {
+              return false;
+            }
+            return diagnoses.some(function(d) {
+              return d.sdataCode === 'MfaRequired';
+            });
+          } catch (_) {
+            return false;
+          }
+        },
+        handle: function handleMfaRequired(error) {
+          const json = JSON.parse(error.xhr.responseText);
+          const diagnoses = json.$diagnoses || json.diagnoses;
+          const diagnosis = diagnoses.find(function(d) {
+            return d.sdataCode === 'MfaRequired';
+          });
+          const hasDevices = !!(diagnosis && diagnosis.hasDevices);
+          
+          // Get credentials from form to pass to coordinator
+          const values = this.getValues(true);
+          const credentials = {
+            username: values['username-display'],
+            password: values['password-display'],
+            remember: values.remember,
+          };
+          
+          App.mfaCoordinator.startMFAFlow(hasDevices, credentials);
+        },
+      }, {
         name: 'GeneralError',
         test: function testError(error) {
           return typeof error.xhr !== 'undefined' && error.xhr !== null;
