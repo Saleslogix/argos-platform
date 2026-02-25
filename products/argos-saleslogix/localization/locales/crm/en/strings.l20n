@@ -1801,10 +1801,6 @@
   manualEntryInstructionsText: "If you cannot scan the QR code, enter this code manually in your authenticator app:"
   copySecretText: "Copy"
   copiedText: "Copied!"
-  supportedAppsText: "Supported authenticator apps:"
-  googleAuthenticatorText: "Google Authenticator"
-  microsoftAuthenticatorText: "Microsoft Authenticator"
-  authyText: "Authy"
 >
 <mfaDeviceSetup ""
   titleText: "Setup Multi-Factor Authentication"

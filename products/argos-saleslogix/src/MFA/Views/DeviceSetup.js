@@ -87,14 +87,6 @@ define('crm/MFA/Views/DeviceSetup', [
       '</button>',
       '</div>',
       '</div>',
-      '<div class="supported-apps">',
-      '<p class="mfa-section-label">{%= $.supportedAppsText %}</p>',
-      '<ul>',
-      '<li>{%= $.googleAuthenticatorText %}</li>',
-      '<li>{%= $.microsoftAuthenticatorText %}</li>',
-      '<li>{%= $.authyText %}</li>',
-      '</ul>',
-      '</div>',
       '</div>',
       '<div class="mfa-actions">',
       '<button data-dojo-attach-point="proceedButton" data-action="proceedToVerification" class="btn-primary">{%= $.proceedToVerificationText %}</button>',
@@ -128,10 +120,6 @@ define('crm/MFA/Views/DeviceSetup', [
     manualEntryInstructionsText: qrResource.manualEntryInstructionsText,
     copySecretText: qrResource.copySecretText,
     copiedText: qrResource.copiedText,
-    supportedAppsText: qrResource.supportedAppsText,
-    googleAuthenticatorText: qrResource.googleAuthenticatorText,
-    microsoftAuthenticatorText: qrResource.microsoftAuthenticatorText,
-    authyText: qrResource.authyText,
     invalidDeviceTypeText: errorResource.invalidDeviceTypeText,
     emailMfaDisabledText: errorResource.emailMfaDisabledText,
     networkErrorText: errorResource.networkErrorText,
@@ -155,6 +143,11 @@ define('crm/MFA/Views/DeviceSetup', [
       // Initialize MFA service
       const sdataService = this.app.getService();
       this._mfaService = new MFAService(sdataService);
+
+      // Attach Enter key handler to device name input
+      if (this.deviceNameInput) {
+        this.deviceNameInput.addEventListener('keydown', this._handleKeyDown.bind(this));
+      }
     },
 
     /**
@@ -299,6 +292,20 @@ define('crm/MFA/Views/DeviceSetup', [
       // Focus on device name input
       if (this.deviceNameInput) {
         this.deviceNameInput.focus();
+      }
+    },
+
+    /**
+     * Handle keydown events - submit on Enter
+     * @param {Event} evt - Keydown event
+     * @private
+     */
+    _handleKeyDown: function _handleKeyDown(evt) {
+      if (evt.key === 'Enter') {
+        evt.preventDefault();
+        if (this.continueButton && !this.continueButton.disabled) {
+          this.submitSetup();
+        }
       }
     },
 

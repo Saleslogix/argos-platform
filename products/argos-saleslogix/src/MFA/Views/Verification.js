@@ -132,6 +132,13 @@ define('crm/MFA/Views/Verification', [
           this.initialize(options.device);
         }
       }
+
+      // Focus code input when view is shown
+      if (this.codeInput) {
+        setTimeout(() => {
+          this.codeInput.focus();
+        }, 100);
+      }
     },
 
     /**
