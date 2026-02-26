@@ -28,19 +28,20 @@ const proxyOptions = {
   secure: false, // ignore cert errors
   xfwd: true,
   ws: false,
-  forward: true,
   prependPath: true,
 };
 
 const proxy = httpProxy.createProxyServer(proxyOptions);
+
+proxy.on('error', (err) => {
+  console.error('Proxy error:', err);
+});
+
 const app = express();
 
 app.use((req, res, next) => {
   if (req.path.startsWith('/sdata')) {
     proxy.web(req, res);
-    proxy.on('error', (err) => {
-      console.error(err);
-    });
   } else {
     next();
   }
