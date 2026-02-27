@@ -136,7 +136,7 @@ define('crm/MFA/Coordinator', [
         });
       } else {
         // View not registered - log error and handle gracefully
-        console.error(`MFA Verification view (${this.verificationViewId}) not found`);
+        console.error(`MFA Verification view (${this.verificationViewId}) not found`);// eslint-disable-line
         this.handleError({
           message: 'MFA verification view not available. Please contact your administrator.',
         });
@@ -160,7 +160,7 @@ define('crm/MFA/Coordinator', [
           this.interceptor.completeMFAFlow()
             .catch((error) => {
               // Handle retry failure
-              console.error('Failed to retry original request after MFA:', error);
+              console.error('Failed to retry original request after MFA:', error);// eslint-disable-line
               this.handleError({
                 message: 'Failed to complete your request. Please try again.',
                 error,
@@ -169,7 +169,7 @@ define('crm/MFA/Coordinator', [
         } else {
           // No original request (e.g., MFA during login) - complete authentication flow
           this.interceptor.mfaInProgress = false;
-          
+
           // Re-authenticate to set user context, then initialize app state
           // Use stored credentials from login attempt
           if (this.app && typeof this.app.authenticateUser === 'function') {
@@ -177,14 +177,30 @@ define('crm/MFA/Coordinator', [
               success: () => {
                 // Clear stored credentials
                 this.loginCredentials = null;
-                
+
                 // Now that user context is set, initialize app state
                 if (typeof this.app.onHandleAuthenticationSuccess === 'function') {
+                  // Override navigateToHomeView temporarily to clear all history
+                  const originalNavigateToHomeView = this.app.navigateToHomeView;
+                  this.app.navigateToHomeView = (options) => {
+                    // Restore original method
+                    this.app.navigateToHomeView = originalNavigateToHomeView;
+
+                    // Clear all history so home view becomes the first entry
+                    // This prevents back button from showing and going to login/MFA views
+                    if (this.app.context && this.app.context.history) {
+                      this.app.context.history = [];
+                    }
+
+                    // Call original method
+                    originalNavigateToHomeView.call(this.app, options);
+                  };
+
                   this.app.onHandleAuthenticationSuccess();
                 }
               },
               failure: (result) => {
-                console.error('Failed to complete authentication after MFA:', result);
+                console.error('Failed to complete authentication after MFA:', result);// eslint-disable-line
                 this.loginCredentials = null;
                 this.handleError({
                   message: 'Failed to complete authentication. Please try logging in again.',

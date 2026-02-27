@@ -134,8 +134,6 @@ define('crm/MFA/Interceptor', [
       return false;
     }
 
-
-
     /**
      * Store original request for retry after MFA
      * @param {Object} request - Original request configuration

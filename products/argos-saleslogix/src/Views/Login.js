@@ -212,7 +212,7 @@ define('crm/Views/Login', [
             if (!Array.isArray(diagnoses)) {
               return false;
             }
-            return diagnoses.some(function(d) {
+            return diagnoses.some((d) => {
               return d.sdataCode === 'MfaRequired';
             });
           } catch (_) {
@@ -222,11 +222,11 @@ define('crm/Views/Login', [
         handle: function handleMfaRequired(error) {
           const json = JSON.parse(error.xhr.responseText);
           const diagnoses = json.$diagnoses || json.diagnoses;
-          const diagnosis = diagnoses.find(function(d) {
+          const diagnosis = diagnoses.find((d) => {
             return d.sdataCode === 'MfaRequired';
           });
           const hasDevices = !!(diagnosis && diagnosis.hasDevices);
-          
+
           // Get credentials from form to pass to coordinator
           const values = this.getValues(true);
           const credentials = {
@@ -234,7 +234,7 @@ define('crm/Views/Login', [
             password: values['password-display'],
             remember: values.remember,
           };
-          
+
           App.mfaCoordinator.startMFAFlow(hasDevices, credentials);
         },
       }, {

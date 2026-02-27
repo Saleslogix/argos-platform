@@ -629,7 +629,7 @@ define('crm/Application', [
           const json = JSON.parse(response.responseText);
           const diagnoses = json.$diagnoses || json.diagnoses;
           if (Array.isArray(diagnoses)) {
-            isMfaRequired = diagnoses.some((d) => d.sdataCode === 'MfaRequired');
+            isMfaRequired = diagnoses.some(d => d.sdataCode === 'MfaRequired');
           }
         } catch (_) {
           // Not JSON — not an MFA response
@@ -1324,7 +1324,7 @@ define('crm/Application', [
       return this;
     }
 
-    navigateToHomeView() {
+    navigateToHomeView(options) {
       this.setupRedirectHash();
       this.showLeftDrawer();
 
@@ -1354,7 +1354,9 @@ define('crm/Application', [
               if (key) {
                 redirectView.show({
                   key,
+                  ...options,
                 });
+                return;
               }
             }
           }
@@ -1367,7 +1369,7 @@ define('crm/Application', [
       }
 
       if (view) {
-        view.show();
+        view.show(options);
       }
     }
     navigateToActivityInsertView() {
