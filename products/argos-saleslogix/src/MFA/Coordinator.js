@@ -64,6 +64,12 @@ define('crm/MFA/Coordinator', [
         this.loginCredentials = credentials;
       }
 
+      // Re-enable the login view if it's disabled (from the authentication attempt)
+      const loginView = this.app.getView(this.app.loginViewId || 'login');
+      if (loginView && typeof loginView.enable === 'function') {
+        loginView.enable();
+      }
+
       // Dispatch Redux action to update state
       this.store.dispatch(mfaActions.startMFAFlow(hasDevices));
 
@@ -155,26 +161,35 @@ define('crm/MFA/Coordinator', [
 
       // Notify interceptor to retry original request (if there is one)
       if (this.interceptor) {
+        // Check if this is a login flow (we have stored credentials)
+        const isLoginFlow = !!this.loginCredentials;
+
         // Check if there's an original request to retry
         if (this.interceptor.originalRequest) {
           this.interceptor.completeMFAFlow()
-            .catch((error) => {
-              // Handle retry failure
-              console.error('Failed to retry original request after MFA:', error);// eslint-disable-line
-              this.handleError({
-                message: 'Failed to complete your request. Please try again.',
-                error,
-              });
-            });
-        } else {
-          // No original request (e.g., MFA during login) - complete authentication flow
-          this.interceptor.mfaInProgress = false;
+            .then((response) => {
+              // If this is the login flow, we need to continue with authentication
+              if (isLoginFlow) {
+                // Set user context from the getCurrentUser response
+                // This mimics what onAuthenticateUserSuccess does
+                if (response && response.response) {
+                  const user = {
+                    $key: response.response.userId.trim(),
+                    $descriptor: response.response.prettyName,
+                    UserName: response.response.userName,
+                  };
+                  this.app.context.user = user;
+                  this.app.context.roles = response.response.roles;
+                  this.app.context.securedActions = response.response.securedActions;
 
-          // Re-authenticate to set user context, then initialize app state
-          // Use stored credentials from login attempt
-          if (this.app && typeof this.app.authenticateUser === 'function') {
-            this.app.authenticateUser(this.loginCredentials, {
-              success: () => {
+                  if (this.app.context.securedActions) {
+                    this.app.context.userSecurity = {};
+                    this.app.context.securedActions.forEach((item) => {
+                      this.app.context.userSecurity[item] = true;
+                    });
+                  }
+                }
+
                 // Clear stored credentials
                 this.loginCredentials = null;
 
@@ -198,20 +213,22 @@ define('crm/MFA/Coordinator', [
 
                   this.app.onHandleAuthenticationSuccess();
                 }
-              },
-              failure: (result) => {
-                console.error('Failed to complete authentication after MFA:', result);// eslint-disable-line
-                this.loginCredentials = null;
-                this.handleError({
-                  message: 'Failed to complete authentication. Please try logging in again.',
-                  sdataCode: 'AuthenticationFailed',
-                });
-              },
-              scope: this,
+              }
+              // For session expiry flow, the original request was retried and that's all we need
+            })
+            .catch((error) => {
+              // Handle retry failure
+              console.error('Failed to retry original request after MFA:', error);// eslint-disable-line
+              this.loginCredentials = null;
+              this.handleError({
+                message: 'Failed to complete your request. Please try again.',
+                error,
+              });
             });
-          } else {
-            console.error('Unable to complete authentication flow');
-          }
+        } else {
+          // No original request - this shouldn't happen, but handle it gracefully
+          this.interceptor.mfaInProgress = false;
+          this.loginCredentials = null;
         }
       } else {
         console.error('MFA Interceptor not set on coordinator');

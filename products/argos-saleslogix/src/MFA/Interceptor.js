@@ -37,6 +37,15 @@ define('crm/MFA/Interceptor', [
       this.mfaService = new MFAService(sdataService);
       this.originalRequest = null;
       this.mfaInProgress = false;
+      this.coordinator = null; // Will be set by Application
+    }
+
+    /**
+     * Set the coordinator reference
+     * @param {Object} coordinator - MFA coordinator instance
+     */
+    setCoordinator(coordinator) {
+      this.coordinator = coordinator;
     }
 
     /**
@@ -69,8 +78,11 @@ define('crm/MFA/Interceptor', [
         // Store the original request for retry
         this.storeOriginalRequest(error.request);
 
-        // Dispatch Redux action to initiate MFA flow
-        this.store.dispatch(mfaActions.startMFAFlow(parsedError.hasDevices));
+        // Notify coordinator to start MFA flow and show UI
+        // The coordinator will dispatch Redux actions and navigate to appropriate views
+        if (this.coordinator) {
+          this.coordinator.startMFAFlow(parsedError.hasDevices);
+        }
 
         // Return a promise that will be resolved when MFA completes
         return new Promise((resolve, reject) => {
@@ -104,8 +116,10 @@ define('crm/MFA/Interceptor', [
       if (error.responseText) {
         try {
           const parsed = JSON.parse(error.responseText);
-          return parsed.$diagnoses || null;
+          const diagnoses = parsed.$diagnoses || parsed.diagnoses || null;
+          return diagnoses;
         } catch (e) {
+          console.error('[MFA Interceptor] Failed to parse responseText:', e);
           // Malformed responseText — cannot extract diagnoses
           return null;
         }
@@ -128,7 +142,8 @@ define('crm/MFA/Interceptor', [
         // Check for SData diagnoses format
         if (diagnoses && Array.isArray(diagnoses) && diagnoses.length > 0) {
           const diagnosis = diagnoses[0];
-          return diagnosis.sdataCode === 'MfaRequired';
+          const isMfa = diagnosis.sdataCode === 'MfaRequired';
+          return isMfa;
         }
       }
       return false;
@@ -156,10 +171,42 @@ define('crm/MFA/Interceptor', [
 
       const request = this.originalRequest;
 
-      // Execute the request again using the read method
+      // Execute the request again using the appropriate method
       return new Promise((resolve, reject) => {
-        // SData requests use the read() method
-        if (request && typeof request.read === 'function') {
+        // Check if this is a service operation request (uses execute)
+        if (request && typeof request.execute === 'function') {
+          request.execute({}, {
+            success: (response) => {
+              this.originalRequest = null;
+              this.mfaInProgress = false;
+              resolve(response);
+            },
+            failure: (error) => {
+              // Check if we got MfaRequired again
+              if (this._isMfaRequiredError(error)) {
+                // MFA required again - this is an error condition
+                this.originalRequest = null;
+                this.mfaInProgress = false;
+                this.store.dispatch(mfaActions.setMFAError(
+                  'MFA verification failed. Please log in again.',
+                  'MfaRequired',
+                ));
+                reject(error);
+              } else {
+                // Different error - propagate it
+                this.originalRequest = null;
+                this.mfaInProgress = false;
+                reject(error);
+              }
+            },
+            aborted: (error) => {
+              // Handle aborted requests
+              this.originalRequest = null;
+              this.mfaInProgress = false;
+              reject(error);
+            },
+          });
+        } else if (request && typeof request.read === 'function') {
           request.read({
             success: (response) => {
               this.originalRequest = null;
@@ -192,6 +239,7 @@ define('crm/MFA/Interceptor', [
             },
           });
         } else {
+          console.error('[MFA Interceptor] Request has no execute() or read() method', request);
           reject(new Error('Cannot retry request: invalid request object'));
         }
       });

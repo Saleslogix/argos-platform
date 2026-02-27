@@ -211,19 +211,82 @@ define('crm/Application', [
       // Initialize MFA Coordinator with Application instance and Redux store
       this.mfaCoordinator = new MFACoordinator(this, this.store);
 
-      // Wire the interceptor to the coordinator
+      // Wire the interceptor to the coordinator (bidirectional)
       this.mfaCoordinator.setInterceptor(this.mfaInterceptor);
+      this.mfaInterceptor.setCoordinator(this.mfaCoordinator);
 
       // Hook the interceptor into the SData client's error handling
       // We need to wrap the request's read() method to intercept MFA errors
       const interceptor = this.mfaInterceptor;
 
-      // Store original read method from SData request prototypes
-      const SDataBaseRequest = Sage.SData.Client.SDataBaseRequest;
-      if (SDataBaseRequest && SDataBaseRequest.prototype && SDataBaseRequest.prototype.read) {
-        const originalRead = SDataBaseRequest.prototype.read;
+      // Wrap SData request prototypes to intercept MFA errors
+      const SDataResourceCollectionRequest = Sage.SData.Client.SDataResourceCollectionRequest;
+      const SDataSingleResourceRequest = Sage.SData.Client.SDataSingleResourceRequest;
+      
+      // Wrap SDataResourceCollectionRequest.prototype.read (for collection queries)
+      if (SDataResourceCollectionRequest && SDataResourceCollectionRequest.prototype && SDataResourceCollectionRequest.prototype.read) {
+        const originalRead = SDataResourceCollectionRequest.prototype.read;
 
-        SDataBaseRequest.prototype.read = function readWithMFAInterception(options) {
+        SDataResourceCollectionRequest.prototype.read = function readWithMFAInterception(options) {
+          // Store the original request for potential retry
+          const request = this;
+
+          // Wrap the failure callback to intercept MFA errors
+          if (options && typeof options === 'object') {
+            const originalFailure = options.failure;
+            const originalAborted = options.aborted;
+
+            options.failure = function mfaFailureHandler(response) {
+              // Store the request on the error for retry
+              if (response) {
+                response.request = request;
+              }
+
+              // Check if this is an MFA error
+              interceptor.handleError(response)
+                .then(() => {
+                  // MFA flow completed successfully, original request was retried
+                  // No need to call original failure handler
+                })
+                .catch((error) => {
+                  // Not an MFA error or MFA flow failed/cancelled
+                  // Call original failure handler if it exists
+                  if (originalFailure) {
+                    originalFailure.call(this, error);
+                  }
+                });
+            };
+
+            options.aborted = function mfaAbortedHandler(response) {
+              // Store the request on the error for retry
+              if (response) {
+                response.request = request;
+              }
+
+              // Check if this is an MFA error (some 401s come through aborted)
+              interceptor.handleError(response)
+                .then(() => {
+                  // MFA flow completed successfully
+                })
+                .catch((error) => {
+                  // Not an MFA error or MFA flow failed
+                  if (originalAborted) {
+                    originalAborted.call(this, error);
+                  }
+                });
+            };
+          }
+
+          // Call the original read method with wrapped options
+          return originalRead.call(this, options);
+        };
+      }
+
+      // Wrap SDataSingleResourceRequest.prototype.read (for single resource queries)
+      if (SDataSingleResourceRequest && SDataSingleResourceRequest.prototype && SDataSingleResourceRequest.prototype.read) {
+        const originalRead = SDataSingleResourceRequest.prototype.read;
+
+        SDataSingleResourceRequest.prototype.read = function readWithMFAInterception(options) {
           // Store the original request for potential retry
           const request = this;
 

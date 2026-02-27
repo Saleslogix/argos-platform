@@ -219,15 +219,9 @@ define('crm/Views/Login', [
             return false;
           }
         },
-        handle: function handleMfaRequired(error) {
-          const json = JSON.parse(error.xhr.responseText);
-          const diagnoses = json.$diagnoses || json.diagnoses;
-          const diagnosis = diagnoses.find((d) => {
-            return d.sdataCode === 'MfaRequired';
-          });
-          const hasDevices = !!(diagnosis && diagnosis.hasDevices);
-
-          // Get credentials from form to pass to coordinator
+        handle: function handleMfaRequired() {
+          // Store credentials for post-MFA authentication
+          // The global MFA interceptor will handle starting the flow
           const values = this.getValues(true);
           const credentials = {
             username: values['username-display'],
@@ -235,7 +229,8 @@ define('crm/Views/Login', [
             remember: values.remember,
           };
 
-          App.mfaCoordinator.startMFAFlow(hasDevices, credentials);
+          App.mfaCoordinator.loginCredentials = credentials;
+          // Don't call next() - let the interceptor handle the MFA flow
         },
       }, {
         name: 'GeneralError',
@@ -252,6 +247,12 @@ define('crm/Views/Login', [
     },
     validateCredentials: function validateCredentials(credentials) {
       this.disable();
+
+      // Store credentials in coordinator for potential MFA flow
+      // This ensures they're available if MFA is required
+      if (App.mfaCoordinator) {
+        App.mfaCoordinator.loginCredentials = credentials;
+      }
 
       App.authenticateUser(credentials, {
         success: function success() {
