@@ -346,6 +346,14 @@ define('crm/MFA/Views/Verification', [
           }
         })
         .catch((error) => {
+          // If the MFA endpoints don't exist (older CRM), bypass MFA silently.
+          if (error && error.status === 404) {
+            if (this._coordinator) {
+              this._coordinator.bypassMFA();
+            }
+            return;
+          }
+
           const parsedError = this._mfaService.parseMFAError(error);
 
           if (parsedError.sdataCode === 'RateLimitExceeded' || (error.status === 429)) {
@@ -425,6 +433,14 @@ define('crm/MFA/Views/Verification', [
      * @param {Object} error - Error response
      */
     handleVerificationError: function handleVerificationError(error) {
+      // If the MFA endpoints don't exist (older CRM), bypass MFA silently.
+      if (error && error.status === 404) {
+        if (this._coordinator) {
+          this._coordinator.bypassMFA();
+        }
+        return;
+      }
+
       // Re-enable form
       if (this.verifyButton) {
         this.verifyButton.disabled = false;

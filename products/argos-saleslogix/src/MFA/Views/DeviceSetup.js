@@ -513,6 +513,14 @@ define('crm/MFA/Views/DeviceSetup', [
       // Re-enable form
       this._enableForm();
 
+      // If the MFA endpoints don't exist (older CRM), bypass MFA silently.
+      if (error && error.status === 404) {
+        if (this._coordinator) {
+          this._coordinator.bypassMFA();
+        }
+        return;
+      }
+
       // Parse error using MFA service
       const parsedError = this._mfaService.parseMFAError(error);
 

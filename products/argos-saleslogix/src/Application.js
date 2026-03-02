@@ -222,7 +222,7 @@ define('crm/Application', [
       // Wrap SData request prototypes to intercept MFA errors
       const SDataResourceCollectionRequest = Sage.SData.Client.SDataResourceCollectionRequest;
       const SDataSingleResourceRequest = Sage.SData.Client.SDataSingleResourceRequest;
-      
+
       // Wrap SDataResourceCollectionRequest.prototype.read (for collection queries)
       if (SDataResourceCollectionRequest && SDataResourceCollectionRequest.prototype && SDataResourceCollectionRequest.prototype.read) {
         const originalRead = SDataResourceCollectionRequest.prototype.read;

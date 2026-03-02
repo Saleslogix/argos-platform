@@ -252,6 +252,19 @@ define('crm/MFA/Coordinator', [
     }
 
     /**
+     * Bypass MFA when the server does not support the MFA endpoints.
+     * This happens when connecting to an older CRM version that has the
+     * MfaBasicAuthModule (returns 401 MfaRequired) but does not have the
+     * /mfa/devices resource kind registered (returns 404).
+     * Silently retries the original request and continues login.
+     */
+    bypassMFA() {
+      console.warn('[MFA] Endpoints returned 404 — bypassing MFA for this server.');// eslint-disable-line
+      this.store.dispatch(mfaActions.clearMFAState());
+      this.handleVerificationSuccess();
+    }
+
+    /**
      * Handle MFA flow errors
      * @param {Object} error - Error object
      */
