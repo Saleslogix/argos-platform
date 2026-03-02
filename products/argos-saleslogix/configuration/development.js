@@ -108,5 +108,22 @@ define('configuration/development', [
     //  // 4- Naturual language
     //   searchType: 0,
     // }
+
+    /**
+     * @property connections
+     * SData connection settings. Note: When overriding connections, you must provide the complete connection object
+     * as the merge is shallow (nested objects are replaced entirely, not merged).
+     */
+    // connections: {
+    //   'crm': {
+    //     isDefault: true,
+    //     offline: true,
+    //     url: 'http://localhost:8000/sdata/slx/dynamic/-/',
+    //     timeout: 30000,
+    //     compact: true,
+    //     json: true,
+    //     useCredentialedRequest: false, // Set to true for Windows authentication
+    //   },
+    // },
   });
 });

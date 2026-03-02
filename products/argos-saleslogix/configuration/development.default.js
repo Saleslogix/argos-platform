@@ -22,6 +22,7 @@ define('configuration/development.default', [
         timeout: 30000,
         compact: true,
         json: true,
+        useCredentialedRequest: false, // Change to true for windows auth
       },
     },
     enableMultiCurrency: false,
