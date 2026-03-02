@@ -1473,3 +1473,199 @@ li.related-view-detail-content:has(.customer-journey-root) {
   display: none;
   visibility: hidden;
 }
+/* MFA views */
+.mfa-panel {
+  max-width: 360px;
+}
+.mfa-panel h1 {
+  margin-bottom: 16px;
+}
+.mfa-panel label {
+  text-align: left;
+  display: block;
+  margin-bottom: 4px;
+  margin-top: 4px;
+}
+.mfa-panel input {
+  width: 100%;
+}
+.mfa-panel .btn-primary,
+.mfa-panel .btn-secondary {
+  width: 100%;
+  margin-top: 10px;
+}
+.mfa-instructions {
+  color: #5c5c5c;
+  font-size: 14px;
+  margin-bottom: 12px;
+  text-align: left;
+}
+.mfa-section-label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-align: left;
+}
+.mfa-device-label {
+  font-weight: bold;
+  margin-bottom: 12px;
+  text-align: left;
+}
+.mfa-actions {
+  margin-top: 16px;
+}
+.mfa-error-message {
+  color: #a13030;
+  background-color: #f0cece;
+  border: 1px solid #d26d6d;
+  border-radius: 3px;
+  padding: 8px 12px;
+  margin-top: 12px;
+  font-size: 12px;
+  text-align: left;
+}
+.mfa-code-format-error {
+  color: #a13030;
+  font-size: 12px;
+  margin-top: 4px;
+  text-align: left;
+}
+.mfa-code-input-section {
+  margin-top: 12px;
+  text-align: left;
+}
+.mfa-email-actions {
+  margin-bottom: 12px;
+}
+.mfa-email-confirmation {
+  color: #56932e;
+  font-size: 12px;
+  margin-top: 6px;
+}
+/* Device type selection buttons */
+.device-type-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.device-type-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px;
+  background-color: #fff;
+  border: 1px solid #999999;
+  border-radius: 3px;
+  cursor: pointer;
+  text-align: left;
+}
+.device-type-button:hover {
+  border-color: #368ac0;
+}
+.device-type-button.selected {
+  border-color: #368ac0;
+  background-color: #d1e8f5;
+}
+.device-type-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.device-type-icon .icon {
+  width: 24px;
+  height: 24px;
+  fill: #5c5c5c;
+}
+.device-type-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.device-type-name {
+  font-weight: bold;
+  display: block;
+  color: #1a1a1a;
+}
+.device-type-description {
+  font-size: 12px;
+  color: #5c5c5c;
+  display: block;
+}
+/* QR code display */
+.mfa-qr-code-display {
+  text-align: center;
+}
+.qr-code-image-wrapper {
+  margin: 16px auto;
+}
+.qr-code-image {
+  min-width: 200px;
+  min-height: 200px;
+}
+.qr-code-toggle {
+  margin-bottom: 12px;
+}
+.manual-entry-section {
+  text-align: left;
+  margin-bottom: 12px;
+}
+.manual-entry-secret {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.manual-entry-secret .secret-input {
+  flex: 1;
+  font-family: monospace;
+  font-size: 14px;
+}
+.manual-entry-secret .btn-secondary {
+  width: auto;
+  margin-top: 0;
+  flex-shrink: 0;
+}
+/* Device list */
+.mfa-device-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background-color: #fff;
+  border: 1px solid #999999;
+  border-radius: 3px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+.mfa-device-item:hover {
+  border-color: #368ac0;
+}
+.mfa-device-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.mfa-device-info {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+.mfa-device-description {
+  font-weight: bold;
+  margin: 0;
+  font-size: 14px;
+}
+.mfa-device-type {
+  font-size: 12px;
+  color: #5c5c5c;
+  margin: 2px 0 0;
+}
+.mfa-device-badge .badge {
+  background-color: #368ac0;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: bold;
+}

@@ -17,15 +17,18 @@ define('crm/reducers/index', [
   './config',
   './user',
   './speedsearch',
-], (_config, _user, _speedsearch) => {
+  '../MFA/reducers/mfa',
+], (_config, _user, _speedsearch, _mfa) => {
   const { config } = _config;
   const { user } = _user;
   const { speedsearch } = _speedsearch;
+  const { mfa } = _mfa;
 
   const app = Redux.combineReducers({
     user,
     config,
     speedsearch,
+    mfa,
   });
 
   return {

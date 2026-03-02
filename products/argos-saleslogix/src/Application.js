@@ -32,7 +32,10 @@ define('crm/Application', [
   './actions/config',
   './actions/user',
   './PicklistService',
-], (string, DefaultMetrics, ErrorManager, environment, SDKApplication, offlineManager, MODEL_TYPES, MODEL_NAMES, BusyIndicator, getResource, MingleUtility, indexReducers, configActions, userActions, PicklistService) => {
+  './MFA/Service',
+  './MFA/Interceptor',
+  './MFA/Coordinator',
+], (string, DefaultMetrics, ErrorManager, environment, SDKApplication, offlineManager, MODEL_TYPES, MODEL_NAMES, BusyIndicator, getResource, MingleUtility, indexReducers, configActions, userActions, PicklistService, MFAService, MFAInterceptor, MFACoordinator) => {
   const { app } = indexReducers;
   const { setConfig } = configActions;
   const { setUser } = userActions;
@@ -187,6 +190,216 @@ define('crm/Application', [
         request.setRequestHeader('X-Application-Version', `${version.major}.${version.minor}.${version.revision};${id}`);
         return original.apply(this, arguments);
       };
+
+      // Initialize MFA components
+      this._initializeMFA();
+    }
+
+    /**
+     * Initialize MFA Service, Interceptor, and Coordinator
+     * @private
+     */
+    _initializeMFA() {
+      const sdataService = this.getService();
+
+      // Initialize MFA Service
+      this.mfaService = new MFAService(sdataService);
+
+      // Initialize MFA Interceptor with Redux store
+      this.mfaInterceptor = new MFAInterceptor(sdataService, this.store);
+
+      // Initialize MFA Coordinator with Application instance and Redux store
+      this.mfaCoordinator = new MFACoordinator(this, this.store);
+
+      // Wire the interceptor to the coordinator (bidirectional)
+      this.mfaCoordinator.setInterceptor(this.mfaInterceptor);
+      this.mfaInterceptor.setCoordinator(this.mfaCoordinator);
+
+      // Hook the interceptor into the SData client's error handling
+      // We need to wrap the request's read() method to intercept MFA errors
+      const interceptor = this.mfaInterceptor;
+
+      // Wrap SData request prototypes to intercept MFA errors
+      const SDataResourceCollectionRequest = Sage.SData.Client.SDataResourceCollectionRequest;
+      const SDataSingleResourceRequest = Sage.SData.Client.SDataSingleResourceRequest;
+
+      // Wrap SDataResourceCollectionRequest.prototype.read (for collection queries)
+      if (SDataResourceCollectionRequest && SDataResourceCollectionRequest.prototype && SDataResourceCollectionRequest.prototype.read) {
+        const originalRead = SDataResourceCollectionRequest.prototype.read;
+
+        SDataResourceCollectionRequest.prototype.read = function readWithMFAInterception(options) {
+          // Store the original request for potential retry
+          const request = this;
+
+          // Wrap the failure callback to intercept MFA errors
+          if (options && typeof options === 'object') {
+            const originalFailure = options.failure;
+            const originalAborted = options.aborted;
+
+            options.failure = function mfaFailureHandler(response) {
+              // Store the request on the error for retry
+              if (response) {
+                response.request = request;
+              }
+
+              // Check if this is an MFA error
+              interceptor.handleError(response)
+                .then(() => {
+                  // MFA flow completed successfully, original request was retried
+                  // No need to call original failure handler
+                })
+                .catch((error) => {
+                  // Not an MFA error or MFA flow failed/cancelled
+                  // Call original failure handler if it exists
+                  if (originalFailure) {
+                    originalFailure.call(this, error);
+                  }
+                });
+            };
+
+            options.aborted = function mfaAbortedHandler(response) {
+              // Store the request on the error for retry
+              if (response) {
+                response.request = request;
+              }
+
+              // Check if this is an MFA error (some 401s come through aborted)
+              interceptor.handleError(response)
+                .then(() => {
+                  // MFA flow completed successfully
+                })
+                .catch((error) => {
+                  // Not an MFA error or MFA flow failed
+                  if (originalAborted) {
+                    originalAborted.call(this, error);
+                  }
+                });
+            };
+          }
+
+          // Call the original read method with wrapped options
+          return originalRead.call(this, options);
+        };
+      }
+
+      // Wrap SDataSingleResourceRequest.prototype.read (for single resource queries)
+      if (SDataSingleResourceRequest && SDataSingleResourceRequest.prototype && SDataSingleResourceRequest.prototype.read) {
+        const originalRead = SDataSingleResourceRequest.prototype.read;
+
+        SDataSingleResourceRequest.prototype.read = function readWithMFAInterception(options) {
+          // Store the original request for potential retry
+          const request = this;
+
+          // Wrap the failure callback to intercept MFA errors
+          if (options && typeof options === 'object') {
+            const originalFailure = options.failure;
+            const originalAborted = options.aborted;
+
+            options.failure = function mfaFailureHandler(response) {
+              // Store the request on the error for retry
+              if (response) {
+                response.request = request;
+              }
+
+              // Check if this is an MFA error
+              interceptor.handleError(response)
+                .then(() => {
+                  // MFA flow completed successfully, original request was retried
+                  // No need to call original failure handler
+                })
+                .catch((error) => {
+                  // Not an MFA error or MFA flow failed/cancelled
+                  // Call original failure handler if it exists
+                  if (originalFailure) {
+                    originalFailure.call(this, error);
+                  }
+                });
+            };
+
+            options.aborted = function mfaAbortedHandler(response) {
+              // Store the request on the error for retry
+              if (response) {
+                response.request = request;
+              }
+
+              // Check if this is an MFA error (some 401s come through aborted)
+              interceptor.handleError(response)
+                .then(() => {
+                  // MFA flow completed successfully
+                })
+                .catch((error) => {
+                  // Not an MFA error or MFA flow failed
+                  if (originalAborted) {
+                    originalAborted.call(this, error);
+                  }
+                });
+            };
+          }
+
+          // Call the original read method with wrapped options
+          return originalRead.call(this, options);
+        };
+      }
+
+      // Store original execute method from SDataServiceOperationRequest prototype
+      const SDataServiceOperationRequest = Sage.SData.Client.SDataServiceOperationRequest;
+      if (SDataServiceOperationRequest && SDataServiceOperationRequest.prototype && SDataServiceOperationRequest.prototype.execute) {
+        const originalExecute = SDataServiceOperationRequest.prototype.execute;
+
+        SDataServiceOperationRequest.prototype.execute = function executeWithMFAInterception(entry, options) {
+          // Store the original request for potential retry
+          const request = this;
+
+          // Wrap the failure callback to intercept MFA errors
+          if (options && typeof options === 'object') {
+            const originalFailure = options.failure;
+            const originalAborted = options.aborted;
+
+            options.failure = function mfaFailureHandler(response) {
+              // Store the request on the error for retry
+              if (response) {
+                response.request = request;
+              }
+
+              // Check if this is an MFA error
+              interceptor.handleError(response)
+                .then(() => {
+                  // MFA flow completed successfully, original request was retried
+                  // No need to call original failure handler
+                })
+                .catch((error) => {
+                  // Not an MFA error or MFA flow failed/cancelled
+                  // Call original failure handler if it exists
+                  if (originalFailure) {
+                    originalFailure.call(this, error);
+                  }
+                });
+            };
+
+            options.aborted = function mfaAbortedHandler(response) {
+              // Store the request on the error for retry
+              if (response) {
+                response.request = request;
+              }
+
+              // Check if this is an MFA error (some 401s come through aborted)
+              interceptor.handleError(response)
+                .then(() => {
+                  // MFA flow completed successfully
+                })
+                .catch((error) => {
+                  // Not an MFA error or MFA flow failed
+                  if (originalAborted) {
+                    originalAborted.call(this, error);
+                  }
+                });
+            };
+          }
+
+          // Call the original execute method with wrapped options
+          return originalExecute.call(this, entry, options);
+        };
+      }
     }
 
     initServiceWorker() {
@@ -471,11 +684,28 @@ define('crm/Application', [
       }
     }
     onAuthenticateUserFailure(callback, scope, response) {
-      const service = this.getService();
-      if (service) {
-        service
-          .setUserName(false)
-          .setPassword(false);
+      // Check if this is an MFA challenge — credentials are still valid,
+      // the server just needs a second factor. Don't clear them.
+      let isMfaRequired = false;
+      if (response && response.responseText) {
+        try {
+          const json = JSON.parse(response.responseText);
+          const diagnoses = json.$diagnoses || json.diagnoses;
+          if (Array.isArray(diagnoses)) {
+            isMfaRequired = diagnoses.some(d => d.sdataCode === 'MfaRequired');
+          }
+        } catch (_) {
+          // Not JSON — not an MFA response
+        }
+      }
+
+      if (!isMfaRequired) {
+        const service = this.getService();
+        if (service) {
+          service
+            .setUserName(false)
+            .setPassword(false);
+        }
       }
 
       if (callback) {
@@ -484,6 +714,7 @@ define('crm/Application', [
         });
       }
     }
+
     authenticateUser(credentials, options) {
       const service = this.getService();
       if (credentials) {
@@ -1156,7 +1387,7 @@ define('crm/Application', [
       return this;
     }
 
-    navigateToHomeView() {
+    navigateToHomeView(options) {
       this.setupRedirectHash();
       this.showLeftDrawer();
 
@@ -1186,7 +1417,9 @@ define('crm/Application', [
               if (key) {
                 redirectView.show({
                   key,
+                  ...options,
                 });
+                return;
               }
             }
           }
@@ -1199,7 +1432,7 @@ define('crm/Application', [
       }
 
       if (view) {
-        view.show();
+        view.show(options);
       }
     }
     navigateToActivityInsertView() {

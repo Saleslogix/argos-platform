@@ -1692,3 +1692,237 @@ li.related-view-detail-content:has(.customer-journey-root) {
     visibility: hidden;
   }
 }
+
+/* MFA views */
+.mfa-panel {
+    max-width: 360px;
+
+    h1 {
+        margin-bottom: 16px;
+    }
+
+    label {
+        text-align: left;
+        display: block;
+        margin-bottom: 4px;
+        margin-top: 4px;
+    }
+
+    input {
+        width: 100%;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
+
+.mfa-instructions {
+    color: @color-graphite;
+    font-size: @font-size-paragraph;
+    margin-bottom: 12px;
+    text-align: left;
+}
+
+.mfa-section-label {
+    font-weight: @button-font-weight;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.mfa-device-label {
+    font-weight: @button-font-weight;
+    margin-bottom: 12px;
+    text-align: left;
+}
+
+.mfa-actions {
+    margin-top: 16px;
+}
+
+.mfa-error-message {
+    color: @color-deep-ruby;
+    background-color: lighten(@color-light-ruby, 25%);
+    border: 1px solid @color-light-ruby;
+    border-radius: @button-border-radius;
+    padding: 8px 12px;
+    margin-top: 12px;
+    font-size: @font-size-h4;
+    text-align: left;
+}
+
+.mfa-code-format-error {
+    color: @color-deep-ruby;
+    font-size: @font-size-h4;
+    margin-top: 4px;
+    text-align: left;
+}
+
+.mfa-code-input-section {
+    margin-top: 12px;
+    text-align: left;
+}
+
+.mfa-email-actions {
+    margin-bottom: 12px;
+}
+
+.mfa-email-confirmation {
+    color: @color-deep-emerald;
+    font-size: @font-size-h4;
+    margin-top: 6px;
+}
+
+/* Device type selection buttons */
+.device-type-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.device-type-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px;
+    background-color: #fff;
+    border: @form-border;
+    border-radius: @button-border-radius;
+    cursor: pointer;
+    text-align: left;
+
+    &:hover {
+        border-color: @color-azure;
+    }
+
+    &.selected {
+        border-color: @color-azure;
+        background-color: lighten(@color-light-azure, 25%);
+    }
+}
+
+.device-type-icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+        width: 24px;
+        height: 24px;
+        fill: @color-graphite;
+    }
+}
+
+.device-type-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.device-type-name {
+    font-weight: @button-font-weight;
+    display: block;
+    color: @text-color;
+}
+
+.device-type-description {
+    font-size: @font-size-h4;
+    color: @color-graphite;
+    display: block;
+}
+
+/* QR code display */
+.mfa-qr-code-display {
+    text-align: center;
+}
+
+.qr-code-image-wrapper {
+    margin: 16px auto;
+}
+
+.qr-code-image {
+    min-width: 200px;
+    min-height: 200px;
+}
+
+.qr-code-toggle {
+    margin-bottom: 12px;
+}
+
+.manual-entry-section {
+    text-align: left;
+    margin-bottom: 12px;
+}
+
+.manual-entry-secret {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    .secret-input {
+        flex: 1;
+        font-family: monospace;
+        font-size: @font-size-paragraph;
+    }
+
+    .btn-secondary {
+        width: auto;
+        margin-top: 0;
+        flex-shrink: 0;
+    }
+}
+
+/* Device list */
+.mfa-device-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background-color: #fff;
+    border: @form-border;
+    border-radius: @button-border-radius;
+    margin-bottom: 8px;
+    cursor: pointer;
+
+    &:hover {
+        border-color: @color-azure;
+    }
+}
+
+.mfa-device-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.mfa-device-info {
+    flex: 1;
+    min-width: 0;
+    text-align: left;
+}
+
+.mfa-device-description {
+    font-weight: @button-font-weight;
+    margin: 0;
+    font-size: @font-size-paragraph;
+}
+
+.mfa-device-type {
+    font-size: @font-size-h4;
+    color: @color-graphite;
+    margin: 2px 0 0;
+}
+
+.mfa-device-badge .badge {
+    background-color: @color-azure;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: @font-size-h5;
+    font-weight: @button-font-weight;
+}

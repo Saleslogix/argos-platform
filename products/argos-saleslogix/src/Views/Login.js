@@ -199,6 +199,40 @@ define('crm/Views/Login', [
           alert(this.passwordExpiredText);// eslint-disable-line
         },
       }, {
+        name: 'MfaRequired',
+        test: function testMfaRequired(error) {
+          const xhr = error && error.xhr;
+          if (!xhr || !xhr.responseText) {
+            return false;
+          }
+
+          try {
+            const json = JSON.parse(xhr.responseText);
+            const diagnoses = json.$diagnoses || json.diagnoses;
+            if (!Array.isArray(diagnoses)) {
+              return false;
+            }
+            return diagnoses.some((d) => {
+              return d.sdataCode === 'MfaRequired';
+            });
+          } catch (_) {
+            return false;
+          }
+        },
+        handle: function handleMfaRequired() {
+          // Store credentials for post-MFA authentication
+          // The global MFA interceptor will handle starting the flow
+          const values = this.getValues(true);
+          const credentials = {
+            username: values['username-display'],
+            password: values['password-display'],
+            remember: values.remember,
+          };
+
+          App.mfaCoordinator.loginCredentials = credentials;
+          // Don't call next() - let the interceptor handle the MFA flow
+        },
+      }, {
         name: 'GeneralError',
         test: function testError(error) {
           return typeof error.xhr !== 'undefined' && error.xhr !== null;
@@ -213,6 +247,12 @@ define('crm/Views/Login', [
     },
     validateCredentials: function validateCredentials(credentials) {
       this.disable();
+
+      // Store credentials in coordinator for potential MFA flow
+      // This ensures they're available if MFA is required
+      if (App.mfaCoordinator) {
+        App.mfaCoordinator.loginCredentials = credentials;
+      }
 
       App.authenticateUser(credentials, {
         success: function success() {

@@ -137,6 +137,10 @@ define('crm/ApplicationModule', [
   'argos/I18n',
   './Models/Names',
   'argos/Models/Types',
+  './MFA/Views/DeviceSetup',
+  './MFA/Views/DeviceList',
+  './MFA/Views/Verification',
+  './MFA/Views/QRCodeDisplay',
   './Views/OfflineOptions/UsageWidget',
   './Views/LanguageOptions/UsageWidget',
   './Fields/AddressField',
@@ -206,7 +210,7 @@ define('crm/ApplicationModule', [
   HistoryAttendeeDetail, HistoryRelatedView, HistoryAssociationList, CalendarAccessList, UserList, ViewAttachment,
   AttachmentList, AddAttachment, MyAttachmentList, WorkflowInstancesList, RecentlyViewedList,
   BriefcaseList, OfflineOptionsEdit, SpeedSearchOptions, LanguageOptionsEdit, CustomerJourney360Widget,
-  getResource, MODEL_NAMES, MODEL_TYPES) => {
+  getResource, MODEL_NAMES, MODEL_TYPES, MFADeviceSetup, MFADeviceList, MFAVerification, MFAQRCodeDisplay) => {
   const resource = getResource('applicationModule');
 
   /**
@@ -239,6 +243,27 @@ define('crm/ApplicationModule', [
       this.registerView(new Login());
 
       this.registerView(new LogOff());
+
+      // MFA views - modal flows, not exposed in navigation
+      this.registerView(new MFADeviceSetup({
+        id: 'mfa_device_setup',
+        expose: false,
+      }));
+
+      this.registerView(new MFADeviceList({
+        id: 'mfa_device_list',
+        expose: false,
+      }));
+
+      this.registerView(new MFAVerification({
+        id: 'mfa_verification',
+        expose: false,
+      }));
+
+      this.registerView(new MFAQRCodeDisplay({
+        id: 'mfa_qr_code_display',
+        expose: false,
+      }));
 
       this.registerView(new LeftDrawer(), $('.application-menu', this.application.getContainerNode()).first().get(0), 'last');
 
