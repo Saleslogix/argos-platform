@@ -432,6 +432,46 @@ define('crm/Views/Activity/Edit', [
         const phoneField = this.fields.PhoneNumber;
         phoneField.setValue(entry.MainPhone);
       }
+
+      // If no contact is currently set, fetch the primary contact for this account
+      const accountId = value.AccountId || value.key;
+      if (accountId && !fields.Contact.getValue()) {
+        this.requestPrimaryContact(accountId);
+      }
+    },
+    requestPrimaryContact: function requestPrimaryContact(accountId) {
+      const request = new Sage.SData.Client.SDataResourceCollectionRequest(this.getConnection())
+        .setResourceKind('contacts')
+        .setContractName('dynamic')
+        .setCount(1);
+
+      request.setQueryArg('where', `Account.Id eq "${accountId}" and IsPrimary eq true`);
+      request.setQueryArg('select', 'NameLF,WorkPhone,Account/AccountName,Account/$key');
+      request.setQueryArg('orderby', 'IsPrimary desc');
+
+      request.read({
+        success: this.processPrimaryContact,
+        failure: this.requestPrimaryContactFailure,
+        scope: this,
+      });
+    },
+    requestPrimaryContactFailure: function requestPrimaryContactFailure() {},
+    processPrimaryContact: function processPrimaryContact(feed) {
+      const contacts = feed && feed.$resources;
+      if (contacts && contacts.length > 0) {
+        const primaryContact = contacts[0];
+        const contactField = this.fields.Contact;
+
+        contactField.setSelection(primaryContact);
+        contactField.setValue({
+          ContactId: primaryContact.$key,
+          ContactName: primaryContact.NameLF,
+        });
+
+        if (primaryContact.WorkPhone) {
+          this.fields.PhoneNumber.setValue(primaryContact.WorkPhone);
+        }
+      }
     },
     onContactChange: function onContactChange(value, field) {
       this.onAccountDependentChange(value, field);
@@ -447,7 +487,7 @@ define('crm/Views/Activity/Edit', [
       const entry = field.currentSelection;
 
       if (entry && entry.Account && entry.Account.MainPhone) {
-        const phoneField = this.fieldsPhoneNumber;
+        const phoneField = this.fields.PhoneNumber;
         phoneField.setValue(entry.Account.MainPhone);
       }
     },
