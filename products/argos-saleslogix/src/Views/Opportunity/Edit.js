@@ -235,7 +235,7 @@ define('crm/Views/Opportunity/Edit', [
               this.fields.Description.setValue(description);
             }
           },
-          () => {} // silent failure
+          () => {}, // silent failure
         );
       }
     },
