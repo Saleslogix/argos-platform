@@ -20,7 +20,8 @@ define('crm/Views/Opportunity/Edit', [
   'argos/Utility',
   'argos/Edit',
   'argos/I18n',
-], (declare, validator, template, utility, Edit, getResource) => {
+  '../../Models/Names',
+], (declare, validator, template, utility, Edit, getResource, MODEL_NAMES) => {
   const resource = getResource('opportunityEdit');
   const dtFormatResource = getResource('opportunityEditDateTimeFormat');
 
@@ -54,6 +55,7 @@ define('crm/Views/Opportunity/Edit', [
     // View Properties
     entityName: 'Opportunity',
     id: 'opportunity_edit',
+    modelName: MODEL_NAMES.OPPORTUNITY,
     resourceKind: 'opportunities',
     insertSecurity: 'Entities/Opportunity/Add',
     updateSecurity: 'Entities/Opportunity/Edit',
@@ -172,6 +174,10 @@ define('crm/Views/Opportunity/Edit', [
       this.fields.Account.setValue(entry);
       this.fields.AccountManager.setValue(utility.getValue(entry, 'AccountManager'));
       this.fields.Owner.setValue(utility.getValue(entry, 'Owner'));
+
+      if (entry && entry.$key) {
+        this.requestDefaultDescription(entry.$key);
+      }
     },
     applyContactContext: function applyContactContext(context) {
       const view = App.getView(context.id);
@@ -210,6 +216,27 @@ define('crm/Views/Opportunity/Edit', [
       // it should be set to the AM for the selected account (and change each time).
       if (selection && this.insert) {
         this.fields.AccountManager.setValue(utility.getValue(selection, 'AccountManager'));
+      }
+
+      if (this.insert && value) {
+        this.requestDefaultDescription(value.$key || value.AccountId || value.key);
+      }
+    },
+    requestDefaultDescription: function requestDefaultDescription(accountId) {
+      if (!accountId) {
+        return;
+      }
+
+      const model = this.getModel();
+      if (model) {
+        model.getDefaultDescription(accountId).then(
+          (description) => {
+            if (description) {
+              this.fields.Description.setValue(description);
+            }
+          },
+          () => {} // silent failure
+        );
       }
     },
     createLayout: function createLayout() {

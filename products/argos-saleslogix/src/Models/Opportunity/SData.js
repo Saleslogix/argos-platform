@@ -96,6 +96,32 @@ define('crm/Models/Opportunity/SData', [
         ],
       }];
     },
+    getDefaultDescription: function getDefaultDescription(accountId) {
+      return new Promise((resolve, reject) => {
+        const request = new Sage.SData.Client.SDataServiceOperationRequest(App.getService())
+          .setResourceKind(this.resourceKind)
+          .setContractName('dynamic')
+          .setOperationName('getDefaultOpportunityDescription');
+
+        const entry = {
+          $name: 'getDefaultOpportunityDescription',
+          request: {
+            accountId,
+          },
+        };
+
+        request.execute(entry, {
+          success: function success(data) {
+            const description = data && data.response && data.response.Result;
+            resolve(description || '');
+          },
+          failure: function failure(err) {
+            reject(err);
+          },
+          scope: this,
+        });
+      });
+    },
   });
 
   Manager.register(MODEL_NAMES.OPPORTUNITY, MODEL_TYPE.SDATA, __class);
