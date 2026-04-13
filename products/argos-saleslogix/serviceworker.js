@@ -39,8 +39,8 @@ self.addEventListener('fetch', (event) => {
 
         // When the service worker intercepts a fetch and re-issues it,
         // Chrome does not automatically include cookies for cross-origin
-        // requests (e.g. from renold-qa.crmcloud.infor.com to
-        // mingle-ionapi.inforcloudsuite.com). We must explicitly set
+        // requests (e.g. from customer.crm.domain to
+        // mingle-ionapi.domain). We must explicitly set
         // credentials: 'include' so that cookies like .SLXAUTH and
         // SlxStickySessionId are sent with the request. Without this,
         // the server treats every request as a new unauthenticated
