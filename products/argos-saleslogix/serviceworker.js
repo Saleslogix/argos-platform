@@ -17,7 +17,7 @@ self.addEventListener('activate', (event) => {
           }
 
           return Promise.resolve(true);
-        })
+        }),
       );
     }),
     (() => {
@@ -25,7 +25,7 @@ self.addEventListener('activate', (event) => {
         return self.registration.navigationPreload.enable();
       }
     })(),
-    self.clients.claim()
+    self.clients.claim(),
   );
 });
 
@@ -36,15 +36,29 @@ self.addEventListener('fetch', (event) => {
         if (response) {
           return response;
         }
+
+        // When the service worker intercepts a fetch and re-issues it,
+        // Chrome does not automatically include cookies for cross-origin
+        // requests (e.g. from renold-qa.crmcloud.infor.com to
+        // mingle-ionapi.inforcloudsuite.com). We must explicitly set
+        // credentials: 'include' so that cookies like .SLXAUTH and
+        // SlxStickySessionId are sent with the request. Without this,
+        // the server treats every request as a new unauthenticated
+        // session and issues a fresh cookie on every response.
+        const fetchOptions = {};
+        if (event.request.mode === 'cors') {
+          fetchOptions.credentials = 'include';
+        }
+
         return fetch(event.request);
-      }
+      },
       ).catch(() => {
         if (event.request.url.includes('ping.gif')) {
           return Promise.resolve(new Response(null, { status: 408, statusText: 'timeout' }));
         }
 
         return caches.match('index.aspx');
-      })
+      }),
   );
 });
 
