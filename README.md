@@ -86,6 +86,10 @@ npm run less
 npm start
 ```
 
+### Building the Cordova Native Shell
+
+To build the Cordova native Android/iOS shell that wraps the compiled SalesLogix web app into installable mobile apps, see the [Cordova Native Shell build instructions](./cordova/README.md). It covers prerequisites, build and run commands, environment variable overrides, and troubleshooting.
+
 ## Available Scripts
 
 ### argos-sdk

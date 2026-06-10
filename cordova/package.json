@@ -1,0 +1,46 @@
+{
+  "name": "argos-cordova-shell",
+  "description": "Apache Cordova native shell that wraps the Argos SalesLogix mobile web app into installable Android and iOS applications.",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "cordova": "grunt cordova",
+    "cordova:install": "grunt cordova:install",
+    "cordova:stage": "grunt cordova:stage",
+    "cordova:prepare": "grunt cordova:prepare",
+    "cordova:build": "grunt cordova:build",
+    "cordova:build:android": "grunt cordova:build:android:release",
+    "cordova:build:ios": "grunt cordova:build:ios:release",
+    "cordova:run:android": "grunt cordova:run:android",
+    "cordova:run:ios": "grunt cordova:run:ios"
+  },
+  "dependencies": {
+    "cordova-plugin-device": "3.0.0",
+    "cordova-plugin-network-information": "3.1.0",
+    "cordova-plugin-statusbar": "4.0.0",
+    "cordova-plugin-inappbrowser": "6.0.0",
+    "cordova-plugin-file": "8.1.3",
+    "cordova-plugin-geolocation": "5.0.0"
+  },
+  "devDependencies": {
+    "cordova": "13.0.0",
+    "cordova-android": "15.0.0",
+    "cordova-ios": "8.0.1",
+    "grunt": "^1.5.3",
+    "grunt-shell": "^3.0.1"
+  },
+  "cordova": {
+    "platforms": [
+      "android",
+      "ios"
+    ],
+    "plugins": {
+      "cordova-plugin-device": {},
+      "cordova-plugin-network-information": {},
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-inappbrowser": {},
+      "cordova-plugin-file": {},
+      "cordova-plugin-geolocation": {}
+    }
+  }
+}

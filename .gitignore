@@ -67,3 +67,11 @@ index-dev-*.html
 
 # Workspace-specific configs
 scripts/config.json
+
+# Cordova native shell (generated content)
+cordova/www/
+cordova/platforms/
+cordova/plugins/
+cordova/node_modules/
+cordova/dist/
+cordova/config.xml.template
