@@ -1,7 +1,7 @@
 /* eslint-disable */
 module.exports = function gruntDeps(grunt) {
   var Graph = require('graphs');
-  var esprima = require('esprima');
+  var espree = require('espree');
   var path = require('path');
 
   grunt.registerTask('argos-deps', function() {
@@ -100,8 +100,9 @@ module.exports = function gruntDeps(grunt) {
         encoding: 'utf8'
       });
       try {
-        var tree = esprima.parse(contents, {
-          tolerant: true
+        var tree = espree.parse(contents, {
+          ecmaVersion: 'latest',
+          sourceType: 'module'
         });
         var body = tree.body;
         body.filter(function(node) {
