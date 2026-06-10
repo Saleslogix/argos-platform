@@ -11,7 +11,7 @@
     "grunt": ">=0.4.0"
   },
   "dependencies": {
-    "esprima": "^2.6.0",
+    "espree": "^9.6.1",
     "graphs": "*",
     "grunt": "^1.0.4"
   }
