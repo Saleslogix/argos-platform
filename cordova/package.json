@@ -10,7 +10,9 @@
     "cordova:prepare": "grunt cordova:prepare",
     "cordova:build": "grunt cordova:build",
     "cordova:build:android": "grunt cordova:build:android:release",
+    "cordova:build:android:debug": "grunt cordova:build:android:debug",
     "cordova:build:ios": "grunt cordova:build:ios:release",
+    "cordova:build:ios:debug": "grunt cordova:build:ios:debug",
     "cordova:run:android": "grunt cordova:run:android",
     "cordova:run:ios": "grunt cordova:run:ios"
   },
