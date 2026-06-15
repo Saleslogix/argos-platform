@@ -684,12 +684,100 @@ li.relatedviewitem a {
   padding: 10px 30px;
 }
 .quick-actions > .action-list {
-  padding: 10px 5px 5px;
+  padding: 10px;
   width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 8px;
+  align-items: stretch;
 }
-.quick-actions > .action-list button {
-  float: left;
-  margin-top: -5px;
+.quick-actions > .action-list > li {
+  display: flex;
+  margin: 0;
+  cursor: pointer;
+}
+.quick-actions > .action-list > li > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 14px;
+  border: 1px solid #368ac0;
+  border-radius: 3px;
+  background-color: #fff;
+  color: #368ac0;
+  line-height: normal;
+  white-space: nowrap;
+  text-decoration: none;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+.quick-actions > .action-list > li > a:hover,
+.quick-actions > .action-list > li > a:focus {
+  background-color: #368ac0;
+  color: #fff;
+}
+.quick-actions > .action-list > li > a button.btn-icon {
+  float: none;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  height: auto;
+  min-width: 0;
+  min-height: 0;
+  background-color: transparent !important;
+  border: none !important;
+  color: inherit;
+}
+.quick-actions > .action-list > li > a button.btn-icon:hover,
+.quick-actions > .action-list > li > a button.btn-icon:focus {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+.quick-actions > .action-list > li > a button.btn-icon .icon {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  color: inherit !important;
+  fill: currentColor;
+}
+.quick-actions > .action-list > li > a > img.icon {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+.quick-actions > .action-list > li > a > div {
+  float: none;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+}
+.quick-actions > .action-list > li > a label {
+  margin: 0;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: normal;
+  color: inherit;
+}
+.quick-actions > .action-list > li > a > span,
+.quick-actions > .action-list > li > a .data {
+  display: none;
+}
+.quick-actions > .action-list > li.disabled {
+  display: none;
+}
+:is(.theme-classic-dark, .theme-new-dark, .theme-uplift-dark, .theme-soho-dark) .quick-actions > .action-list > li > a {
+  background-color: transparent;
+  border-color: #69b5dd;
+  color: #69b5dd;
+}
+:is(.theme-classic-dark, .theme-new-dark, .theme-uplift-dark, .theme-soho-dark) .quick-actions > .action-list > li > a:hover,
+:is(.theme-classic-dark, .theme-new-dark, .theme-uplift-dark, .theme-soho-dark) .quick-actions > .action-list > li > a:focus {
+  background-color: #368ac0;
+  color: #fff;
 }
 .detail-header {
   padding: 25px 0 10px 0 !important;
