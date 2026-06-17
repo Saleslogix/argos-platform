@@ -14,7 +14,7 @@ module.exports = function gruntDeps(grunt) {
     var graph = new Graph();
     var nodes = {};
 
-    // Resolves import modules into a relative file path
+    // Resolves a module id into a relative file path.
     function resolvePath(module, sourceFile) {
       var config = grunt.config.get('argos-deps');
       // Relative modules start with a period
@@ -24,12 +24,12 @@ module.exports = function gruntDeps(grunt) {
       } else {
         var parts = module.split('/');
         var moduleName = parts.shift();
-        var config = config.modules.filter(function(m) {
+        var moduleConfig = config.modules.filter(function(m) {
           return m.name === moduleName;
         })[0];
-        if (config && config.location) {
+        if (moduleConfig && moduleConfig.location) {
           var relativeModule = parts.join(path.sep);
-          return path.join(config.location, relativeModule) + '.js';
+          return path.join(moduleConfig.location, relativeModule) + '.js';
         }
       }
     }
@@ -46,6 +46,48 @@ module.exports = function gruntDeps(grunt) {
 
       graph.add(nodes[f]);
       return nodes[f];
+    }
+
+    // Extract the module dependencies declared in a source file.
+    // Supports both AMD (define('id', ['dep', ...], factory)) and ES6
+    // (import ... from 'dep') module syntax. The source files were migrated
+    // from ES6 imports to AMD define(), so the dependency list now lives in
+    // the array literal passed to define()/require().
+    function getDependencies(tree) {
+      var deps = [];
+
+      function collectFromArguments(args) {
+        args.forEach(function(arg) {
+          if (arg && arg.type === 'ArrayExpression') {
+            arg.elements.forEach(function(el) {
+              if (el && el.type === 'Literal' && typeof el.value === 'string') {
+                deps.push(el.value);
+              }
+            });
+          }
+        });
+      }
+
+      tree.body.forEach(function(node) {
+        // ES6: import ... from 'module'
+        if (node.type === 'ImportDeclaration' && node.source && typeof node.source.value === 'string') {
+          deps.push(node.source.value);
+          return;
+        }
+
+        // AMD: define([...], factory) / define('id', [...], factory)
+        //      require([...], callback)
+        if (node.type === 'ExpressionStatement' &&
+          node.expression &&
+          node.expression.type === 'CallExpression' &&
+          node.expression.callee &&
+          node.expression.callee.type === 'Identifier' &&
+          (node.expression.callee.name === 'define' || node.expression.callee.name === 'require')) {
+          collectFromArguments(node.expression.arguments);
+        }
+      });
+
+      return deps;
     }
 
     // Khan topological sort (https://en.wikipedia.org/wiki/Topological_sorting#Algorithms)
@@ -86,16 +128,25 @@ module.exports = function gruntDeps(grunt) {
       return sorted;
     }
 
-    // - Iterate our ES6 files
-    // - parse them in esprima to get a list of imports (dependencies)
-    // - Add each file to the graph
-    // - Resolve the dependencies to a filename and add them to the graph
-    // - Link dependency to file.
+    // First pass: register every source file as a node so dependency links
+    // only ever reference real files (external libs such as dojo/dijit and
+    // cross-bundle modules are intentionally skipped).
     files.forEach(function(file) {
       var sourceDir = path.dirname(file);
       var base = path.basename(file);
       var filepath = path.join(sourceDir, base); // grunt is not using correct seperator on windows
-      var fileNode = add(filepath);
+      add(filepath);
+    });
+
+    // Second pass:
+    // - parse each file with espree to get its dependency list (AMD or ES6)
+    // - resolve the dependencies to a filename
+    // - link dependency -> file so the dependency sorts before the file.
+    files.forEach(function(file) {
+      var sourceDir = path.dirname(file);
+      var base = path.basename(file);
+      var filepath = path.join(sourceDir, base); // grunt is not using correct seperator on windows
+      var fileNode = nodes[filepath];
       var contents = grunt.file.read(filepath, {
         encoding: 'utf8'
       });
@@ -104,17 +155,17 @@ module.exports = function gruntDeps(grunt) {
           ecmaVersion: 'latest',
           sourceType: 'module'
         });
-        var body = tree.body;
-        body.filter(function(node) {
-            return node.type === 'ImportDeclaration';
-          })
-          .forEach(function(node) {
-            var p = resolvePath(node.source.value, filepath);
-            var depNode = add(p);
-            if (depNode) {
-              graph.link(depNode, fileNode);
-            }
-          });
+
+        getDependencies(tree).forEach(function(module) {
+          var p = resolvePath(module, filepath);
+          // Only link to dependencies that are part of this bundle's source
+          // files. Unresolved/external modules (dojo, dijit, other bundles)
+          // are skipped so they do not get emitted as bogus includes.
+          var depNode = (p && nodes[p]) ? nodes[p] : null;
+          if (depNode && depNode !== fileNode) {
+            graph.link(depNode, fileNode);
+          }
+        });
       } catch (error) {
         grunt.log.writeln('Error in ' + file + ': ' + error);
       }
