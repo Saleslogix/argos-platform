@@ -1790,6 +1790,8 @@
   completedText: "Completed"
   showStepsText: "Show Steps"
   hideStepsText: "Hide Steps"
+  errorText: "Unable to load the customer journey."
+  unsupportedText: "The customer journey is not supported by this version of the platform."
 >
 
 <mfaQRCodeDisplay ""

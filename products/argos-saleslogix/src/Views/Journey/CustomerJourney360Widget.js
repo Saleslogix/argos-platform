@@ -17,6 +17,9 @@ define('crm/Views/Journey/CustomerJourney360Widget', [
       relatedContentTemplate: new Simplate([
         '<div data-dojo-attach-point="root" data-dojo-attach-event="onclick:_onClick" class="customer-journey-root"></div>',
       ]),
+      errorTemplate: new Simplate([
+        '<div class="customer-journey-message">{%: $.message %}</div>',
+      ]),
       containerTemplate: new Simplate([
         '<div class="customer-journey-container">',
         '{% for (var i = 0; i < $.length; i++) { %}',
@@ -79,8 +82,19 @@ define('crm/Views/Journey/CustomerJourney360Widget', [
       ]),
       resource,
       formatDate,
+      operationName: 'GetAccountCustomerJourney360',
       onLoad: function onLoad() {
         const root = this.root;
+
+        // If a previous request already determined this platform does not support the operation
+        // (it returned a 404, e.g. SalesLogix 9.1/9.2), skip the request entirely and show the
+        // unsupported message. This avoids re-requesting a known-missing operation on every
+        // detail view for the rest of the session.
+        if (this._isOperationUnsupported()) {
+          root.innerHTML = this.errorTemplate.apply({ message: this.resource.unsupportedText }, this);
+          return;
+        }
+
         // The journey data request now fires when the user activates the tab, so show a loading
         // indicator immediately to give feedback while the request is in flight.
         root.innerHTML = this.loadingTemplate.apply(this);
@@ -88,7 +102,7 @@ define('crm/Views/Journey/CustomerJourney360Widget', [
           App.getService(),
         )
           .setResourceKind('accounts')
-          .setOperationName('GetAccountCustomerJourney360');
+          .setOperationName(this.operationName);
         const entry = {
           request: {
             entity: {
@@ -119,16 +133,52 @@ define('crm/Views/Journey/CustomerJourney360Widget', [
               root.innerHTML = this.containerTemplate.apply(data, this);
             } catch (error) {
               console.error('Error parsing JSON:', error); // eslint-disable-line
-              // Clear the loading indicator so it does not spin indefinitely.
-              root.innerHTML = '';
+              // Replace the loading indicator with a generic error message.
+              root.innerHTML = this.errorTemplate.apply({ message: this.resource.errorText }, this);
             }
           },
           failure: (response) => {
             console.error(response); // eslint-disable-line
-            // Clear the loading indicator so it does not spin indefinitely.
-            root.innerHTML = '';
+            // Older platforms (e.g. 9.1/9.2) do not expose the GetAccountCustomerJourney360
+            // operation and return a 404. Surface a message explaining that rather than a blank
+            // panel, and fall back to a generic error for any other failure.
+            const isUnsupported = response && response.status === 404;
+            if (isUnsupported) {
+              // Remember this for the rest of the session so we stop requesting it.
+              this._markOperationUnsupported();
+            }
+            const message = isUnsupported ? this.resource.unsupportedText : this.resource.errorText;
+            root.innerHTML = this.errorTemplate.apply({ message }, this);
           },
         });
+      },
+      /**
+       * Returns the session-scoped map of service operations that have been found unavailable
+       * (returned a 404). Lazily created on App.context so it is shared for the session and reset
+       * when the app/context is rebuilt.
+       * @return {Object} Map keyed by operation name.
+       */
+      _getUnsupportedOperations: function _getUnsupportedOperations() {
+        if (!App.context) {
+          return {};
+        }
+        if (!App.context.unsupportedOperations) {
+          App.context.unsupportedOperations = {};
+        }
+        return App.context.unsupportedOperations;
+      },
+      /**
+       * @return {Boolean} True if this widget's operation was previously found unavailable.
+       */
+      _isOperationUnsupported: function _isOperationUnsupported() {
+        const unsupported = App.context && App.context.unsupportedOperations;
+        return !!(unsupported && unsupported[this.operationName]);
+      },
+      /**
+       * Flags this widget's operation as unavailable for the rest of the session.
+       */
+      _markOperationUnsupported: function _markOperationUnsupported() {
+        this._getUnsupportedOperations()[this.operationName] = true;
       },
       _onClick: function _onClick(evt) {
         const toggle = evt.target.closest('.expand-toggle');
