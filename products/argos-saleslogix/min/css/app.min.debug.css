@@ -1268,6 +1268,13 @@ span.range-value {
   gap: 24px;
   margin-top: 12px;
 }
+.customer-journey-root > .busy-indicator-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 0;
+}
 .customer-journey {
   background: #fff;
   border-radius: 10px;

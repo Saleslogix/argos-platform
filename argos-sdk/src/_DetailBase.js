@@ -394,6 +394,13 @@ define('argos/_DetailBase', [
      */
     _navigationOptions: null,
     /**
+     * @property {Object}
+     * Map of tab panel id to an array of deferred tasks (functions) that should run when the
+     * owning tab is activated. Used to lazily execute related-item count queries and related-view
+     * widget loading so they do not all fire up front each time a detail view loads.
+     */
+    _deferredTabTasks: null,
+    /**
      * @property {Boolean}
      * Flag to signal that the interface is loading and clicking refresh will be ignored to prevent double entity loading
      */
@@ -905,11 +912,18 @@ define('argos/_DetailBase', [
           row = [];
         }
         if (current.relatedItem) {
-          try {
-            this._processRelatedItem(data, context, rowNode);
-          } catch (e) {
-            // error processing related node
-            console.error(e); //eslint-disable-line
+          // When the view is tabbed, defer the related-item count queries until the user
+          // activates the tab that owns this item. This avoids firing every related list
+          // count query up front each time a detail view loads. See onTabActivated.
+          if (this.isTabbed) {
+            this._deferRelatedItem(sectionNode, data, context, rowNode);
+          } else {
+            try {
+              this._processRelatedItem(data, context, rowNode);
+            } catch (e) {
+              // error processing related node
+              console.error(e); //eslint-disable-line
+            }
           }
         }
 
@@ -977,6 +991,10 @@ define('argos/_DetailBase', [
         this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
         if (this.isTabbed) {
           this.createTabs(this.tabs);
+          // Run any tasks deferred for the tab shown on load (related item counts, related view
+          // widgets) so its content appears without requiring the user to switch tabs. These live
+          // on a non-default tab in practice, so this normally runs nothing up front.
+          this._processVisibleTabTasks();
           if (this.enableDetailHeader) {
             this.placeDetailHeader(this.entry);
           }
@@ -1142,6 +1160,95 @@ define('argos/_DetailBase', [
       }
 
       this._navigationOptions = [];
+      this._deferredTabTasks = {};
+    },
+    /**
+     * Queues a task (function) to run later, when the user activates the tab identified by the
+     * given section/panel node. If the task cannot be mapped to a tab panel it runs immediately so
+     * its work is not lost.
+     * @param {HTMLElement} sectionNode The tab panel node the task is associated with.
+     * @param {Function} task The work to perform when the owning tab is activated.
+     * @private
+     */
+    _deferTabTask: function _deferTabTask(sectionNode, task) {
+      const panelId = sectionNode && sectionNode.id;
+      if (!panelId) {
+        // Without a panel id we cannot tie the task to a tab, so run it now.
+        try {
+          task();
+        } catch (e) {
+          console.error(e); //eslint-disable-line
+        }
+        return;
+      }
+
+      this._deferredTabTasks = this._deferredTabTasks || {};
+      const queue = this._deferredTabTasks[panelId] || (this._deferredTabTasks[panelId] = []);
+      queue.push(task);
+    },
+    /**
+     * Queues a related item so its count query can be executed later, when the user activates the
+     * tab that contains it.
+     * @param {HTMLElement} sectionNode The tab panel node the related item belongs to.
+     * @param {Object} data Related item data produced during layout processing.
+     * @param {Object} context Navigation/query context for the related item.
+     * @param {HTMLElement} rowNode The rendered related item row node.
+     * @private
+     */
+    _deferRelatedItem: function _deferRelatedItem(sectionNode, data, context, rowNode) {
+      this._deferTabTask(sectionNode, () => {
+        this._processRelatedItem(data, context, rowNode);
+      });
+    },
+    /**
+     * Handler invoked by {@link TabWidget#onTabActivated} when the user activates a tab. Runs any
+     * tasks that were deferred for the activated tab.
+     * @param {jQuery} anchor The activated tab anchor whose `href` matches the tab panel id.
+     */
+    onTabActivated: function onTabActivated(anchor) {
+      const href = anchor && anchor.attr && anchor.attr('href');
+      if (!href) {
+        return;
+      }
+
+      const panelId = href.charAt(0) === '#' ? href.substring(1) : href;
+      this._processDeferredTabTasks(panelId);
+    },
+    /**
+     * Runs the tasks deferred for the tab panel currently shown on load (if any).
+     * @private
+     */
+    _processVisibleTabTasks: function _processVisibleTabTasks() {
+      if (!this.tabContainer) {
+        return;
+      }
+
+      const visiblePanel = $('.tab-panel.is-visible', this.tabContainer).get(0);
+      if (visiblePanel && visiblePanel.id) {
+        this._processDeferredTabTasks(visiblePanel.id);
+      }
+    },
+    /**
+     * Runs and clears the tasks queued for a given tab panel id. Tasks are removed from the queue
+     * after running so they only execute once per load.
+     * @param {String} panelId The tab panel id whose deferred tasks should run.
+     * @private
+     */
+    _processDeferredTabTasks: function _processDeferredTabTasks(panelId) {
+      const queue = this._deferredTabTasks && this._deferredTabTasks[panelId];
+      if (!queue || !queue.length) {
+        return;
+      }
+
+      delete this._deferredTabTasks[panelId];
+
+      queue.forEach((task) => {
+        try {
+          task();
+        } catch (e) {
+          console.error(e); //eslint-disable-line
+        }
+      });
     },
     _processRelatedItem: function _processRelatedItem(data, context, rowNode) {
       const view = App.getView(data.view, false);
