@@ -177,6 +177,42 @@
     align-self: end;
 }
 
+/* Soho's toolbar initialization (List.initSoho) moves the search input out of
+   .search-widget-container and into the toolbar buttonset, leaving this container holding only
+   the contains toggle. The width:100% above was meant for the searchfield + toggle grouping; on
+   the leftover container it claims the full toolbar width and pushes the extracted search field
+   out of alignment. Size it to its content and keep the toggle centered with the field. */
+.list .buttonset > .search-widget-container.list-search {
+    width: auto;
+}
+
+.list .buttonset > .search-widget-container.list-search .contains-toggle {
+    align-self: center;
+}
+
+/* On small (phone-width) screens Soho switches a do-resize toolbar's buttonset to inline-flex
+   whenever it contains a searchfield, to support the collapsible mobile search pattern. Our list
+   search is non-collapsible and relies on a flex buttonset (the field grows, with the contains
+   toggle and settings beside it), so inline-flex shrink-wraps the buttonset and misaligns the
+   field. Keep list toolbars on flex. Scoped to .list and made specific enough (5 classes) to win
+   over Soho's `.toolbar.do-resize .buttonset:has(.searchfield-wrapper)` rule; other toolbars keep
+   Soho's default mobile behavior. */
+.list .toolbar.do-resize .buttonset:has(.searchfield-wrapper) {
+    display: flex;
+}
+
+/* Soho's accordion injects a non-interactive (tabindex="-1") expander/chevron button into each
+   group header and shows a focus indicator (a border, plus a box-shadow from the button base) on
+   it when clicked. Soho normally suppresses this with a dynamically-toggled hide-focus class, but
+   that class isn't reliably present on the injected button because it's (re)created during Soho's
+   deferred accordion rebuild. The button can't receive keyboard focus, so suppress its focus
+   indicator directly. !important is used to override Soho's stateful (.is-selected[:hover]) focus
+   rules without an escalating specificity chain, consistent with other Soho overrides here. */
+.grouped-list .accordion-header > button.btn:focus {
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
 /* grouped list */
 .group-content > h2 {
     box-sizing: border-box;

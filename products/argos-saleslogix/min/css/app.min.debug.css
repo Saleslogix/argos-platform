@@ -1275,6 +1275,12 @@ span.range-value {
   justify-content: center;
   padding: 24px 0;
 }
+.customer-journey-message {
+  padding: 24px 16px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
 .customer-journey {
   background: #fff;
   border-radius: 10px;
