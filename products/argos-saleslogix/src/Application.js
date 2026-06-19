@@ -1262,41 +1262,101 @@ define('crm/Application', [
 
       return hasRoot && result;
     }
-    requestIntegrationSettings(integration) {
+    requestIntegrationSettings(integrations) {
       if (!this.context.integrationSettings) {
         this.context.integrationSettings = {};
       }
-      const request = new Sage.SData.Client.SDataBaseRequest(App.getService());
-      const pageSize = this.pageSize;
-      const startIndex = this.feed && this.feed.$startIndex > 0 && this.feed.$itemsPerPage > 0 ? this.feed.$startIndex + this.feed.$itemsPerPage : 1;
-      request.uri.setPathSegment(0, 'slx');
-      request.uri.setPathSegment(1, 'dynamic');
-      request.uri.setPathSegment(2, '-');
-      request.uri.setPathSegment(3, 'customsettings');
-      request.uri.setQueryArg('format', 'JSON');
-      request.uri.setQueryArg('select', 'Description,DataValue,DataType');
-      request.uri.setQueryArg('where', `Category eq "${integration}"`);
-      request.uri.setStartIndex(startIndex);
-      request.uri.setCount(pageSize);
-      request.service.readFeed(request, {
-        success: (feed) => {
-          const integrationSettings = {};
-          feed.$resources.forEach((item) => {
-            const key = item && item.$descriptor;
-            let value = item && item.DataValue;
-            if (typeof value === 'undefined' || value === null) {
-              value = '';
-            }
-            if (key) {
-              integrationSettings[`${key}`] = value;
-            }
-            this.context.integrationSettings[`${integration}`] = integrationSettings;
-          });
-        },
-        failure: (response, o) => {
-          ErrorManager.addError(response, o, '', 'failure');
-        },
+
+      // Accept either a single category name or a list of category names. This keeps the
+      // method backwards compatible for partner integrations that request their own custom
+      // settings, while letting the core load every integration in a single request.
+      const categories = (Array.isArray(integrations) ? integrations : [integrations])
+        .filter(category => typeof category === 'string' && category);
+
+      if (categories.length === 0) {
+        return Promise.resolve(this.context.integrationSettings);
+      }
+
+      // Seed a bucket per requested category so integrations with no custom settings still
+      // resolve to an (empty) object instead of undefined. Results are accumulated locally
+      // and only committed once every page has loaded, so readers never observe a partially
+      // populated category.
+      const loaded = {};
+      const categoryLookup = {};
+      const normalize = value => (typeof value === 'string' ? value.trim().toLowerCase() : value);
+      categories.forEach((category) => {
+        loaded[category] = {};
+        categoryLookup[normalize(category)] = category;
       });
+
+      // When a single category is requested (e.g. a partner loading its own settings) we can
+      // safely attribute every returned row to it, even if the feed omits/normalizes the
+      // Category field. For batched requests we map each row back via its Category value.
+      const defaultCategory = categories.length === 1 ? categories[0] : null;
+
+      // Combine every requested category into one feed query instead of issuing a request
+      // per integration.
+      const where = categories.map(category => `Category eq "${category}"`).join(' or ');
+      const pageSize = this.pageSize || 100;
+
+      const applyResources = (resources) => {
+        (resources || []).forEach((item) => {
+          const rawCategory = item && item.Category;
+          const category = (rawCategory && categoryLookup[normalize(rawCategory)]) || defaultCategory;
+          const key = item && item.$descriptor;
+          let value = item && item.DataValue;
+
+          if (typeof value === 'undefined' || value === null) {
+            value = '';
+          }
+
+          if (category && key && loaded[category]) {
+            loaded[category][key] = value;
+          }
+        });
+      };
+
+      const commit = () => {
+        Object.keys(loaded).forEach((category) => {
+          this.context.integrationSettings[category] = loaded[category];
+        });
+        return this.context.integrationSettings;
+      };
+
+      // customsettings is a paged feed; walk the pages so large or partner-extended
+      // configurations are fully loaded rather than truncated at a single page.
+      const requestPage = startIndex => new Promise((resolve) => {
+        const request = new Sage.SData.Client.SDataBaseRequest(this.getService());
+        request.uri.setPathSegment(0, 'slx');
+        request.uri.setPathSegment(1, 'dynamic');
+        request.uri.setPathSegment(2, '-');
+        request.uri.setPathSegment(3, 'customsettings');
+        request.uri.setQueryArg('select', 'Category,Description,DataValue,DataType');
+        request.uri.setQueryArg('where', where);
+        request.uri.setStartIndex(startIndex);
+        request.uri.setCount(pageSize);
+        request.service.readFeed(request, {
+          success: (feed) => {
+            applyResources(feed && feed.$resources);
+
+            const itemsPerPage = (feed && feed.$itemsPerPage) || pageSize;
+            const totalResults = feed && feed.$totalResults;
+            const nextIndex = startIndex + itemsPerPage;
+
+            if (typeof totalResults === 'number' && nextIndex <= totalResults) {
+              resolve(requestPage(nextIndex));
+            } else {
+              resolve(commit());
+            }
+          },
+          failure: (response, o) => {
+            ErrorManager.addError(response, o, '', 'failure');
+            resolve(commit());
+          },
+        });
+      });
+
+      return requestPage(1);
     }
     navigateToInitialView() {
       this.showLeftDrawer();

@@ -52,11 +52,23 @@ define('argos/_RelatedViewWidgetDetailMixin', [
           $(sectionNode).append(rowNode);
         }
 
-        const docfrag = document.createDocumentFragment();
-        $(docfrag).append(rowNode);
-        this.onProcessRelatedViews(layout.relatedView, rowNode, entry);
-        if (docfrag.childNodes.length > 0) {
-          $(sectionNode).append(docfrag);
+        const processRelatedView = () => {
+          const docfrag = document.createDocumentFragment();
+          $(docfrag).append(rowNode);
+          this.onProcessRelatedViews(layout.relatedView, rowNode, entry);
+          if (docfrag.childNodes.length > 0) {
+            $(sectionNode).append(docfrag);
+          }
+        };
+
+        // When tabbed, defer loading the related view widget (and its data request) until the
+        // user activates the tab that owns it. This avoids firing the widget's requests up front
+        // each time a detail view loads. Falls back to immediate processing when not tabbed or
+        // when the deferral mechanism is unavailable.
+        if (this.isTabbed && typeof this._deferTabTask === 'function') {
+          this._deferTabTask(sectionNode, processRelatedView);
+        } else {
+          processRelatedView();
         }
       } else {
         rowNode = this.inherited(createRowNode, arguments);

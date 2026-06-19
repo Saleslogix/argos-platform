@@ -81,6 +81,9 @@ define('crm/Views/Journey/CustomerJourney360Widget', [
       formatDate,
       onLoad: function onLoad() {
         const root = this.root;
+        // The journey data request now fires when the user activates the tab, so show a loading
+        // indicator immediately to give feedback while the request is in flight.
+        root.innerHTML = this.loadingTemplate.apply(this);
         const request = new Sage.SData.Client.SDataServiceOperationRequest(
           App.getService(),
         )
@@ -116,10 +119,14 @@ define('crm/Views/Journey/CustomerJourney360Widget', [
               root.innerHTML = this.containerTemplate.apply(data, this);
             } catch (error) {
               console.error('Error parsing JSON:', error); // eslint-disable-line
+              // Clear the loading indicator so it does not spin indefinitely.
+              root.innerHTML = '';
             }
           },
           failure: (response) => {
             console.error(response); // eslint-disable-line
+            // Clear the loading indicator so it does not spin indefinitely.
+            root.innerHTML = '';
           },
         });
       },

@@ -732,12 +732,12 @@ define('crm/ApplicationModule', [
             const model = this.application.ModelManager.getModel(MODEL_NAMES.INTEGRATION, MODEL_TYPES.SDATA);
             return model.getEntries(null, { contractName: 'dynamic' }).then((results) => {
               this.application.context.integrations = results;
-              if (results) {
-                results.forEach((integration) => {
-                  App.requestIntegrationSettings(integration.$descriptor);
-                });
-              }
-              return results;
+              const categories = (results || [])
+                .map(integration => integration && integration.$descriptor)
+                .filter(category => category);
+              // Load all integration custom settings in a single request and wait for it
+              // to finish so context.integrationSettings is populated before init completes.
+              return App.requestIntegrationSettings(categories).then(() => results);
             });
           },
         }, {
