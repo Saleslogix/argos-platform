@@ -776,7 +776,10 @@ define('crm/Application', [
           const port = service.getPort();
           const portSegment = (port && port > 0) ? `:${port}` : '';
           const portalUrl = `${service.getProtocol()}://${service.getServerName()}${portSegment}/${service.getVirtualDirectory()}`;
-          const headers = { 'X-Authorization-Mode': 'no-challenge' };
+          const headers = {
+            'X-Authorization-Mode': 'no-challenge',
+            'X-Application-Name': this.appName,
+          };
 
           if (this.isMingleEnabled() && this.mingleAuthResults) {
             const token = `Bearer ${this.mingleAuthResults.access_token}`;
