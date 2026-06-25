@@ -274,6 +274,18 @@
           "text": "Names.js",
           "path": "../src/Models/"
         }, {
+          "text": "FeatureAvailability.js",
+          "path": "../src/OCR/"
+        }, {
+          "text": "imageValidation.js",
+          "path": "../src/OCR/"
+        }, {
+          "text": "MappingModel.js",
+          "path": "../src/OCR/"
+        }, {
+          "text": "textLines.js",
+          "path": "../src/OCR/"
+        }, {
           "text": "PicklistService.js",
           "path": "../src/"
         }, {
@@ -752,9 +764,6 @@
           "path": "../src/Views/HistoryAttendee/"
         }, {
           "text": "Detail.js",
-          "path": "../src/Views/Lead/"
-        }, {
-          "text": "Detail.js",
           "path": "../src/Views/Opportunity/"
         }, {
           "text": "Detail.js",
@@ -768,6 +777,15 @@
         }, {
           "text": "List.js",
           "path": "../src/Views/TicketActivity/"
+        }, {
+          "text": "Detail.js",
+          "path": "../src/Views/Lead/"
+        }, {
+          "text": "OcrServiceClient.js",
+          "path": "../src/OCR/"
+        }, {
+          "text": "Mapping.js",
+          "path": "../src/Views/OCR/"
         }, {
           "text": "index.js",
           "path": "../src/polyfills/"
@@ -1224,6 +1242,9 @@
         }, {
           "text": "SData.js",
           "path": "../src/Models/TicketActivity/"
+        }, {
+          "text": "Capture.js",
+          "path": "../src/Views/OCR/"
         }, {
           "text": "AddAttachment.js",
           "path": "../src/Views/Attachment/"

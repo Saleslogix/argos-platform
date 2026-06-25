@@ -1682,3 +1682,234 @@ li.related-view-detail-content:has(.customer-journey-root) {
   font-size: 10px;
   font-weight: bold;
 }
+/* OCR card scanner - capture view */
+.ocr-capture {
+  /* Stack the browse and submit controls with consistent spacing instead of
+       letting them sit flush against each other. */
+  /* Larger, clearer validation/error messaging with an alert accent. */
+  /* Live camera capture overlay (getUserMedia). */
+}
+.ocr-capture .ocr-capture-panel {
+  padding: 12px 16px;
+}
+.ocr-capture .ocr-capture-instructions {
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 0 0 16px 0;
+}
+.ocr-capture .ocr-capture-browse,
+.ocr-capture .ocr-capture-actions {
+  margin-bottom: 12px;
+}
+.ocr-capture .ocr-capture-browse-button,
+.ocr-capture .ocr-capture-actions > button {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  padding: 10px 16px;
+  margin: 0;
+}
+.ocr-capture .ocr-capture-preview {
+  margin: 4px 0 16px 0;
+}
+.ocr-capture .ocr-capture-preview .ocr-capture-preview-image {
+  max-width: 100%;
+  max-height: 240px;
+  border: 1px solid #c8cbd4;
+}
+.ocr-capture .ocr-capture-progress {
+  margin: 12px 0;
+  font-size: 14px;
+}
+.ocr-capture .ocr-capture-message {
+  margin: 12px 0;
+  padding: 10px 12px;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #a13030;
+  border-left: 4px solid #a13030;
+  background-color: rgba(0, 0, 0, 0.03);
+  max-width: 320px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+.ocr-capture .ocr-capture-camera {
+  margin: 12px 0;
+  max-width: 480px;
+}
+.ocr-capture .ocr-capture-camera .ocr-capture-camera-video {
+  display: block;
+  width: 100%;
+  max-height: 320px;
+  background-color: #000;
+  border: 1px solid #c8cbd4;
+}
+.ocr-capture .ocr-capture-camera .ocr-capture-camera-actions {
+  margin-top: 8px;
+}
+.ocr-capture .ocr-capture-camera .ocr-capture-camera-actions > button {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 10px 16px;
+}
+/* OCR card scanner - mapping view */
+.ocr-mapping {
+  /* Recognized lines: editable text + a split action, with the selected
+       line highlighted. */
+  /* Group header introducing a set of related fields (e.g. Address). */
+  /* Field rows: label + pending value on the left, actions on the right. */
+}
+.ocr-mapping .ocr-mapping-panel {
+  padding: 12px 16px;
+}
+.ocr-mapping .ocr-mapping-config-error,
+.ocr-mapping .ocr-mapping-message {
+  margin: 12px 0;
+  padding: 10px 12px;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #a13030;
+  border-left: 4px solid #a13030;
+  background-color: rgba(0, 0, 0, 0.03);
+  max-width: 480px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+.ocr-mapping .ocr-mapping-confidence {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0 0 8px 0;
+}
+.ocr-mapping .ocr-mapping-lines-title,
+.ocr-mapping .ocr-mapping-fields-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 16px 0 6px 0;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #c8cbd4;
+}
+.ocr-mapping .ocr-mapping-line-list,
+.ocr-mapping .ocr-mapping-field-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.ocr-mapping .ocr-mapping-line {
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  margin-bottom: 4px;
+  border: 1px solid #c8cbd4;
+  border-radius: 3px;
+  background-color: #fff;
+}
+.ocr-mapping .ocr-mapping-line.selected {
+  border-color: #368ac0;
+  background-color: #bcdef0;
+}
+.ocr-mapping .ocr-mapping-line .ocr-mapping-line-input {
+  -webkit-flex: auto;
+  flex: auto;
+  min-width: 0;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #999999;
+  border-radius: 3px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+.ocr-mapping .ocr-mapping-line .ocr-mapping-split {
+  -webkit-flex: auto;
+  flex: auto;
+  width: auto;
+  min-width: 0;
+  margin: 0;
+  padding: 6px 12px;
+  font-size: 12px;
+}
+.ocr-mapping .ocr-mapping-field-group {
+  list-style: none;
+  margin-top: 8px;
+  padding: 6px 0 2px 0;
+}
+.ocr-mapping .ocr-mapping-field-group .ocr-mapping-field-group-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #313236;
+}
+.ocr-mapping .ocr-mapping-field {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #c8cbd4;
+  /* Indent fields that belong to a group (e.g. address sub-fields). */
+  /* Keep the action buttons compact and pinned to the right instead of
+           inheriting the theme's full-width button sizing. */
+}
+.ocr-mapping .ocr-mapping-field.ocr-mapping-field-grouped {
+  padding-left: 16px;
+}
+.ocr-mapping .ocr-mapping-field .ocr-mapping-field-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin-right: 8px;
+}
+.ocr-mapping .ocr-mapping-field .ocr-mapping-field-value {
+  -webkit-flex: auto;
+  flex: auto;
+  min-width: 60px;
+  margin-right: 8px;
+  font-size: 14px;
+  color: #1d5f8a;
+  word-break: break-word;
+}
+.ocr-mapping .ocr-mapping-field .ocr-mapping-assign {
+  margin-left: auto;
+}
+.ocr-mapping .ocr-mapping-field .ocr-mapping-assign,
+.ocr-mapping .ocr-mapping-field .ocr-mapping-clear {
+  -webkit-flex: auto;
+  flex: auto;
+  width: auto;
+  min-width: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+}
+.ocr-mapping .ocr-mapping-actions {
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #c8cbd4;
+  /* Push the primary confirm action to the trailing edge. */
+}
+.ocr-mapping .ocr-mapping-actions > button {
+  width: auto;
+  min-width: 96px;
+  margin: 0;
+  padding: 10px 20px;
+}
+.ocr-mapping .ocr-mapping-actions .ocr-mapping-confirm {
+  margin-left: auto;
+}
+.ocr-mapping .ocr-mapping-no-text {
+  margin: 12px 0;
+}
+.ocr-mapping .ocr-mapping-no-text .ocr-mapping-no-text-message {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
