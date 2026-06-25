@@ -6,30 +6,6 @@ define('spec/Views/Lead/Detail.spec', [
   Detail,
   FeatureAvailability
 ) {
-  // Original own-property descriptors for the navigator members we override, so
-  // each test can install a deterministic permissions/mediaDevices stub and the
-  // afterEach can restore the real environment.
-  var ORIGINAL_PERMISSIONS_DESC = Object.getOwnPropertyDescriptor(navigator, 'permissions');
-  var ORIGINAL_MEDIA_DESC = Object.getOwnPropertyDescriptor(navigator, 'mediaDevices');
-
-  function stubNavigator(key, value) {
-    Object.defineProperty(navigator, key, { value: value, configurable: true, writable: true });
-  }
-
-  function restoreNavigator() {
-    if (ORIGINAL_PERMISSIONS_DESC) {
-      Object.defineProperty(navigator, 'permissions', ORIGINAL_PERMISSIONS_DESC);
-    } else {
-      try { delete navigator.permissions; } catch (e) { /* ignore */ }
-    }
-
-    if (ORIGINAL_MEDIA_DESC) {
-      Object.defineProperty(navigator, 'mediaDevices', ORIGINAL_MEDIA_DESC);
-    } else {
-      try { delete navigator.mediaDevices; } catch (e) { /* ignore */ }
-    }
-  }
-
   // Find the QuickActionsSection children produced by createLayout.
   function quickActionsOf(layout) {
     var section = layout.filter(function(s) { return s.name === 'QuickActionsSection'; })[0];
@@ -73,7 +49,6 @@ define('spec/Views/Lead/Detail.spec', [
         view.destroy();
         view = null;
       }
-      restoreNavigator();
       window.App = _app;
     });
 
