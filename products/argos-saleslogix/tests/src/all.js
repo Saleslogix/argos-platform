@@ -13,6 +13,16 @@ define([
   'spec/Fields/RecurrencesField.spec',
   'spec/Views/ExchangeRateLookup.spec',
   'spec/Views/Account/List.spec',
+  'spec/Views/Lead/Detail.spec',
+  'spec/OCR/textLines.spec',
+  'spec/OCR/imageValidation.spec',
+  'spec/OCR/FeatureAvailability.spec',
+  'spec/OCR/FeatureAvailabilityStorage.spec',
+  'spec/OCR/OcrServiceClient.spec',
+  'spec/OCR/MappingModel.spec',
+  'spec/OCR/Capture.spec',
+  'spec/OCR/Mapping.spec',
+  'spec/OCR/MappingView.spec',
   'localization/en',
   'localization/saleslogix/en'
 ], function() {});

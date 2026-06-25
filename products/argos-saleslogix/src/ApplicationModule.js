@@ -134,6 +134,8 @@ define('crm/ApplicationModule', [
   './Views/SpeedSearchOptions',
   './Views/LanguageOptions/Edit',
   './Views/Journey/CustomerJourney360Widget',
+  './Views/OCR/Capture',
+  './Views/OCR/Mapping',
   'argos/I18n',
   './Models/Names',
   'argos/Models/Types',
@@ -210,6 +212,7 @@ define('crm/ApplicationModule', [
   HistoryAttendeeDetail, HistoryRelatedView, HistoryAssociationList, CalendarAccessList, UserList, ViewAttachment,
   AttachmentList, AddAttachment, MyAttachmentList, WorkflowInstancesList, RecentlyViewedList,
   BriefcaseList, OfflineOptionsEdit, SpeedSearchOptions, LanguageOptionsEdit, CustomerJourney360Widget,
+  OCRCapture, OCRMapping,
   getResource, MODEL_NAMES, MODEL_TYPES, MFADeviceSetup, MFADeviceList, MFAVerification, MFAQRCodeDisplay) => {
   const resource = getResource('applicationModule');
 
@@ -262,6 +265,18 @@ define('crm/ApplicationModule', [
 
       this.registerView(new MFAQRCodeDisplay({
         id: 'mfa_qr_code_display',
+        expose: false,
+      }));
+
+      // OCR card scanner views - shown from the Lead detail quick action and the
+      // capture-to-mapping transition; not exposed in navigation.
+      this.registerView(new OCRCapture({
+        id: 'ocr_capture',
+        expose: false,
+      }));
+
+      this.registerView(new OCRMapping({
+        id: 'ocr_mapping',
         expose: false,
       }));
 
