@@ -16,6 +16,7 @@
 define('crm/Views/Attachment/ViewAttachment', [
   'dojo/_base/declare',
   'dojo/dom-geometry',
+  'dojo/_base/connect',
   '../../AttachmentManager',
   '../../Utility',
   'dojo/has',
@@ -23,7 +24,7 @@ define('crm/Views/Attachment/ViewAttachment', [
   'argos/_LegacySDataDetailMixin',
   'argos/I18n',
   'argos/ErrorManager',
-], (declare, domGeo, AttachmentManager, Utility, has, Detail, _LegacySDataDetailMixin, getResource, ErrorManager) => {
+], (declare, domGeo, connect, AttachmentManager, Utility, has, Detail, _LegacySDataDetailMixin, getResource, ErrorManager) => {
   const resource = getResource('attachmentView');
   const dtFormatResource = getResource('attachmentViewDateTimeFormat');
 
@@ -56,6 +57,7 @@ define('crm/Views/Attachment/ViewAttachment', [
     queryInclude: ['$descriptors'],
     dataURL: null,
     pdfDoc: null,
+    _attachmentImage: null,
     pdfTotalPages: 0,
     pdfCurrentPage: 0,
     pdfIsLoading: false,
@@ -157,13 +159,29 @@ define('crm/Views/Attachment/ViewAttachment', [
         this.renderPdfPage(this.pdfCurrentPage);
       }
     },
+    resizeImage: function resizeImage() {
+      if (this._attachmentImage) {
+        this._sizeImage(this.domNode, this._attachmentImage);
+      }
+    },
+    onContentResize: function onContentResize() {
+      // Re-fit whichever content is currently displayed. Triggered on resize and
+      // orientation change so images and PDFs both adapt to the new viewport.
+      this.renderPdf();
+      this.resizeImage();
+    },
     onTransitionTo: function onTransitionTo() {
-      const _renderFn = Utility.debounce(() => this.renderPdf(), this.RENDER_DELAY);
+      const _renderFn = Utility.debounce(() => this.onContentResize(), this.RENDER_DELAY);
+      this._orientationHandle = connect.subscribe('/app/setOrientation', this, _renderFn);
       $(window).on('resize.attachment', _renderFn);
       $(window).on('applicationmenuclose.attachment', _renderFn);
       $(window).on('applicationmenuopen.attachment', _renderFn);
     },
     onTransitionAway: function onTransitionAway() {
+      if (this._orientationHandle) {
+        connect.unsubscribe(this._orientationHandle);
+        this._orientationHandle = null;
+      }
       $(window).off('resize.attachment');
       $(window).off('applicationmenuclose.attachment');
       $(window).off('applicationmenuopen.attachment');
@@ -171,6 +189,7 @@ define('crm/Views/Attachment/ViewAttachment', [
     show: function show(options) {
       this.inherited(show, arguments);
       this.attachmentViewerNode.innerHTML = '';
+      this._attachmentImage = null;
       if (!App.supportsFileAPI()) {
         $(this.domNode).empty().append(this.notSupportedTemplate.apply({}, this));
         return;
@@ -378,6 +397,7 @@ define('crm/Views/Attachment/ViewAttachment', [
                   width: image.width,
                   height: image.height,
                 };
+                self._attachmentImage = image;
                 self._sizeImage(self.domNode, image);
                 $('#imagePlaceholder').empty().append(image);
                 loaded = true;
@@ -492,11 +512,13 @@ define('crm/Views/Attachment/ViewAttachment', [
     },
     _sizeImage: function _sizeImage(containerNode, image) {
       const contentBox = $(containerNode).parent(); // hack to get parent dimensions since child containers occupy 0 height as they are not absolute anymore
-      const iH = image.height;
-      const iW = image.width;
+      // Use the intrinsic dimensions so this is safe to call repeatedly (e.g. on
+      // orientation change). image.height/width get overwritten below with the
+      // scaled values, so reading them again would compound the scaling.
+      const iH = image.naturalHeight || image.height;
+      const iW = image.naturalWidth || image.width;
       let wH = contentBox.height();
       let wW = contentBox.width();
-      let scale = 1;
 
       if (wH > 200) {
         wH = wH - 50;
@@ -514,26 +536,14 @@ define('crm/Views/Attachment/ViewAttachment', [
         wW = 100;
       }
 
-      // if the image is larger than the window
-      if (iW > wW && iH > wH) {
-        // if the window height is lager than the width
-        if (wH < wW) {
-          scale = 1 - ((iH - wH) / iH);
-        } else { // if the window width is lager than the height
-          scale = 1 - ((iW - wW) / iW);
-        }
-      } else if (iW > wW) { // if the image  width is lager than the height
-        scale = 1 - ((iW - wW) / iW);
-      } else if (iH > wH) { // if the image  height is lager than the width
-        scale = 1 - ((iH - wH) / iH);
-      } else {
-        // Image is samller than view
-        if (wH / iH > wW / iW) {
-          scale = 1 + ((wH - iH) / wH);
-        } else {
-          scale = 1 + ((wW - iW) / wW);
-        }
-      }
+      // Scale to fit entirely within the available area, constrained by
+      // whichever axis is the tightest fit. Using the smaller of the two
+      // ratios preserves the aspect ratio and guarantees the whole image is
+      // visible in both portrait and landscape orientations. (Selecting the
+      // axis by comparing box dimensions caused tall/wide images to overflow
+      // and get clipped in one orientation.)
+      const scale = Math.min(wW / iW, wH / iH);
+
       image.height = 0.90 * scale * iH;
       image.width = 0.90 * scale * iW;
     },

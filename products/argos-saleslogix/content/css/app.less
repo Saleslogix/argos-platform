@@ -1475,11 +1475,9 @@ span.range-value {
   transition: box-shadow 0.2s;
 }
 
-@media (prefers-color-scheme: dark) {
-  .customer-journey {
-    background: #232323;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-  }
+html[class*='theme-'][class*='-dark'] .customer-journey {
+  background: #232323;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
 }
 
 .customer-journey h3 {
@@ -1490,15 +1488,14 @@ span.range-value {
   letter-spacing: 0.01em;
 }
 
-@media (prefers-color-scheme: dark) {
-  .customer-journey h3 {
-    color: #fff;
-  }
+html[class*='theme-'][class*='-dark'] .customer-journey h3 {
+  color: #fff;
 }
 
 .customer-journey-stage {
   display: flex;
   align-items: center;
+  flex-wrap: wrap; /* allow the steps (and long meta/dates) to wrap onto their own line instead of overflowing the panel horizontally */
   gap: 10px;
   margin-bottom: 10px;
   margin-left: 0;
@@ -1532,10 +1529,8 @@ span.range-value {
   color: #181818;
 }
 
-@media (prefers-color-scheme: dark) {
-  .customer-journey-stage h4 {
-    color: #f0f0f0;
-  }
+html[class*='theme-'][class*='-dark'] .customer-journey-stage h4 {
+  color: #f0f0f0;
 }
 
 .customer-journey-stage.completed h4 {
@@ -1560,15 +1555,17 @@ span.range-value {
   vertical-align: middle;
 }
 
-@media (prefers-color-scheme: dark) {
-  .customer-journey-entity-badge {
-    background: #2a3b5c;
-    color: #e0e7ef;
-  }
+html[class*='theme-'][class*='-dark'] .customer-journey-entity-badge {
+  background: #2a3b5c;
+  color: #e0e7ef;
 }
 
 .customer-journey-stage.active {
-  border-left: 4px solid #1976d2;
+  /* Use an inset shadow rather than a left border for the active marker: a border widens the
+     (content-box) stage and shifts its content - including the status icon - 4px to the right,
+     misaligning it with the other stages. An inset box-shadow draws the same 4px bar without
+     affecting layout. */
+  box-shadow: inset 4px 0 0 0 #1976d2;
 }
 
 .customer-journey-stage .stage-status {
@@ -1593,9 +1590,16 @@ span.range-value {
   font-size: 12px;
   color: #888;
   margin-left: 10px;
+  word-break: break-word;
 }
 
 .customer-journey-steps {
+  /* The stage is a flex row; force the steps container onto its own full-width line below the
+     stage header instead of being laid out as another item to the right of it. max-width accounts
+     for the 28px left margin so the full-width basis does not overflow the panel. */
+  flex: 0 0 100%;
+  box-sizing: border-box;
+  max-width: calc(100% - 28px);
   margin-left: 28px;
   margin-top: 4px;
   margin-bottom: 8px;
@@ -1613,14 +1617,13 @@ span.range-value {
   margin-bottom: 2px;
   display: flex;
   align-items: center;
+  flex-wrap: wrap; /* let a long step name/date wrap instead of overflowing the steps column */
   gap: 6px;
   color: #222;
 }
 
-@media (prefers-color-scheme: dark) {
-  .customer-journey-step {
-    color: #e0e7ef;
-  }
+html[class*='theme-'][class*='-dark'] .customer-journey-step {
+  color: #e0e7ef;
 }
 
 .customer-journey-step.completed {
