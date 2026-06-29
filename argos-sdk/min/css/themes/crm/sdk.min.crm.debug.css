@@ -886,6 +886,27 @@ div.multiselect,
 .dropdown-wrapper {
   width: 100%;
 }
+/*
+    The argos Dropdown widget (argos/Dropdown) renders compact, content-sized
+    selectors such as the calendar month/year, time picker hour/minute, and
+    language/region pickers. Soho 4.4 sizes the dropdown's label span to
+    calc(100% - 15px); inside the auto-width/inline containers these widgets
+    live in, that percentage no longer contributes to the dropdown's intrinsic
+    width, so it collapses and truncates its text. Let the widget size to its
+    content again and reserve space on the right for the trigger icon (it is
+    absolutely positioned at right: 8px with an 18px width, ~26px of clearance).
+*/
+.argos-dropdown,
+.argos-dropdown .dropdown-wrapper,
+.argos-dropdown div.dropdown {
+  width: auto;
+}
+.argos-dropdown div.dropdown {
+  padding-right: 30px;
+}
+.argos-dropdown div.dropdown > span {
+  width: auto;
+}
 input.fileupload-background-transparent {
   width: 300px;
 }
@@ -1182,8 +1203,10 @@ input.fileupload-background-transparent {
 .calendar {
   overflow: hidden;
 }
-.calendar__header {
-  border-bottom: 1px solid #c8cbd4;
+.calendar-wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  place-items: center;
 }
 .calendar__header > .calendar__header__icon {
   color: #50535a;
@@ -1217,12 +1240,6 @@ input.fileupload-background-transparent {
 }
 .monthview-table .weekend {
   background-color: rgba(216, 216, 216, 0.5);
-}
-.calendar-footer {
-  min-height: 34px;
-  width: 100%;
-  padding-top: 5px;
-  display: inline-block;
 }
 .calendar-footer .button {
   font-size: 14px;
