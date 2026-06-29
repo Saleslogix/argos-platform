@@ -34,13 +34,15 @@ define('argos/Calendar', [
   const __class = declare('argos.Calendar', [_WidgetBase, _Templated], /** @lends module:argos/Calendar.prototype */{
     _ActionMixin: null,
     widgetTemplate: new Simplate([
+      '<div class="calendar-wrapper">',
+      '{%! $.calendarHeaderTemplate %}',
       '<div id="{%= $.id %}" class="calendar">',
       '<div class="calendar-monthview monthview is-fullsize is-selectable">',
-      '{%! $.calendarHeaderTemplate %}',
       '{%! $.calendarTableTemplate %}',
+      '</div>', // end month view
+      '</div>', // end calendar
       '{%! $.calendarFooterTemplate %}',
-      '</div>',
-      '</div>',
+      '</div>', // end wrapper
     ]),
     calendarHeaderTemplate: new Simplate([
       '<div class="calendar__header">',

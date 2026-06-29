@@ -399,9 +399,6 @@ td.old-calendar-day {
   border-right: 1px solid #c8cbd4 !important;
   min-width: 334px;
 }
-.landscape .calendar-footer {
-  width: 95%;
-}
 .landscape .viewContainer > #calendar_monthlist > .old-day-content > h2 {
   margin-top: 0;
   border-top: none;

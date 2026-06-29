@@ -28,7 +28,7 @@ define('argos/Dropdown', [
    */
   const __class = declare('argos.Dropdown', [_WidgetBase, _Templated], /** @lends module:argos/Dropdown.prototype */ {
     widgetTemplate: new Simplate([
-      '<div class="field">',
+      '<div class="field argos-dropdown">',
       '<label for="{%= $.id %}_dropdownNode" class="label">{%: $.label %}</label>',
       '<select id="{%= $.id %}_dropdownNode" class="dropdown {%: $.dropdownClass %}" data-dojo-attach-point="dropdownSelect"></select>',
       '</div>',
