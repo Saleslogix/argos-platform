@@ -99,10 +99,10 @@ define('crm/Views/Ticket/List', [
     resourceKind: 'tickets',
     entityName: 'Ticket',
     hashTagQueries: {
-      open: 'StatusCode eq "k6UJ9A000001"',
-      urgent: 'Urgency/Description eq "High"',
+      open: 'StatusCode ne "k6UJ9A000037"',
+      urgent: 'Urgency.Description eq "High"',
       'my-tickets': function myTickets() {
-        return `AssignedTo.Id eq "${App.context.user.$key}"`;
+        return `AssignedTo.User.Id eq "${App.context.user.$key}"`;
       },
       'new-this-week': function newThisWeek() {
         const now = moment();

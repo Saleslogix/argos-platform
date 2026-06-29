@@ -122,7 +122,7 @@ define('crm/Views/Lead/List', [
     entityName: 'Lead',
     hashTagQueries: {
       'my-leads': function myLeads() {
-        return `Owner.Id eq "${App.context.user.$key}"`;
+        return `Owner.User.Id eq "${App.context.user.$key}"`;
       },
       'new-this-week': function newThisWeek() {
         const now = moment();
