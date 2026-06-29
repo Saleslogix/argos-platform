@@ -94,6 +94,32 @@ define('crm/Models/Opportunity/SData', [
         queryInclude: [
           '$permissions',
         ],
+      }, {
+        name: 'edit',
+        querySelect: [
+          'Account/AccountName',
+          'AccountManager/UserInfo/FirstName',
+          'AccountManager/UserInfo/LastName',
+          'CloseProbability',
+          'Contacts',
+          'Description',
+          'EstimatedClose',
+          'ExchangeRate',
+          'ExchangeRateCode',
+          'ExchangeRateDate',
+          'ExchangeRateLocked',
+          'LeadSource/Description',
+          'Owner/OwnerDescription',
+          'Reseller/AccountName',
+          'SalesPotential',
+          'Stage',
+          'Status',
+          'Type',
+          'Weighted',
+        ],
+        queryInclude: [
+          '$permissions',
+        ],
       }];
     },
     getDefaultDescription: function getDefaultDescription(accountId) {

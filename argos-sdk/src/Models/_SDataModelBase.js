@@ -91,6 +91,10 @@ define('argos/Models/_SDataModelBase', [
       const config = this;
       const typedConfig = this._getQueryModelByName(type);
 
+      if (!typedConfig) {
+        throw new Error(`Error fetching model ${type} for entity ${this.entityName}, did you define this query model?`);
+      }
+
       return new SDataStore({
         service: service || app.getService(false),
         contractName: config.contractName,
