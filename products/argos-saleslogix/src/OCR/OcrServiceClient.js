@@ -59,9 +59,16 @@ define('crm/OCR/OcrServiceClient', [
      * @param {Object} [options.availability] The feature-availability tracker
      *   used to record a 404. Defaults to `crm/OCR/FeatureAvailability`.
      */
-    constructor({ service = App.getService(), availability = FeatureAvailability } = {}) {
-      this.service = service;
-      this.availability = availability;
+    constructor(options) {
+      const opts = options || {};
+
+      // Resolve defaults in the body rather than via destructuring defaults.
+      // The minifier (jsbit) mangles AMD dependency parameters but fails to
+      // update references that live inside a destructuring default-value
+      // expression, which would leave `FeatureAvailability` orphaned in the
+      // bundle (ReferenceError). Plain expression references mangle correctly.
+      this.service = opts.service !== undefined ? opts.service : App.getService();
+      this.availability = opts.availability !== undefined ? opts.availability : FeatureAvailability;
     }
 
     /**
