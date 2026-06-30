@@ -1275,6 +1275,7 @@ input.fileupload-background-transparent {
 }
 .time-parts {
   text-align: center;
+  margin: 4px;
 }
 .time-parts > div {
   display: inline-block;
