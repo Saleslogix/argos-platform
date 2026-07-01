@@ -136,6 +136,21 @@ define('argos/_ConfigureBase', [
     },
     createStore: function createStore() {},
     /**
+     * Handler for the row selector button. Toggles the entry in the selection model so a
+     * previously selected item can be de-selected (the base implementation only selects).
+     * @param {Object} params Collection of `data-` attributes from the node.
+     */
+    selectEntry: function selectEntry(params) {
+      // The selector button has no data-key of its own (and _getParametersForAction only
+      // reads attributes from the clicked element), so resolve the key from the parent row.
+      const row = $(params.$source).closest('[data-key]');
+      const key = row.attr('data-key');
+
+      if (this._selectionModel && key) {
+        this._selectionModel.toggle(key, this.entries[key], row.get(0));
+      }
+    },
+    /**
      * Queries the DOM and returns selected item's idProperty in order.
      * @return {Array}
      */

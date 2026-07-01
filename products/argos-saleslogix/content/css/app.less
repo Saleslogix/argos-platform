@@ -2197,3 +2197,70 @@ li.related-view-detail-content:has(.customer-journey-root) {
         }
     }
 }
+
+/* OCR mapping view - dark theme overrides.
+   The base styles use dark ink colors (@text-color, @color-deep-slate,
+   @color-deep-azure) that disappear against a dark background, so restate the
+   text, value, input, and message colors for any dark theme. Matches the
+   `html[class*='theme-'][class*='-dark']` convention used by the customer
+   journey styles. */
+html[class*='theme-'][class*='-dark'] {
+    .ocr-mapping {
+        .ocr-mapping-lines-title,
+        .ocr-mapping-fields-title {
+            color: #f0f0f0;
+            border-bottom-color: @color-slate;
+        }
+
+        .ocr-mapping-confidence {
+            color: #f0f0f0;
+        }
+
+        .ocr-mapping-field-group .ocr-mapping-field-group-label {
+            color: #f0f0f0;
+        }
+
+        .ocr-mapping-line {
+            background-color: #2a2a2a;
+            border-color: @color-slate;
+
+            &.selected {
+                border-color: @color-light-azure;
+                background-color: @color-deep-azure;
+            }
+
+            .ocr-mapping-line-input {
+                background-color: #1e1e1e;
+                color: #f0f0f0;
+                border-color: @color-slate;
+            }
+        }
+
+        .ocr-mapping-field {
+            border-bottom-color: @color-slate;
+
+            .ocr-mapping-field-label {
+                color: #f0f0f0;
+            }
+
+            .ocr-mapping-field-value {
+                color: @color-light-azure;
+            }
+        }
+
+        .ocr-mapping-actions {
+            border-top-color: @color-slate;
+        }
+
+        .ocr-mapping-no-text .ocr-mapping-no-text-message {
+            color: #f0f0f0;
+        }
+
+        .ocr-mapping-config-error,
+        .ocr-mapping-message {
+            color: @color-light-ruby;
+            border-left-color: @color-light-ruby;
+            background-color: rgba(255, 255, 255, 0.06);
+        }
+    }
+}

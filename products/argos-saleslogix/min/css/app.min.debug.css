@@ -1920,3 +1920,54 @@ li.related-view-detail-content:has(.customer-journey-root) {
   font-size: 16px;
   margin-bottom: 12px;
 }
+/* OCR mapping view - dark theme overrides.
+   The base styles use dark ink colors (@text-color, @color-deep-slate,
+   @color-deep-azure) that disappear against a dark background, so restate the
+   text, value, input, and message colors for any dark theme. Matches the
+   `html[class*='theme-'][class*='-dark']` convention used by the customer
+   journey styles. */
+html[class*='theme-'][class*='-dark'] .ocr-mapping .ocr-mapping-lines-title,
+html[class*='theme-'][class*='-dark'] .ocr-mapping .ocr-mapping-fields-title {
+  color: #f0f0f0;
+  border-bottom-color: #50535a;
+}
+html[class*='theme-'][class*='-dark'] .ocr-mapping .ocr-mapping-confidence {
+  color: #f0f0f0;
+}
+html[class*='theme-'][class*='-dark'] .ocr-mapping .ocr-mapping-field-group .ocr-mapping-field-group-label {
+  color: #f0f0f0;
+}
+html[class*='theme-'][class*='-dark'] .ocr-mapping .ocr-mapping-line {
+  background-color: #2a2a2a;
+  border-color: #50535a;
+}
+html[class*='theme-'][class*='-dark'] .ocr-mapping .ocr-mapping-line.selected {
+  border-color: #69b5dd;
+  background-color: #1d5f8a;
+}
+html[class*='theme-'][class*='-dark'] .ocr-mapping .ocr-mapping-line .ocr-mapping-line-input {
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+  border-color: #50535a;
+}
+html[class*='theme-'][class*='-dark'] .ocr-mapping .ocr-mapping-field {
+  border-bottom-color: #50535a;
+}
+html[class*='theme-'][class*='-dark'] .ocr-mapping .ocr-mapping-field .ocr-mapping-field-label {
+  color: #f0f0f0;
+}
+html[class*='theme-'][class*='-dark'] .ocr-mapping .ocr-mapping-field .ocr-mapping-field-value {
+  color: #69b5dd;
+}
+html[class*='theme-'][class*='-dark'] .ocr-mapping .ocr-mapping-actions {
+  border-top-color: #50535a;
+}
+html[class*='theme-'][class*='-dark'] .ocr-mapping .ocr-mapping-no-text .ocr-mapping-no-text-message {
+  color: #f0f0f0;
+}
+html[class*='theme-'][class*='-dark'] .ocr-mapping .ocr-mapping-config-error,
+html[class*='theme-'][class*='-dark'] .ocr-mapping .ocr-mapping-message {
+  color: #d26d6d;
+  border-left-color: #d26d6d;
+  background-color: rgba(255, 255, 255, 0.06);
+}
