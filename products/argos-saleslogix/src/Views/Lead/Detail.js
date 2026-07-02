@@ -515,9 +515,20 @@ define('crm/Views/Lead/Detail', [
           name: 'BusinessDescription',
           property: 'BusinessDescription',
         }, {
-          label: this.notesText,
+          // label: this.notesText,
+          label: 'signature',
           name: 'Notes',
           property: 'Notes',
+          renderer: format.imageFromVector.bindDelegate(
+            this,
+            {
+              penColor: '#005cbf',
+              lineWidth: 2,
+              width: 180,
+              height: 50,
+              fillStyle: 'transparent',
+            },
+            true),
         }, {
           label: this.ownerText,
           name: 'Owner.OwnerDescription',
