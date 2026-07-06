@@ -33,13 +33,15 @@ define('crm/Integrations/BOE/Modules/AccountModule', [
   '../Views/ERPAccountPersons/List',
   '../Utility',
   '../../../Format',
+  'argos/I18n',
+  // Side-effect only dependencies (self-register via define/lang.setObject).
+  // These have no callback parameter and must stay after all captured deps.
   '../Models/ErpAccountPerson/Offline',
   '../Models/ErpAccountPerson/SData',
   '../Views/Account/SalesDashboardWidget',
   '../Views/Account/NewDashboardWidget',
   '../Views/Account/OpenDashboardWidget',
   '../Views/Account/ActivityDashboardWidget',
-  'argos/I18n',
 ], (declare, lang, _Module, AccountDetailView, BusyIndicator, BillToList, ERPContactAssociationsList, ERPInvoicesList, ERPReceivablesList, ERPShipmentsList, ERPShipToList, Promote, QuotesList, ReturnsList, SalesOrdersList, SyncResultsList, AccountPersonList, Utility, format, getResource) => {
   const resource = getResource('accountModule');
 
