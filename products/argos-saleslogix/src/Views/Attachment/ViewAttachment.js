@@ -41,6 +41,7 @@ define('crm/Views/Attachment/ViewAttachment', [
     attachmentDateFormatText24: dtFormatResource.attachmentDateFormatText24,
     downloadingText: resource.downloadingText,
     notSupportedText: resource.notSupportedText,
+    openInNewTabText: resource.openInNewTabText,
 
     // View Properties
     id: 'view_attachment',
@@ -134,6 +135,16 @@ define('crm/Views/Attachment/ViewAttachment', [
       '</td>',
       '</tr>',
       '</table>',
+      '</div>',
+    ]),
+    attachmentViewUrlTemplate: new Simplate([
+      '<div class="attachment-viewer-label" style="white-space:nowrap;">',
+      '<label>{%= $.description %}</label>',
+      '</div>',
+      '<div class="attachment-viewer-area attachment-viewer-url">',
+      '<a class="hyperlink" href="{%= $.url %}" target="_blank" rel="noopener noreferrer">',
+      '<button type="button" class="btn">{%= $$.openInNewTabText %}</button>',
+      '</a>',
       '</div>',
     ]),
     attachmentViewNotSupportedTemplate: new Simplate([
@@ -454,17 +465,17 @@ define('crm/Views/Attachment/ViewAttachment', [
           $(this.attachmentViewerNode).append(this.attachmentViewNotSupportedTemplate.apply(entry, this));
         }
       } else { // url Attachment
-        $(this.attachmentViewerNode).append(this.attachmentViewTemplate.apply(data, this));
+        // Third-party sites almost always block being embedded in an iframe
+        // (X-Frame-Options / CSP frame-ancestors), so open URL attachments in a
+        // new tab instead. Render an explicit link as the primary, reliable
+        // action and also attempt to open automatically. The auto open can be
+        // suppressed by popup blockers because it runs after an async view
+        // transition rather than directly on the tap, so the link is the
+        // guaranteed fallback.
         const url = am.getAttachmenturlByEntity(entry);
-        $(this.domNode).addClass('list-loading');
-        const tpl = $(this.downloadingTemplate.apply(this));
-        $(this.attachmentViewerNode).prepend(tpl);
-        const iframe = document.getElementById('attachment-Iframe');
-        iframe.onload = function iframeOnLoad() {
-          $(tpl).addClass('display-none');
-        };
-        this.setSrc(iframe, url);
-        $(tpl).addClass('display-none');
+        data.url = url;
+        $(this.attachmentViewerNode).append(this.attachmentViewUrlTemplate.apply(data, this));
+        window.open(url, '_blank', 'noopener');
       }
     },
     _isfileTypeImage: function _isfileTypeImage(fileType) {

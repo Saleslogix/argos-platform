@@ -456,6 +456,7 @@
   attachmentNotSupportedText: "The attachment type is not supported for viewing."
   downloadingText: "Downloading attachment ..."
   notSupportedText: "Viewing attachments is not supported by your device."
+  openInNewTabText: "Open in a new tab"
 >
 
 <calendarView ""
