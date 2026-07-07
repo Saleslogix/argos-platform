@@ -95,7 +95,7 @@ define('crm/AttachmentManager', [
       let href;
       if (attachment.url) {
         href = attachment.url || '';
-        href = (href.indexOf('http') < 0) ? `http://${href}` : href;
+        href = (href.indexOf('http') < 0) ? `https://${href}` : href;
       } else {
         href = `${this._baseUrl}/attachments('${attachment.$key}')/file`;
       }
