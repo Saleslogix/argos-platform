@@ -487,10 +487,16 @@ define('crm/Views/Attachment/ViewAttachment', [
       } else {
         imageTypes = {
           jpg: true,
+          jpeg: true,
+          jfif: true,
           gif: true,
           png: true,
           bmp: true,
+          webp: true,
+          svg: true,
+          avif: true,
           tif: true,
+          tiff: true,
         };
       }
 
