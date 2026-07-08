@@ -669,9 +669,10 @@ define('crm/Application', [
       if (!this.isMingleEnabled() && credentials.remember) {
         try {
           if (window.localStorage) {
+            // Persist ONLY the username for the "Remember me" convenience. The
+            // password is intentionally not stored
             window.localStorage.setItem('credentials', Base64.encode(JSON.stringify({
               username: credentials.username,
-              password: credentials.password || '',
             })));
           }
             } catch (e) {} //eslint-disable-line
@@ -837,19 +838,7 @@ define('crm/Application', [
           } catch (e) {} //eslint-disable-line
     }
     handleAuthentication() {
-      const credentials = this.getCredentials();
-
-      if (credentials) {
-        this.setPrimaryTitle(this.authText);
-        this.authenticateUser(credentials, {
-          success: this.onHandleAuthenticationSuccess,
-          failure: this.onHandleAuthenticationFailed,
-          aborted: this.onHandleAuthenticationAborted,
-          scope: this,
-        });
-      } else {
-        this.navigateToLoginView();
-      }
+      this.navigateToLoginView();
     }
     handleMingleAuthentication() {
       if (this.mingleAuthResults && this.mingleAuthResults.error === 'access_denied') {
