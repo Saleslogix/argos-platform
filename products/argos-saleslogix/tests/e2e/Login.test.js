@@ -67,7 +67,7 @@ describe('User', () => {
       });
 
       await page.type('#login input[name="username-display"]', config.crm.users.admin.userId);
-      await page.click('#login button[data-action="authenticate"]');
+      await page.click('#login button[type="submit"]');
 
       const expireAlert = await page.waitForEvent('dialog');
       expect(expireAlert.message()).to.equal('Password has expired. Please use the web client to change your password.');

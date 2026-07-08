@@ -36,7 +36,7 @@ module.exports.auth = async function auth(username, password, existingPage = nul
     await page.type('#login input[name="password-display"]', password);
   }
 
-  await page.click('#login button[data-action="authenticate"]');
+  await page.click('#login button[type="submit"]');
   const getCurrentUser = await page.waitForResponse(res => res.url().indexOf('getCurrentUser') >= 0, { timeout: 60000 });
   expect(getCurrentUser.ok(), 'getCurrentUser response failed. Probably the wrong username/password').to.be.true;
   const appStatePromises = await page.waitForNavigation({ waitUntil: 'networkidle' });
