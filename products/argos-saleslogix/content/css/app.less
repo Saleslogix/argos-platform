@@ -294,6 +294,12 @@ li[data-ticket-status] .list-item-selector,
     border-bottom: 1px solid @color-lighter-slate !important;
 }
 
+.calendar-footer {
+    display: flex;
+    align-items: baseline;
+    margin: 8px;
+}
+
 .calendar__weekToggle {
   width: 123px;
   height: 32px;
@@ -460,10 +466,6 @@ td.old-calendar-day {
         box-sizing: border-box;
         border-right: 1px solid @color-lighter-slate !important;
         min-width: 334px;
-    }
-
-    .calendar-footer {
-        width: 95%;
     }
 
     .viewContainer > #calendar_monthlist > .old-day-content > h2 {
@@ -1451,6 +1453,21 @@ span.range-value {
   margin-top: 12px;
 }
 
+.customer-journey-root > .busy-indicator-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 0;
+}
+
+.customer-journey-message {
+  padding: 24px 16px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
 .customer-journey {
   background: #fff;
   border-radius: 10px;
@@ -1460,11 +1477,9 @@ span.range-value {
   transition: box-shadow 0.2s;
 }
 
-@media (prefers-color-scheme: dark) {
-  .customer-journey {
-    background: #232323;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-  }
+html[class*='theme-'][class*='-dark'] .customer-journey {
+  background: #232323;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
 }
 
 .customer-journey h3 {
@@ -1475,15 +1490,14 @@ span.range-value {
   letter-spacing: 0.01em;
 }
 
-@media (prefers-color-scheme: dark) {
-  .customer-journey h3 {
-    color: #fff;
-  }
+html[class*='theme-'][class*='-dark'] .customer-journey h3 {
+  color: #fff;
 }
 
 .customer-journey-stage {
   display: flex;
   align-items: center;
+  flex-wrap: wrap; /* allow the steps (and long meta/dates) to wrap onto their own line instead of overflowing the panel horizontally */
   gap: 10px;
   margin-bottom: 10px;
   margin-left: 0;
@@ -1517,10 +1531,8 @@ span.range-value {
   color: #181818;
 }
 
-@media (prefers-color-scheme: dark) {
-  .customer-journey-stage h4 {
-    color: #f0f0f0;
-  }
+html[class*='theme-'][class*='-dark'] .customer-journey-stage h4 {
+  color: #f0f0f0;
 }
 
 .customer-journey-stage.completed h4 {
@@ -1545,15 +1557,17 @@ span.range-value {
   vertical-align: middle;
 }
 
-@media (prefers-color-scheme: dark) {
-  .customer-journey-entity-badge {
-    background: #2a3b5c;
-    color: #e0e7ef;
-  }
+html[class*='theme-'][class*='-dark'] .customer-journey-entity-badge {
+  background: #2a3b5c;
+  color: #e0e7ef;
 }
 
 .customer-journey-stage.active {
-  border-left: 4px solid #1976d2;
+  /* Use an inset shadow rather than a left border for the active marker: a border widens the
+     (content-box) stage and shifts its content - including the status icon - 4px to the right,
+     misaligning it with the other stages. An inset box-shadow draws the same 4px bar without
+     affecting layout. */
+  box-shadow: inset 4px 0 0 0 #1976d2;
 }
 
 .customer-journey-stage .stage-status {
@@ -1578,9 +1592,16 @@ span.range-value {
   font-size: 12px;
   color: #888;
   margin-left: 10px;
+  word-break: break-word;
 }
 
 .customer-journey-steps {
+  /* The stage is a flex row; force the steps container onto its own full-width line below the
+     stage header instead of being laid out as another item to the right of it. max-width accounts
+     for the 28px left margin so the full-width basis does not overflow the panel. */
+  flex: 0 0 100%;
+  box-sizing: border-box;
+  max-width: calc(100% - 28px);
   margin-left: 28px;
   margin-top: 4px;
   margin-bottom: 8px;
@@ -1598,14 +1619,13 @@ span.range-value {
   margin-bottom: 2px;
   display: flex;
   align-items: center;
+  flex-wrap: wrap; /* let a long step name/date wrap instead of overflowing the steps column */
   gap: 6px;
   color: #222;
 }
 
-@media (prefers-color-scheme: dark) {
-  .customer-journey-step {
-    color: #e0e7ef;
-  }
+html[class*='theme-'][class*='-dark'] .customer-journey-step {
+  color: #e0e7ef;
 }
 
 .customer-journey-step.completed {
@@ -1925,4 +1945,322 @@ li.related-view-detail-content:has(.customer-journey-root) {
     border-radius: 10px;
     font-size: @font-size-h5;
     font-weight: @button-font-weight;
+}
+
+/* OCR card scanner - capture view */
+.ocr-capture {
+    .ocr-capture-panel {
+        padding: 12px 16px;
+    }
+
+    .ocr-capture-instructions {
+        font-size: @font-size-paragraph;
+        line-height: 1.4;
+        margin: 0 0 16px 0;
+    }
+
+    /* Stack the browse and submit controls with consistent spacing instead of
+       letting them sit flush against each other. */
+    .ocr-capture-browse,
+    .ocr-capture-actions {
+        margin-bottom: 12px;
+    }
+
+    .ocr-capture-browse-button,
+    .ocr-capture-actions > button {
+        display: block;
+        width: 100%;
+        max-width: 320px;
+        padding: 10px 16px;
+        margin: 0;
+    }
+
+    .ocr-capture-preview {
+        margin: 4px 0 16px 0;
+
+        .ocr-capture-preview-image {
+            max-width: 100%;
+            max-height: 240px;
+            border: 1px solid @color-lighter-slate;
+        }
+    }
+
+    .ocr-capture-progress {
+        margin: 12px 0;
+        font-size: @font-size-paragraph;
+    }
+
+    /* Larger, clearer validation/error messaging with an alert accent. */
+    .ocr-capture-message {
+        margin: 12px 0;
+        padding: 10px 12px;
+        font-size: @font-size-h2;
+        line-height: 1.4;
+        color: @color-deep-ruby;
+        border-left: 4px solid @color-deep-ruby;
+        background-color: rgba(0, 0, 0, 0.03);
+        max-width: 320px;
+        .box-sizing(border-box);
+    }
+
+    /* Live camera capture overlay (getUserMedia). */
+    .ocr-capture-camera {
+        margin: 12px 0;
+        max-width: 480px;
+
+        .ocr-capture-camera-video {
+            display: block;
+            width: 100%;
+            max-height: 320px;
+            background-color: #000;
+            border: 1px solid @color-lighter-slate;
+        }
+
+        .ocr-capture-camera-actions {
+            margin-top: 8px;
+
+            > button {
+                display: inline-block;
+                margin-right: 8px;
+                padding: 10px 16px;
+            }
+        }
+    }
+}
+
+/* OCR card scanner - mapping view */
+.ocr-mapping {
+    .ocr-mapping-panel {
+        padding: 12px 16px;
+    }
+
+    .ocr-mapping-config-error,
+    .ocr-mapping-message {
+        margin: 12px 0;
+        padding: 10px 12px;
+        font-size: @font-size-h2;
+        line-height: 1.4;
+        color: @color-deep-ruby;
+        border-left: 4px solid @color-deep-ruby;
+        background-color: rgba(0, 0, 0, 0.03);
+        max-width: 480px;
+        .box-sizing(border-box);
+    }
+
+    .ocr-mapping-confidence {
+        font-size: @font-size-h3;
+        font-weight: bold;
+        margin: 0 0 8px 0;
+    }
+
+    .ocr-mapping-lines-title,
+    .ocr-mapping-fields-title {
+        font-size: @font-size-h3;
+        font-weight: bold;
+        margin: 16px 0 6px 0;
+        padding-bottom: 4px;
+        border-bottom: 1px solid @color-lighter-slate;
+    }
+
+    .ocr-mapping-line-list,
+    .ocr-mapping-field-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Recognized lines: editable text + a split action, with the selected
+       line highlighted. */
+    .ocr-mapping-line {
+        .display-flex();
+        align-items: center;
+        gap: 8px;
+        padding: 6px;
+        margin-bottom: 4px;
+        border: 1px solid @color-lighter-slate;
+        border-radius: 3px;
+        background-color: #fff;
+
+        &.selected {
+            border-color: @color-azure;
+            background-color: lighten(@color-light-azure, 20%);
+        }
+
+        .ocr-mapping-line-input {
+            .flex(1 1 auto);
+            min-width: 0;
+            padding: 8px;
+            font-size: @font-size-paragraph;
+            border: @form-border;
+            border-radius: 3px;
+            .box-sizing(border-box);
+        }
+
+        .ocr-mapping-split {
+            .flex(0 0 auto);
+            width: auto;
+            min-width: 0;
+            margin: 0;
+            padding: 6px 12px;
+            font-size: @font-size-h4;
+        }
+    }
+
+    /* Group header introducing a set of related fields (e.g. Address). */
+    .ocr-mapping-field-group {
+        list-style: none;
+        margin-top: 8px;
+        padding: 6px 0 2px 0;
+
+        .ocr-mapping-field-group-label {
+            font-size: @font-size-h3;
+            font-weight: bold;
+            color: @color-deep-slate;
+        }
+    }
+
+    /* Field rows: label + pending value on the left, actions on the right. */
+    .ocr-mapping-field {
+        .display-flex();
+        .flex-flow(row wrap);
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid @color-lighter-slate;
+
+        /* Indent fields that belong to a group (e.g. address sub-fields). */
+        &.ocr-mapping-field-grouped {
+            padding-left: 16px;
+        }
+
+        .ocr-mapping-field-label {
+            font-size: @font-size-paragraph;
+            font-weight: bold;
+            color: @text-color;
+            margin-right: 8px;
+        }
+
+        .ocr-mapping-field-value {
+            .flex(1 1 auto);
+            min-width: 60px;
+            margin-right: 8px;
+            font-size: @font-size-paragraph;
+            color: @color-deep-azure;
+            word-break: break-word;
+        }
+
+        /* Keep the action buttons compact and pinned to the right instead of
+           inheriting the theme's full-width button sizing. */
+        .ocr-mapping-assign {
+            margin-left: auto;
+        }
+
+        .ocr-mapping-assign,
+        .ocr-mapping-clear {
+            .flex(0 0 auto);
+            width: auto;
+            min-width: 0;
+            margin-top: 0;
+            margin-bottom: 0;
+            margin-left: 6px;
+            padding: 6px 12px;
+            font-size: @font-size-h4;
+        }
+    }
+
+    .ocr-mapping-actions {
+        .display-flex();
+        align-items: center;
+        gap: 8px;
+        margin-top: 16px;
+        padding-top: 12px;
+        border-top: 1px solid @color-lighter-slate;
+
+        > button {
+            width: auto;
+            min-width: 96px;
+            margin: 0;
+            padding: 10px 20px;
+        }
+
+        /* Push the primary confirm action to the trailing edge. */
+        .ocr-mapping-confirm {
+            margin-left: auto;
+        }
+    }
+
+    .ocr-mapping-no-text {
+        margin: 12px 0;
+
+        .ocr-mapping-no-text-message {
+            font-size: @font-size-h2;
+            margin-bottom: 12px;
+        }
+    }
+}
+
+/* OCR mapping view - dark theme overrides.
+   The base styles use dark ink colors (@text-color, @color-deep-slate,
+   @color-deep-azure) that disappear against a dark background, so restate the
+   text, value, input, and message colors for any dark theme. Matches the
+   `html[class*='theme-'][class*='-dark']` convention used by the customer
+   journey styles. */
+html[class*='theme-'][class*='-dark'] {
+    .ocr-mapping {
+        .ocr-mapping-lines-title,
+        .ocr-mapping-fields-title {
+            color: #f0f0f0;
+            border-bottom-color: @color-slate;
+        }
+
+        .ocr-mapping-confidence {
+            color: #f0f0f0;
+        }
+
+        .ocr-mapping-field-group .ocr-mapping-field-group-label {
+            color: #f0f0f0;
+        }
+
+        .ocr-mapping-line {
+            background-color: #2a2a2a;
+            border-color: @color-slate;
+
+            &.selected {
+                border-color: @color-light-azure;
+                background-color: @color-deep-azure;
+            }
+
+            .ocr-mapping-line-input {
+                background-color: #1e1e1e;
+                color: #f0f0f0;
+                border-color: @color-slate;
+            }
+        }
+
+        .ocr-mapping-field {
+            border-bottom-color: @color-slate;
+
+            .ocr-mapping-field-label {
+                color: #f0f0f0;
+            }
+
+            .ocr-mapping-field-value {
+                color: @color-light-azure;
+            }
+        }
+
+        .ocr-mapping-actions {
+            border-top-color: @color-slate;
+        }
+
+        .ocr-mapping-no-text .ocr-mapping-no-text-message {
+            color: #f0f0f0;
+        }
+
+        .ocr-mapping-config-error,
+        .ocr-mapping-message {
+            color: @color-light-ruby;
+            border-left-color: @color-light-ruby;
+            background-color: rgba(255, 255, 255, 0.06);
+        }
+    }
 }

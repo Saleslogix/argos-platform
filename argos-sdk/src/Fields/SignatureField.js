@@ -72,8 +72,8 @@ define('argos/Fields/SignatureField', [
      */
     config: {
       scale: 1,
-      lineWidth: 1,
-      penColor: 'blue',
+      lineWidth: 2,
+      penColor: '#005cbf',
       width: 180,
       height: 50,
       fillStyle: 'transparent',
@@ -138,7 +138,10 @@ define('argos/Fields/SignatureField', [
         this.signature = [];
       }
 
-      this.signatureNode.src = format.imageFromVector(this.signature, this.config, false);
+      // Pass the raw JSON string (not the parsed array) because
+      // format.imageFromVector only decodes string input; handing it an
+      // already-parsed array produces a blank image.
+      this.signatureNode.src = format.imageFromVector(JSON.stringify(this.signature), this.config, false);
     },
     /**
      * Clears the value set to the hidden field

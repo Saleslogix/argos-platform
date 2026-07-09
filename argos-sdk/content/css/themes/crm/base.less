@@ -177,6 +177,42 @@
     align-self: end;
 }
 
+/* Soho's toolbar initialization (List.initSoho) moves the search input out of
+   .search-widget-container and into the toolbar buttonset, leaving this container holding only
+   the contains toggle. The width:100% above was meant for the searchfield + toggle grouping; on
+   the leftover container it claims the full toolbar width and pushes the extracted search field
+   out of alignment. Size it to its content and keep the toggle centered with the field. */
+.list .buttonset > .search-widget-container.list-search {
+    width: auto;
+}
+
+.list .buttonset > .search-widget-container.list-search .contains-toggle {
+    align-self: center;
+}
+
+/* On small (phone-width) screens Soho switches a do-resize toolbar's buttonset to inline-flex
+   whenever it contains a searchfield, to support the collapsible mobile search pattern. Our list
+   search is non-collapsible and relies on a flex buttonset (the field grows, with the contains
+   toggle and settings beside it), so inline-flex shrink-wraps the buttonset and misaligns the
+   field. Keep list toolbars on flex. Scoped to .list and made specific enough (5 classes) to win
+   over Soho's `.toolbar.do-resize .buttonset:has(.searchfield-wrapper)` rule; other toolbars keep
+   Soho's default mobile behavior. */
+.list .toolbar.do-resize .buttonset:has(.searchfield-wrapper) {
+    display: flex;
+}
+
+/* Soho's accordion injects a non-interactive (tabindex="-1") expander/chevron button into each
+   group header and shows a focus indicator (a border, plus a box-shadow from the button base) on
+   it when clicked. Soho normally suppresses this with a dynamically-toggled hide-focus class, but
+   that class isn't reliably present on the injected button because it's (re)created during Soho's
+   deferred accordion rebuild. The button can't receive keyboard focus, so suppress its focus
+   indicator directly. !important is used to override Soho's stateful (.is-selected[:hover]) focus
+   rules without an escalating specificity chain, consistent with other Soho overrides here. */
+.grouped-list .accordion-header > button.btn:focus {
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
 /* grouped list */
 .group-content > h2 {
     box-sizing: border-box;
@@ -760,4 +796,50 @@ li.relatedviewitem {
     border: 1px solid #999999;
     border-radius: 3px;
     margin: 10px 0 10px 0;
+}
+
+/* Main header toolbar title sizing.
+
+   Soho lays this toolbar out as a block with an absolutely-positioned title, and sizes the title and
+   buttonset widths in JavaScript (Toolbar.sizeContainers) on load and on every resize. That JS sizing
+   is unreliable for our toolbar (a long page title plus text-labelled buttons), and breaks in two ways:
+
+     - On phones Soho's own stylesheet forces the buttonset to nearly the full toolbar width
+       (`@media (max-width: 768px) { .toolbar.do-resize.has-more-button .buttonset { width: calc(100% - 38px) !important } }`),
+       so the title is squeezed to its ~44px minimum and a long account name collapses to "I...".
+     - In landscape / on wider screens the title width is computed inconsistently (it has been observed
+       rendering at nearly the full window width); because the title is absolutely positioned it then
+       overlaps the buttonset and the title text is drawn on top of the buttons.
+
+   Rather than chase Soho's per-axis width math, lay the title-bearing toolbar out with flexbox: the
+   title flexes to fill the space left by the (auto-width) buttonset and More button, and truncates
+   with an ellipsis. Because the title and buttonset are now in-flow siblings they can never overlap,
+   and the title can never be starved below the space actually available - in any orientation, for any
+   title length or button count. width:auto !important neutralises Soho's inline widths; the more
+   specific selector (and relative positioning) overrides Soho's absolute-position rule. Scoped tightly
+   to the main navigation toolbar (has-title-button + has-title) so list/search toolbars are untouched.
+   Vertical metrics are unchanged from Soho's layout. */
+.header .toolbar.do-resize.has-more-button.has-title-button.has-title {
+    display: flex;
+    align-items: center;
+
+    > .title {
+        position: relative;
+        left: auto;
+        top: auto;
+        width: auto !important;
+        flex: 1 1 auto;
+        min-width: 0; /* allow the flex item to shrink so the h1 can ellipsize instead of overflowing */
+        margin-inline-end: 8px;
+    }
+
+    > .buttonset {
+        position: relative;
+        width: auto !important;
+        flex: 0 0 auto;
+    }
+
+    > .more {
+        flex: 0 0 auto;
+    }
 }

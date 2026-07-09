@@ -99,8 +99,25 @@ define('argos/TabWidget', [
       $(this.tabContainer).prepend($(this.tabList));
       const tempTabs = $(this.tabContainer).tabs();
       this._sohoTabs = tempTabs.data('tabs');
+
+      // Notify when the user activates a tab so subclasses can lazily load tab content.
+      // Namespaced so it can be cleanly removed in clearTabs and does not accumulate across refreshes.
+      $(this.tabContainer)
+        .off('activated.argos')
+        .on('activated.argos', (evt, anchor) => {
+          this.onTabActivated(anchor, evt);
+        });
+
       return this;
     },
+    /**
+     * Template method invoked whenever the user activates a tab. Subclasses may override this to
+     * lazily load content for the activated tab.
+     * @param {jQuery} anchor The anchor element of the activated tab. Its `href` points to the tab panel id.
+     * @param {jQuery.Event} evt The originating Soho `activated` event.
+     * @template
+     */
+    onTabActivated: function onTabActivated(/* anchor, evt */) {},
     /**
      * Function used to clear the tabs, should be called by the parent on it's clear call
     */
@@ -113,6 +130,9 @@ define('argos/TabWidget', [
         }
         $(this.tabList).remove();
         $('.tab-panel', this.tabContainer).remove();
+      }
+      if (this.tabContainer) {
+        $(this.tabContainer).off('activated.argos');
       }
       if (this.tabMapping) {
         this.tabs = [];

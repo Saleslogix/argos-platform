@@ -18,8 +18,8 @@
  */
 define('crm/MingleUtility', [
   'dojo/_base/lang',
-  'dojo/sniff',
   'argos/I18n',
+  'dojo/sniff',
 ], (lang, getResource) => {
   /**
    * @class

@@ -30,11 +30,13 @@ define('crm/Views/Login', [
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-logo"></use>
               </svg>
               <h1>Infor CRM SLX</h1>
-              <div class="panel-content" data-dojo-attach-event="onkeypress: _onKeyPress, onkeyup: _onKeyUp" data-dojo-attach-point="contentNode">
-              </div>
-              <div class="login-button-container">
-                <button data-dojo-attach-point="loginButton" class="btn-primary hide-focus" data-action="authenticate">{%: $.logOnText %}</button>
-              </div>
+              <form data-dojo-attach-point="loginFormNode" data-dojo-attach-event="onsubmit: _onSubmit" autocomplete="on" novalidate>
+                <div class="panel-content" data-dojo-attach-event="onkeyup: _onKeyUp" data-dojo-attach-point="contentNode">
+                </div>
+                <div class="login-button-container">
+                  <button type="submit" data-dojo-attach-point="loginButton" class="btn-primary hide-focus">{%: $.logOnText %}</button>
+                </div>
+              </form>
             </section>
           </div>
         </div>
@@ -60,11 +62,31 @@ define('crm/Views/Login', [
       general: resource.logOnError,
       status: {},
     },
-    ENTER_KEY: 13,
-
-    _onKeyPress: function _onKeyPress(evt) {
-      if (evt.charOrCode === this.ENTER_KEY) {
-        this.authenticate();
+    _onSubmit: function _onSubmit(evt) {
+      // This is a SPA that authenticates by sending Basic auth on every request;
+      // there is no server login endpoint to POST to. We wrap the fields in a
+      // real <form> and intercept its submit purely so the browser's password
+      // manager recognizes a genuine login and offers to save/update the
+      // password. We then drive our own XHR-based authentication and prevent the
+      // native navigation. Submitting via the form also handles the Enter key.
+      if (evt && evt.preventDefault) {
+        evt.preventDefault();
+      }
+      this.authenticate();
+      return false;
+    },
+    _applyPasswordManagerHints: function _applyPasswordManagerHints() {
+      // Tag the inputs with the standard autocomplete tokens so the browser's
+      // password manager can associate them and autofill the password. This is
+      // what securely repopulates the password on return, replacing the old
+      // (insecure) practice of persisting it in localStorage.
+      const userField = this.fields['username-display'];
+      const passField = this.fields['password-display'];
+      if (userField && userField.inputNode) {
+        userField.inputNode.setAttribute('autocomplete', 'username');
+      }
+      if (passField && passField.inputNode) {
+        passField.inputNode.setAttribute('autocomplete', 'current-password');
       }
     },
     _onKeyUp: function _onKeyUp() {
@@ -81,6 +103,8 @@ define('crm/Views/Login', [
     },
     show: function show() {
       this.inherited(show, arguments);
+
+      this._applyPasswordManagerHints();
 
       if (!this.connectionState) {
         this._disable();
@@ -112,13 +136,15 @@ define('crm/Views/Login', [
       }
     },
     onShow: function onShow() {
+      // "Remember me" now persists only the username. Prefill it and let the
+      // browser's password manager autofill the password field.
       const credentials = App.getCredentials();
+      const username = credentials && credentials.username;
 
-      if (credentials) {
-        App.authenticateUser(credentials, {
-          success: App.onHandleAuthenticationSuccess,
-          scope: this,
-        });
+      if (username) {
+        this.fields['username-display'].setValue(username);
+        this.fields.remember.setValue(true);
+        $(this.domNode).addClass('login-active');
       }
     },
     createToolLayout: function createToolLayout() {
@@ -246,6 +272,7 @@ define('crm/Views/Login', [
       return this.errorHandlers;
     },
     validateCredentials: function validateCredentials(credentials) {
+      this.busy = true;
       this.disable();
 
       // Store credentials in coordinator for potential MFA flow
@@ -256,6 +283,7 @@ define('crm/Views/Login', [
 
       App.authenticateUser(credentials, {
         success: function success() {
+          this.busy = false;
           // Need to remove Login view from pagejs stack
           page.len--;
           if (this.fields.remember.getValue() !== true) {
@@ -271,6 +299,7 @@ define('crm/Views/Login', [
           App.onHandleAuthenticationSuccess();
         },
         failure: function failure(result) {
+          this.busy = false;
           this.enable();
           const error = new Error();
           error.status = result && result.response && result.response.status;
@@ -278,6 +307,7 @@ define('crm/Views/Login', [
           this.handleError(error);
         },
         aborted: function aborted() {
+          this.busy = false;
           this.enable();
           alert(this.requestAbortedText);// eslint-disable-line
         },

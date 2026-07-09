@@ -36,6 +36,9 @@
   <!-- Deep Diff -->
   <script type="text/javascript" src="../../argos-sdk/libraries/deep-diff/deep-diff.min.js"></script>
 
+  <!-- fast-check (property-based testing) - browser bundle exposing window.fastcheck -->
+  <script type="text/javascript" src="../../argos-sdk/libraries/fast-check/fast-check.umd.js"></script>
+
    <!-- PouchDB -->
   <script type="text/javascript" src="../../argos-sdk/libraries/PouchDB/pouchdb-7.2.1.js"></script>
 
@@ -138,6 +141,10 @@
     // Shim, sohoxi will use define.amd and require it.
     define('jquery', function() {
       return window.$;
+    });
+    // Shim, expose the fast-check browser bundle as an AMD module for specs.
+    define('fast-check', function() {
+      return window.fastcheck;
     });
     require([
       'spec/all'

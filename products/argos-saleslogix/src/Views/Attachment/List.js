@@ -30,6 +30,31 @@ define('crm/Views/Attachment/List', [
 
   const __class = declare('crm.Views.Attachment.List', [List, _RightDrawerListMixin, _LegacySDataListMixin], {
     // Templates
+    // Card View: override the base rowTemplate to render a per-item icon in the
+    // widget header via itemIconTemplate/getItemIconClass (globe for URLs,
+    // type-specific icon for files). The base rowTemplate has no icon, so none
+    // appeared for attachments.
+    rowTemplate: new Simplate([
+      `<div data-action="activateEntry" data-key="{%= $$.getItemActionKey($) %}" data-descriptor="{%: $$.getItemDescriptor($) %}">
+        <div class="widget">
+          <div class="widget-header">
+            {%! $$.itemIconTemplate %}<h2 class="widget-title">{%: $$.getTitle($, $$.labelProperty) %}</h2>
+            {% if($$.visibleActions.length > 0 && $$.enableActions) { %}
+              <button class="btn-actions" type="button" data-key="{%= $$.getItemActionKey($) %}">
+                <span class="audible">Actions</span>
+                <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+                  <use xlink:href="#icon-more"></use>
+                </svg>
+              </button>
+              {%! $$.listActionTemplate %}
+            {% } %}
+          </div>
+          <div class="card-content">
+            {%! $$.itemRowContentTemplate %}
+          </div>
+        </div>
+      </div>`,
+    ]),
     itemTemplate: new Simplate([
       '{% if ($.dataType === "R") { %}',
       '{%! $$.fileTemplate %}',
@@ -119,7 +144,7 @@ define('crm/Views/Attachment/List', [
       let toReturn;
       if (attachment.url) {
         let href = attachment.url || '';
-        href = (href.indexOf('http') < 0) ? `http://${href}` : href;
+        href = (href.indexOf('http') < 0) ? `https://${href}` : href;
         toReturn = `<a class="hyperlink" href="${href}" target="_blank" title="${attachment.url}">${attachment.$descriptor}</a>`;
       } else {
         if (attachment.fileExists) {
@@ -131,6 +156,7 @@ define('crm/Views/Attachment/List', [
       return toReturn;
     },
     itemIconClass: 'document',
+    urlIconClass: 'globe',
     fileIconByType: {
       xls: 'spreadsheet',
       xlsx: 'spreadsheet',
@@ -149,6 +175,12 @@ define('crm/Views/Attachment/List', [
       bmp: 'overlay-line',
     },
     getItemIconClass: function getItemIconClass(entry) {
+      // URL attachments have no viewable file, so show a globe rather than
+      // deriving an icon from the (.URL) file extension, which would fall back
+      // to the generic document icon.
+      if (entry && entry.url) {
+        return this.urlIconClass;
+      }
       const fileName = entry && entry.fileName;
       let type = utility.getFileExtension(fileName);
       let cls = this.itemIconClass;

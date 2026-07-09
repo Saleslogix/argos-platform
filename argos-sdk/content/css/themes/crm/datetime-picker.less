@@ -5,9 +5,13 @@
   overflow: hidden;
 }
 
-.calendar__header {
-  border-bottom: 1px solid @color-lighter-slate;
+.calendar-wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  place-items: center;
+}
 
+.calendar__header {
   > .calendar__header__icon {
     color: @color-slate;
     top: 15px;
@@ -48,11 +52,6 @@
   }
 }
 .calendar-footer {
-  min-height: 34px;
-  width: 100%;
-  padding-top: 5px;
-  display: inline-block;
-
   .button {
     font-size: @font-size-h3;
     font-weight: @button-font-weight;
@@ -91,6 +90,7 @@
 
 .time-parts {
   text-align: center;
+  margin: 4px;
 }
 
 .time-parts > div {

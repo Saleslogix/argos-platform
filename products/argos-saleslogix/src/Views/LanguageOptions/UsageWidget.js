@@ -68,15 +68,20 @@ define('crm/Views/LanguageOptions/UsageWidget', [
         };
       };
 
+      // Use the full list of registered supported locales, not the L20n
+      // context's fallback chain (which only reflects the current locale and
+      // would incorrectly limit the dropdown to a single language).
+      const supportedLocales = this.languageService.getLanguages() || [];
+
       const locales = Object.keys(window.languages)
         .filter((key) => {
-          return window.localeContext.supportedLocales.indexOf(key) > -1;
+          return supportedLocales.indexOf(key) > -1;
         })
         .map(dropDownMap);
 
       const regions = Object.keys(window.languages)
         .filter((key) => {
-          return window.regionalContext.supportedLocales.indexOf(key) > -1;
+          return supportedLocales.indexOf(key) > -1;
         })
         .map(dropDownMap);
 

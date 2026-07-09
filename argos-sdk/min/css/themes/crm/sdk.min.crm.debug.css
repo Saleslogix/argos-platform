@@ -156,6 +156,38 @@
   white-space: nowrap;
   align-self: end;
 }
+/* Soho's toolbar initialization (List.initSoho) moves the search input out of
+   .search-widget-container and into the toolbar buttonset, leaving this container holding only
+   the contains toggle. The width:100% above was meant for the searchfield + toggle grouping; on
+   the leftover container it claims the full toolbar width and pushes the extracted search field
+   out of alignment. Size it to its content and keep the toggle centered with the field. */
+.list .buttonset > .search-widget-container.list-search {
+  width: auto;
+}
+.list .buttonset > .search-widget-container.list-search .contains-toggle {
+  align-self: center;
+}
+/* On small (phone-width) screens Soho switches a do-resize toolbar's buttonset to inline-flex
+   whenever it contains a searchfield, to support the collapsible mobile search pattern. Our list
+   search is non-collapsible and relies on a flex buttonset (the field grows, with the contains
+   toggle and settings beside it), so inline-flex shrink-wraps the buttonset and misaligns the
+   field. Keep list toolbars on flex. Scoped to .list and made specific enough (5 classes) to win
+   over Soho's `.toolbar.do-resize .buttonset:has(.searchfield-wrapper)` rule; other toolbars keep
+   Soho's default mobile behavior. */
+.list .toolbar.do-resize .buttonset:has(.searchfield-wrapper) {
+  display: flex;
+}
+/* Soho's accordion injects a non-interactive (tabindex="-1") expander/chevron button into each
+   group header and shows a focus indicator (a border, plus a box-shadow from the button base) on
+   it when clicked. Soho normally suppresses this with a dynamically-toggled hide-focus class, but
+   that class isn't reliably present on the injected button because it's (re)created during Soho's
+   deferred accordion rebuild. The button can't receive keyboard focus, so suppress its focus
+   indicator directly. !important is used to override Soho's stateful (.is-selected[:hover]) focus
+   rules without an escalating specificity chain, consistent with other Soho overrides here. */
+.grouped-list .accordion-header > button.btn:focus {
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
 /* grouped list */
 .group-content > h2 {
   box-sizing: border-box;
@@ -646,6 +678,49 @@ li.relatedviewitem a {
   border-radius: 3px;
   margin: 10px 0 10px 0;
 }
+/* Main header toolbar title sizing.
+
+   Soho lays this toolbar out as a block with an absolutely-positioned title, and sizes the title and
+   buttonset widths in JavaScript (Toolbar.sizeContainers) on load and on every resize. That JS sizing
+   is unreliable for our toolbar (a long page title plus text-labelled buttons), and breaks in two ways:
+
+     - On phones Soho's own stylesheet forces the buttonset to nearly the full toolbar width
+       (`@media (max-width: 768px) { .toolbar.do-resize.has-more-button .buttonset { width: calc(100% - 38px) !important } }`),
+       so the title is squeezed to its ~44px minimum and a long account name collapses to "I...".
+     - In landscape / on wider screens the title width is computed inconsistently (it has been observed
+       rendering at nearly the full window width); because the title is absolutely positioned it then
+       overlaps the buttonset and the title text is drawn on top of the buttons.
+
+   Rather than chase Soho's per-axis width math, lay the title-bearing toolbar out with flexbox: the
+   title flexes to fill the space left by the (auto-width) buttonset and More button, and truncates
+   with an ellipsis. Because the title and buttonset are now in-flow siblings they can never overlap,
+   and the title can never be starved below the space actually available - in any orientation, for any
+   title length or button count. width:auto !important neutralises Soho's inline widths; the more
+   specific selector (and relative positioning) overrides Soho's absolute-position rule. Scoped tightly
+   to the main navigation toolbar (has-title-button + has-title) so list/search toolbars are untouched.
+   Vertical metrics are unchanged from Soho's layout. */
+.header .toolbar.do-resize.has-more-button.has-title-button.has-title {
+  display: flex;
+  align-items: center;
+}
+.header .toolbar.do-resize.has-more-button.has-title-button.has-title > .title {
+  position: relative;
+  left: auto;
+  top: auto;
+  width: auto !important;
+  flex: 1 1 auto;
+  min-width: 0;
+  /* allow the flex item to shrink so the h1 can ellipsize instead of overflowing */
+  margin-inline-end: 8px;
+}
+.header .toolbar.do-resize.has-more-button.has-title-button.has-title > .buttonset {
+  position: relative;
+  width: auto !important;
+  flex: 0 0 auto;
+}
+.header .toolbar.do-resize.has-more-button.has-title-button.has-title > .more {
+  flex: 0 0 auto;
+}
 /*For the separate Contextual Menu*/
 .contextualContent > .scroller > .group-content > .list-content {
   margin: 0;
@@ -684,12 +759,100 @@ li.relatedviewitem a {
   padding: 10px 30px;
 }
 .quick-actions > .action-list {
-  padding: 10px 5px 5px;
+  padding: 10px;
   width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 8px;
+  align-items: stretch;
 }
-.quick-actions > .action-list button {
-  float: left;
-  margin-top: -5px;
+.quick-actions > .action-list > li {
+  display: flex;
+  margin: 0;
+  cursor: pointer;
+}
+.quick-actions > .action-list > li > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 14px;
+  border: 1px solid #368ac0;
+  border-radius: 3px;
+  background-color: #fff;
+  color: #368ac0;
+  line-height: normal;
+  white-space: nowrap;
+  text-decoration: none;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+.quick-actions > .action-list > li > a:hover,
+.quick-actions > .action-list > li > a:focus {
+  background-color: #368ac0;
+  color: #fff;
+}
+.quick-actions > .action-list > li > a button.btn-icon {
+  float: none;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  height: auto;
+  min-width: 0;
+  min-height: 0;
+  background-color: transparent !important;
+  border: none !important;
+  color: inherit;
+}
+.quick-actions > .action-list > li > a button.btn-icon:hover,
+.quick-actions > .action-list > li > a button.btn-icon:focus {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+.quick-actions > .action-list > li > a button.btn-icon .icon {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  color: inherit !important;
+  fill: currentColor;
+}
+.quick-actions > .action-list > li > a > img.icon {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+.quick-actions > .action-list > li > a > div {
+  float: none;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+}
+.quick-actions > .action-list > li > a label {
+  margin: 0;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: normal;
+  color: inherit;
+}
+.quick-actions > .action-list > li > a > span,
+.quick-actions > .action-list > li > a .data {
+  display: none;
+}
+.quick-actions > .action-list > li.disabled {
+  display: none;
+}
+:is(.theme-classic-dark, .theme-new-dark, .theme-uplift-dark, .theme-soho-dark) .quick-actions > .action-list > li > a {
+  background-color: transparent;
+  border-color: #69b5dd;
+  color: #69b5dd;
+}
+:is(.theme-classic-dark, .theme-new-dark, .theme-uplift-dark, .theme-soho-dark) .quick-actions > .action-list > li > a:hover,
+:is(.theme-classic-dark, .theme-new-dark, .theme-uplift-dark, .theme-soho-dark) .quick-actions > .action-list > li > a:focus {
+  background-color: #368ac0;
+  color: #fff;
 }
 .detail-header {
   padding: 25px 0 10px 0 !important;
@@ -722,6 +885,27 @@ div.dropdown,
 div.multiselect,
 .dropdown-wrapper {
   width: 100%;
+}
+/*
+    The argos Dropdown widget (argos/Dropdown) renders compact, content-sized
+    selectors such as the calendar month/year, time picker hour/minute, and
+    language/region pickers. Soho 4.4 sizes the dropdown's label span to
+    calc(100% - 15px); inside the auto-width/inline containers these widgets
+    live in, that percentage no longer contributes to the dropdown's intrinsic
+    width, so it collapses and truncates its text. Let the widget size to its
+    content again and reserve space on the right for the trigger icon (it is
+    absolutely positioned at right: 8px with an 18px width, ~26px of clearance).
+*/
+.argos-dropdown,
+.argos-dropdown .dropdown-wrapper,
+.argos-dropdown div.dropdown {
+  width: auto;
+}
+.argos-dropdown div.dropdown {
+  padding-right: 30px;
+}
+.argos-dropdown div.dropdown > span {
+  width: auto;
 }
 input.fileupload-background-transparent {
   width: 300px;
@@ -1019,8 +1203,10 @@ input.fileupload-background-transparent {
 .calendar {
   overflow: hidden;
 }
-.calendar__header {
-  border-bottom: 1px solid #c8cbd4;
+.calendar-wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  place-items: center;
 }
 .calendar__header > .calendar__header__icon {
   color: #50535a;
@@ -1054,12 +1240,6 @@ input.fileupload-background-transparent {
 }
 .monthview-table .weekend {
   background-color: rgba(216, 216, 216, 0.5);
-}
-.calendar-footer {
-  min-height: 34px;
-  width: 100%;
-  padding-top: 5px;
-  display: inline-block;
 }
 .calendar-footer .button {
   font-size: 14px;
@@ -1095,6 +1275,7 @@ input.fileupload-background-transparent {
 }
 .time-parts {
   text-align: center;
+  margin: 4px;
 }
 .time-parts > div {
   display: inline-block;

@@ -26,6 +26,11 @@ const proxyOptions = {
     protocol: proxyConfig.protocol,
   },
   secure: false, // ignore cert errors
+  // Rewrite the Host header to the target host. Without this the incoming "localhost:8000"
+  // Host header is forwarded, and Node derives the TLS SNI servername from that header, sending
+  // SNI "localhost" to the backend. SNI-based HTTPS hosts (e.g. IIS) then reset the connection
+  // before the TLS handshake completes. changeOrigin makes the SNI match the target host.
+  changeOrigin: true,
   xfwd: true,
   ws: false,
   prependPath: true,

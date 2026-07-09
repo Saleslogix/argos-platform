@@ -136,6 +136,44 @@ define('argos/_ConfigureBase', [
     },
     createStore: function createStore() {},
     /**
+     * Applies the current paging state (start/count) to the query options. The base list does not
+     * do this for plain stores, so an in-memory (Memory) store would return the entire list on every
+     * request and paging would append the whole list again, duplicating the rows.
+     * @param {Object} queryOptions
+     * @return {Object}
+     */
+    _applyStateToQueryOptions: function _applyStateToQueryOptions(queryOptions) {
+      queryOptions.start = this.position;
+      queryOptions.count = this.pageSize;
+      return queryOptions;
+    },
+    /**
+     * Returns the number of records not yet loaded. For an in-memory store the total is always
+     * known and exact, so a negative result means everything has been loaded. The base uses -1
+     * as an "unknown total" sentinel (which shows the more button), so clamp to 0 to avoid a
+     * computed -1 (e.g. total 20, pageSize 21) being misread as "has more".
+     * @return {Number}
+     */
+    getRemainingCount: function getRemainingCount() {
+      const remaining = this.total - (this.position + this.pageSize);
+      return remaining < 0 ? 0 : remaining;
+    },
+    /**
+     * Handler for the row selector button. Toggles the entry in the selection model so a
+     * previously selected item can be de-selected (the base implementation only selects).
+     * @param {Object} params Collection of `data-` attributes from the node.
+     */
+    selectEntry: function selectEntry(params) {
+      // The selector button has no data-key of its own (and _getParametersForAction only
+      // reads attributes from the clicked element), so resolve the key from the parent row.
+      const row = $(params.$source).closest('[data-key]');
+      const key = row.attr('data-key');
+
+      if (this._selectionModel && key) {
+        this._selectionModel.toggle(key, this.entries[key], row.get(0));
+      }
+    },
+    /**
      * Queries the DOM and returns selected item's idProperty in order.
      * @return {Array}
      */
@@ -194,9 +232,18 @@ define('argos/_ConfigureBase', [
       const visible = this.getSavedSelectedKeys();
 
       for (let i = 0; i < visible.length; i++) {
-        const row = $(`[data-key="${visible[i]}"]`, this.domNode).get(0);
+        const key = visible[i];
+
+        // Use select (guarded by isSelected) instead of toggle. processData runs again for
+        // each page when paging, and toggling an already-selected row from a previous page
+        // would de-select it, making the selection disappear.
+        if (this._selectionModel.isSelected(key)) {
+          continue;
+        }
+
+        const row = $(`[data-key="${key}"]`, this.domNode).get(0);
         if (row) {
-          this._selectionModel.toggle(visible[i], this.entries[visible[i]], row);
+          this._selectionModel.select(key, this.entries[key], row);
         }
       }
     },
