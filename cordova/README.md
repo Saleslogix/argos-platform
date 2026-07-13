@@ -17,12 +17,13 @@ All commands below are run **from inside `cordova/`** (for example
 
 | Tool | Version | Notes |
 |------|---------|-------|
-| Node.js | 18 LTS or later | The monorepo baseline is Node 16+, but `cordova-android@13` requires Node 18+. Use Node 18 LTS to cover both. npm 7+ is required for workspace support at the root. |
-| Cordova CLI | 12.0.0 | Pinned in `cordova/package.json` `devDependencies` and run through `npx cordova`. Installed locally by `npm install`; you do not need a global install. |
-| cordova-android | 13.0.0 | Pinned platform engine. Requires JDK 17 and Gradle (bundled with a recent Android Studio). |
-| cordova-ios | 7.0.1 | Pinned platform engine. macOS only. |
-| Android SDK | Platform 34 (`targetSdkVersion`), with `minSdkVersion` 24 (Android 7.0) | `cordova-android@13` builds against Android SDK Platform 34 and its build-tools. Set `ANDROID_SDK_ROOT` and `JAVA_HOME`. |
-| Xcode | 14 or later (macOS only) | Required for `cordova-ios@7`. The iOS deployment target is 13.0. `xcodebuild` must be on `PATH`. |
+| Node.js | 18 LTS or later | The monorepo baseline is Node 16+, but `cordova-android@15` requires Node 18+. Use Node 18 LTS to cover both. npm 7+ is required for workspace support at the root. |
+| Cordova CLI | 13.0.0 | Pinned in `cordova/package.json` `devDependencies` and run through `npx cordova`. Installed locally by `npm install`; you do not need a global install. |
+| cordova-android | 15.0.0 | Pinned platform engine. Uses the Gradle wrapper it ships (Gradle 8.14.x). |
+| cordova-ios | 8.0.1 | Pinned platform engine. macOS only. |
+| **JDK** | **17 or 21 (LTS)** | **cordova-android 15's bundled Gradle supports JDK 17–21. Newer JDKs (e.g. JDK 26) break the Gradle `JdkImageTransform`/`jlink` step and the build fails — see [Troubleshooting](#gradle-jdkimagetransform--jlink-failure).** Point `JAVA_HOME` at a JDK 17/21 for Cordova builds. Android Studio's bundled JBR (`<Android Studio>/jbr`, JDK 21) works well. |
+| Android SDK | Platform 36 (`targetSdkVersion`), with `minSdkVersion` 24 (Android 7.0) | `cordova-android@15` builds against Android SDK Platform 36 and its build-tools. Set `ANDROID_SDK_ROOT` (and/or `ANDROID_HOME`) and `JAVA_HOME`. |
+| Xcode | 15 or later (macOS only) | Required for `cordova-ios@8`. The iOS deployment target is 13.0. `xcodebuild` must be on `PATH`. |
 
 The exact platform and plugin versions are pinned in both `cordova/package.json`
 and `cordova/config.xml`. The two files are cross-checked on every build by
@@ -174,14 +175,23 @@ Every plugin is pinned to an exact `MAJOR.MINOR.PATCH` version in both
 
 | Plugin | Version | Why Argos_Web_App needs it |
 |--------|---------|----------------------------|
-| `cordova-plugin-device` | 2.1.0 | Exposes device model/platform/version through `window.device` for platform and feature detection. |
-| `cordova-plugin-network-information` | 3.0.0 | Fires `online`/`offline` window events and the `Connection` API so the offline sync layer detects connectivity transitions. |
-| `cordova-plugin-statusbar` | 3.0.0 | Controls the native status bar so WebView content does not render underneath it. |
-| `cordova-plugin-splashscreen` | 6.0.2 | Shows and hides the native splash screen while the web app bootstraps. |
+| `cordova-plugin-device` | 3.0.0 | Exposes device model/platform/version through `window.device` for platform and feature detection. |
+| `cordova-plugin-network-information` | 3.1.0 | Fires `online`/`offline` window events and the `Connection` API so the offline sync layer detects connectivity transitions. |
+| `cordova-plugin-statusbar` | 4.0.0 | Controls the native status bar so WebView content does not render underneath it. |
 | `cordova-plugin-inappbrowser` | 6.0.0 | Opens external links and the Mingle OAuth redirect in an in-app browser instead of replacing the application WebView. |
-| `cordova-plugin-file` | 8.0.1 | Provides persistent file-system access that PouchDB and the FileManager require on platforms that gate it. |
+| `cordova-plugin-file` | 8.1.3 | Provides persistent file-system access that PouchDB and the FileManager require on platforms that gate it. |
 | `cordova-plugin-geolocation` | 5.0.0 | Backs the `navigator.geolocation` call in `src/Integrations/Contour/Views/PxSearch/AccountPxSearch.js` on WebViews that gate location behind native permissions. |
-| `cordova-plugin-whitelist` | 1.3.5 | Enforces the `<allow-navigation>` / `<allow-intent>` origin restrictions and logs rejected origins. |
+
+> **Note:** Two plugins named in the original spec's Plugin_Set are intentionally
+> **not** used with `cordova-android@15` / `cordova-ios@8`:
+> - `cordova-plugin-whitelist` — the allowlist/navigation enforcement is built
+>   into modern `cordova-android`; the standalone plugin is obsolete.
+> - `cordova-plugin-splashscreen` — the splash screen now uses the native
+>   Android 12+ splash API, configured in `config.xml` via the
+>   `AndroidWindowSplashScreenAnimatedIcon` / `AndroidWindowSplashScreenBackgroundColor`
+>   preferences rather than a plugin.
+>
+> The requirements/design Plugin_Set should be reconciled with this decision.
 
 Geolocation requires runtime permissions: `config.xml` declares
 `android.permission.ACCESS_FINE_LOCATION` and
@@ -292,6 +302,33 @@ cordova:build:ios requires macOS (darwin); current host platform is "win32".
 
 An `all` build on a non-macOS host drops the iOS target with a warning and builds
 Android only.
+
+### Gradle `JdkImageTransform` / `jlink` failure
+
+If the Android build fails during `:CordovaLib:compileDebugJavaWithJavac` (or the
+release equivalent) with an error like:
+
+```
+Could not resolve all files for configuration ':CordovaLib:androidJdkImage'.
+> Failed to transform core-for-system-modules.jar ...
+   > Execution failed for JdkImageTransform: ... core-for-system-modules.jar.
+      > Error while executing process ...\bin\jlink.exe ...
+```
+
+your `JAVA_HOME` points at a JDK that is too new for the Gradle version bundled
+with `cordova-android@15` (Gradle 8.14.x supports JDK 17–21). JDK 26, in
+particular, changes `jlink` in a way that breaks the Android Gradle Plugin's
+system-modules transform.
+
+Fix: point `JAVA_HOME` at a JDK 17 or 21 for the build. Android Studio ships a
+compatible JBR (JDK 21):
+
+```powershell
+# PowerShell, for the current shell only (leaves your global JAVA_HOME untouched)
+$env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
+$env:PATH = "$env:JAVA_HOME\bin;$env:PATH"
+npm run cordova:run:android
+```
 
 ### Signing variable errors
 

@@ -105,6 +105,7 @@ module.exports = function gruntCordova(grunt) {
 
     stager.stage({
       deployDir: path.join(MONOREPO_DIR, 'products', 'argos-saleslogix', 'deploy'),
+      sdkDeployDir: path.join(MONOREPO_DIR, 'argos-sdk', 'deploy'),
       wwwDir: path.join(CORDOVA_DIR, 'www'),
       templatePath: path.join(CORDOVA_DIR, 'www-template', 'index.html'),
       buildProfile,

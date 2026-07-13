@@ -17,9 +17,9 @@
   Server_Endpoint hosts and the Mingle authorization host (mingleSettings.pu)
   for the target environment.
 -->
-<widget id="com.infor.crm.mobile" version="4.4.0"
-        android-versionCode="1"
-        ios-CFBundleVersion="1"
+<widget id="com.infor.crm.mobile" version="${VERSION}"
+        android-versionCode="${VERSION_CODE}"
+        ios-CFBundleVersion="${VERSION_CODE}"
         xmlns="http://www.w3.org/ns/widgets"
         xmlns:cdv="http://cordova.apache.org/ns/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android">

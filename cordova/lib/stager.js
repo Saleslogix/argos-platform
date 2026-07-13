@@ -4,19 +4,39 @@
  * cordova/lib/stager.js
  *
  * Pure Node (CommonJS) helper that materialises `cordova/www/` from
- * `products/argos-saleslogix/deploy/` plus the version-controlled entry
- * template plus optional ARGOS_SERVER_* environment overrides.
+ * `products/argos-saleslogix/deploy/` (overlaid with `argos-sdk/deploy/`) plus
+ * the version-controlled entry template plus optional ARGOS_SERVER_* overrides.
  *
  * This module is consumed by the Cordova Grunt pipeline (the `cordova:stage`
  * task) and is intentionally framework-free: it is NOT an AMD module. It uses
  * only Node core modules (`fs`, `path`) and the sibling `configRewriter`
  * helper, so it stays dependency-free.
  *
+ * The compiled web application is the OVERLAY of two independent build
+ * outputs, exactly as the production IIS deploy assembles it (the Jenkinsfile
+ * `iiscopy` step unstashes `slx` then `sdk` into the same directory):
+ *
+ *   - `products/argos-saleslogix/deploy/` (the "slx" layer) supplies
+ *     `content/javascript/argos-saleslogix.js`, `content/dojo/dojo-dependencies.js`,
+ *     `configuration/`, `localization/`, `help/`, and `content/css/app.min.css`.
+ *   - `argos-sdk/deploy/` (the "sdk" layer) supplies
+ *     `content/javascript/argos-dependencies.js`,
+ *     `content/javascript/argos-amd-dependencies.js`,
+ *     `content/javascript/argos-sdk.js`, the Dojo core under `content/dojo/`,
+ *     `content/javascript/cultures/`, and the CSS themes.
+ *
+ * Staging only the slx layer produces a blank page because none of the SDK /
+ * Dojo `<script>` tags in the entry template resolve. The `sdkDeployDir`
+ * overlay closes that gap.
+ *
  * Contract (design.md "Stager" + Correctness Property 1):
  *   1. Assert `deployDir` exists; otherwise throw StagerError(MISSING_DEPLOY).
  *   2. Recursively delete and recreate `wwwDir`.
  *   3. Walk `deployDir`, copying every file whose POSIX-relative path is not in
  *      EXCLUDED_FILES, preserving the relative directory structure.
+ *   3b. When `sdkDeployDir` is provided, assert it exists (throw
+ *      StagerError(MISSING_SDK_DEPLOY) otherwise) and overlay it into `wwwDir`
+ *      on top of the slx layer, honouring the same exclusion list.
  *   4. Copy `templatePath` over `wwwDir/index.html`.
  *   5. If buildProfile === 'debug', overwrite `wwwDir/configuration/production.js`
  *      with the contents of `deployDir/configuration/development.js`.
@@ -25,8 +45,8 @@
  *      file is left byte-for-byte identical (no rewrite at all).
  *   7. Return { filesCopied }.
  *
- * The Stager NEVER writes under `deployDir`; it only reads from it. Every write
- * goes under `wwwDir`.
+ * The Stager NEVER writes under `deployDir` or `sdkDeployDir`; it only reads
+ * from them. Every write goes under `wwwDir`.
  *
  * Feature: cordova-native-shell-bundling
  * Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 7.2, 7.3, 7.4, 7.5, 7.6
@@ -167,17 +187,22 @@ async function copyTree(absDir, relDir, wwwDir) {
  *
  * @param {object} options
  * @param {string} options.deployDir    - absolute path to products/argos-saleslogix/deploy/
+ * @param {string} [options.sdkDeployDir] - absolute path to argos-sdk/deploy/;
+ *   when provided it is overlaid on top of the slx layer. Optional so the pure
+ *   property tests can exercise the single-layer contract.
  * @param {string} options.wwwDir       - absolute path to cordova/www/
  * @param {string} options.templatePath - absolute path to www-template/index.html
  * @param {'debug'|'release'} options.buildProfile
  * @param {object} options.env          - subset of process.env (ARGOS_SERVER_*)
  * @returns {Promise<{ filesCopied: number }>}
- * @throws {StagerError} when deployDir is missing (MISSING_DEPLOY) or an
+ * @throws {StagerError} when deployDir is missing (MISSING_DEPLOY),
+ *   sdkDeployDir is provided but missing (MISSING_SDK_DEPLOY), or an
  *   ARGOS_SERVER_* override is invalid (INVALID_ENV)
  */
 async function stage(options) {
   const {
     deployDir,
+    sdkDeployDir,
     wwwDir,
     templatePath,
     buildProfile,
@@ -206,6 +231,30 @@ async function stage(options) {
     );
   }
 
+  // Step 1b: when an SDK deploy overlay is requested, assert it exists too. The
+  // web app cannot boot without the SDK / Dojo layer, so a missing overlay is a
+  // hard error rather than a silent skip.
+  if (sdkDeployDir !== undefined && sdkDeployDir !== null && sdkDeployDir !== '') {
+    let sdkStat;
+    try {
+      sdkStat = await fs.promises.stat(sdkDeployDir);
+    } catch (err) {
+      if (err && err.code === 'ENOENT') {
+        throw new StagerError(
+          `argos-sdk deploy/ not found at "${sdkDeployDir}". Run the argos-sdk release build first to produce the SDK layer under argos-sdk/deploy/.`,
+          'MISSING_SDK_DEPLOY'
+        );
+      }
+      throw err;
+    }
+    if (!sdkStat.isDirectory()) {
+      throw new StagerError(
+        `argos-sdk deploy/ at "${sdkDeployDir}" is not a directory. Run the argos-sdk release build first to produce the SDK layer under argos-sdk/deploy/.`,
+        'MISSING_SDK_DEPLOY'
+      );
+    }
+  }
+
   // Step 2: recursively delete and recreate wwwDir (Requirement 3.1).
   await fs.promises.rm(wwwDir, { recursive: true, force: true });
   await fs.promises.mkdir(wwwDir, { recursive: true });
@@ -213,7 +262,15 @@ async function stage(options) {
   // Step 3: walk deployDir, copying every non-excluded file
   // (Requirements 3.2, 3.5, 3.6). All writes go under wwwDir; deployDir is
   // only read (Requirement 3.7).
-  const filesCopied = await copyTree(deployDir, '', wwwDir);
+  let filesCopied = await copyTree(deployDir, '', wwwDir);
+
+  // Step 3b: overlay the SDK deploy on top of the slx layer, mirroring the
+  // production IIS assembly (unstash slx, then sdk, into the same directory).
+  // The two layers are complementary in practice, but should they ever share a
+  // path the SDK layer wins, matching the IIS overlay order.
+  if (sdkDeployDir !== undefined && sdkDeployDir !== null && sdkDeployDir !== '') {
+    filesCopied += await copyTree(sdkDeployDir, '', wwwDir);
+  }
 
   // Step 4: copy the entry template over wwwDir/index.html (Requirement 3.3).
   const indexDest = path.join(wwwDir, 'index.html');

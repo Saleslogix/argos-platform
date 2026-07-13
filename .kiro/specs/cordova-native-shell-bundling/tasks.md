@@ -79,17 +79,19 @@ Implementation language is JavaScript / Node (AMD is not used in `cordova/lib/`;
   - [x] 2.8 Implement `cordova/lib/stager.js`
     - Export `EXCLUDED_FILES` exactly as listed in design (`web.config`, `Global.asax`, `index.aspx`, `index.aspx.cs`, `index-head.ascx`, `index-body.ascx`, `index-body.ascx.cs`, `scripts/iis.ps1`, `serviceworker.js`)
     - Export `StagerError` class with a `code` field
-    - Export `async stage({ deployDir, wwwDir, templatePath, buildProfile, env })` implementing the seven-step algorithm: assert `deployDir` exists (throw `MISSING_DEPLOY` otherwise) → recursively delete and recreate `wwwDir` → walk `deployDir` copying every file whose POSIX-relative path is not in `EXCLUDED_FILES` → copy `templatePath` over `wwwDir/index.html` → if `buildProfile === 'debug'` overwrite `wwwDir/configuration/production.js` with the contents of `deployDir/configuration/development.js` → if any of `ARGOS_SERVER_*` is non-empty validate via `configRewriter.validate` then write `configRewriter.rewrite(...)` over `wwwDir/configuration/production.js` → return `{ filesCopied }`
+    - Export `async stage({ deployDir, sdkDeployDir, wwwDir, templatePath, buildProfile, env })` implementing the algorithm: assert `deployDir` exists (throw `MISSING_DEPLOY` otherwise) → when `sdkDeployDir` is provided assert it exists (throw `MISSING_SDK_DEPLOY` otherwise) → recursively delete and recreate `wwwDir` → walk `deployDir` copying every file whose POSIX-relative path is not in `EXCLUDED_FILES` → when `sdkDeployDir` is provided overlay it into `wwwDir` (same exclusion list; SDK wins on collision) → copy `templatePath` over `wwwDir/index.html` → if `buildProfile === 'debug'` overwrite `wwwDir/configuration/production.js` with the contents of `deployDir/configuration/development.js` → if any of `ARGOS_SERVER_*` is non-empty validate via `configRewriter.validate` then write `configRewriter.rewrite(...)` over `wwwDir/configuration/production.js` → return `{ filesCopied }` (both layers)
+    - `sdkDeployDir` is optional so the property test can exercise the single-layer contract; the `cordova:stage` Grunt task always passes `argos-sdk/deploy/`
     - Use POSIX-style relative paths for the exclusion check on every host OS
-    - Never write under `deployDir`
-    - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 7.2, 7.3, 7.4, 7.5, 7.6_
+    - Never write under `deployDir` or `sdkDeployDir`
+    - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 7.2, 7.3, 7.4, 7.5, 7.6_
 
   - [ ]* 2.9 Write property test for Stager
     - **Property 1: Stager Correctness**
-    - **Validates: Requirements 3.1, 3.2, 3.3, 3.5, 3.6, 3.7, 7.2, 7.3**
+    - **Validates: Requirements 3.1, 3.2, 3.3, 3.5, 3.6, 3.7, 3.8, 3.9, 3.11, 7.2, 7.3**
     - File: `cordova/tests/unit/stager.property.test.js`
     - Use `memfs` (or equivalent in-memory FS) so 100 iterations remain fast and never touch real disk
     - Generate arbitrary deploy-tree shapes including files with names from `EXCLUDED_FILES`, then assert every non-excluded file is copied byte-for-byte, no excluded file appears in `wwwDir`, `index.html` equals the template, `configuration/production.js` matches the profile-appropriate source, and `deployDir` is unchanged
+    - Add a second generator that also provides an `sdkDeployDir` tree and assert the overlay contract: every non-excluded SDK file appears byte-for-byte, SDK wins on any shared path, and `sdkDeployDir` is unchanged; also assert `MISSING_SDK_DEPLOY` is thrown when a provided `sdkDeployDir` does not exist
     - Use Mocha + `fast-check`, minimum 100 runs
 
   - [x] 2.10 Implement `cordova/lib/mingleRedirect.js`
@@ -179,7 +181,7 @@ Implementation language is JavaScript / Node (AMD is not used in `cordova/lib/`;
     - Drive `setTimeout` through a fake scheduler; do not use real timers
     - Use Mocha + `fast-check`, minimum 100 runs
 
-- [~] 3. Checkpoint - helpers complete
+- [ ] 3. Checkpoint - helpers complete
   - Ensure all tests pass, ask the user if questions arise.
 
 - [x] 4. Author static Cordova assets
@@ -203,7 +205,7 @@ Implementation language is JavaScript / Node (AMD is not used in `cordova/lib/`;
   - [x] 4.3 Create `cordova/www-template/index.html`
     - Mirror the bootstrap shape of `products/argos-saleslogix/index.html` exactly: Soho config block, `argos-dependencies.js` script, Dojo `data-dojo-config`, `require` configuration with the same `packages` and `map` (including `'Sage/Platform/Mobile': 'argos'` and `'Mobile/SalesLogix': 'crm'`), supported locales, `localStorage` locale resolution, locale and regional file lists, `crm/polyfills/index` + `crm/Bootstrap` invocation with the same arguments shape, `rootNode` element id
     - Add a `<script src="cordova.js"></script>` tag in `<head>` before the argos dependency scripts
-    - Add a `<meta http-equiv="Content-Security-Policy">` tag whose `content` allows `'self'`, `gap:`, `'unsafe-eval'` (for the Dojo AMD loader), and the configured Server_Endpoint hosts; cover `default-src`, `script-src`, `style-src`, `img-src`, `connect-src`
+    - Add a `<meta http-equiv="Content-Security-Policy">` tag whose `content` allows `'self'`, `gap:`, `'unsafe-eval'` (for the Dojo AMD loader), `'unsafe-inline'` in `script-src` (required for the inline `require({...})`/Soho/pdf.js/bootstrap-guard scripts; without it the WebView blocks them and the app never boots), and the configured Server_Endpoint hosts; cover `default-src`, `script-src`, `style-src`, `img-src`, `connect-src`
     - Wrap the final `require(['crm/polyfills/index', 'crm/Bootstrap'], ...)` block in a guard that mirrors `cordova/lib/bootstrapGuard.js` semantics: a `bootstrapped` flag, `document.addEventListener('deviceready', startApp)`, and a `DOMContentLoaded` listener that schedules a 10000 ms fallback `setTimeout` which logs a `console.warn` naming the `deviceready` timeout and invokes `startApp`
     - Do NOT include any tokens forbidden by Requirement 4.6: no `localization/en` legacy path, no inline `dojoConfig` shim outside `<script data-dojo-config="...">`, and `<body>` placement matching the modern `index.html`
     - Do NOT call `navigator.serviceWorker.register`
@@ -212,7 +214,7 @@ Implementation language is JavaScript / Node (AMD is not used in `cordova/lib/`;
 
   - [ ]* 4.4 Write structural unit tests for `www-template/index.html`
     - File: `cordova/tests/unit/wwwTemplate.test.js`
-    - Read `cordova/www-template/index.html` from disk; assert it contains `cordova.js`, `'deviceready'`, `setTimeout`, `10000`, `'crm/polyfills/index'`, `'crm/Bootstrap'`, `'Sage/Platform/Mobile': 'argos'`, `'Mobile/SalesLogix': 'crm'`, `rootNode`, the CSP meta tag, `'self'`, `gap:`, `'unsafe-eval'`
+    - Read `cordova/www-template/index.html` from disk; assert it contains `cordova.js`, `'deviceready'`, `setTimeout`, `10000`, `'crm/polyfills/index'`, `'crm/Bootstrap'`, `'Sage/Platform/Mobile': 'argos'`, `'Mobile/SalesLogix': 'crm'`, `rootNode`, the CSP meta tag, `'self'`, `gap:`, `'unsafe-eval'`, and `'unsafe-inline'` (the last required in `script-src` so the inline scripts execute)
     - Assert the template does NOT contain `localization/en` (the forbidden legacy path), `navigator.serviceWorker.register`, nor any reference to `index-phonegap.html`
     - Assert structural tokens from `products/argos-saleslogix/index.html` that the template MUST mirror are present
     - _Requirements: 4.1, 4.2, 4.6, 6.4, 8.4_
@@ -261,7 +263,7 @@ Implementation language is JavaScript / Node (AMD is not used in `cordova/lib/`;
   - [x] 6.1 Create `cordova/grunt-tasks/grunt-cordova.js`
     - Register `cordova:install`, `cordova:stage[:debug|:release]`, `cordova:prepare[:android|:ios|:all]`, `cordova:build[:android|:ios|:all][:debug|:release]`, `cordova:run:<target>`, and the `cordova` alias task
     - Resolve `CORDOVA_DIR = path.resolve(__dirname, '..')` and `MONOREPO_DIR = path.resolve(__dirname, '..', '..')` so the helper module is portable
-    - The `cordova:stage` task imports `cordova/lib/stager.js` and calls `stage({ deployDir: path.join(MONOREPO_DIR, 'products', 'argos-saleslogix', 'deploy'), wwwDir: path.join(CORDOVA_DIR, 'www'), templatePath: path.join(CORDOVA_DIR, 'www-template', 'index.html'), buildProfile, env: process.env })`
+    - The `cordova:stage` task imports `cordova/lib/stager.js` and calls `stage({ deployDir: path.join(MONOREPO_DIR, 'products', 'argos-saleslogix', 'deploy'), sdkDeployDir: path.join(MONOREPO_DIR, 'argos-sdk', 'deploy'), wwwDir: path.join(CORDOVA_DIR, 'www'), templatePath: path.join(CORDOVA_DIR, 'www-template', 'index.html'), buildProfile, env: process.env })` — the SDK deploy overlay is required for a non-blank page
     - The `cordova:build` task fails via `grunt.fail.fatal` when `target === 'ios'` on a non-`darwin` host, mirroring the existing `bundle` throw pattern in `argos-sdk/grunt-tasks/grunt-shell.js`
     - The `cordova:build` task uses `cordova/lib/signing.js` to validate signing env vars before invoking the CLI; calls `grunt.fail.fatal` with a named missing variable on failure
     - The `cordova:build` task emits artifacts only into `cordova/dist/` and never writes to `products/argos-saleslogix/deploy/`
@@ -295,7 +297,7 @@ Implementation language is JavaScript / Node (AMD is not used in `cordova/lib/`;
     - Do NOT modify `products/argos-saleslogix/package.json` — the SalesLogix package is untouched by this spec
     - _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5, 13.1, 13.2, 13.3_
 
-- [~] 7. Checkpoint - Cordova pipeline runnable locally
+- [ ] 7. Checkpoint - Cordova pipeline runnable locally
   - Ensure all tests pass, ask the user if questions arise.
 
 - [x] 8. Author documentation
@@ -320,7 +322,7 @@ Implementation language is JavaScript / Node (AMD is not used in `cordova/lib/`;
     - _Requirements: 15.4_
 
 - [ ] 9. Wire Jenkins integration
-  - [~] 9.1 Add a `Cordova Stage` block to `Jenkinsfile`
+  - [ ] 9.1 Add a `Cordova Stage` block to `Jenkinsfile`
     - Insert the stage at the monorepo root, after the existing `Building argos-saleslogix` and `Creating bundles` stages have completed; the new stage is a sibling of those `dir('products/argos-saleslogix')` blocks, not nested inside them
     - Wrap the body in `withCredentials([...])` bindings for `ANDROID_KEYSTORE_PATH` (file binding), `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`, `IOS_SIGNING_IDENTITY`, `IOS_PROVISIONING_PROFILE` (string bindings); never embed secrets in the Jenkinsfile
     - Inside `withCredentials`, open `dir('cordova')` and inside that block run `bat 'npm run cordova'` so the npm script resolves against `cordova/package.json` and `grunt` is loaded from `cordova/node_modules/.bin`
@@ -336,7 +338,7 @@ Implementation language is JavaScript / Node (AMD is not used in `cordova/lib/`;
     - Assert no signing variable values are embedded as literals
     - _Requirements: 12.1, 12.7_
 
-- [~] 10. Final checkpoint - all tests pass
+- [ ] 10. Final checkpoint - all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes

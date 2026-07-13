@@ -2,7 +2,7 @@
 
 ## Overview
 
-This design wraps the existing Argos SalesLogix mobile web application in an Apache Cordova native shell so the same bits that ship to IIS can be packaged as installable Android and iOS applications. The Cordova project lives entirely under `cordova/` at the monorepo root (sibling to `argos-sdk/`, `products/`, `packages/`, and `tests/`) and is driven by a new `grunt cordova` task pipeline rooted in `cordova/Gruntfile.js`. The web build (`build/release.cmd` and the existing `grunt bundle` / `grunt lang-pack` tasks) is untouched: Cordova consumes `products/argos-saleslogix/deploy/` as a read-only input and produces native artifacts in a parallel output directory under `cordova/dist/`.
+This design wraps the existing Argos SalesLogix mobile web application in an Apache Cordova native shell so the same bits that ship to IIS can be packaged as installable Android and iOS applications. The Cordova project lives entirely under `cordova/` at the monorepo root (sibling to `argos-sdk/`, `products/`, `packages/`, and `tests/`) and is driven by a new `grunt cordova` task pipeline rooted in `cordova/Gruntfile.js`. The web build (`build/release.cmd` and the existing `grunt bundle` / `grunt lang-pack` tasks) is untouched: Cordova consumes both `products/argos-saleslogix/deploy/` (the SLX layer) and `argos-sdk/deploy/` (the SDK layer) as read-only inputs and produces native artifacts in a parallel output directory under `cordova/dist/`. The compiled web app is the overlay of those two deploy folders — the SLX layer provides `argos-saleslogix.js`, `dojo-dependencies.js`, `configuration/`, `localization/`, and `help/`, while the SDK layer provides `argos-sdk.js`, `argos-dependencies.js`, `argos-amd-dependencies.js`, the Dojo core, cultures, and CSS themes. This mirrors the production IIS deploy, which unstashes `slx` then `sdk` into the same directory; staging only the SLX layer produces a blank page because the SDK / Dojo `<script>` tags never resolve.
 
 The design partitions the work into three concerns:
 
@@ -33,9 +33,11 @@ The shell itself runs the unmodified `crm/Bootstrap` flow inside the Cordova Web
 
 ```mermaid
 flowchart LR
-    A[products/argos-saleslogix/<br/>build/release.cmd] -->|writes| B[products/argos-saleslogix/<br/>deploy/]
+    A[products/argos-saleslogix/<br/>build/release.cmd] -->|writes| B[products/argos-saleslogix/<br/>deploy/ SLX layer]
+    A2[argos-sdk/<br/>build/release.cmd] -->|writes| B2[argos-sdk/<br/>deploy/ SDK layer]
     T[cordova/www-template/<br/>index.html] -->|copied last| W
     B -->|copy + exclude| W[cordova/www/]
+    B2 -->|overlay + exclude| W
     E[ARGOS_SERVER_*<br/>env vars] -->|rewrite| W
     W -->|cordova prepare| P[cordova/platforms/android<br/>cordova/platforms/ios]
     P -->|cordova build| D[cordova/dist/<br/>android/.apk .aab<br/>ios/.ipa]
@@ -179,24 +181,28 @@ The Cordova shell is its own self-contained Grunt project: a developer or CI hos
 
 ### Stager (`cordova/lib/stager.js`)
 
-Responsible for materialising `cordova/www/` from `products/argos-saleslogix/deploy/` plus the entry template plus optional environment overrides.
+Responsible for materialising `cordova/www/` from `products/argos-saleslogix/deploy/` (the SLX layer) overlaid with `argos-sdk/deploy/` (the SDK layer) plus the entry template plus optional environment overrides.
 
 ```javascript
 // cordova/lib/stager.js
 module.exports = {
   /**
-   * Stage the contents of deployDir into wwwDir, applying exclusions,
-   * dropping in templatePath as index.html, and rewriting
+   * Stage the contents of deployDir into wwwDir, overlay sdkDeployDir on top,
+   * apply exclusions, drop in templatePath as index.html, and rewrite
    * configuration/production.js if env contains overrides.
    *
    * @param {object} options
-   * @param {string} options.deployDir       - absolute path to deploy/
+   * @param {string} options.deployDir       - absolute path to products/argos-saleslogix/deploy/ (SLX layer)
+   * @param {string} [options.sdkDeployDir]  - absolute path to argos-sdk/deploy/ (SDK layer),
+   *                                            overlaid on top of the SLX layer. Optional so the
+   *                                            single-layer property test can exercise deployDir alone.
    * @param {string} options.wwwDir          - absolute path to cordova/www/
    * @param {string} options.templatePath    - absolute path to www-template/index.html
    * @param {'debug'|'release'} options.buildProfile
    * @param {object} options.env             - subset of process.env (ARGOS_SERVER_*)
    * @returns {Promise<{filesCopied: number}>}
-   * @throws {StagerError} if deployDir is missing or env values are invalid
+   * @throws {StagerError} if deployDir is missing (MISSING_DEPLOY), sdkDeployDir is
+   *   provided but missing (MISSING_SDK_DEPLOY), or env values are invalid (INVALID_ENV)
    */
   stage(options) { /* ... */ },
 
@@ -215,15 +221,17 @@ module.exports = {
 };
 ```
 
-The Stager is a pure function of (filesystem snapshot of `deployDir`, contents of `templatePath`, env). It is implemented as:
+The Stager is a pure function of (filesystem snapshot of `deployDir`, filesystem snapshot of `sdkDeployDir`, contents of `templatePath`, env). It is implemented as:
 
-1. Assert `deployDir` exists; otherwise throw `StagerError('deploy/ not found ...')`.
+1. Assert `deployDir` exists; otherwise throw `StagerError('deploy/ not found ...', 'MISSING_DEPLOY')`.
+1b. When `sdkDeployDir` is provided, assert it exists; otherwise throw `StagerError('argos-sdk deploy/ not found ...', 'MISSING_SDK_DEPLOY')`.
 2. Recursively delete `wwwDir` and recreate it.
 3. Walk `deployDir`, copying every file whose relative path is not in `EXCLUDED_FILES`.
+3b. When `sdkDeployDir` is provided, walk it and overlay every file whose relative path is not in `EXCLUDED_FILES` on top of the SLX layer (SDK wins on any path collision, matching the IIS overlay order: unstash `slx`, then `sdk`). In practice the two layers are complementary.
 4. Copy `templatePath` over `wwwDir/index.html`.
 5. If `buildProfile === 'debug'`, copy `wwwDir/configuration/development.js` over `wwwDir/configuration/production.js` (the development build maps to the same module ID).
 6. If any of `ARGOS_SERVER_NAME`, `ARGOS_SERVER_PORT`, `ARGOS_SERVER_PROTOCOL`, `ARGOS_SERVER_VDIR` is non-empty, validate them and run the Config Rewriter against `wwwDir/configuration/production.js`.
-7. Return the count of files copied.
+7. Return the count of files copied (from both layers).
 
 ### Config Rewriter (`cordova/lib/configRewriter.js`)
 
@@ -314,16 +322,18 @@ module.exports = function (grunt) {
   const CORDOVA_DIR  = path.resolve(__dirname, '..');                                   // <root>/cordova
   const MONOREPO_DIR = path.resolve(__dirname, '..', '..');                             // <root>
   const DEPLOY_DIR   = path.resolve(MONOREPO_DIR, 'products', 'argos-saleslogix', 'deploy');
+  const SDK_DEPLOY_DIR = path.resolve(MONOREPO_DIR, 'argos-sdk', 'deploy');
 
   grunt.registerTask('cordova:install', 'Install Cordova dependencies', function () {
     grunt.task.run([`shell:cordovaInstall`]);
   });
 
-  grunt.registerTask('cordova:stage', 'Stage products/argos-saleslogix/deploy/ into cordova/www/', function (profile) {
+  grunt.registerTask('cordova:stage', 'Stage the SLX + SDK deploy layers into cordova/www/', function (profile) {
     const buildProfile = profile === 'debug' ? 'debug' : 'release';
     const done = this.async();
     stager.stage({
       deployDir: DEPLOY_DIR,
+      sdkDeployDir: SDK_DEPLOY_DIR,
       wwwDir: path.join(CORDOVA_DIR, 'www'),
       templatePath: path.join(CORDOVA_DIR, 'www-template', 'index.html'),
       buildProfile,
@@ -486,15 +496,15 @@ The Stager preserves the `<meta http-equiv="Content-Security-Policy">` tag from 
 
 ```html
 <meta http-equiv="Content-Security-Policy" content="
-  default-src 'self' gap: 'unsafe-eval' https://*.infor.com;
-  script-src  'self' 'unsafe-eval' https://*.infor.com;
+  default-src 'self' gap: 'unsafe-eval' 'unsafe-inline' https://*.infor.com;
+  script-src  'self' 'unsafe-eval' 'unsafe-inline' https://*.infor.com;
   style-src   'self' 'unsafe-inline';
   img-src     'self' data: blob: https://*.infor.com;
   connect-src 'self' gap: https://*.infor.com;
 ">
 ```
 
-`'unsafe-eval'` is required by the Dojo AMD loader; `'self'` covers the local file origin under Cordova; `gap:` covers the iOS bridge scheme. Specific Server_Endpoint hosts replace the `*.infor.com` wildcard in customer-specific builds.
+`'unsafe-eval'` is required by the Dojo AMD loader; `'unsafe-inline'` in `script-src` is required because the entry document executes inline `<script>` blocks (the AMD `require({...})` configuration, the Soho config, the pdf.js worker assignment, and the `deviceready` bootstrap guard) — without it the WebView blocks those scripts and the app never bootstraps; `'self'` covers the local file origin under Cordova; `gap:` covers the iOS bridge scheme. Specific Server_Endpoint hosts replace the `*.infor.com` wildcard in customer-specific builds. This was verified on-device: with `script-src` lacking `'unsafe-inline'`, the Android System WebView logged `Executing inline script violates the following Content Security Policy directive` for every inline block and the login view never rendered.
 
 ### Entry Template (`cordova/www-template/index.html`)
 
@@ -611,7 +621,8 @@ The build helpers operate over a small set of plain data shapes.
 
 ```ts
 interface StageInputs {
-  deployDir: string;            // absolute, must exist
+  deployDir: string;            // absolute, must exist (SLX layer)
+  sdkDeployDir?: string;        // absolute; when provided, must exist (SDK layer, overlaid on top)
   wwwDir: string;               // absolute, recreated on every run
   templatePath: string;         // absolute, must exist
   buildProfile: 'debug' | 'release';
@@ -729,8 +740,10 @@ This feature mixes three kinds of work: configuration assets (`config.xml`, icon
 4. When `buildProfile === 'release'`, `wwwDir/configuration/production.js` content equals `deployDir/configuration/production.js` content (before any rewrite step).
 5. When `buildProfile === 'debug'`, `wwwDir/configuration/production.js` content equals `deployDir/configuration/development.js` content (before any rewrite step).
 6. Every file under `deployDir` has the same content after `stage()` returns as it had before.
+7. When `sdkDeployDir` is provided, every file under `sdkDeployDir` whose POSIX-relative path is **not** in `EXCLUDED_FILES` (and does not collide with the staged `index.html`/`configuration/production.js`) appears at the same relative path under `wwwDir` with byte-for-byte identical content, and every file under `sdkDeployDir` is unchanged after `stage()` returns. On any path shared by both layers, the `sdkDeployDir` content wins.
+8. When `sdkDeployDir` is omitted, the single-layer contract (clauses 1-6) holds unchanged.
 
-**Validates: Requirements 3.1, 3.2, 3.3, 3.5, 3.6, 3.7, 7.2, 7.3**
+**Validates: Requirements 3.1, 3.2, 3.3, 3.5, 3.6, 3.7, 3.8, 3.9, 3.11, 7.2, 7.3**
 
 ### Property 2: Config Rewriter Validity and Substitution
 
@@ -825,6 +838,7 @@ The build helpers favour fail-fast behaviour with named, actionable error messag
 | Category | Source | Behaviour | Example message |
 |---|---|---|---|
 | Missing prerequisite | Stager (`products/argos-saleslogix/deploy/` not found) | Throw `StagerError` with code `MISSING_DEPLOY` | `Stager: products/argos-saleslogix/deploy/ does not exist. Run build/release.cmd first.` |
+| Missing SDK layer | Stager (`argos-sdk/deploy/` not found when `sdkDeployDir` provided) | Throw `StagerError` with code `MISSING_SDK_DEPLOY` | `Stager: argos-sdk/deploy/ does not exist. Run the argos-sdk release build first.` |
 | Invalid env value | Config Rewriter (`validate` fails) | Throw `RewriteError` with code `INVALID_ENV` and the variable name | `ARGOS_SERVER_PORT must be an integer between 1 and 65535 (got "0").` |
 | Missing plugin declaration | Plugin Cross-Check (`diff.ok === false`) | `before_prepare` hook exits with code `MISSING_PLUGIN`, naming each missing plugin and the file it is missing from | `cordova-plugin-geolocation is declared in package.json but missing from config.xml.` |
 | Unsupported platform | Grunt task (`cordova:build:<bad>`) | `grunt.fail.fatal` naming the unsupported target | `cordova:build: unsupported target 'windows'. Supported: android, ios, all.` |
@@ -885,7 +899,7 @@ Examples (Mocha):
 - `cordova/www-template/index.html` mirrors structural tokens from `products/argos-saleslogix/index.html`: `'Sage/Platform/Mobile': 'argos'`, `'Mobile/SalesLogix': 'crm'`, `'crm/Bootstrap'`, `rootNode` (Req 4.2).
 - `cordova/www-template/index.html` does not contain forbidden tokens from `index-phonegap.html`: the `localization/en` legacy path, the inline `dojoConfig` shim (Req 4.6).
 - `cordova/www-template/index.html` does not call `navigator.serviceWorker.register` (Req 8.4).
-- `cordova/www-template/index.html` declares a CSP meta tag containing `'self'`, `gap:`, and `'unsafe-eval'` (Req 6.4).
+- `cordova/www-template/index.html` declares a CSP meta tag whose `script-src` contains `'self'`, `gap:`, `'unsafe-eval'`, and `'unsafe-inline'` (Req 6.4).
 - `Jenkinsfile` contains a `Cordova Stage` block following `Creating bundles` and uses `withCredentials` (Req 12.1, 12.7).
 - `package.json` exposes `cordova:run:android` and `cordova:run:ios` scripts (Req 13.1).
 - Root `README.md` links to `cordova/README.md` (Req 15.4).

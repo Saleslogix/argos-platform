@@ -45,11 +45,16 @@
 
     <!-- Content Security Policy: 'self' covers the local file origin under Cordova,
          gap: covers the iOS bridge scheme, 'unsafe-eval' is required by the Dojo AMD
-         loader. The https://*.infor.com host stands in for the configured
-         Server_Endpoint hosts and is replaced in customer-specific builds. -->
+         loader, and 'unsafe-inline' is required because this entry document (like the
+         web index.html it mirrors) executes inline <script> blocks: the Dojo AMD
+         require({...}) configuration, the Soho config, the pdf.js worker assignment,
+         and the deviceready bootstrap guard. Without 'unsafe-inline' the WebView
+         blocks those scripts and the application never bootstraps (blank page).
+         The https://*.infor.com host stands in for the configured Server_Endpoint
+         hosts and is replaced in customer-specific builds. -->
     <meta http-equiv="Content-Security-Policy" content="
-      default-src 'self' gap: 'unsafe-eval' https://*.infor.com;
-      script-src  'self' 'unsafe-eval' https://*.infor.com;
+      default-src 'self' gap: 'unsafe-eval' 'unsafe-inline' https://*.infor.com;
+      script-src  'self' 'unsafe-eval' 'unsafe-inline' https://*.infor.com;
       style-src   'self' 'unsafe-inline';
       img-src     'self' data: blob: https://*.infor.com;
       connect-src 'self' gap: https://*.infor.com;
