@@ -529,8 +529,11 @@ define('crm/Views/Activity/Edit', [
     onRecurrenceUIChange: function onRecurrenceUIChange(value, field) {
       const key = field.currentValue && field.currentValue.key;
       const opt = recur.simplifiedOptions[key];
-      // preserve #iterations (and EndDate) if matching recurrence
-      if (this._previousRecurrence === key) {
+      // Preserve the user's #iterations (and EndDate) when re-selecting the same
+      // recurrence, but only when the current value is valid. simplifiedOptions is
+      // shared module state, so copying a stale/zero RecurIterations onto it would
+      // corrupt the option and expand to zero occurrences (INFORCRM-35371).
+      if (opt && this._previousRecurrence === key && parseInt(this.recurrence.RecurIterations, 10) > 0) {
         opt.RecurIterations = this.recurrence.RecurIterations;
       }
 
@@ -569,6 +572,17 @@ define('crm/Views/Activity/Edit', [
 
       if (typeof o.RecurIterations !== 'undefined' && o.RecurIterations !== null) {
         this.recurrence.RecurIterations = o.RecurIterations;
+      }
+
+      // A count-based recurring master must have at least one occurrence. Guard
+      // against a zero/negative count (e.g. leaking from the initial "no repeat"
+      // state), which otherwise expands to no records and yields an end date
+      // before the start date (INFORCRM-35371). "After completed" periods
+      // legitimately use -1 and are left untouched.
+      if (this.recurrence.Recurring &&
+          !recur.isAfterCompletion(this.recurrence.RecurPeriod) &&
+          !(parseInt(this.recurrence.RecurIterations, 10) > 0)) {
+        this.recurrence.RecurIterations = recur.defaultIterations[this.recurrence.RecurPeriod] || 1;
       }
 
       this.recurrence.EndDate = recur.calcEndDate(this.recurrence.StartDate, this.recurrence);
