@@ -29,6 +29,8 @@ define('crm/Models/Contact/SData', [
         queryOrderBy: 'LastNameUpper,FirstName',
         querySelect: [
           'AccountName',
+          'Account/Id',
+          'Account/AccountName',
           'NameLF',
           'ContactImage',
           'WorkPhone',
