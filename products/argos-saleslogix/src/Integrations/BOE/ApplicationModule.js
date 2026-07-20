@@ -170,6 +170,8 @@ define('crm/Integrations/BOE/ApplicationModule', [
               }, {
                 returnTo: -1,
               });
+            } else {
+              ReUI.back();
             }
           } else if (this.options && this.options.returnTo) {
             const returnTo = this.options.returnTo;
