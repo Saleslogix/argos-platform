@@ -1190,8 +1190,24 @@ canvas,
     padding: 5px;
     background-color: #dee1e8;
  }
- .dark-theme .dashboard-widget {
-     background-color: #414247;
+
+ html[class*='theme-'][class*='-dark'] {
+     .dashboard-widget {
+         background-color: #414247;
+     }
+     .dashboard-header {
+         .dashboard-title {
+             color: #f0f0f0;
+         }
+         .dashboard-category {
+             color: @color-lighter-slate;
+         }
+     }
+
+     .listview li.related-view-detail-content:has(.dashboard-widget),
+     .listview li.related-view-detail-content:has(.dashboard-widget):hover {
+         background-color: #414247;
+     }
  }
  .listview li.related-view-detail-content:hover {
      background-color: initial;
@@ -1313,11 +1329,17 @@ canvas,
 span.range-value {
  color: white;
 }
+
 .dashboard-range-list {
     margin: 4px 0;
     width: 100%;
     background-color: transparent;
     display: inline-flex;
+    height: 32px;
+
+    .range-widget {
+        height: 100%;
+    }
 
     .dashboard-range-item {
         width: 100%;
