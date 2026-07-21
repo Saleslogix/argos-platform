@@ -766,7 +766,8 @@ define('argos/_EditBase', [
       console.warn('Error requesting data, no model or store was defined. Did you mean to mixin _SDataEditMixin to your edit view?'); // eslint-disable-line
     },
     requestDataUsingModel: function requestDataUsingModel() {
-      return this._model.getEntry(this.options);
+      const key = this._buildGetExpression();
+      return this._model.getEntry(key, this.options);
     },
     requestDataUsingStore: function requestDataUsingStore(getExpression, getOptions) {
       const store = this.get('store');
