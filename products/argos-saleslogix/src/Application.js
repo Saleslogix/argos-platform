@@ -776,7 +776,12 @@ define('crm/Application', [
           // lives here, not under the /slx/dynamic/- contract path.
           const port = service.getPort();
           const portSegment = (port && port > 0) ? `:${port}` : '';
-          const portalUrl = `${service.getProtocol()}://${service.getServerName()}${portSegment}/${service.getVirtualDirectory()}`;
+          // The SData client stores a falsy protocol (e.g. `false`) when the
+          // connection config leaves it unset, and falls back to 'http' when
+          // building request URLs. Mirror that fallback here so we don't end
+          // up with a `false://` URL.
+          const protocol = service.getProtocol() || 'http';
+          const portalUrl = `${protocol}://${service.getServerName()}${portSegment}/${service.getVirtualDirectory()}`;
           const headers = {
             'X-Authorization-Mode': 'no-challenge',
             'X-Application-Name': this.appName,
