@@ -14,37 +14,37 @@ module.exports = function(grunt) {
     },
     'lang-pack': {
       'de': {
-        bundleName: "Mobile 4.4 DE",
+        bundleName: "Mobile 4.4.0 DE",
       },
       'en-GB': {
-        bundleName: "Mobile 4.4 EN-GB",
+        bundleName: "Mobile 4.4.0 EN-GB",
       },
       'es': {
-        bundleName: "Mobile 4.4 ES",
+        bundleName: "Mobile 4.4.0 ES",
       },
       'pt-BR': {
-        bundleName: "Mobile 4.4 PT-BR",
+        bundleName: "Mobile 4.4.0 PT-BR",
       },
       'fr': {
-        bundleName: "Mobile 4.4 FR",
+        bundleName: "Mobile 4.4.0 FR",
       },
       'it': {
-        bundleName: "Mobile 4.4 IT",
+        bundleName: "Mobile 4.4.0 IT",
       },
       'ja': {
-        bundleName: "Mobile 4.4 JA",
+        bundleName: "Mobile 4.4.0 JA",
       },
       'nl': {
-        bundleName: "Mobile 4.4 NL",
+        bundleName: "Mobile 4.4.0 NL",
       },
       'ru': {
-        bundleName: "Mobile 4.4 RU",
+        bundleName: "Mobile 4.4.0 RU",
       },
       'th': {
-        bundleName: "Mobile 4.4 TH",
+        bundleName: "Mobile 4.4.0 TH",
       },
       'zh-CN': {
-        bundleName: "Mobile 4.4 ZH-CN",
+        bundleName: "Mobile 4.4.0 ZH-CN",
         includes: [
           {
             src: './index.aspx',
@@ -52,7 +52,7 @@ module.exports = function(grunt) {
         }],
       },
       'zh-TW': {
-        bundleName: "Mobile 4.4 ZH-TW",
+        bundleName: "Mobile 4.4.0 ZH-TW",
         includes: [
           {
             src: './index.aspx',

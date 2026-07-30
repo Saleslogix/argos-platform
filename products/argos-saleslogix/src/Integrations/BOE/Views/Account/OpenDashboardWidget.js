@@ -57,7 +57,9 @@ define('crm/Integrations/BOE/Views/Account/OpenDashboardWidget', [
     awardedText: resource.awardedText,
     // Override variables for _DashboardWidgetBase
     color: '#313236',
-    selectedColor: '#50535a',
+    // Distinct accent so the active range clearly stands out from the
+    // near-black unselected segments (previously #50535a, too similar).
+    selectedColor: '#368ac0',
     dayValue: 0,
 
     // Codes used for the status of the entity

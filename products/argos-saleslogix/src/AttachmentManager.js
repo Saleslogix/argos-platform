@@ -147,26 +147,26 @@ define('crm/AttachmentManager', [
             contextData = {
               contactId: entry.$key,
               contactName: entry.$descriptor,
-              accountId: entry.Account.$key,
-              accountName: entry.Account.AccountName,
+              accountId: entry.Account && entry.Account.$key,
+              accountName: (entry.Account && entry.Account.AccountName) || entry.AccountName,
             };
             break;
           case 'opportunities':
             contextData = {
               opportunityId: entry.$key,
               oppDescription: entry.$descriptor,
-              accountId: entry.Account.$key,
-              accountName: entry.Account.AccountName,
+              accountId: entry.Account && entry.Account.$key,
+              accountName: (entry.Account && entry.Account.AccountName) || entry.AccountName,
             };
             break;
           case 'tickets':
             contextData = {
               ticketId: entry.$key,
               ticketNumber: entry.$descriptor,
-              accountId: entry.Account.$key,
-              accountName: entry.Account.AccountName,
-              contactId: entry.Contact.$key,
-              contactName: entry.Contact.$descriptor,
+              accountId: entry.Account && entry.Account.$key,
+              accountName: (entry.Account && entry.Account.AccountName) || entry.AccountName,
+              contactId: entry.Contact && entry.Contact.$key,
+              contactName: (entry.Contact && entry.Contact.$descriptor) || entry.ContactName,
             };
             break;
           case 'leads':
@@ -187,17 +187,19 @@ define('crm/AttachmentManager', [
               leadId: entry.LeadId,
             };
             break;
-          case 'userActivities':
+          case 'userActivities': {
+            const activity = entry.Activity || {};
             contextData = {
-              activityId: utility.getRealActivityId(entry.Activity.$key),
-              contactId: entry.Activity.ContactId,
-              contactName: entry.Activity.ContactName,
-              accountId: entry.Activity.AccountId,
-              accountName: entry.Activity.AccountName,
-              opportunityId: entry.Activity.OpportunityId,
-              ticketId: entry.Activity.TicketId,
-              leadId: entry.Activity.LeadId,
+              activityId: utility.getRealActivityId(activity.$key),
+              contactId: activity.ContactId,
+              contactName: activity.ContactName,
+              accountId: activity.AccountId,
+              accountName: activity.AccountName,
+              opportunityId: activity.OpportunityId,
+              ticketId: activity.TicketId,
+              leadId: activity.LeadId,
             };
+          }
             break;
           case 'history':
             contextData = {

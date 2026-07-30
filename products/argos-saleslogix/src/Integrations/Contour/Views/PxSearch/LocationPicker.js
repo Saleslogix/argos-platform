@@ -64,13 +64,18 @@ define('crm/Integrations/Contour/Views/PxSearch/LocationPicker', [
     // User Address Properties
     _myWork: null,
     _myHome: null,
+    _userAddressesPromise: null,
 
     startup: function startup() {
       this.inherited(startup, arguments);
-      this._getUserInfoAddresses();
+      this._userAddressesPromise = this._getUserInfoAddresses();
     },
     _getUserInfoAddresses() {
-      if (App.context.user) {
+      if (!App.context.user) {
+        return Promise.resolve();
+      }
+
+      return new Promise((resolve) => {
         const querySelect = [
           'UserInfo/Address/GeocodeProvider',
           'UserInfo/Address/GeocodeLatitude',
@@ -93,9 +98,14 @@ define('crm/Integrations/Contour/Views/PxSearch/LocationPicker', [
             if (data.UserInfo.HomeAddress && data.UserInfo.HomeAddress.GeocodeFailed === false) {
               this._myHome = this._createPlaceEntry(this.myHouseText, data.UserInfo.HomeAddress);
             }
+            resolve();
+          },
+          // Resolve on failure too so the list still renders without the presets
+          failure: () => {
+            resolve();
           },
         });
-      }
+      });
     },
     _createPlaceEntry(name, address) {
       const plc = {};
@@ -107,6 +117,20 @@ define('crm/Integrations/Contour/Views/PxSearch/LocationPicker', [
       return plc;
     },
     processData(entries) {
+      // The user's addresses are fetched separately in startup(). Wait for that
+      // request to settle so the "My Office"/"My House" presets are available
+      // before we build the rows, otherwise they can be dropped in a race.
+      if (this._userAddressesPromise) {
+        this._userAddressesPromise.then(() => {
+          this._userAddressesPromise = null;
+          this._processData(entries);
+        });
+        return;
+      }
+
+      this._processData(entries);
+    },
+    _processData(entries) {
       // Inject the current user's addresses
       if (this._myHome) {
         entries.unshift(this._myHome);
