@@ -236,7 +236,7 @@ define('crm/Application', [
             const originalFailure = options.failure;
             const originalAborted = options.aborted;
 
-            options.failure = function mfaFailureHandler(response) {
+            options.failure = function mfaFailureHandler(response, xhrOptions) {
               // Store the request on the error for retry
               if (response) {
                 response.request = request;
@@ -252,12 +252,12 @@ define('crm/Application', [
                   // Not an MFA error or MFA flow failed/cancelled
                   // Call original failure handler if it exists
                   if (originalFailure) {
-                    originalFailure.call(this, error);
+                    originalFailure.call(this, error, xhrOptions);
                   }
                 });
             };
 
-            options.aborted = function mfaAbortedHandler(response) {
+            options.aborted = function mfaAbortedHandler(response, xhrOptions) {
               // Store the request on the error for retry
               if (response) {
                 response.request = request;
@@ -271,7 +271,7 @@ define('crm/Application', [
                 .catch((error) => {
                   // Not an MFA error or MFA flow failed
                   if (originalAborted) {
-                    originalAborted.call(this, error);
+                    originalAborted.call(this, error, xhrOptions);
                   }
                 });
             };
@@ -295,7 +295,7 @@ define('crm/Application', [
             const originalFailure = options.failure;
             const originalAborted = options.aborted;
 
-            options.failure = function mfaFailureHandler(response) {
+            options.failure = function mfaFailureHandler(response, xhrOptions) {
               // Store the request on the error for retry
               if (response) {
                 response.request = request;
@@ -311,12 +311,12 @@ define('crm/Application', [
                   // Not an MFA error or MFA flow failed/cancelled
                   // Call original failure handler if it exists
                   if (originalFailure) {
-                    originalFailure.call(this, error);
+                    originalFailure.call(this, error, xhrOptions);
                   }
                 });
             };
 
-            options.aborted = function mfaAbortedHandler(response) {
+            options.aborted = function mfaAbortedHandler(response, xhrOptions) {
               // Store the request on the error for retry
               if (response) {
                 response.request = request;
@@ -330,7 +330,7 @@ define('crm/Application', [
                 .catch((error) => {
                   // Not an MFA error or MFA flow failed
                   if (originalAborted) {
-                    originalAborted.call(this, error);
+                    originalAborted.call(this, error, xhrOptions);
                   }
                 });
             };
@@ -355,7 +355,7 @@ define('crm/Application', [
             const originalFailure = options.failure;
             const originalAborted = options.aborted;
 
-            options.failure = function mfaFailureHandler(response) {
+            options.failure = function mfaFailureHandler(response, xhrOptions) {
               // Store the request on the error for retry
               if (response) {
                 response.request = request;
@@ -371,12 +371,12 @@ define('crm/Application', [
                   // Not an MFA error or MFA flow failed/cancelled
                   // Call original failure handler if it exists
                   if (originalFailure) {
-                    originalFailure.call(this, error);
+                    originalFailure.call(this, error, xhrOptions);
                   }
                 });
             };
 
-            options.aborted = function mfaAbortedHandler(response) {
+            options.aborted = function mfaAbortedHandler(response, xhrOptions) {
               // Store the request on the error for retry
               if (response) {
                 response.request = request;
@@ -390,7 +390,7 @@ define('crm/Application', [
                 .catch((error) => {
                   // Not an MFA error or MFA flow failed
                   if (originalAborted) {
-                    originalAborted.call(this, error);
+                    originalAborted.call(this, error, xhrOptions);
                   }
                 });
             };
