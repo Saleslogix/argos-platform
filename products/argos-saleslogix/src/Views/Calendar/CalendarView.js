@@ -423,7 +423,7 @@ define('crm/Views/Calendar/CalendarView', [
         });
       }
     },
-    navigateToInsertView: function navigateToInsertView() {
+    navigateToInsertView: function navigateToInsertView(additionalOptions) {
       const view = App.getView(this.insertView || this.editView);
 
       if (!this.options) {
@@ -431,13 +431,19 @@ define('crm/Views/Calendar/CalendarView', [
       }
 
       this.options.currentDate = this.currentDate.toString('yyyy-MM-dd') || moment().startOf('day');
+      const showOptions = {
+        negateHistory: true,
+        returnTo: this.id,
+        insert: true,
+        currentDate: this.options.currentDate.valueOf(),
+      };
+
+      if (additionalOptions) {
+        lang.mixin(showOptions, additionalOptions);
+      }
+
       if (view) {
-        view.show({
-          negateHistory: true,
-          returnTo: this.id,
-          insert: true,
-          currentDate: this.options.currentDate.valueOf(),
-        });
+        view.show(showOptions);
       }
     },
     createToolLayout: function createToolLayout() {
