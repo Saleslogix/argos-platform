@@ -97,11 +97,18 @@ define('crm/Views/OpportunityProduct/Edit', [
       this.fields.ExtendedPrice.setCurrencyCode(baseCode);
       this._updateExtendedPrice();
 
-      if ((values.Product.Family !== null) && (values.Price !== null)) {
-        this._enableUI(true);
-      } else {
-        this._enableUI(false);
-      }
+      this._enableUI(this._hasProduct());
+    },
+    /**
+     * The editable pricing fields only make sense once a product is selected, since the product
+     * (or the price level chosen for it) is what supplies the price the discount/adjusted price
+     * math works from. Read from the form itself so every entry point agrees: template load,
+     * product change, and price level change.
+     * @return {Boolean}
+     */
+    _hasProduct: function _hasProduct() {
+      const product = this.fields.Product.getValue();
+      return !!(product && product.$key);
     },
     _enableUI: function _enableUI(enable) {
       if (enable) {
@@ -168,6 +175,7 @@ define('crm/Views/OpportunityProduct/Edit', [
         }
         this.fields.Quantity.setValueNoTrigger(1);
         this._updateExtendedPrice();
+        this._enableUI(this._hasProduct());
       }
     },
     onProgramChange: function onProgramChange(value, field) {
@@ -180,7 +188,7 @@ define('crm/Views/OpportunityProduct/Edit', [
           this.fields.CalculatedPriceMine.setValueNoTrigger(this._getMyRate() * selection.Price);
         }
         this._updateExtendedPrice();
-        this._enableUI(true);
+        this._enableUI(this._hasProduct());
       }
     },
     onDiscountChange: function onDiscountChange() {

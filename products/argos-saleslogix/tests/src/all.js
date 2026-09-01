@@ -14,6 +14,8 @@ define([
   'spec/Views/ExchangeRateLookup.spec',
   'spec/Views/Account/List.spec',
   'spec/Views/Lead/Detail.spec',
+  'spec/Views/OpportunityProduct/Edit.spec',
+  'spec/Integrations/BOE/PricingAvailabilityService.spec',
   'spec/OCR/textLines.spec',
   'spec/OCR/imageValidation.spec',
   'spec/OCR/FeatureAvailability.spec',

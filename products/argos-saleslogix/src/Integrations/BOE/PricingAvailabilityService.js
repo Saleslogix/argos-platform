@@ -27,6 +27,7 @@ define('crm/Integrations/BOE/PricingAvailabilityService', [
     checkOrderItemPriceText: resource.checkOrderItemPriceText,
     checkQuoteItemPriceText: resource.checkQuoteItemPriceText,
     checkQuoteItemAvailText: resource.checkQuoteItemAvailText,
+    noPricingText: resource.noPricingText,
 
     _busyIndicator: null,
     createAlertDialog: function createAlertDialog(response) {
@@ -299,50 +300,57 @@ define('crm/Integrations/BOE/PricingAvailabilityService', [
     transformPricing: function transformPricing(results) {
       const promise = new Promise((resolve, reject) => {
         const data = {};
-        if (results && results.Children && results.Children.length) {
-          try {
-            const item = results.Children[0];
-            for (const prop in item.Properties) {
-              if (!prop) {
-                continue;
-              }
-              let propName = prop;
-              if (propName && propName.search('.') !== -1) {
-                propName = propName.split('.')[0];
-              }
-              const dataItem = {};
-              dataItem.propertyName = propName;
-              const toDouble = Number.parseFloat(item.Properties[prop]);
-              const toDecimal = Number.parseInt(item.Properties[prop], 10);
-              if (toDouble) {
-                dataItem.type = 'numeric';
-                dataItem.value = toDouble;
-              } else if (toDecimal) {
-                dataItem.type = 'numeric';
-                dataItem.value = toDecimal;
-              } else {
-                let value = item.Properties[prop];
-                if (value.search('#') !== -1) {
-                  const values = value.split('#');
-                  value = values[1];
-                  data[`${dataItem.propertyName}Code`] = {
-                    propertyName: `${dataItem.propertyName}Code`,
-                    type: 'text',
-                    value: values[0],
-                  };
-                  dataItem.propertyName = `${dataItem.propertyName}Id`;
-                }
-                dataItem.type = 'text';
-                dataItem.value = value;
-              }
-              data[dataItem.propertyName] = dataItem;
-            }
-          } catch (err) {
-            console.error(err); // eslint-disable-line
-            reject(err);
-          }
-          resolve(data);
+        if (!results || !results.Children || !results.Children.length) {
+          // Always settle. Callers disable their inputs for the duration of the request and only
+          // re-enable them from a then/catch, so leaving this pending strands the whole form.
+          reject({ Results: this.noPricingText }); // eslint-disable-line prefer-promise-reject-errors
+          return;
         }
+
+        try {
+          const item = results.Children[0];
+          for (const prop in item.Properties) {
+            if (!prop) {
+              continue;
+            }
+            let propName = prop;
+            if (propName && propName.search('.') !== -1) {
+              propName = propName.split('.')[0];
+            }
+            const dataItem = {};
+            dataItem.propertyName = propName;
+            const toDouble = Number.parseFloat(item.Properties[prop]);
+            const toDecimal = Number.parseInt(item.Properties[prop], 10);
+            if (toDouble) {
+              dataItem.type = 'numeric';
+              dataItem.value = toDouble;
+            } else if (toDecimal) {
+              dataItem.type = 'numeric';
+              dataItem.value = toDecimal;
+            } else {
+              let value = item.Properties[prop];
+              if (value.search('#') !== -1) {
+                const values = value.split('#');
+                value = values[1];
+                data[`${dataItem.propertyName}Code`] = {
+                  propertyName: `${dataItem.propertyName}Code`,
+                  type: 'text',
+                  value: values[0],
+                };
+                dataItem.propertyName = `${dataItem.propertyName}Id`;
+              }
+              dataItem.type = 'text';
+              dataItem.value = value;
+            }
+            data[dataItem.propertyName] = dataItem;
+          }
+        } catch (err) {
+          console.error(err); // eslint-disable-line
+          reject({ Results: err.message || this.noPricingText }); // eslint-disable-line prefer-promise-reject-errors
+          return;
+        }
+
+        resolve(data);
       });
       return promise;
     },
@@ -411,10 +419,9 @@ define('crm/Integrations/BOE/PricingAvailabilityService', [
             try {
               result = (data && data.response && data.response.Result) ? JSON.parse(data.response.Result) : '';
               if (options.transform) {
-                const _resolve = resolve;
-                options.transform.call(this, result).then((tfdata) => {
-                  _resolve(tfdata);
-                });
+                // Forward the transform's rejection, otherwise a failed transform leaves this
+                // promise pending and the caller never learns the request finished.
+                options.transform.call(this, result).then(resolve, reject);
               } else {
                 resolve(result);
               }

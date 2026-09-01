@@ -713,6 +713,7 @@
   checkOrderItemPriceText: "Checking order item pricing"
   checkQuoteItemPriceText: "Checking quote item pricing"
   checkQuoteItemAvailText: "Checking order item availability"
+  noPricingText: "No pricing was returned for this line."
 >
 
 <productsList ""

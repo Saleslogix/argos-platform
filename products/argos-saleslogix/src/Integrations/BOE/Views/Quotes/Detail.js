@@ -278,6 +278,12 @@ define('crm/Integrations/BOE/Views/Quotes/Detail', [
           } else {
             this.handlePricingSuccess(result);
           }
+        }, (error) => {
+          // Request-level failures already raise their own alert inside the service, so only
+          // report the ones that carry a message of their own.
+          if (error && error.Results) {
+            this.handlePricingError(error.Results);
+          }
         });
       }
     },
