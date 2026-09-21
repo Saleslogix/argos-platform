@@ -6,11 +6,12 @@
     "url": "https://github.com/Saleslogix/argos-saleslogix"
   },
   "scripts": {
-    "test": "grunt --force test",
+    "test": "npm run lint:l20n && grunt --force test",
     "less": "grunt less",
     "start": "node --max-http-header-size=81920 scripts/server.js",
     "lint": "eslint ./src",
     "lint-fix": "eslint --fix ./src",
+    "lint:l20n": "node ../../argos-sdk/tools/lint-l20n.js localization",
     "doc": "jsdoc --configure ./src-docs/conf.json",
     "e2e": "mocha --async-only --allow-uncaught --timeout 100000 --globals page,browser --require ./tests/e2e/hooks.js --recursive ./tests/e2e",
     "e2e:debug": "@powershell -Command $env:DEBUG='e2e';npm run e2e"

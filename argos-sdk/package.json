@@ -6,10 +6,11 @@
     "url": "https://github.com/Saleslogix/argos-sdk"
   },
   "scripts": {
-    "test": "grunt --force test",
+    "test": "npm run lint:l20n && grunt --force test",
     "less": "grunt less",
     "lint": "eslint ./src",
-    "lint-fix": "eslint --fix ./src"
+    "lint-fix": "eslint --fix ./src",
+    "lint:l20n": "node tools/lint-l20n.js localization"
   },
   "devDependencies": {
     "antlr4": "^4.7.2",
