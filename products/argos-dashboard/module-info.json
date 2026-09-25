@@ -1,0 +1,9 @@
+{
+    "name": "dashboard",
+    "displayName": "Web Dashboards",
+    "description": "Web dashboards in mobile",
+    "majorVersion": 1,
+    "minorVersion": 0,
+    "buildNumber": 0,
+    "targetProduct": "saleslogix"
+}
