@@ -1,0 +1,39 @@
+{
+  "projectName": "Dashboard",
+  "licenseText": "",
+  "deployDir": "deploy/",
+  "pkgs": [
+    {
+      "name": "Dashboard Module",
+      "file": "content/javascript/argos-dashboard.js",
+      "isDebug": true,
+      "fileIncludes": [
+        {
+          "text": "Dashboard.js",
+          "path": "../src/Views"
+        },
+        {
+          "text": "ApplicationModule.js",
+          "path": "../src"
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "src": "../content",
+      "dest": "content",
+      "filters": ".*(\\.css|\\.js)"
+    },
+    {
+      "src": "../dashboard",
+      "dest": "dashboard",
+      "filters": ".*(\\.css|\\.js|\\.json)"
+    },
+    {
+      "src": "../configuration",
+      "dest": "configuration/dashboard",
+      "filters": ".*\\.js"
+    }
+  ]
+}

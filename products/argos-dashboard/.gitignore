@@ -1,0 +1,5 @@
+deploy
+
+# Built by slx (WebUI/build/Dashboard.ps1) and pulled in at bundle time.
+# Not open source, never commit it here.
+dashboard

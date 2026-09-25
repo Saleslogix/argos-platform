@@ -10,6 +10,7 @@
   ],
   "scripts": {
     "install:all": "npm install",
+    "bundle:dashboard": "powershell -NoProfile -ExecutionPolicy Bypass -File products/argos-dashboard/build/bundle.ps1",
     "test:all": "npm run test --workspaces",
     "test:sdk": "npm run test -w argos-sdk",
     "test:saleslogix": "npm run test -w products/argos-saleslogix"
