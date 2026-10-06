@@ -5,6 +5,7 @@
   "workspaces": [
     "argos-sdk",
     "products/argos-saleslogix",
+    "products/capacitor",
     "packages/grunt-argos-deps",
     "packages/graphs"
   ],
@@ -13,7 +14,9 @@
     "bundle:dashboard": "powershell -NoProfile -ExecutionPolicy Bypass -File products/argos-dashboard/build/bundle.ps1",
     "test:all": "npm run test --workspaces",
     "test:sdk": "npm run test -w argos-sdk",
-    "test:saleslogix": "npm run test -w products/argos-saleslogix"
+    "test:saleslogix": "npm run test -w products/argos-saleslogix",
+    "android": "npm run android -w products/capacitor --",
+    "android:full": "npm run android:full -w products/capacitor --"
   },
   "devDependencies": {
     "chai": "^4.3.4",

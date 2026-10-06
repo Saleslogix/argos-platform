@@ -1,0 +1,29 @@
+{
+  "name": "argos-capacitor",
+  "version": "4.4.0",
+  "private": true,
+  "//": [
+    "Android only for now. iOS is deferred (no Mac available): later run `npm i -E @capacitor/ios@8.5.2 -w products/capacitor` then `npx cap add ios`.",
+    "appId com.infor.argos.saleslogix in capacitor.config.json is a placeholder; confirm the real bundle id before publishing.",
+    "Prerequisite: both deploy/ folders (argos-sdk, products/argos-saleslogix). `npm run build:web` runs both build\\release.cmd (sdk first); Windows only (JsBit .exe + cmd).",
+    "`npm run android` = build www + cap sync + cap run android (builds the debug APK, installs, launches). Boots a stopped AVD itself. Pick a device: `npm run android -- --target Medium_Phone`; list them: `npx cap run android --list`.",
+    "`npm run android:full` = build:web + android, e.g. `npm run android:full -- --target Medium_Phone`. From the repo root: `npm run android` / `npm run android:full` (same args)."
+  ],
+  "scripts": {
+    "build": "node scripts/build-www.js",
+    "build:web": "cd ../../argos-sdk && build\\release.cmd && cd ../products/argos-saleslogix && build\\release.cmd",
+    "test": "node scripts/check-ping.js",
+    "sync": "npm run build && cap sync android",
+    "android": "npm run sync && cap run android",
+    "android:full": "npm run build:web && npm run android --",
+    "open:android": "cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.5.2",
+    "@capacitor/core": "8.5.2",
+    "@capacitor/network": "8.0.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.5.2"
+  }
+}

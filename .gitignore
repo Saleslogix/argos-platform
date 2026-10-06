@@ -67,3 +67,6 @@ index-dev-*.html
 
 # Workspace-specific configs
 scripts/config.json
+
+# Agent working notes (plans, verification, reviews)
+.agents/

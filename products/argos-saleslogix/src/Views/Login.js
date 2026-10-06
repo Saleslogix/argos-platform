@@ -45,6 +45,7 @@ define('crm/Views/Login', [
 
     id: 'login',
     busy: false,
+    submitProbeTimeout: 10000,
     multiColumnView: false,
     // Localization
     copyrightText: resource.copyrightText,
@@ -53,6 +54,17 @@ define('crm/Views/Login', [
     rememberText: resource.rememberText,
     titleText: resource.titleText,
     userText: resource.userText,
+    serverUrlText: resource.serverUrlText,
+    invalidServerUrlText: resource.invalidServerUrlText,
+    serverUnreachableText: resource.serverUnreachableText,
+    serverHostNotFoundText: resource.serverHostNotFoundText,
+    serverRefusedText: resource.serverRefusedText,
+    serverCertificateText: resource.serverCertificateText,
+    serverNotSDataText: resource.serverNotSDataText,
+    serverTimeoutText: resource.serverTimeoutText,
+    serverNoNetworkText: resource.serverNoNetworkText,
+    serverCorsText: resource.serverCorsText,
+    signInTimeoutText: resource.signInTimeoutText,
     invalidUserText: resource.invalidUserText,
     missingUserText: resource.missingUserText,
     requestAbortedText: resource.requestAbortedText,
@@ -147,6 +159,100 @@ define('crm/Views/Login', [
         $(this.domNode).addClass('login-active');
       }
     },
+    refresh: function refresh() {
+      // Edit.refresh clears every field, so prefill the server URL afterwards.
+      this.inherited(refresh, arguments);
+      if (this.fields.serverUrl) {
+        this.fields.serverUrl.setValue(this.getServerUrl());
+      }
+    },
+    // Server URL field: only shown when the config sets enableServerUrl (the Capacitor build),
+    // because a bundled app can't reach SData same-origin.
+    // ponytail: temporary; replace with a proper connection settings screen if this sticks.
+    getServerUrl: function getServerUrl() {
+      try {
+        const saved = window.localStorage && window.localStorage.getItem('serverUrl');
+        if (saved) {
+          return saved;
+        }
+      } catch (e) {} // eslint-disable-line
+      const service = App.getService();
+      const port = service.getPort();
+      return `${service.getProtocol() || 'http'}://${service.getServerName()}${port ? `:${port}` : ''}/${service.getVirtualDirectory()}`;
+    },
+    parseServerUrl: function parseServerUrl(value) {
+      let url;
+      try {
+        url = new URL(value);
+      } catch (e) {
+        return null;
+      }
+      if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+        return null;
+      }
+      return {
+        protocol: url.protocol.slice(0, -1),
+        serverName: url.hostname,
+        port: url.port || false,
+        virtualDirectory: url.pathname.replace(/^\/+|\/+$/g, '') || 'sdata',
+      };
+    },
+    applyServerUrl: function applyServerUrl(value) {
+      const parsed = this.parseServerUrl(value);
+      new Set([App.getService(), App.getConnection()]).forEach((service) => {
+        service.setProtocol(parsed.protocol)
+          .setServerName(parsed.serverName)
+          .setPort(parsed.port)
+          .setVirtualDirectory(parsed.virtualDirectory);
+      });
+      try {
+        window.localStorage.setItem('serverUrl', value);
+      } catch (e) {} // eslint-disable-line
+    },
+    _showServerUrlError: function _showServerUrlError(message) {
+      const field = this.fields.serverUrl;
+      this._probeErrorShown = false;
+      $(field.containerNode).toggleClass('row-error', !!message);
+      field.inputNode.setAttribute('aria-invalid', message ? 'true' : 'false');
+      $('.error-message', field.containerNode).remove();
+      if (message) {
+        $('<p class="error-message" role="alert"></p>').text(message).appendTo(field.containerNode);
+      }
+    },
+    // result comes from App.probeServer, which only the Capacitor config defines.
+    serverProbeErrorText: function serverProbeErrorText(result) {
+      const reasons = {
+        hostNotFound: this.serverHostNotFoundText,
+        refused: this.serverRefusedText,
+        certificate: this.serverCertificateText,
+        notSData: this.serverNotSDataText,
+        timeout: this.serverTimeoutText,
+        noNetwork: this.serverNoNetworkText,
+      };
+      const reason = result && reasons[result.reason];
+      return reason ? `${this.serverUnreachableText} ${reason}` : this.serverUnreachableText;
+    },
+    // A falsy result clears the field error, but only one this method set (not e.g. invalidServerUrlText).
+    showServerProbeError: function showServerProbeError(result) {
+      if (!this.fields || !this.fields.serverUrl) {
+        return;
+      }
+      if (result) {
+        this._showServerUrlError(this.serverProbeErrorText(result));
+        this._probeErrorShown = true;
+      } else if (this._probeErrorShown) {
+        this._showServerUrlError(false);
+      }
+    },
+    _isLastGoodServerUrl: function _isLastGoodServerUrl(url) {
+      const trim = u => (u || '').replace(/\/+$/, '');
+      try {
+        const lastGood = window.localStorage.getItem('lastGoodServerUrl');
+        return !!lastGood && trim(lastGood) === trim(url);
+      } catch (e) {
+        return false;
+      }
+    },
     createToolLayout: function createToolLayout() {
       return this.tools || (this.tools = {
         bbar: false,
@@ -159,7 +265,13 @@ define('crm/Views/Login', [
       };
     },
     createLayout: function createLayout() {
-      return this.layout || (this.layout = [{
+      return this.layout || (this.layout = [...(App.enableServerUrl ? [{
+        name: 'serverUrl',
+        label: this.serverUrlText,
+        type: 'text',
+        inputType: 'url',
+        required: true,
+      }] : []), {
         name: 'username-display',
         label: this.userText,
         type: 'text',
@@ -182,16 +294,48 @@ define('crm/Views/Login', [
       }
 
       const values = this.getValues(true);
-
       const credentials = {
         username: values['username-display'],
         password: values['password-display'],
         remember: values.remember,
       };
+      const proceed = (probedOnline) => {
+        if (credentials.username) {
+          this.validateCredentials(credentials, probedOnline);
+        }
+      };
 
-      if (credentials.username) {
-        this.validateCredentials(credentials);
+      if (this.fields.serverUrl) {
+        const serverUrl = (values.serverUrl || '').trim();
+        if (!this.parseServerUrl(serverUrl)) {
+          this._showServerUrlError(this.invalidServerUrlText);
+          return;
+        }
+        this._showServerUrlError(false);
+        this.applyServerUrl(serverUrl);
+
+        // Capacitor only (App.probeServer comes from its config): check a URL that never worked before
+        // signing in, so a bad URL gets a field error instead of a generic sign-in failure.
+        if (typeof App.probeServer === 'function' && !this._isLastGoodServerUrl(serverUrl)) {
+          // Same busy cue as validateCredentials. Re-enabled before proceed(), which disables again
+          // synchronously when it signs in (no repaint in between) and leaves the form usable when it doesn't.
+          this.disable();
+          // Longer budget than the background ping: the first request after an IIS app pool idles can take seconds.
+          return App.probeServer(serverUrl, this.submitProbeTimeout).then((result) => {
+            this.enable();
+            if (result.kind !== 'online') {
+              this.showServerProbeError(result);
+              return;
+            }
+            proceed(true);
+          }, () => {
+            this.enable();
+            proceed(); // a probe bug must not block sign-in
+          });
+        }
       }
+
+      proceed();
     },
     createErrorHandlers: function createErrorHandlers() {
       this.errorText.status[this.HTTP_STATUS.FORBIDDEN] = this.invalidUserText;
@@ -271,7 +415,7 @@ define('crm/Views/Login', [
 
       return this.errorHandlers;
     },
-    validateCredentials: function validateCredentials(credentials) {
+    validateCredentials: function validateCredentials(credentials, probedOnline) {
       this.busy = true;
       this.disable();
 
@@ -284,6 +428,12 @@ define('crm/Views/Login', [
       App.authenticateUser(credentials, {
         success: function success() {
           this.busy = false;
+          if (this.fields.serverUrl) {
+            // A URL that signed in once is treated as offline/down (not misconfigured) when it later can't be reached.
+            try {
+              window.localStorage.setItem('lastGoodServerUrl', this.getServerUrl());
+            } catch (e) {} // eslint-disable-line
+          }
           // Need to remove Login view from pagejs stack
           page.len--;
           if (this.fields.remember.getValue() !== true) {
@@ -301,6 +451,19 @@ define('crm/Views/Login', [
         failure: function failure(result) {
           this.busy = false;
           this.enable();
+          const status = result && result.response && result.response.status;
+          // Capacitor only: a field error instead of the generic alert for a timeout, or for a blocked request
+          // (status 0 / no response) to a server the probe just found online, which is almost always CORS.
+          if (this.fields.serverUrl && typeof App.probeServer === 'function') {
+            if (result && result.timeout) {
+              this._showServerUrlError(this.signInTimeoutText);
+              return;
+            }
+            if (probedOnline && !status) {
+              this._showServerUrlError(this.serverCorsText);
+              return;
+            }
+          }
           const error = new Error();
           error.status = result && result.response && result.response.status;
           error.xhr = result && result.response;

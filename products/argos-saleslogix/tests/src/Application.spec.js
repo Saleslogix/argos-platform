@@ -202,5 +202,59 @@ define('spec/Application.spec', [
           });
       });
     });
+
+    describe('authenticateUser', function() {
+      var Req = Sage.SData.Client.SDataServiceOperationRequest;
+      var handlers;
+      var fake;
+      var failure;
+
+      beforeEach(function() {
+        Sage.SData.Client.SDataServiceOperationRequest = function() {
+          this.setContractName = function() { return this; };
+          this.setOperationName = function() { return this; };
+          this.execute = function(entry, h) { handlers = h; };
+        };
+        var service = { setUserName: function() { return service; }, setPassword: function() { return service; } };
+        fake = {
+          getService: function() { return service; },
+          onAuthenticateUserFailure: application.prototype.onAuthenticateUserFailure,
+          onAuthenticateUserSuccess: function() {}
+        };
+        failure = jasmine.createSpy('failure');
+        application.prototype.authenticateUser.call(fake, { username: 'admin' }, { failure: failure, scope: {} });
+      });
+
+      afterEach(function() {
+        Sage.SData.Client.SDataServiceOperationRequest = Req;
+      });
+
+      it('reports a timeout once, flagged, even though the XHR also reported status 0 first', function(done) {
+        var xhr = { status: 0 };
+        handlers.aborted(xhr); // Chromium: readyState 4 / status 0, routed to aborted by sdata-client
+        handlers.timeout(xhr); // then the timeout event, same task
+        setTimeout(function() {
+          expect(failure.calls.count()).toEqual(1);
+          expect(failure.calls.argsFor(0)[0]).toEqual({ response: xhr, timeout: true });
+          done();
+        }, 10);
+      });
+
+      it('reports an aborted request (e.g. CORS block) as a failure without the timeout flag', function(done) {
+        var xhr = { status: 0 };
+        handlers.aborted(xhr);
+        setTimeout(function() {
+          expect(failure.calls.count()).toEqual(1);
+          expect(failure.calls.argsFor(0)[0]).toEqual({ response: xhr, timeout: false });
+          done();
+        }, 10);
+      });
+
+      it('reports a plain failure at once', function() {
+        var xhr = { status: 403 };
+        handlers.failure(xhr);
+        expect(failure).toHaveBeenCalledWith({ response: xhr, timeout: false });
+      });
+    });
   });
 });

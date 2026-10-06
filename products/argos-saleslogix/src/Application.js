@@ -684,7 +684,7 @@ define('crm/Application', [
         });
       }
     }
-    onAuthenticateUserFailure(callback, scope, response) {
+    onAuthenticateUserFailure(callback, scope, response, timeout) {
       // Check if this is an MFA challenge — credentials are still valid,
       // the server just needs a second factor. Don't clear them.
       let isMfaRequired = false;
@@ -712,6 +712,7 @@ define('crm/Application', [
       if (callback) {
         callback.call(scope || this, {
           response,
+          timeout: !!timeout,
         });
       }
     }
@@ -727,10 +728,21 @@ define('crm/Application', [
         .setContractName('system')
         .setOperationName('getCurrentUser');
 
+      // sdata-client calls `timeout` only when it is passed (never falls back to failure). Chromium also reports a
+      // timed-out XHR first as readyState 4 / status 0, which sdata routes to `aborted`, then fires `timeout`.
+      // So settle once, and hold `aborted` for one task so a timeout that follows wins and is flagged.
+      let settled = false;
+      const fail = timedOut => (response) => {
+        if (!settled) {
+          settled = true;
+          this.onAuthenticateUserFailure(options.failure, options.scope, response, timedOut);
+        }
+      };
       request.execute({}, {
         success: this.onAuthenticateUserSuccess.bind(this, credentials, options.success, options.scope),
-        failure: this.onAuthenticateUserFailure.bind(this, options.failure, options.scope),
-        aborted: this.onAuthenticateUserFailure.bind(this, options.failure, options.scope),
+        failure: fail(false),
+        aborted: response => setTimeout(() => fail(false)(response), 0),
+        timeout: fail(true),
       });
     }
     hasAccessTo(security) {

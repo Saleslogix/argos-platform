@@ -5,6 +5,8 @@
 *.java   text diff=java
 *.html   text diff=html
 *.css    text
+# LESS writes LF; checking out CRLF made every build show this file as modified.
+/min/css/*.debug.css eol=lf
 *.js     text
 *.sql    text
 *.l20n   text=auto

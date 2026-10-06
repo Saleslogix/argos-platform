@@ -1,0 +1,6 @@
+# generated web bundle (npm run build)
+www/
+# root .gitignore ignores *.jar; the Gradle wrapper jar must be committed
+!android/gradle/wrapper/gradle-wrapper.jar
+# root .gitignore ignores [Dd]ebug*/; the debug source set (cleartext manifest) must be committed
+!android/app/src/debug/
