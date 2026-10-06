@@ -63,7 +63,7 @@ define('spec/Views/Login.spec', [
       view.shown = [];
       view._showServerUrlError = function(msg) { view.shown.push(msg); };
       view.handleError = jasmine.createSpy('handleError');
-      view.serverCorsText = 'CORS.';
+      view.serverRequestFailedText = 'Failed.';
       view.signInTimeoutText = 'Slow.';
       window.App.authenticateUser = function(credentials, options) {
         expect(view.busy).toBe(true);
@@ -76,12 +76,16 @@ define('spec/Views/Login.spec', [
       return view;
     }
 
-    it('shows a CORS field error, not the alert, for a status 0 failure after an online probe', function() {
+    it('shows a request-failed field error, not the alert, for an incomplete request after an online probe', function() {
       var view = signInFailure({ response: { status: 0 }, timeout: false }, true, true);
-      expect(view.shown).toEqual(['CORS.']);
+      expect(view.shown).toEqual(['Failed.']);
       expect(view.handleError).not.toHaveBeenCalled();
       view = signInFailure({ response: undefined, timeout: false }, true, true);
-      expect(view.shown).toEqual(['CORS.']);
+      expect(view.shown).toEqual(['Failed.']);
+      // Capacitor native HTTP network error: status undefined
+      view = signInFailure({ response: { status: undefined }, timeout: false }, true, true);
+      expect(view.shown).toEqual(['Failed.']);
+      expect(view.handleError).not.toHaveBeenCalled();
     });
 
     it('shows a timeout field error for a sign-in timeout', function() {

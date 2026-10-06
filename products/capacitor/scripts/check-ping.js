@@ -145,5 +145,57 @@ const kind = (r, e) => { const x = C(r, e); return `${x.kind}/${x.reason}`; };
   delete global.window.capacitorExports;
   assert.strictEqual((await app.probeServer(good)).kind, 'online');
 
+  // (f) xhr.timeout emulation for non-GET requests under Capacitor's native XHR patch.
+  // Fake patched XHR: non-GET open defines an own readyState whose setter dispatches readystatechange
+  // async (like native-bridge.js); send never completes unless the test does it.
+  class FakeXhr extends EventTarget {
+    open(method) {
+      if (method !== 'GET') {
+        Object.defineProperty(this, 'readyState', {
+          get() { return this._rs || 0; },
+          set(v) { this._rs = v; setTimeout(() => this.dispatchEvent(new Event('readystatechange'))); },
+        });
+        this.readyState = 1;
+      }
+    }
+    send() { // GET: real XHR (no own readyState), left pending here
+      if (Object.getOwnPropertyDescriptor(this, 'readyState')) { this.readyState = 2; this.status = 0; }
+    }
+    dispatchEvent(e) { // like a real XHR, also call the on<type> handler
+      const r = super.dispatchEvent(e);
+      if (typeof this[`on${e.type}`] === 'function') this[`on${e.type}`](e);
+      return r;
+    }
+  }
+  const fakeWin = { XMLHttpRequest: function XMLHttpRequest() { return new FakeXhr(); }, CapacitorWebXMLHttpRequest: { fullObject: function Real() {} } };
+  app._patchXhrTimeout(fakeWin);
+  const track = (method, complete) => new Promise((resolve) => {
+    const xhr = new fakeWin.XMLHttpRequest();
+    const log = [];
+    xhr.open(method, 'http://10.0.2.2/sdata');
+    xhr.timeout = 50;
+    xhr.ontimeout = () => log.push(`timeout ${xhr.readyState} ${xhr.status}`);
+    xhr.addEventListener('readystatechange', () => { if (xhr.readyState === 4) log.push('rs4'); });
+    const t0 = Date.now();
+    xhr.send('{}');
+    if (complete) setTimeout(() => { xhr.status = 200; xhr.readyState = 4; }, 10);
+    setTimeout(() => resolve({ log, ms: Date.now() - t0 }), 120);
+  });
+  const post = await track('POST');
+  assert.deepStrictEqual(post.log, ['timeout 4 0', 'rs4'], 'POST: one timeout, then readyState 4');
+  assert.deepStrictEqual((await track('GET')).log, [], 'GET: no emulated timeout (real XHR handles it)');
+  assert.deepStrictEqual((await track('POST', true)).log, ['rs4'], 'completed POST: no timeout');
+  const timed = await new Promise((resolve) => {
+    const xhr = new fakeWin.XMLHttpRequest();
+    const t0 = Date.now();
+    xhr.open('POST', 'x'); xhr.timeout = 50; xhr.ontimeout = () => resolve(Date.now() - t0); xhr.send();
+  });
+  assert.ok(timed >= 45 && timed < 100, `timeout fires after xhr.timeout (${timed} ms)`);
+  const unpatched = { XMLHttpRequest: function Real() {} };
+  unpatched.CapacitorWebXMLHttpRequest = { fullObject: unpatched.XMLHttpRequest };
+  app._patchXhrTimeout(unpatched);
+  assert.strictEqual(unpatched.XMLHttpRequest, unpatched.CapacitorWebXMLHttpRequest.fullObject, 'no wrap when the patch is off');
+  app._patchXhrTimeout({ XMLHttpRequest: function Real() {} }); // no Capacitor: no throw
+
   console.log('check-ping ok');
 })().catch((e) => { console.error(e); process.exit(1); });

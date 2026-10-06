@@ -1375,7 +1375,7 @@
   serverNotSDataText: "This URL is not an SData server."
   serverTimeoutText: "The server timed out."
   serverNoNetworkText: "No network connection."
-  serverCorsText: "The server is reachable but rejected the app's cross-origin request (CORS). Ask your administrator to allow https://localhost."
+  serverRequestFailedText: "The server is reachable but the sign-in request didn't complete. Check your connection and try again."
   signInTimeoutText: "The server didn't respond in time. Try again."
   passwordExpiredText: "Password has expired. Please use the web client to change your password."
   invalidUserText: "The user name or password is invalid."

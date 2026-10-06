@@ -1,5 +1,9 @@
 {
   "appId": "com.infor.argos.saleslogix",
   "appName": "Infor CRM",
-  "webDir": "www"
+  "webDir": "www",
+  "plugins": {
+    "CapacitorHttp": { "enabled": true },
+    "CapacitorCookies": { "enabled": true }
+  }
 }

@@ -63,7 +63,7 @@ define('crm/Views/Login', [
     serverNotSDataText: resource.serverNotSDataText,
     serverTimeoutText: resource.serverTimeoutText,
     serverNoNetworkText: resource.serverNoNetworkText,
-    serverCorsText: resource.serverCorsText,
+    serverRequestFailedText: resource.serverRequestFailedText,
     signInTimeoutText: resource.signInTimeoutText,
     invalidUserText: resource.invalidUserText,
     missingUserText: resource.missingUserText,
@@ -452,15 +452,15 @@ define('crm/Views/Login', [
           this.busy = false;
           this.enable();
           const status = result && result.response && result.response.status;
-          // Capacitor only: a field error instead of the generic alert for a timeout, or for a blocked request
-          // (status 0 / no response) to a server the probe just found online, which is almost always CORS.
+          // Capacitor only: a field error instead of the generic alert for a timeout, or for a request that
+          // didn't complete (status 0 or none, e.g. the connection dropped) to a server the probe just found online.
           if (this.fields.serverUrl && typeof App.probeServer === 'function') {
             if (result && result.timeout) {
               this._showServerUrlError(this.signInTimeoutText);
               return;
             }
             if (probedOnline && !status) {
-              this._showServerUrlError(this.serverCorsText);
+              this._showServerUrlError(this.serverRequestFailedText);
               return;
             }
           }

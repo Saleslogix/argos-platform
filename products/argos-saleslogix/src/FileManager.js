@@ -192,7 +192,9 @@ define('crm/FileManager', [
         // Read the blob back as an ArrayBuffer to work around this android issue:
         // https://code.google.com/p/android/issues/detail?id=39882
         blobReader.onload = function blobReaderOnLoad(e) {
-          request.send(e.target.result);
+          // Capacitor native XHR serialises an ArrayBuffer body as "{}" but ships a File's exact bytes;
+          // the explicit multipart Content-Type above still wins over the File type.
+          request.send(window.CapacitorWebXMLHttpRequest ? new File([e.target.result], file.name) : e.target.result);
         };
 
         blobReader.readAsArrayBuffer(blobData);

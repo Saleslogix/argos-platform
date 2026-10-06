@@ -6,9 +6,12 @@
 // Connectivity (replaces the SDK ping.gif ping, which would hit the app bundle and always succeed):
 // - @capacitor/network connectionType 'none' -> offline at once, no probe (its `connected` flag is not used, see probeServer).
 // - Otherwise a native CapacitorHttp.get probes <Server URL>/<app>/system/-/?format=json without credentials.
-//   It is native, so it bypasses CORS and can't raise a WebView auth prompt. Global fetch/XHR patching
-//   (plugins.CapacitorHttp.enabled) stays off: login and data requests still go through the WebView XHR,
-//   so the SData server must still allow CORS from origin https://localhost.
+//   It is native, so it bypasses CORS and can't raise a WebView auth prompt.
+// Native HTTP (capacitor.config.json plugins.CapacitorHttp/CapacitorCookies): every absolute-URL fetch/XHR goes
+//   native (GETs through the https://localhost/_capacitor_http_interceptor_ proxy, other methods over the bridge),
+//   so no CORS. Server cookies (ASP.NET_SessionId, forms ticket) live in the native cookie jar, which keeps one
+//   server session per app run (the jar's session cookies are cleared at each app start). See patchXhrTimeout
+//   for the one gap in the patched XHR.
 // - The JS API comes from www/capacitor.js (@capacitor/core/dist/capacitor.js, a plain IIFE that sets
 //   window.capacitorExports; build-www.js adds its <script> tag). No bundler. It is read lazily at call time;
 //   if it is missing (e.g. this www opened in a desktop browser) the probe reports online and blocks nothing.
@@ -22,7 +25,46 @@ define('configuration/production', [
   let network; // registerPlugin warns when called twice for the same plugin
   const getNetwork = cap => network || (network = cap.registerPlugin('Network'));
 
+  // Capacitor's patched XHR sends non-GET requests over the bridge and never fires `timeout` (no native
+  // connect/read timeout either), so a sign-in POST or data write to a server that never answers would hang.
+  // Emulate xhr.timeout for those requests, in the order crm/Application.authenticateUser handles:
+  // status 0, readyState 4 (the patch dispatches readystatechange async), then `timeout` synchronously.
+  // GETs go through the real-XHR proxy, where xhr.timeout already works (no own readyState there).
+  // ponytail: a native error arriving after the emulated timeout still fires `failure` once more
+  // (authenticateUser settles once; other callers may see a second callback). Upgrade path: a Capacitor
+  // patch that passes connectTimeout/readTimeout to CapacitorHttp.request.
+  function patchXhrTimeout(win) {
+    const capXhr = win.CapacitorWebXMLHttpRequest;
+    if (!capXhr || win.XMLHttpRequest === capXhr.fullObject) {
+      return;
+    }
+    const Patched = win.XMLHttpRequest;
+    win.XMLHttpRequest = function XMLHttpRequest() {
+      const xhr = new Patched();
+      // Own property: the patch reassigns the shared prototype methods on every construction.
+      xhr.send = function send(body) {
+        const result = Object.getPrototypeOf(this).send.call(this, body);
+        if (this.timeout > 0 && Object.getOwnPropertyDescriptor(this, 'readyState')) {
+          setTimeout(() => {
+            if (this.readyState !== 4 && this.readyState !== 0) {
+              this.status = 0;
+              this.readyState = 4;
+              this.dispatchEvent(new Event('timeout'));
+            }
+          }, this.timeout);
+        }
+        return result;
+      };
+      return xhr;
+    };
+    Object.assign(win.XMLHttpRequest, Patched);
+  }
+  if (typeof window !== 'undefined') {
+    patchXhrTimeout(window);
+  }
+
   return lang.mixin(defaultConfig, {
+    _patchXhrTimeout: patchXhrTimeout, // exposed for scripts/check-ping.js
     // Assets are bundled in the app, so no service worker app-shell cache.
     enableServiceWorker: false,
     // crm/Application turns the service worker on whenever enableOfflineSupport is set; keep it off here
@@ -56,6 +98,7 @@ define('configuration/production', [
         timeout: 30000,
         compact: true,
         json: true,
+        // Must stay false: native HTTP ignores xhr.open(user, password), so credentials must go in the Authorization header.
         useCredentialedRequest: false,
       },
     },
