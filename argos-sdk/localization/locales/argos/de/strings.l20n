@@ -48,10 +48,10 @@
   thisYearLaterText: "Späterer Zeitpunkt in diesem Jahr"
   yesterdayText: "Gestern"
   lastWeekText: "Letzte Woche"
-  lastMonthText: "Letzter Monat"
+  lastMonthText: "Letzten Monat"
   pastYearText: "Vergang. Jahr(e)"
   nextYearText: "Nächstes Jahr"
-  nextMonthText: "Nächster Monat"
+  nextMonthText: "Nächsten Monat"
   nextWeekText: "Nächste Woche"
   futureText: "Zukunft"
   twoWeeksAgoText: "Vor zwei Wochen"
@@ -201,16 +201,7 @@
   backTooltipText: "Zurück"
   themeText: "Design"
   personalizationText: "Personalisierung"
-  lightText: "Hell"
-  darkText: "Dunkel"
-  highContrastText: "Kontrast"
   defaultText: "Standard"
-  azureText: "Azur"
-  amberText: "Bernstein"
-  amethystText: "Amethyst"
-  turquoiseText: "Türkis"
-  emeraldText: "Smaragd"
-  graphiteText: "Graphit"
 >
 
 <relatedViewWidget ""
@@ -219,7 +210,7 @@
   selectMoreDataText2: "siehe ${0} mehr ... "
   navToListText: "siehe Liste"
   loadingText: "Ladevorgang läuft"
-  refreshViewText: "aktualisieren"
+  refreshViewText: "Aktualisieren"
   itemOfCountText: " ${0} von ${1}"
   totalCountText: " (${0})"
   titleText: "Zugehörige Ansicht"
@@ -227,6 +218,7 @@
 
 <searchWidget ""
  searchText: "Suchen"
+ containsText: "Enthält"
 >
 
 <selectionModel ""
@@ -304,4 +296,6 @@
   initializingText: "Wird initialisiert:"
   viewSettingsText: "Ansichtseinstellungen"
   closeText: "Schließen"
+  serviceWorkerError: "Bei der Installation des Dienst-Workers ist ein Fehler aufgetreten. Wenden Sie sich an den Administrator des Standorts."
+  serviceWorkerErrorTitle: "Fehler"
 >

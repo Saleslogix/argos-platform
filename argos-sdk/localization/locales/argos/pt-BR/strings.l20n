@@ -1,18 +1,18 @@
 <dateField ""
   emptyText: ""
-  invalidDateFormatErrorText: "O Campo '${0}' tem formato de data inválido."
+  invalidDateFormatErrorText: "O campo '${0}' tem um formato de data inválido."
   cancelText: "Cancelar"
   confirmText: "Confirmar"
   advancedText: "Avançado"
 >
 
 <durationField ""
-  minutes: "minuto(s)"
+  minutes: "Minuto(s)"
   hours: "Hora(s)"
   days: "Dia(s)"
   weeks: "Semana(s)"
   years: "Ano(s)"
-  invalidDurationErrorText: "O Campo '${0}' não é uma duração válida."
+  invalidDurationErrorText: "O campo '${0}' não é uma duração válida."
   emptyText: ""
 >
 
@@ -24,7 +24,7 @@
 >
 
 <lookupField ""
-  dependentErrorText: "Um valor para '${0}' deve ser selecionado."
+  dependentErrorText: "É necessário selecionar um valor para '${0}'."
   emptyText: ""
   completeText: "Selecionar"
   lookupLabelText: "Pesquisar"
@@ -37,15 +37,15 @@
 >
 
 <dateTimeSection ""
-  displayNameText: "Seção de Data e Hora"
+  displayNameText: "Seleção de data e hora"
   todayText: "Hoje"
   tomorrowText: "Amanhã"
-  laterThisWeekText: "Mais para o final da semana"
-  earlierThisWeekText: "Mais para o início da semana"
-  thisLaterMonthText: "Mais para o final do mês"
-  thisEarlierMonthText: "Mais para o início do mês"
-  thisYearEarlierText: "Mais para o início do ano"
-  thisYearLaterText: "Mais para o final do ano"
+  laterThisWeekText: "Depois nesta semana"
+  earlierThisWeekText: "Antes nesta semana"
+  thisLaterMonthText: "Depois neste mês"
+  thisEarlierMonthText: "Antes neste mês"
+  thisYearEarlierText: "Antes neste ano"
+  thisYearLaterText: "Depois neste ano"
   yesterdayText: "Ontem"
   lastWeekText: "Última semana"
   lastMonthText: "Último mês"
@@ -62,23 +62,23 @@
 >
 
 <groupByValueSection ""
-  displayNameText: "Agrupar por Seção de Valor"
+  displayNameText: "Seção de agrupamento por valor"
 >
 
 <configureQuickActions ""
-  titleText: "Configurar Ações Rápidas"
+  titleText: "Configurar ações rápidas"
 >
 
 <fileSelect ""
-  titleText: "Selecionar Arquivo"
-  addFileText: "Escolher um arquivo para adicionar"
+  titleText: "Seleção de arquivos"
+  addFileText: "Escolha um arquivo para adicionar"
   uploadText: "Carregar"
   cancelText: "Cancelar"
   selectFileText: "Selecionar arquivo"
   loadingText: "Carregando..."
   descriptionText: "Descrição"
-  bytesText: "bytes"
-  notSupportedText: "A inclusão de anexos não é suportado pelo seu dispositivo."
+  bytesText: "Bytes"
+  notSupportedText: "A adição de arquivos não é suportada pelo seu dispositivo."
 >
 
 <signature ""
@@ -98,7 +98,7 @@
   detailsText: "Detalhes"
   loadingText: "Carregando"
   notAvailableText: "Os dados solicitados não estão disponíveis."
-  toggleCollapseText: "Alternar Recolher"
+  toggleCollapseText: "Alternar recolher"
   editText: "Editar"
   editTooltipText: "Editar"
   refreshTooltipText: "Atualizar"
@@ -106,29 +106,29 @@
 
 <editBase ""
   concurrencyErrorText: "Outro usuário atualizou este campo."
-  toggleCollapseText: "Alternar Recolher"
+  toggleCollapseText: "Alternar recolher"
   saveText: "Salvar"
   titleText: "Editar"
-  validationSummaryText: "Resumo de Validação"
-  concurrencySummaryText: "Simultaneidade de Erro(s)"
+  validationSummaryText: "Resumo de validação"
+  concurrencySummaryText: "Erros de simultaneidade"
   detailsText: "Detalhes"
   loadingText: "Carregando"
-  errorGeneral: "Ocorreu um erro no servidor enquanto os dados eram solicitados."
-  error410:  "Erro ao salvar. Este registro não existe."
+  errorGeneral: "Ocorreu um erro de servidor durante a solicitação de dados."
+  error410:  "Erro ao salvar. Este registro não existe mais."
   saveTooltipText: "Salvar"
   cancelTooltipText: "Cancelar"
 >
 
 <errorHandleMixin ""
-  general: "Ocorreu um erro no servidor."
+  general: "Ocorreu um erro de servidor."
 >
 
 <listBase ""
-  moreText: "Carregar Mais Registros"
+  moreText: "Recuperar mais registros"
   emptySelectionText: "Nenhum"
   titleText: "Lista"
   configureText: "Configurar"
-  errorRenderText: "Erro ao renderizar o modelo de linha."
+  errorRenderText: "Erro ao renderizar modelo de linha"
   remainingText: "${0} registros restantes"
   cancelText: "Cancelar"
   insertText: "Novo"
@@ -139,8 +139,8 @@
 >
 
 <pullToRefreshMixin ""
-  pullRefreshText: "Puxe para baixo para atualizar..."
-  pullReleaseText: "Disponibilizar para atualização..."
+  pullRefreshText: "Arraste para baixo para atualizar..."
+  pullReleaseText: "Solte para atualizar..."
 >
 
 <relatedViewWidgetBase ""
@@ -155,7 +155,7 @@
   february: "Fevereiro"
   march: "Março"
   april: "Abril"
-  may: "Mai"
+  may: "Maio"
   june: "Junho"
   july: "Julho"
   august: "Agosto"
@@ -166,17 +166,17 @@
   clearText: "Limpar"
   todayText: "Hoje"
   sundayAbbreviated: "Do"
-  mondayAbbreviated: "Se"
-  tuesdayAbbreviated: "Te"
-  wednesdayAbbreviated: "Qu"
-  thursdayAbbreviated: "Qu"
-  fridayAbbreviated: "Se"
-  saturdayAbbreviated: "Sa"
+  mondayAbbreviated: "2ª"
+  tuesdayAbbreviated: "3ª"
+  wednesdayAbbreviated: "4ª"
+  thursdayAbbreviated: "5ª"
+  fridayAbbreviated: "6ª"
+  saturdayAbbreviated: "Sá"
 >
 
 <errorManager ""
   abortedText: "Anulado"
-  scopeSaveText: "O escopo não foi salvo no relatório de erro"
+  scopeSaveText: "O escopo não está salvo no relatório de erros"
 >
 
 <format ""
@@ -186,14 +186,14 @@
   falseText: "F"
   hoursText: "Horas"
   hourText: "Hora"
-  minutesText: "minutos"
-  minuteText: "minuto"
+  minutesText: "Minutos"
+  minuteText: "Minuto"
   percentFormatText: "${0}${1}"
-  bytesText: "bytes"
+  bytesText: "Bytes"
 >
 
 <groupedList ""
- toggleCollapseText: "Alternar Recolher"
+ toggleCollapseText: "Alternar recolher"
 >
 
 <mainToolbar ""
@@ -201,56 +201,48 @@
   backTooltipText: "Voltar"
   themeText: "Tema"
   personalizationText: "Personalização"
-  lightText: "Claro"
-  darkText: "Escuro"
-  highContrastText: "Alto Contraste"
   defaultText: "Padrão"
-  azureText: "Azul-fino"
-  amberText: "Âmbar"
-  amethystText: "Ametista"
-  turquoiseText: "Turquesa"
-  emeraldText: "Esmeralda"
-  graphiteText: "Grafite"
 >
 
 <relatedViewWidget ""
-  nodataText: "Nenhum registro encontrado ..."
-  selectMoreDataText: "Ver mais ${0} de ${1} ... "
+  nodataText: "Nenhum registro encontrado..."
+  selectMoreDataText: "Ver mais ${0} de ${1}... "
   selectMoreDataText2: "Ver mais ${0}... "
-  navToListText: "Exibir Lista"
+  navToListText: "Ver lista"
   loadingText: "Carregando"
   refreshViewText: "Atualizar"
   itemOfCountText: " ${0} de ${1}"
   totalCountText: " (${0})"
-  titleText: "Exibição Relacionada"
+  titleText: "Exibição detalhada"
 >
 
 <searchWidget ""
  searchText: "Pesquisar"
+ containsText: "Contém"
 >
 
 <selectionModel ""
-  requireSelectionText: "Uma seleção é requerida, você não pode desmarcar o último item."
+  requireSelectionText: "Uma seleção é necessária; não é possível cancelar a seleção do último item."
 >
 
 <view ""
- titleText: "Exibição Genérica"
+ titleText: "Exibição genérica"
 >
 
 <timePicker ""
   amText: "AM"
   pmText: "PM"
-  setTimeText: "Set Time"
+  setTimeText: "Definir hora"
 >
 
 <relativeDateTimePicker ""
   titleText: "Por volta de..."
   pickDateTimeText: "Avançado"
-  thisEveningText: "Esta Noite"
-  tomorrowMorningText: "Amanhã de Manhã"
-  tomorrowAfternoonText: "Amanhã à Noite"
-  nextWeekText: "Próxima Semana"
-  nextMonthText: "Próximo Mês"
+  thisEveningText: "Esta noite"
+  tomorrowMorningText: "Amanhã de manhã"
+  tomorrowAfternoonText: "Amanhã à noite"
+  nextWeekText: "Próxima semana"
+  nextMonthText: "Próximo mês"
   cancelText: "Cancelar"
   confirmText: "Confirmar"
 >
@@ -261,8 +253,8 @@
 >
 
 <recentlyViewedModel ""
-  entityDisplayName: "Recentemente Visualizado"
-  entityDisplayNamePlural : "Recentemente Visualizado"
+  entityDisplayName: "Recentemente visualizado"
+  entityDisplayNamePlural : "Recentemente visualizado"
 >
 
 <busyIndicator ""
@@ -281,27 +273,29 @@
   warningText: "Aviso"
 >
 <_listOfflineMixin ""
-  goToListViewText: "Os itens foram colocados na maleta. Você gostaria de mudar para a exibição em lista da maleta?"
-  interruptedText: "O processo foi interrompido e não foi possível concluí-lo totalmente. Tente o processo de colocar os itens na maleta novamente."
-  briefcasingText: "Agrupando na pasta, aguarde."
-  errorBriefcasingText: "Erro ao agrupar na pasta"
+  goToListViewText: "Itens foram colocados na maleta. Deseja ir para a exibição da lista da maleta?"
+  interruptedText: "O processo foi interrompido e não foi possível concluí-lo totalmente. Tente o processo novamente para terminar de colocar os itens na maleta."
+  briefcasingText: "Colocando na maleta. Aguarde."
+  errorBriefcasingText: "Erro ao colocar na maleta"
   briefcaseTooltipText: "Maleta"
 >
 
 <_detailOfflineMixin ""
-  goToDetailViewText: "O Item e os itens relacionados foram colocados na maleta. Você gostaria de mudar para a exibição em lista da maleta?"
-  interruptedText: "O processo foi interrompido e não foi possível concluí-lo totalmente. Tente o processo de colocar os itens na maleta novamente."
-  briefcasingText: "Agrupando na pasta, aguarde."
-  errorBriefcasingText: "Erro ao agrupar na pasta"
-  errorSavingOfflineViewText: "Erro ao salvar a exibição offline:"
+  goToDetailViewText: "Itens foram colocados na maleta. Deseja ir para a exibição da lista da maleta?"
+  interruptedText: "O processo foi interrompido e não foi possível concluí-lo totalmente. Tente o processo novamente para terminar de colocar os itens na maleta."
+  briefcasingText: "Colocando na maleta. Aguarde."
+  errorBriefcasingText: "Erro ao colocar na maleta"
+  errorSavingOfflineViewText: "Erro ao salvar exibição offline:"
   briefcaseTooltipText: "Maleta"
 >
 
 <sdkApplication ""
   connectionToastTitleText: "Conexão"
   checkingText: "Verificando conectividade"
-  loadingApplicationStateText: "Carregando estado da aplicação"
+  loadingApplicationStateText: "Carregando estado do aplicativo"
   initializingText: "Inicializando:"
-  viewSettingsText: "Definições de Exibição"
+  viewSettingsText: "Configurações de exibição"
   closeText: "Fechar"
+  serviceWorkerError: "Ocorreu um erro ao instalar o processo de serviço. Entre em contato com o administrador do site."
+  serviceWorkerErrorTitle: "Erro"
 >
