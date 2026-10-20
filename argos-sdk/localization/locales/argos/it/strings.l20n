@@ -1,6 +1,6 @@
 <dateField ""
   emptyText: ""
-  invalidDateFormatErrorText: "Formato data del campo '${0}' non valido."
+  invalidDateFormatErrorText: "Formato di data del campo '${0}' non valido."
   cancelText: "Annulla"
   confirmText: "Conferma"
   advancedText: "Avanzate"
@@ -201,16 +201,7 @@
   backTooltipText: "Indietro"
   themeText: "Tema"
   personalizationText: "Personalizzazione"
-  lightText: "Chiaro"
-  darkText: "Scuro"
-  highContrastText: "Contrasto elevato"
   defaultText: "Predefinito"
-  azureText: "Azzurro"
-  amberText: "Ambra"
-  amethystText: "Ametista"
-  turquoiseText: "Turchese"
-  emeraldText: "Smeraldo"
-  graphiteText: "Grafite"
 >
 
 <relatedViewWidget ""
@@ -227,6 +218,7 @@
 
 <searchWidget ""
  searchText: "Ricerca"
+ containsText: "Contiene"
 >
 
 <selectionModel ""
@@ -304,4 +296,6 @@
   initializingText: "Inizializzazione:"
   viewSettingsText: "Impostazioni di visualizzazione"
   closeText: "Chiudi"
+  serviceWorkerError: "Si è verificato un errore durante l'installazione del processo di lavoro dei servizi. Contattare l'amministratore del sito."
+  serviceWorkerErrorTitle: "Errore"
 >

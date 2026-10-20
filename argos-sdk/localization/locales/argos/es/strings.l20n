@@ -1,25 +1,25 @@
 <dateField ""
   emptyText: ""
-  invalidDateFormatErrorText: "El campo «${0}» tiene un formato de fecha no válido."
+  invalidDateFormatErrorText: "El campo ${0} tiene un formato de fecha no válido."
   cancelText: "Cancelar"
   confirmText: "Confirmar"
   advancedText: "Avanzado"
 >
 
 <durationField ""
-  minutes: "minuto(s)"
-  hours: "hora(s)"
-  days: "día(s)"
-  weeks: "semana(s)"
-  years: "año(s)"
+  minutes: "Minuto(s)"
+  hours: "Hora(s)"
+  days: "Día(s)"
+  weeks: "Semana(s)"
+  years: "Año(s)"
   invalidDurationErrorText: "El campo «${0}» no es una duración válida."
   emptyText: ""
 >
 
 <editorField ""
-  lookupLabelText: "editar"
+  lookupLabelText: "Editar"
   lookupText: "..."
-  emptyText: "vacío"
+  emptyText: "Vacío"
   completeText: "Aceptar"
 >
 
@@ -27,12 +27,12 @@
   dependentErrorText: "Se debe seleccionar un valor para «${0}»."
   emptyText: ""
   completeText: "Seleccionar"
-  lookupLabelText: "búsqueda"
+  lookupLabelText: "Búsqueda"
   lookupText: "..."
 >
 
 <signatureField ""
-  signatureLabelText: "firma"
+  signatureLabelText: "Firma"
   signatureText: "..."
 >
 
@@ -47,7 +47,7 @@
   thisYearEarlierText: "Más pronto este año"
   thisYearLaterText: "Más tarde este año"
   yesterdayText: "Ayer"
-  lastWeekText: "Última semana"
+  lastWeekText: "Semana pasada"
   lastMonthText: "Último mes"
   pastYearText: "Último(s) año(s)"
   nextYearText: "Año siguiente"
@@ -76,8 +76,8 @@
   cancelText: "Cancelar"
   selectFileText: "Seleccionar archivo"
   loadingText: "Cargando..."
-  descriptionText: "descripción"
-  bytesText: "bytes"
+  descriptionText: "Descripción"
+  bytesText: "Bytes"
   notSupportedText: "No es posible adjuntar archivos desde su dispositivo."
 >
 
@@ -98,7 +98,7 @@
   detailsText: "Detalles"
   loadingText: "Cargando"
   notAvailableText: "La información solicitada no está disponible."
-  toggleCollapseText: "contraer alternancia"
+  toggleCollapseText: "Contraer alternancia"
   editText: "Editar"
   editTooltipText: "Editar"
   refreshTooltipText: "Actualizar"
@@ -106,7 +106,7 @@
 
 <editBase ""
   concurrencyErrorText: "Otro usuario actualizó este campo."
-  toggleCollapseText: "contraer alternancia"
+  toggleCollapseText: "Contraer alternancia"
   saveText: "Guardar"
   titleText: "Editar"
   validationSummaryText: "Resumen de validación"
@@ -132,7 +132,7 @@
   remainingText: "${0} registros restantes"
   cancelText: "Cancelar"
   insertText: "Nuevo"
-  noDataText: "no hay registros"
+  noDataText: "No hay registros"
   loadingText: "Cargando"
   newTooltipText: "Nuevo"
   refreshTooltipText: "Actualizar"
@@ -184,16 +184,16 @@
   noText: "No"
   trueText: "T"
   falseText: "F"
-  hoursText: "horas"
-  hourText: "hora"
-  minutesText: "minutos"
-  minuteText: "minuto"
+  hoursText: "Horas"
+  hourText: "Hora"
+  minutesText: "Minutos"
+  minuteText: "Minuto"
   percentFormatText: "${0}${1}"
-  bytesText: "bytes"
+  bytesText: "Bytes"
 >
 
 <groupedList ""
- toggleCollapseText: "contraer alternancia"
+ toggleCollapseText: "Contraer alternancia"
 >
 
 <mainToolbar ""
@@ -201,25 +201,16 @@
   backTooltipText: "Atrás"
   themeText: "Tema"
   personalizationText: "Personalización"
-  lightText: "Claro"
-  darkText: "Oscuro"
-  highContrastText: "Contraste alto"
   defaultText: "Predeterminado"
-  azureText: "Celeste"
-  amberText: "Ámbar"
-  amethystText: "Amatista"
-  turquoiseText: "Turquesa"
-  emeraldText: "Esmeralda"
-  graphiteText: "Grafito"
 >
 
 <relatedViewWidget ""
-  nodataText: "no se encontró ningún registro..."
-  selectMoreDataText: "ver ${0} más de ${1}... "
-  selectMoreDataText2: "ver ${0} más... "
-  navToListText: "ver la lista"
+  nodataText: "No se encontró ningún registro..."
+  selectMoreDataText: "Ver ${0} más de ${1}... "
+  selectMoreDataText2: "Ver ${0} más... "
+  navToListText: "Ver la lista"
   loadingText: "Cargando"
-  refreshViewText: "actualizar"
+  refreshViewText: "Actualizar"
   itemOfCountText: " ${0} de ${1}"
   totalCountText: " (${0})"
   titleText: "Vista relacionada"
@@ -227,6 +218,7 @@
 
 <searchWidget ""
  searchText: "Buscar"
+ containsText: "Contiene"
 >
 
 <selectionModel ""
@@ -293,7 +285,7 @@
   interruptedText: "El proceso se interrumpió y no se pudo completar en su totalidad. Intente realizar de nuevo el proceso para guardar los artículos en el maletín por completo."
   briefcasingText: "Guardando en maletín, espere."
   errorBriefcasingText: "Error al guardar en maletín"
-  errorSavingOfflineViewText: "error al guardar la vista sin conexión:"
+  errorSavingOfflineViewText: "Error al guardar la vista sin conexión:"
   briefcaseTooltipText: "Maletín"
 >
 
@@ -304,4 +296,6 @@
   initializingText: "Inicializando:"
   viewSettingsText: "Ver la configuración"
   closeText: "Cerrar"
+  serviceWorkerError: "Se produjo un error al instalar el trabajo del servicio. Póngase en contacto con su administrador."
+  serviceWorkerErrorTitle: "Error"
 >

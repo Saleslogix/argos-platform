@@ -12,7 +12,7 @@
   days: "jour(s)"
   weeks: "semaine(s)"
   years: "année(s)"
-  invalidDurationErrorText: "La durée du champ '${0}' n'est pas valide."
+  invalidDurationErrorText: "La durée du champ \"${0}\" n'est pas valide."
   emptyText: ""
 >
 
@@ -148,7 +148,7 @@
 >
 
 <calendar ""
-  titleText: "Agenda"
+  titleText: "Calendrier"
   amText: "AM"
   pmText: "PM"
   january: "Janvier"
@@ -201,16 +201,7 @@
   backTooltipText: "Précédent"
   themeText: "Thème"
   personalizationText: "Personnalisation"
-  lightText: "Clair"
-  darkText: "Foncé"
-  highContrastText: "Contraste élevé"
   defaultText: "Par défaut"
-  azureText: "Azur"
-  amberText: "Ambre"
-  amethystText: "Améthyste"
-  turquoiseText: "Turquoise"
-  emeraldText: "Emeraude"
-  graphiteText: "Graphite"
 >
 
 <relatedViewWidget ""
@@ -227,6 +218,7 @@
 
 <searchWidget ""
  searchText: "Rechercher"
+ containsText: "Contient"
 >
 
 <selectionModel ""
@@ -281,7 +273,7 @@
   warningText: "Avertissement"
 >
 <_listOfflineMixin ""
-  goToListViewText: "Les éléments ont été classés dans le porte-documents. Souhaitez-vous passer à l'affichage de la liste du porte-documents ?"
+  goToListViewText: "Les éléments ont été classés dans le porte-documents. Voulez-vous passer à l'affichage de la liste du porte-documents ?"
   interruptedText: "Le processus a été interrompu et n'a pas pu être totalement achevé. Veuillez recommencer le processus afin de classer complètement les éléments dans le porte-documents."
   briefcasingText: "Veuillez patienter, mise en porte-documents en cours."
   errorBriefcasingText: "Erreur de porte-documents"
@@ -289,7 +281,7 @@
 >
 
 <_detailOfflineMixin ""
-  goToDetailViewText: "L'élément et les éléments associés ont été classés dans le porte-documents. Souhaitez-vous passer à l'affichage de la liste du porte-documents ?"
+  goToDetailViewText: "L'élément et les éléments associés ont été classés dans le porte-documents. Voulez-vous passer à l'affichage de la liste du porte-documents ?"
   interruptedText: "Le processus a été interrompu et n'a pas pu être totalement achevé. Veuillez recommencer le processus afin de classer complètement les éléments dans le porte-documents."
   briefcasingText: "Veuillez patienter, mise en porte-documents en cours."
   errorBriefcasingText: "Erreur de porte-documents"
@@ -304,4 +296,6 @@
   initializingText: "Initialisation :"
   viewSettingsText: "Paramètres d'affichage"
   closeText: "Fermer"
+  serviceWorkerError: "Une erreur s'est produite lors de l'installation du service worker. Contactez l’administrateur de votre site."
+  serviceWorkerErrorTitle: "Erreur"
 >
