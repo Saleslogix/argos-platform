@@ -38,7 +38,7 @@ define('crm/Views/SpeedSearchList', [
     fieldTemplate: new Simplate([
       '<ul class="speedsearch-fields">',
       '{% for(var i = 0; i < $.fields.length; i++) { %}',
-      '<li><p class="micro-text"><span>{%= $.fields[i].fieldName %}</span> {%= $.fields[i].fieldValue %}</p></li>',
+      '<li><p class="micro-text"><span>{%= $.fields[i].localizedFieldName ? $.fields[i].localizedFieldName : $.fields[i].fieldName %}</span> {%= $.fields[i].fieldValue %}</p></li>',
       '{% } %}',
       '</ul>',
     ]),
@@ -207,7 +207,8 @@ define('crm/Views/SpeedSearchList', [
     createRequest: function createRequest() {
       const request = new Sage.SData.Client.SDataServiceOperationRequest(this.getService())
         .setContractName('system')
-        .setOperationName('executeSearch');
+        .setOperationName('executeSearch')
+        .setQueryArg('language', App.getCurrentLocale());
       return request;
     },
     createSearchEntry: function createSearchEntry() {
