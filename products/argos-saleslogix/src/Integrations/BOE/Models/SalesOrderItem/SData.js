@@ -22,7 +22,8 @@ define('crm/Integrations/BOE/Models/SalesOrderItem/SData', [
   'argos/Models/Types',
   '../Names',
   '../../PricingAvailabilityService',
-], (declare, lang, Base, _SDataModelBase, Manager, MODEL_TYPES, MODEL_NAMES, PricingAvailabilityService) => {
+  '../../Utility',
+], (declare, lang, Base, _SDataModelBase, Manager, MODEL_TYPES, MODEL_NAMES, PricingAvailabilityService, Utility) => {
   const __class = declare('crm.Integrations.BOE.Models.SalesOrderItem.SData', [Base, _SDataModelBase], {
     id: 'salesorderitem_sdata_model',
     createQueryModels: function createQueryModels() {
@@ -100,6 +101,8 @@ define('crm/Integrations/BOE/Models/SalesOrderItem/SData', [
           'ErpStatus',
           'Quantity',
           'Price',
+          'DocPrice',
+          'SalesOrder/ExchangeRate',
           'ExtendedPrice',
           'DocExtendedPrice',
           'CalculatedPrice',
@@ -138,6 +141,11 @@ define('crm/Integrations/BOE/Models/SalesOrderItem/SData', [
             $key: warehouse.SlxLocationID,
             description: warehouse.SlxLocation,
           };
+          if (Utility.isLocalPricingEnabled('SalesOrder')) {
+            // CRM owns the price, so a new warehouse must not re-price the line from the back office.
+            resolve(orderItem);
+            return;
+          }
           PricingAvailabilityService.getOrderItemPricing(orderItem).then((pricingData) => {
             const entry = this.createPricingEntryForUpdate(orderItem, pricingData);
             this.updateEntry(entry, { overwrite: true }).then((result) => {

@@ -86,6 +86,22 @@ define('spec/Views/OpportunityProduct/Edit.spec', [
       expect(view.fields.CalculatedPrice.getValue()).toEqual(250);
     });
 
+    it('recalculates from an entered unit price and sends it in opportunity currency', function() {
+      var view = makeView();
+      view.isPriceEditable = function() { return true; };
+      view.options = { selectedEntry: { $key: 'O1', ExchangeRate: 1.5 } };
+      view.fields.Discount.setValue(10);
+      view.fields.Quantity.setValue(2);
+
+      view.fields.Price.setValue(1000);
+      view.onPriceChange();
+
+      expect(view.fields.Discount.getValue()).toEqual('');
+      expect(view.fields.CalculatedPrice.getValue()).toEqual(1000);
+      expect(view.fields.ExtendedPrice.getValue()).toEqual(2000);
+      expect(view._getOpportunityRate()).toEqual(1.5);
+    });
+
     it('does not throw when the entry has no product', function() {
       var view = makeView();
 

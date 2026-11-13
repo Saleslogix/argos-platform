@@ -374,6 +374,8 @@ define('crm/Integrations/BOE/Views/Quotes/Detail', [
           iconClass: 'finance',
           action: 'onGetOrderTotal',
           security: 'Entities/Quote/GetOrderTotal',
+          // Both pricing actions call the back office pricing service, which local CRM pricing replaces.
+          disabled: () => utility.isLocalPricingEnabled('Quote'),
         }, {
           name: 'AddLineItems',
           property: 'QuoteNumber',
@@ -389,6 +391,7 @@ define('crm/Integrations/BOE/Views/Quotes/Detail', [
           iconClass: 'finance',
           action: 'onRePrice',
           security: 'Entities/Quote/Add',
+          disabled: () => utility.isLocalPricingEnabled('Quote'),
         }],
       }, {
         title: this.detailsText,
