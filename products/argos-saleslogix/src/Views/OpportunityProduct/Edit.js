@@ -50,6 +50,7 @@ define('crm/Views/OpportunityProduct/Edit', [
     updateSecurity: 'Entities/Opportunity/Edit',
     querySelect: [
       'Opportunity/Description',
+      'Opportunity/ExchangeRate',
       'Product/Name',
       'Product/Family',
       'Program',
@@ -63,8 +64,17 @@ define('crm/Views/OpportunityProduct/Edit', [
     queryInclude: [
       '$permissions',
     ],
+    /**
+     * Whether the user may set the unit price. Off by default since the price comes from the
+     * product or price level; integrations that own pricing elsewhere override this.
+     * @return {Boolean}
+     */
+    isPriceEditable: function isPriceEditable() {
+      return false;
+    },
     init: function init() {
       this.inherited(init, arguments);
+      this.connect(this.fields.Price, 'onChange', this.onPriceChange);
       this.connect(this.fields.Product, 'onChange', this.onProductChange);
       this.connect(this.fields.Program, 'onChange', this.onProgramChange);
       this.connect(this.fields.Discount, 'onChange', this.onDiscountChange);
@@ -97,6 +107,10 @@ define('crm/Views/OpportunityProduct/Edit', [
       this.fields.ExtendedPrice.setCurrencyCode(baseCode);
       this._updateExtendedPrice();
 
+      // A loaded decimal remembers its formatted text, so a blur on the untouched price would
+      // look like a change and clear the discount. Re-set it so only a real edit triggers.
+      this.fields.Price.setValueNoTrigger(this.fields.Price.getValue());
+
       this._enableUI(this._hasProduct());
     },
     /**
@@ -112,6 +126,7 @@ define('crm/Views/OpportunityProduct/Edit', [
     },
     _enableUI: function _enableUI(enable) {
       if (enable) {
+        this.fields.Price.enable();
         this.fields.Discount.enable();
         this.fields.Quantity.enable();
         this.fields.CalculatedPrice.enable();
@@ -119,6 +134,7 @@ define('crm/Views/OpportunityProduct/Edit', [
           this.fields.CalculatedPriceMine.enable();
         }
       } else {
+        this.fields.Price.disable();
         this.fields.Discount.disable();
         this.fields.Quantity.disable();
         this.fields.CalculatedPrice.disable();
@@ -150,7 +166,17 @@ define('crm/Views/OpportunityProduct/Edit', [
       // sums the products PretaxTotalAmount instead of ExtendedPrice.
       o.PretaxTotalAmount = o.ExtendedPrice;
 
+      // The server derives the opportunity currency adjusted and extended prices from the base
+      // ones on save, but not the unit price, so send it when the user can set it.
+      if (this.isPriceEditable() && typeof o.Price === 'number') {
+        o.DocPrice = Utility.roundNumberTo(o.Price * this._getOpportunityRate(), 4);
+      }
+
       return o;
+    },
+    _getOpportunityRate: function _getOpportunityRate() {
+      const opportunity = (this.options && this.options.selectedEntry) || (this.entry && this.entry.Opportunity);
+      return (opportunity && Number(opportunity.ExchangeRate)) || 1;
     },
     applyContext: function applyContext() {
       const entry = this.options && this.options.selectedEntry;
@@ -190,6 +216,13 @@ define('crm/Views/OpportunityProduct/Edit', [
         this._updateExtendedPrice();
         this._enableUI(this._hasProduct());
       }
+    },
+    onPriceChange: function onPriceChange() {
+      // A new unit price clears the discount, as in the web client.
+      const price = parseFloat(this.fields.Price.getValue()) || 0;
+      this.fields.Discount.clearValue();
+      this._updateAdjustedPrices(price);
+      this._updateExtendedPrice();
     },
     onDiscountChange: function onDiscountChange() {
       const price = parseFloat(this.fields.Price.getValue()) || 0;
@@ -335,7 +368,8 @@ define('crm/Views/OpportunityProduct/Edit', [
           name: 'Price',
           property: 'Price',
           type: 'multiCurrency',
-          readonly: true,
+          readonly: !this.isPriceEditable(),
+          notificationTrigger: this.isPriceEditable() ? 'blur' : false,
         }, {
           label: this.discountText,
           name: 'Discount',

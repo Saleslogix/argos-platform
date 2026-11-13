@@ -21,7 +21,8 @@ define('crm/Integrations/BOE/Modules/OpportunityModule', [
   '../Views/SalesOrders/List',
   '../PricingAvailabilityService',
   'argos/I18n',
-], (declare, lang, _Module, QuotesList, SalesOrdersList, PricingAvailabilityService, getResource) => {
+  '../Utility',
+], (declare, lang, _Module, QuotesList, SalesOrdersList, PricingAvailabilityService, getResource, Utility) => {
   const resource = getResource('opportunityModule');
 
   const __class = declare('crm.Integrations.BOE.Modules.OpportunityModule', [_Module], {
@@ -142,6 +143,14 @@ define('crm/Integrations/BOE/Modules/OpportunityModule', [
         },
       });
 
+      // With local CRM pricing the back office supplies no price (integrated products come in at 0),
+      // so the user has to be able to enter the unit price.
+      lang.extend(crm.Views.OpportunityProduct.Edit, {
+        isPriceEditable: function isPriceEditable() {
+          return Utility.isLocalPricingEnabled('Opportunity');
+        },
+      });
+
       /*
        * Quick Actions
        */
@@ -188,8 +197,7 @@ define('crm/Integrations/BOE/Modules/OpportunityModule', [
               return true;
             }
 
-
-            return boeSettings['Local CRM Pricing Opportunity'] === 'True';
+            return Utility.isLocalPricingEnabled('Opportunity');
           },
         }],
       });

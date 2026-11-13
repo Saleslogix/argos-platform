@@ -118,6 +118,83 @@ define('crm/Integrations/BOE/Utility', [
 
       return '';
     },
+    /**
+     * Whether the "Local CRM Pricing {entityName}" back office setting is on, meaning CRM owns the
+     * pricing for that entity and the back office pricing service must not be called.
+     * Matches the server (AppIdMappingService.IsLocalCRMPricingEnabled), which accepts any casing of "true".
+     * @param {String} entityName Quote, SalesOrder or Opportunity
+     * @return {Boolean}
+     */
+    isLocalPricingEnabled: function isLocalPricingEnabled(entityName) {
+      const settings = App.context && App.context.integrationSettings && App.context.integrationSettings['Back Office Extension'];
+      const value = settings && settings[`Local CRM Pricing ${entityName}`];
+      return String(value).toLowerCase() === 'true';
+    },
+    /**
+     * Calculates every pricing field of a quote or sales order line from a unit price and either a
+     * discount or an adjusted price, all in document (quote/order) currency. Base currency values
+     * are derived with the document exchange rate.
+     *
+     * The server stores these fields as sent when local CRM pricing is on, and sums the pretax amounts
+     * into the header totals, so the client has to send all of them. Formulas follow the web client's
+     * QuoteItem/SalesOrderItem rules (CalculateDiscount, SetDocCalculatedPriceOnChange, SetExtendedPrice).
+     * @param {Object} options
+     * @param {Number} options.docPrice Unit price
+     * @param {Number} [options.discount] Discount as a fraction (0.1 = 10%). When omitted it is derived from docCalculatedPrice.
+     * @param {Number} [options.docCalculatedPrice] Adjusted unit price, used when discount is omitted
+     * @param {Number} options.quantity
+     * @param {Number} options.exchangeRate Document exchange rate (doc = base * rate)
+     * @return {Object} Line field values keyed by SData property name
+     */
+    calculateLinePricing: function calculateLinePricing({ docPrice, discount, docCalculatedPrice, quantity, exchangeRate }) {
+      // The server rounds currency to 4 places and truncates percentages to 6.
+      const round = value => Number(value.toFixed(4));
+      const truncate = value => Math.trunc(Number((value * 1e6).toFixed(6))) / 1e6;
+      const rate = Number(exchangeRate) || 1;
+      const qty = Number(quantity) || 0;
+      let unitPrice = round(Number(docPrice) || 0);
+      let pct;
+      let adjusted;
+
+      if (typeof discount === 'number') {
+        pct = truncate(discount);
+        adjusted = round(unitPrice - round(unitPrice * pct));
+      } else {
+        adjusted = round(Number(docCalculatedPrice) || 0);
+        if (unitPrice <= 0) {
+          unitPrice = adjusted;
+        }
+        pct = unitPrice ? truncate((unitPrice - adjusted) / unitPrice) : 0;
+      }
+
+      const basePrice = round(unitPrice / rate);
+      const baseAdjusted = round(adjusted / rate);
+      const docAdjustment = round(unitPrice - adjusted);
+      const adjustment = round(basePrice - baseAdjusted);
+      const docTotal = round(adjusted * qty);
+      const total = round(baseAdjusted * qty);
+
+      return {
+        DocPrice: unitPrice,
+        Price: basePrice,
+        Discount: pct,
+        UnitErpAdjustmentPercent: pct,
+        DocCalculatedPrice: adjusted,
+        CalculatedPrice: baseAdjusted,
+        DocErpNetUnitPrice: adjusted,
+        ErpNetUnitPrice: baseAdjusted,
+        DocUnitErpAdjustment: docAdjustment,
+        UnitErpAdjustment: adjustment,
+        DocPretaxTotalAmount: docTotal,
+        DocTotalAmount: docTotal,
+        DocExtendedPrice: docTotal,
+        PretaxTotalAmount: total,
+        TotalAmount: total,
+        ExtendedPrice: total,
+        DocTotalDiscount: round(docAdjustment * qty),
+        TotalDiscount: round(adjustment * qty),
+      };
+    },
   });
 
   lang.setObject('icboe.Utility', __class);

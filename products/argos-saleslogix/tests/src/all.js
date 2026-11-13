@@ -16,6 +16,7 @@ define([
   'spec/Views/Lead/Detail.spec',
   'spec/Views/OpportunityProduct/Edit.spec',
   'spec/Integrations/BOE/PricingAvailabilityService.spec',
+  'spec/Integrations/BOE/LocalPricing.spec',
   'spec/OCR/textLines.spec',
   'spec/OCR/imageValidation.spec',
   'spec/OCR/FeatureAvailability.spec',
