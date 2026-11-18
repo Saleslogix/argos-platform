@@ -22,7 +22,8 @@ define('crm/Integrations/BOE/Models/QuoteItem/SData', [
   'argos/Models/Types',
   '../Names',
   '../../PricingAvailabilityService',
-], (declare, lang, Base, _SDataModelBase, Manager, MODEL_TYPES, MODEL_NAMES, PricingAvailabilityService) => {
+  '../../Utility',
+], (declare, lang, Base, _SDataModelBase, Manager, MODEL_TYPES, MODEL_NAMES, PricingAvailabilityService, Utility) => {
   const __class = declare('crm.Integrations.BOE.Models.QuoteItem.SData', [Base, _SDataModelBase], {
     id: 'quoteitem_sdata_model',
     createQueryModels: function createQueryModels() {
@@ -102,6 +103,8 @@ define('crm/Integrations/BOE/Models/QuoteItem/SData', [
           'Status',
           'Quantity',
           'Price',
+          'DocPrice',
+          'Quote/ExchangeRate',
           'ExtendedPrice',
           'DocExtendedPrice',
           'CalculatedPrice',
@@ -135,6 +138,11 @@ define('crm/Integrations/BOE/Models/QuoteItem/SData', [
             $key: warehouse.SlxLocationID,
             description: warehouse.SlxLocation,
           };
+          if (Utility.isLocalPricingEnabled('Quote')) {
+            // CRM owns the price, so a new warehouse must not re-price the line from the back office.
+            resolve(quoteItem);
+            return;
+          }
           PricingAvailabilityService.getQuoteItemPricing(quoteItem).then((pricingData) => {
             const entry = this.createPricingEntryForUpdate(quoteItem, pricingData);
             this.updateEntry(entry, { overwrite: true }).then((result) => {

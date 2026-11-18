@@ -24,12 +24,14 @@ define('crm/Integrations/BOE/Views/QuoteLines/Edit', [
   'crm/Validator',
   '../../Models/Names',
   'argos/Models/Types',
-], (declare, lang, string, utility, Edit, getResource, PricingAvailabilityService, validator, MODEL_NAMES, MODEL_TYPES) => {
+  '../_LocalPricingLineMixin',
+], (declare, lang, string, utility, Edit, getResource, PricingAvailabilityService, validator, MODEL_NAMES, MODEL_TYPES, _LocalPricingLineMixin) => {
   const resource = getResource('quoteItemEdit');
 
-  const __class = declare('crm.Integrations.BOE.Views.QuoteLines.Edit', [Edit], {
+  const __class = declare('crm.Integrations.BOE.Views.QuoteLines.Edit', [Edit, _LocalPricingLineMixin], {
     // View Properties
     id: 'quote_line_edit',
+    localPricingEntity: 'Quote',
     detailView: 'quote_line_detail',
     insertSecurity: 'Entities/Quote/Add',
     updateSecurity: 'Entities/Quote/Edit',
@@ -40,6 +42,8 @@ define('crm/Integrations/BOE/Views/QuoteLines/Edit', [
     quantityText: resource.quantityText,
     quoteText: resource.quoteText,
     priceText: resource.priceText,
+    unitPriceText: resource.unitPriceText,
+    discountText: resource.discountText,
     baseAdjustedPriceText: resource.baseAdjustedPriceText,
     docAdjustedPriceText: resource.docAdjustedPriceText,
     baseExtendedPriceText: resource.baseExtendedPriceText,
@@ -62,6 +66,7 @@ define('crm/Integrations/BOE/Views/QuoteLines/Edit', [
       this.fields.DocCalculatedPrice.disable();
       this.connect(this.fields.Product, 'onChange', this.onProductChange);
       this.connect(this.fields.Quantity, 'onChange', this.onQuantityChange);
+      this.initLocalPricing();
     },
     _applyLogicValues: function _applyLogicValues(values) {
       const product = this.fields.Product.getSelection();
@@ -222,6 +227,10 @@ define('crm/Integrations/BOE/Views/QuoteLines/Edit', [
       this.setProductDependentFields(field.currentSelection);
       this.fields.ProductName.setValue(value.text);
       this.fields.SlxLocation.setValue(null);
+      if (this.isLocalPricing()) {
+        this.seedLocalPricing(field.currentSelection);
+        return;
+      }
       this.requestProductPricing(
         field.currentSelection,
         this.fields.Quantity.getValue(),
@@ -233,7 +242,9 @@ define('crm/Integrations/BOE/Views/QuoteLines/Edit', [
       if (isNaN(value)) {
         this.fields.Quantity.setValueNoTrigger(0);
       }
-      if (this.isAdHocProduct(this.fields.Product.getValue())) {
+      if (this.isLocalPricing()) {
+        this.updateLocalPricing({});
+      } else if (this.isAdHocProduct(this.fields.Product.getValue())) {
         this.reCalculate();
       } else {
         this.requestProductPricing(
@@ -364,6 +375,21 @@ define('crm/Integrations/BOE/Views/QuoteLines/Edit', [
           textProperty: 'Description',
           valueTextProperty: 'Name',
         }, {
+          // DocPrice and Discount are only shown with local CRM pricing, see _LocalPricingLineMixin.
+          label: this.unitPriceText,
+          name: 'DocPrice',
+          property: 'DocPrice',
+          type: 'decimal',
+          default: 0.00,
+          notificationTrigger: 'blur',
+        }, {
+          label: this.discountText,
+          name: 'Discount',
+          property: 'Discount',
+          type: 'decimal',
+          default: 0.00,
+          notificationTrigger: 'blur',
+        }, {
           label: this.priceText,
           name: 'Price',
           property: 'Price',
@@ -381,6 +407,7 @@ define('crm/Integrations/BOE/Views/QuoteLines/Edit', [
           property: 'DocCalculatedPrice',
           type: 'decimal',
           default: 0.00,
+          notificationTrigger: 'blur',
         }, {
           label: this.baseExtendedPriceText,
           name: 'ExtendedPrice',

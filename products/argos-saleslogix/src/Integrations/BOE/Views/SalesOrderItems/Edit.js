@@ -24,12 +24,14 @@ define('crm/Integrations/BOE/Views/SalesOrderItems/Edit', [
   'crm/Validator',
   '../../Models/Names',
   'argos/Models/Types',
-], (declare, lang, string, utility, Edit, getResource, PricingAvailabilityService, validator, MODEL_NAMES, MODEL_TYPES) => {
+  '../_LocalPricingLineMixin',
+], (declare, lang, string, utility, Edit, getResource, PricingAvailabilityService, validator, MODEL_NAMES, MODEL_TYPES, _LocalPricingLineMixin) => {
   const resource = getResource('salesOrderItemEdit');
 
-  const __class = declare('crm.Integrations.BOE.Views.SalesOrderItems.Edit', [Edit], {
+  const __class = declare('crm.Integrations.BOE.Views.SalesOrderItems.Edit', [Edit, _LocalPricingLineMixin], {
     // View Properties
     id: 'salesorder_item_edit',
+    localPricingEntity: 'SalesOrder',
     detailView: 'salesorder_item_detail',
     insertSecurity: 'Entities/SalesOrder/Add',
     updateSecurity: 'Entities/SalesOrder/Edit',
@@ -39,6 +41,8 @@ define('crm/Integrations/BOE/Views/SalesOrderItems/Edit', [
     quantityText: resource.quantityText,
     orderText: resource.orderText,
     priceText: resource.priceText,
+    unitPriceText: resource.unitPriceText,
+    discountText: resource.discountText,
     baseAdjustedPriceText: resource.baseAdjustedPriceText,
     docAdjustedPriceText: resource.docAdjustedPriceText,
     baseExtendedPriceText: resource.baseExtendedPriceText,
@@ -53,7 +57,9 @@ define('crm/Integrations/BOE/Views/SalesOrderItems/Edit', [
     init: function init() {
       this.inherited(init, arguments);
       this.fields.ErpLineNumber.disable();
-      if (App.warehouseDiscovery === 'auto') {
+      // With auto discovery the pricing call picks the warehouse and re-enables the field; local
+      // pricing makes no call, so leave it open.
+      if (App.warehouseDiscovery === 'auto' && !this.isLocalPricing()) {
         this.fields.SlxLocation.disable();
       }
 
@@ -66,6 +72,7 @@ define('crm/Integrations/BOE/Views/SalesOrderItems/Edit', [
       this.fields.DocTotalAmount.disable();
       this.connect(this.fields.Product, 'onChange', this.onProductChange);
       this.connect(this.fields.Quantity, 'onChange', this.onQuantityChange);
+      this.initLocalPricing();
     },
     _applyLogicValues: function _applyLogicValues(values) {
       const product = this.fields.Product.getSelection();
@@ -223,6 +230,10 @@ define('crm/Integrations/BOE/Views/SalesOrderItems/Edit', [
       this.setProductDependentFields(field.currentSelection);
       this.fields.ProductName.setValue(value.text);
       this.fields.SlxLocation.setValue(null);
+      if (this.isLocalPricing()) {
+        this.seedLocalPricing(field.currentSelection);
+        return;
+      }
       this.requestProductPricing(
         field.currentSelection,
         this.fields.Quantity.getValue(),
@@ -234,7 +245,9 @@ define('crm/Integrations/BOE/Views/SalesOrderItems/Edit', [
       if (isNaN(value)) {
         this.fields.Quantity.setValueNoTrigger(0);
       }
-      if (this.isAdHocProduct(this.fields.Product.getValue())) {
+      if (this.isLocalPricing()) {
+        this.updateLocalPricing({});
+      } else if (this.isAdHocProduct(this.fields.Product.getValue())) {
         this.reCalculate();
       } else {
         this.requestProductPricing(
@@ -355,6 +368,21 @@ define('crm/Integrations/BOE/Views/SalesOrderItems/Edit', [
           textProperty: 'Description',
           valueTextProperty: 'Name',
         }, {
+          // DocPrice and Discount are only shown with local CRM pricing, see _LocalPricingLineMixin.
+          label: this.unitPriceText,
+          name: 'DocPrice',
+          property: 'DocPrice',
+          type: 'decimal',
+          default: 0.00,
+          notificationTrigger: 'blur',
+        }, {
+          label: this.discountText,
+          name: 'Discount',
+          property: 'Discount',
+          type: 'decimal',
+          default: 0.00,
+          notificationTrigger: 'blur',
+        }, {
           label: this.priceText,
           name: 'Price',
           property: 'Price',
@@ -372,6 +400,7 @@ define('crm/Integrations/BOE/Views/SalesOrderItems/Edit', [
           property: 'DocCalculatedPrice',
           type: 'decimal',
           default: 0.00,
+          notificationTrigger: 'blur',
         }, {
           label: this.baseExtendedPriceText,
           name: 'ExtendedPrice',
