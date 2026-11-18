@@ -306,6 +306,8 @@ define('crm/Integrations/BOE/Views/SalesOrders/Detail', [
           iconClass: 'finance',
           action: 'onGetOrderTotal',
           security: 'Entities/SalesOrder/GetOrderTotal',
+          // Both pricing actions call the back office pricing service, which local CRM pricing replaces.
+          disabled: () => utility.isLocalPricingEnabled('SalesOrder'),
         }, {
           name: 'AddLineItems',
           property: 'SalesOrderNumber',
@@ -321,6 +323,7 @@ define('crm/Integrations/BOE/Views/SalesOrders/Detail', [
           iconClass: 'finance',
           action: 'onRePrice',
           security: 'Entities/SalesOrder/Add',
+          disabled: () => utility.isLocalPricingEnabled('SalesOrder'),
         }],
       }, {
         title: this.detailsText,
