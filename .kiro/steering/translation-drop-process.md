@@ -265,6 +265,12 @@ Multibranch pipeline, `GitHubSCMSource` on `Saleslogix/argos-platform`, script
 
 Branch: `PseudoTranslations` (long-lived, **never** merged, no PR ever opened).
 
+**Where pseudo strings come from:** the translation team supplies them in the same drop
+layout as real translations (`<group>\<locale>\strings.l20n`), each value carrying a
+prefix (`M-nn.` for mobile, per the XBar notes). This repo has no script that generates
+them, so there is nothing to run to "build" the strings. "Building pseudo strings" here
+means the steps below: put the supplied files on `PseudoTranslations`, trim `lang-pack`
+and let Jenkins produce the bundle.
 ## Why there is no pull request
 
 The pseudo strings must never reach `develop`. Review and merge are only gates on
@@ -375,6 +381,12 @@ Copy the drop, fix the encoding (and run the repo-wide UTF-8 check), check the q
 escaping. The C1 script already loops over every locale in the drop. A new locale folder
 shows as new in `git status`, which is expected only when a locale is being added.
 
+Drops re-send locales that did not change, so expect only part of the drop to show in
+`git status`. In the 4.4.0 drop, 10 of 24 `strings.l20n` files were identical to the repo
+(all `zh-CN`, and others), and `argos\fr`, `crm\de` and `icboe\de` differed only by the
+backslashes translators drop (see C3). After C3 those three also matched the repo, so
+the final change set was 17 files.
+
 Locale folder names are not uniform: the strings folders use `es` and `pt-BR`, while
 the help folders use `es-ES` and also contain `pt`. The drop uses `es-ES` for both.
 C1 maps strings `es-ES` to `es`; help files keep `es-ES`.
@@ -432,8 +444,10 @@ git commit -m "Update Saleslogix translations"
 git push github translation-updates
 ```
 
-Push to `github`, not `origin`; check it with C5. Then open a pull request into
-`develop` on `Saleslogix/argos-platform`. Splitting SDK and product changes into two
+Push to `github`, not `origin`; check it with C5. **The push does not open a pull
+request.** Use the `https://github.com/Saleslogix/argos-platform/pull/new/<branch>` link
+git prints (or the Pull requests tab) to open one into `develop` on
+`Saleslogix/argos-platform`. Nothing reaches `develop` until that PR is merged. Splitting SDK and product changes into two
 PRs, as in #72 and #73, is acceptable. **(confirm)** whether review is required before
 merge.
 
