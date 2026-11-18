@@ -125,7 +125,7 @@
 
 <listBase ""
   moreText: "Recupera altri record"
-  emptySelectionText: "Nessuno"
+  emptySelectionText: "Nessuna selezione"
   titleText: "Elenco"
   configureText: "Configura"
   errorRenderText: "Errore durante il rendering del modello di riga."
@@ -134,7 +134,7 @@
   insertText: "Nuovo"
   noDataText: "Nessun record"
   loadingText: "Caricamento"
-  newTooltipText: "Nuovo"
+  newTooltipText: "Aggiungi"
   refreshTooltipText: "Aggiorna"
 >
 
@@ -292,7 +292,7 @@
 <sdkApplication ""
   connectionToastTitleText: "Connessione"
   checkingText: "Controllo della connettività"
-  loadingApplicationStateText: "Stato caricamento applicazione"
+  loadingApplicationStateText: "Caricamento stato applicazione"
   initializingText: "Inizializzazione:"
   viewSettingsText: "Impostazioni di visualizzazione"
   closeText: "Chiudi"

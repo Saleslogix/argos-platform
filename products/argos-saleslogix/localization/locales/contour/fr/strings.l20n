@@ -10,7 +10,7 @@
   addActivityActionText: "Ajouter une activité"
   addAttachmentActionText: "Ajouter une pièce jointe"
   addNoteActionText: "Ajouter une note"
-	callMainActionText: "Appeler principal"
+	callMainActionText: "Appel principal"
 	currentLocationErrorText: "Impossible d'obtenir votre position actuelle. Recherche impossible."
 	editActionText: "Modifier"
   faxAbbreviationText: "Fax : "

@@ -125,7 +125,7 @@
 
 <listBase ""
   moreText: "Recuperar más registros"
-  emptySelectionText: "Ninguno"
+  emptySelectionText: "Ninguno(a)"
   titleText: "Lista"
   configureText: "Configurar"
   errorRenderText: "Error al representar la plantilla de filas."
@@ -268,7 +268,7 @@
   cancelText: "Cancelar"
   confirmText: "Confirmar"
   editText: "Editar"
-  okayText: "Vale"
+  okayText: "Aceptar"
   submitText: "Enviar"
   warningText: "Advertencia"
 >
@@ -281,7 +281,7 @@
 >
 
 <_detailOfflineMixin ""
-  goToDetailViewText: "El artículo y los artículos relacionados se han guardado en el maletín. ¿Desea ir a la vista de lista del maletín?"
+  goToDetailViewText: "El artículo y los elementos relacionados se han guardado en el maletín. ¿Desea ir a la vista de lista del maletín?"
   interruptedText: "El proceso se interrumpió y no se pudo completar en su totalidad. Intente realizar de nuevo el proceso para guardar los artículos en el maletín por completo."
   briefcasingText: "Guardando en maletín, espere."
   errorBriefcasingText: "Error al guardar en maletín"
